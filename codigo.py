@@ -108,7 +108,7 @@ class Block:
         self.in_ports = port_i
         self.out_ports = port_o
         self.place_ports()
-
+    
 class Line:
     def __init__(self, sid, srcblock, srcport, points, dstblock, dstport, zorder):
         self.name = "Line"+str(sid)#id linea
@@ -128,7 +128,7 @@ class Line:
         for block in block_list:
             if block.name == self.srcblock:
                 startline = block.out_coords[self.srcport]
-            elif block.name == self.dstblock:
+            if block.name == self.dstblock:
                 endline = block.in_coords[self.dstport]
         self.points = (startline,endline)
 
@@ -157,12 +157,20 @@ def port_availability(dst_line,linelist):
             return False
     return True
 
-def check_line(line,b_delete_list):
+def check_line_block(line,b_delete_list):
     for b_del in b_delete_list:
         if line.srcblock == b_del.name or line.dstblock == b_del.name:
             return True
         else:
             return False
+
+def check_line_port(line,block):
+    if line.srcblock == block.name and line.srcport > block.out_ports-1:
+        return True
+    elif line.dstblock == block.name and line.dstport > block.in_ports-1:
+        return True
+    else:
+        return False
 
 def assign_id(id_list):
     #asignacion de id a partir de una lista de valores disponibles
@@ -305,12 +313,13 @@ while running:
                 line_id = get_id_back(line_id,l_del)
                 print(block_id,line_id)
                 blocks_list = [x for x in blocks_list if not (x.selected == True)]
-                line_list = [x for x in line_list if not check_line(x,b_del)]
+                line_list = [x for x in line_list if not check_line_block(x,b_del)]
 
     if pygame.key.get_mods() & pygame.KMOD_CTRL and pygame.mouse.get_pressed() == (1,0,0):
         for b_elem in blocks_list:
             if b_elem.rectf.collidepoint(event.pos):
                 b_elem.change_port_number()
+                line_list = [x for x in line_list if not check_line_port(x,b_elem)]
 
     # - updates (without draws) -
 
