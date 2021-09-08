@@ -23,6 +23,8 @@ line_id = [0,1,2,3,4]
 class Default_settings:
     def __init__(self):
         self.line_width = 2
+        self.text_color = (255,   0,   0)
+        self.font_size = 24
 
 class Block:
     def __init__(self,sid,coords,in_ports,out_ports):
@@ -45,6 +47,9 @@ class Block:
         self.rectf = pygame.rect.Rect(self.left-self.port_radius,self.top,self.width+2*self.port_radius,self.height) #Rect que define la colisión del bloque
         self.dragging = False           #Booleano para determinar si el bloque se está moviendo
         self.selected = False           #Booleano para determinar si el bloque está seleccionado en el plano
+
+        self.text = pygame.font.SysFont(None, font_size)
+        self.text_display = self.text.render(self.name, True, RED)
 
     def draw_Block(self,place):
         #Dibuja el bloque y los puertos
@@ -169,10 +174,11 @@ def update_lines(blocklist,pointlist):
         
 def blockScreen(block_list,zone):
     #Dibuja los bloques incluyendo al seleccionado
-    for block_elem in block_list:
-        if block_elem.selected == True:
-            block_elem.draw_selected(zone)
-        block_elem.draw_Block(zone)
+    for b_elem in block_list:
+        if b_elem.selected == True:
+            b_elem.draw_selected(zone)
+        b_elem.draw_Block(zone)
+        zone.blit(b_elem.text_display, (b_elem.left+20, b_elem.top+5))
 
 def port_availability(dst_line,linelist):
     #Comprueba si es que el puerto a conectar está libre para ello
@@ -223,8 +229,10 @@ def get_id_back(id_list,del_list):
 pygame.init()
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-
 pygame.display.set_caption("PySimSnide")
+
+sysfont = pygame.font.get_default_font()
+font_size = 24
 
 # - objects -
 block = pygame.rect.Rect(60, 40, 120, 80)
@@ -355,7 +363,6 @@ while running:
     screen.fill(WHITE)
     pygame.draw.rect(screen, GREEN, block)
     pygame.draw.line(screen, BLACK, [250, 0], [250, 720], 2)
-    
     blockScreen(blocks_list,screen)
     print_lines(line_list)
     pygame.display.flip()
