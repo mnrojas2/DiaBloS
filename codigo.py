@@ -156,20 +156,37 @@ class Line:
                 endline = block.in_coords[self.dstport]
         self.points = (startline,endline)
 
+    def collision(self,m_coords):
+        min_dst = 10
+        if (self.points[1][0]-self.points[0][0]) != 0 and (self.points[1][0]-self.points[0][0]) != 0:
+            m = (self.points[1][1]-self.points[0][1])/(self.points[1][0]-self.points[0][0])
+            y = -1/m*(m_coords[0]-self.points[1][0])+self.points[1][1]
+            #FALTA ALGO MAS
+            distance_to_line = np.abs(y-m_coords[1])
+        elif (self.points[1][0]-self.points[0][0]) == 0: #linea vertical
+            distance_to_line = np.abs(m_coords[0]-self.points[0][0])
+        elif (self.points[1][1]-self.points[0][1]) == 0: #linea horizontal
+            distance_to_line = np.abs(m_coords[1]-self.points[0][1])
+        print(self.name,": ",distance_to_line)
+        if distance_to_line > min_dst:
+            return False
+        else:
+            return True
+
     def __str__(self):
         #Imprime en el shell, el nombre de la línea y su origen y destino
         return self.name+": From "+str(self.srcblock)+", port "+str(self.srcport)+" to "+str(self.dstblock)+", port "+str(self.dstport)
 
 # --- functions --- (lower_case names)
 
-def print_lines(pointlist):
+def print_lines(linelist):
     #Dibuja las líneas a partir de una lista
-    for line in pointlist:
+    for line in linelist:
         line.draw_line()
 
-def update_lines(blocklist,pointlist):
+def update_lines(blocklist,linelist):
     #Actualiza la ubicación de las líneas a partir de la ubicación de los bloques
-    for line in pointlist:
+    for line in linelist:
         line.update_line(blocklist)
         
 def blockScreen(block_list,zone):
@@ -317,6 +334,9 @@ while running:
                                 line_creation = 0
                     else:
                         b_elem.selected = False
+
+                    for line in line_list:
+                        line.collision(event.pos)
 
             elif event.button == 4:
                 print("Ruedita arriba")
