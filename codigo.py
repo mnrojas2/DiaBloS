@@ -5,7 +5,7 @@ import numpy as np
 
 # --- constants --- (UPPER_CASE names)
 
-SCREEN_WIDTH = 1280
+SCREEN_WIDTH = 920
 SCREEN_HEIGHT = 720
 
 BLACK = (  0,   0,   0)
@@ -141,11 +141,16 @@ class Line:
         self.dstblock = dstblock    #Nombre del bloque de origen
         self.dstport = dstport      #ID del puerto de origen del bloque
         self.zorder = zorder        #ID de prioridad al momento de dibujar el bloque
+        self.selected = False
 
     def draw_line(self):
         #Dibuja la línea con los datos del init
         for i in range(len(self.points)-1):
-            pygame.draw.line(screen, BLACK, self.points[i], self.points[i+1], 2)
+            if self.selected == True:
+                line_width = 5
+            else:
+                line_width = 2
+            pygame.draw.line(screen, BLACK, self.points[i], self.points[i+1], line_width)
 
     def update_line(self,block_list):
         #Actualiza el valor de la línea según la ubicación y tamaño del bloque
@@ -158,16 +163,19 @@ class Line:
 
     def collision(self,m_coords):
         min_dst = 10
-        if (self.points[1][0]-self.points[0][0]) != 0 and (self.points[1][0]-self.points[0][0]) != 0:
-            m = (self.points[1][1]-self.points[0][1])/(self.points[1][0]-self.points[0][0])
-            y = -1/m*(m_coords[0]-self.points[1][0])+self.points[1][1]
-            #FALTA ALGO MAS
-            distance_to_line = np.abs(y-m_coords[1])
-        elif (self.points[1][0]-self.points[0][0]) == 0: #linea vertical
-            distance_to_line = np.abs(m_coords[0]-self.points[0][0])
-        elif (self.points[1][1]-self.points[0][1]) == 0: #linea horizontal
-            distance_to_line = np.abs(m_coords[1]-self.points[0][1])
-        print(self.name,": ",distance_to_line)
+        line_A = np.array(self.points[0])
+        line_B = np.array(self.points[1])
+        m_coords = np.array(m_coords)
+        
+        if all(line_A == m_coords) or all(line_B == m_coords):
+            distance_to_line = 0.0
+        elif np.arccos(np.dot((m_coords - line_A)/np.linalg.norm(m_coords - line_A),(line_B - line_A)/np.linalg.norm(line_B - line_A))) > np.pi/2:
+            distance_to_line = np.linalg.norm(m_coords - line_A)
+        elif np.arccos(np.dot((m_coords - line_B)/np.linalg.norm(m_coords - line_B),(line_A - line_B)/np.linalg.norm(line_A - line_B))) > np.pi/2:
+            distance_to_line = np.linalg.norm(m_coords - line_B)
+        else:
+            distance_to_line = np.linalg.norm(np.cross(line_A-line_B, line_A-m_coords))/np.linalg.norm(line_B-line_A)
+        
         if distance_to_line > min_dst:
             return False
         else:
@@ -260,6 +268,7 @@ line_creation = 0           #Booleano (3 estados) para creación de una línea
 srcLine = ("",0,(0,0))      #Tupla con datos de origen para línea
 dstLine = ("",0,(0,0))      #Tupla con datos de destino para línea
 only_one = False            #Booleano para impedir que más de un bloque puede efectuar una operación
+enable_line_selection = False
 
 #Bloques de prueba
 cod = (520,320,120,80)
@@ -301,6 +310,7 @@ while running:
                 for b_elem in blocks_list:
                     if b_elem.rectf.collidepoint(event.pos):
                         b_elem.selected = True
+                        enable_line_selection = False
                         p_col = b_elem.port_collision(event.pos)
                         if p_col[0] == -1 and only_one == False:
                             b_elem.dragging = True
@@ -335,8 +345,9 @@ while running:
                     else:
                         b_elem.selected = False
 
-                    for line in line_list:
-                        line.collision(event.pos)
+                b_sel = [x for x in blocks_list if x.selected == True]
+                if len(b_sel) == 0:
+                    enable_line_selection = True
 
             elif event.button == 4:
                 print("Ruedita arriba")
@@ -351,6 +362,15 @@ while running:
                     only_one = False
                     update_lines(blocks_list,line_list)
 
+            if enable_line_selection == True:
+                for line in line_list:
+                    if event.button == 1:
+                        if (line.collision(event.pos)):
+                            print(line.name,"está bien cerca.")
+                            line.selected = True
+                        else:
+                            line.selected = False
+
         elif event.type == pygame.MOUSEMOTION:
             for b_elem in blocks_list:
                 if b_elem.dragging == True and only_one == True:
@@ -361,17 +381,21 @@ while running:
             #Eliminar un bloque y las líneas asociadas
             if event.key == pygame.K_DELETE:
                 b_del = [x for x in blocks_list if x.selected == True]
-                l_del = [x for x in line_list if check_line(x,b_del)]
-                block_id = get_id_back(block_id,b_del)
-                line_id = get_id_back(line_id,l_del)
-                blocks_list = [x for x in blocks_list if not (x.selected == True)]
-                line_list = [x for x in line_list if not check_line_block(x,b_del)]
+                if len(b_del) > 0:
+                    l_del = [x for x in line_list if check_line_block(x,b_del)]
+                    block_id = get_id_back(block_id,b_del)
+                    line_id = get_id_back(line_id,l_del)
+                    blocks_list = [x for x in blocks_list if not (x.selected == True)]
+                    line_list = [x for x in line_list if not check_line_block(x,b_del)]
+                else:
+                    l_del = [x for x in line_list if x.selected == True]
+                    line_id = get_id_back(line_id,l_del)
+                    line_list = [x for x in line_list if x.selected == False]
 
     #Ctrl + click para cambiar el número de puertos de un bloque
     if pygame.key.get_mods() & pygame.KMOD_CTRL and pygame.mouse.get_pressed() == (1,0,0):
         for b_elem in blocks_list:
             if b_elem.rectf.collidepoint(event.pos):
-                
                 b_elem.change_port_number()
                 line_list = [x for x in line_list if not check_line_port(x,b_elem)]
 
