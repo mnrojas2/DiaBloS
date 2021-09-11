@@ -123,7 +123,7 @@ class Block:
         pygame.draw.line(screen, BLACK, (self.left+self.width+ls_width,self.top+self.height+ls_width), (self.left+self.width+5,self.top-ls_width), l_width)
         pygame.draw.line(screen, BLACK, (self.left+self.width+ls_width,self.top+self.height+ls_width), (self.left-ls_width,self.top+self.height+ls_width), l_width)
 
-    def change_port_number(self):
+    def change_number_ports(self):
         #Cambia el número de puertos de un bloque, con inputs desde el shell.
         port_i = int(input("Numero puertos input: "))
         port_o = int(input("Numero puertos output: "))
@@ -270,7 +270,7 @@ dstLine = ("",0,(0,0))      #Tupla con datos de destino para línea
 only_one = False            #Booleano para impedir que más de un bloque puede efectuar una operación
 enable_line_selection = False
 
-#Bloques de prueba
+'''#Bloques de prueba
 cod = (520,320,120,80)
 val, block_id = assign_id(block_id)
 fig_test = Block(val,cod,2,1)
@@ -284,7 +284,23 @@ blocks_list.append(gain_test)
 cod3 = (320,520,120,80)
 val, block_id = assign_id(block_id)
 asd_test = Block(val,cod3,1,1)
-blocks_list.append(asd_test)
+blocks_list.append(asd_test)#'''
+
+# - test new stuff -
+
+editable_text_toggle = False
+text_size = 14
+text_i = "# input ports:"
+text_o = "# output ports:"
+text_edi = "-"
+text_edo = "-"
+
+font = pygame.font.SysFont(None, text_size)
+
+img_i = font.render(text_i, True, BLACK)
+img_o = font.render(text_o, True, BLACK)
+img_edi = font.render(text_edi, True, BLACK)
+img_edo = font.render(text_edo, True, BLACK)
 
 # - mainloop -
 
@@ -303,7 +319,7 @@ while running:
             if event.button == 3:
                 if block.collidepoint(event.pos):               
                     val, block_id = assign_id(block_id) 
-                    new_block = Block(val,(60, 40, 120, 80),1,1)
+                    new_block = Block(val,(60, 40, 120, 80),2,1)
                     blocks_list.append(new_block)
                         
             elif event.button == 1:                
@@ -348,12 +364,6 @@ while running:
                 b_sel = [x for x in blocks_list if x.selected == True]
                 if len(b_sel) == 0:
                     enable_line_selection = True
-
-            elif event.button == 4:
-                print("Ruedita arriba")
-
-            elif event.button == 5:
-                print("Ruedita abajo")
                         
         elif event.type == pygame.MOUSEBUTTONUP:
             for b_elem in blocks_list:
@@ -391,13 +401,35 @@ while running:
                     l_del = [x for x in line_list if x.selected == True]
                     line_id = get_id_back(line_id,l_del)
                     line_list = [x for x in line_list if x.selected == False]
+                    
+        ##########################################################
+            elif editable_text_toggle == True:
+                #def key_data(event.key,b_elem)
+                if event.key == pygame.K_BACKSPACE:
+                    if len(text_edi)>0:
+                        text_edi = text_edi[:-1]
+                elif event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER:
+                    editable_text_toggle = False
+                elif pygame.K_0 <= event.key <= pygame.K_9:
+                    text_edi += event.unicode
+                img_edi = font.render(text_edi, True, BLACK)
+                #num_data = int(text_edi)
+                #return img_edi,num_data
+        ##########################################################
 
     #Ctrl + click para cambiar el número de puertos de un bloque
     if pygame.key.get_mods() & pygame.KMOD_CTRL and pygame.mouse.get_pressed() == (1,0,0):
         for b_elem in blocks_list:
             if b_elem.rectf.collidepoint(event.pos):
-                b_elem.change_port_number()
-                line_list = [x for x in line_list if not check_line_port(x,b_elem)]
+                #Cambiar change_number_ports, para aceptar un pop up o
+                #algo similar para editar los valores sin tener que ir al shell#
+                text_edi = str(b_elem.in_ports)
+                text_edo = str(b_elem.out_ports)
+                img_edi = font.render(text_edi, True, BLACK)
+                img_edo = font.render(text_edo, True, BLACK)
+                editable_text_toggle = True
+                #b_elem.change_number_ports()
+                #line_list = [x for x in line_list if not check_line_port(x,b_elem)]
 
     # - updates (without draws) -
 
@@ -409,6 +441,16 @@ while running:
     pygame.draw.line(screen, BLACK, [250, 0], [250, 720], 2)
     blockScreen(blocks_list,screen)
     print_lines(line_list)
+
+    if editable_text_toggle == True:
+        screen.blit(img_i, (60, 400))
+        screen.blit(img_edi, (120, 400))
+        
+
+    ###########################################
+    #FUNCION DISPLAY SUBMENU HERE
+    ###########################################
+    
     pygame.display.flip()
 
     # - constant game speed / FPS -
