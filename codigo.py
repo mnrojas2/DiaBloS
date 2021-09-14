@@ -2,10 +2,11 @@ import sys
 import os
 import pygame
 import numpy as np
+import time
 
 # --- constants --- (UPPER_CASE names)
 
-SCREEN_WIDTH = 920
+SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
 
 BLACK = (  0,   0,   0)
@@ -246,12 +247,21 @@ def get_id_back(id_list,del_list):
         id_list = id_list[:5]
     return id_list
 
-def draw_textbox(zone, color, block):
+def draw_textbox(zone, color, block, rect, pointer):
     pygame.draw.rect(zone, color, block, width=2) 
     screen.blit(img_i, (block.left+20, block.top+20))
     screen.blit(img_edi, (block.left+20, block.top+40))
     screen.blit(img_o, (block.left+20, block.top+60))
     screen.blit(img_edo, (block.left+20, block.top+80))
+
+    if pointer == 0:
+        rect.topleft = (block.left+20, block.top+40)
+    elif pointer == 1:
+        rect.topleft = (block.left+20, block.top+80)
+    cursor = pygame.Rect(rect.topright, (3, rect.height))
+
+    if time.time() % 1 > 0.5:
+        pygame.draw.rect(zone, color, cursor)
 
 def key_data(event, text, img, pointer):
     if event.key == pygame.K_BACKSPACE:
@@ -262,7 +272,8 @@ def key_data(event, text, img, pointer):
     elif event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER:
         pointer +=1
     img = font.render(text, True, BLACK)
-    return text, img, pointer
+    rect = img.get_rect()
+    return text, img, pointer, rect
     
 # --- main ---
 
@@ -287,22 +298,6 @@ srcLine = ("",0,(0,0))      #Tupla con datos de origen para línea
 dstLine = ("",0,(0,0))      #Tupla con datos de destino para línea
 only_one = False            #Booleano para impedir que más de un bloque puede efectuar una operación
 enable_line_selection = False
-
-'''#Bloques de prueba
-cod = (520,320,120,80)
-val, block_id = assign_id(block_id)
-fig_test = Block(val,cod,2,1)
-blocks_list.append(fig_test)
-
-cod2 = (720,520,120,80)
-val, block_id = assign_id(block_id)
-gain_test = Block(val,cod2,1,2)
-blocks_list.append(gain_test)
-
-cod3 = (320,520,120,80)
-val, block_id = assign_id(block_id)
-asd_test = Block(val,cod3,1,1)
-blocks_list.append(asd_test)#'''
 
 # - test new stuff -
 
@@ -422,9 +417,9 @@ while running:
             #Cambiar el número de puertos de un bloque (parte 2)       
             elif ed_text == True:
                 if input_pointer == 0:
-                    text_edi, img_edi, input_pointer = key_data(event, text_edi, img_edi, input_pointer)
+                    text_edi, img_edi, input_pointer, rectc = key_data(event, text_edi, img_edi, input_pointer)
                 elif input_pointer == 1:
-                    text_edo, img_edo, input_pointer = key_data(event, text_edo, img_edo, input_pointer)
+                    text_edo, img_edo, input_pointer, rectc = key_data(event, text_edo, img_edo, input_pointer)
                     if input_pointer == 2:
                         for b_elem in blocks_list:
                             if b_elem.name == b_text:
@@ -441,6 +436,7 @@ while running:
                 text_edo = str(b_elem.out_ports)
                 img_edi = font.render(text_edi, True, BLACK)
                 img_edo = font.render(text_edo, True, BLACK)
+                rectc = img_edi.get_rect()
                 ed_text = True
                 input_pointer = 0
                 b_text = b_elem.name
@@ -457,7 +453,7 @@ while running:
     print_lines(line_list)
 
     if ed_text == True:
-        draw_textbox(screen,BLACK,submenu_block)        
+        draw_textbox(screen,BLACK,submenu_block,rectc,input_pointer)
 
     ###########################################
     #FUNCION DISPLAY SUBMENU HERE
