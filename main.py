@@ -14,8 +14,11 @@ sysfont = pygame.font.get_default_font()
 font_size = 24
 
 # - objects -
-block = pygame.rect.Rect(60, 40, 120, 80)
-submenu_block = pygame.rect.Rect(20, 520, 210, 180)
+base_block_coords = (60, 40, 120, 80)
+block = pygame.rect.Rect(base_block_coords)
+
+base_submenu_block_coords = (20, 520, 210, 180)
+submenu_block = pygame.rect.Rect(base_submenu_block_coords)
 
 line_creation = 0  # Booleano (3 estados) para creación de una línea
 srcLine = ("", 0, (0, 0))  # Tupla con datos de origen para línea
@@ -42,7 +45,6 @@ running = True
 while running:
 
     # - events -
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -50,9 +52,7 @@ while running:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 3 and ed_text == False:
                 if block.collidepoint(event.pos):
-                    val = sim_init.assign_block_id()
-                    new_block = Block(val, (60, 40, 120, 80))
-                    sim_init.blocks_list.append(new_block)
+                    sim_init.add_block(block)
 
             elif event.button == 1:
                 for b_elem in sim_init.blocks_list:
@@ -68,31 +68,20 @@ while running:
                             offset_y = b_elem.top - mouse_y
 
                         elif p_col[0] == 'i':
-                            dstLine = (
-                            b_elem.name, p_col[1], b_elem.in_coords[p_col[1]])  # block name, port number, port location
-                            dst_available = sim_init.port_availability(dstLine)
-                            if dst_available == True:
+                            dstLine = (b_elem.name, p_col[1], b_elem.in_coords[p_col[1]])  # block name, port number, port location
+                            if sim_init.port_availability(dstLine) == True:
                                 if line_creation == 0:
                                     line_creation = 2
                                 elif line_creation == 1:
-                                    cords = (srcLine[2], dstLine[2])
-                                    lval = sim_init.assign_line_id()
-                                    line = Line(lval, srcLine[0], srcLine[1], cords, dstLine[0], dstLine[1],
-                                                1)  # zorder sin utilizar todavia
-                                    sim_init.line_list.append(line)
+                                    sim_init.add_line(srcLine, dstLine, 1)
                                     line_creation = 0
 
                         elif p_col[0] == 'o':
-                            srcLine = (b_elem.name, p_col[1],
-                                       b_elem.out_coords[p_col[1]])  # block name, port number, port location
+                            srcLine = (b_elem.name, p_col[1], b_elem.out_coords[p_col[1]])  # block name, port number, port location
                             if line_creation == 0:
                                 line_creation = 1
                             elif line_creation == 2:
-                                cords = (srcLine[2], dstLine[2])
-                                lval = sim_init.assign_line_id()
-                                line = Line(lval, srcLine[0], srcLine[1], cords, dstLine[0], dstLine[1],
-                                            1)  # zorder sin utilizar todavia
-                                sim_init.line_list.append(line)
+                                sim_init.add_line(srcLine, dstLine, 1)
                                 line_creation = 0
                     else:
                         b_elem.selected = False
@@ -126,9 +115,9 @@ while running:
             # Eliminar un bloque y las líneas asociadas
             if ed_text == False and event.key == pygame.K_DELETE:
                 b_del = [x for x in sim_init.blocks_list if x.selected == True]
+                sim_init.remove_block(b_del)
                 if len(b_del) > 0:
                     l_del = [x for x in sim_init.line_list if check_line_block(x, b_del)]
-                    sim_init.remove_block(b_del)
                     sim_init.get_line_id_back(l_del)
                     sim_init.line_list = [x for x in sim_init.line_list if not check_line_block(x, b_del)]
                 else:
