@@ -21,19 +21,25 @@ class InitSim:
         self.blocks_list = []  # Lista de bloques existente
         self.line_list = []  # Lista de lineas existente
 
-    def assign_block_id(self):
+    def add_block(self, coords):
         # asignacion de id a partir de una lista de valores disponibles
         sid = self.block_id[0]
         self.block_id = self.block_id[1:]
         self.block_id.append(self.block_id[-1] + 1)
-        return sid
 
-    def assign_line_id(self):
+        # creación del bloque a partir del id y datos
+        new_block = Block(sid, coords)
+        self.blocks_list.append(new_block)
+
+    def add_line(self, srcData, dstData, zorder):
         # asignacion de id a partir de una lista de valores disponibles
         sid = self.line_id[0]
         self.line_id = self.line_id[1:]
         self.line_id.append(self.line_id[-1] + 1)
-        return sid
+
+        # creación de la línea a partir del id, y data de origen y destino para la misma
+        line = Line(sid, srcData[0], srcData[1], (srcData[2], dstData[2]), dstData[0], dstData[1], 1)  # zorder sin utilizar todavia
+        self.line_list.append(line)
 
     def remove_block(self, del_list):
         # recuperacion de un id liberado por un elemento eliminado
@@ -135,6 +141,8 @@ class Block(InitSim):
             self.height = port_height + 10
         elif port_height < self.height_base:
             self.height = self.height_base
+        elif port_height < self.height:
+            self.height = port_height + 10
 
         # Se ubican los puertos de forma simétrica en ambos lados
         if self.in_ports > 0:
@@ -253,6 +261,16 @@ class Line(InitSim):
         return self.name + ": From " + str(self.srcblock) + ", port " + str(self.srcport) + " to " + str(
             self.dstblock) + ", port " + str(self.dstport)
 
+class SubMenu(InitSim):
+    def __init__(self):
+        super().__init__()
+        self.coords = (20, 520, 210, 180)
+        # W.I.P
+
+    def draw_SubMenu(self,zone):
+        pygame.draw.rect(zone, self.BLACK, self.coords, width=2)
+        print("WIP")
+
 
 # --- functions --- (lower_case names)
 def check_line_block(line, b_delete_list):
@@ -304,7 +322,7 @@ def key_data(event, color, text, font, pointer):
             text = text[:-1]
     elif pygame.K_0 <= event.key <= pygame.K_9:
         text += event.unicode
-    elif event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER:
+    elif (event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER) and len(text)>0:
         pointer += 1
     img = font.render(text, True, color)
     rect = img.get_rect()
