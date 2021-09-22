@@ -9,9 +9,7 @@ pygame.init()
 
 screen = pygame.display.set_mode((sim_init.SCREEN_WIDTH, sim_init.SCREEN_HEIGHT))
 pygame.display.set_caption("PySimSnide")
-
-sysfont = pygame.font.get_default_font()
-font_size = 24
+sub_test = SubMenu()
 
 # - objects -
 base_block_coords = (60, 40, 120, 80)
@@ -26,17 +24,6 @@ dstLine = ("", 0, (0, 0))  # Tupla con datos de destino para línea
 only_one = False  # Booleano para impedir que más de un bloque puede efectuar una operación
 enable_line_selection = False
 
-# - test new stuff -
-
-ed_text = False
-text_size = 24
-
-text_edi = "-"
-text_edo = "-"
-font = pygame.font.SysFont(None, text_size)
-img_edi = font.render(text_edi, True, sim_init.RED)
-img_edo = font.render(text_edo, True, sim_init.RED)
-
 # - mainloop -
 
 clock = pygame.time.Clock()
@@ -50,7 +37,7 @@ while running:
             running = False
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 3 and ed_text == False:
+            if event.button == 3 and sub_test.enabled == False:#ed_text == False:
                 if block.collidepoint(event.pos):
                     sim_init.add_block(block)
 
@@ -113,7 +100,7 @@ while running:
 
         elif event.type == pygame.KEYDOWN:
             # Eliminar un bloque y las líneas asociadas
-            if ed_text == False and event.key == pygame.K_DELETE:
+            if sub_test.enabled == False and event.key == pygame.K_DELETE:
                 b_del = [x for x in sim_init.blocks_list if x.selected == True]
                 sim_init.remove_block(b_del)
                 if len(b_del) > 0:
@@ -126,33 +113,23 @@ while running:
                     sim_init.line_list = [x for x in sim_init.line_list if x.selected == False]
 
             # Cambiar el número de puertos de un bloque (parte 2)
-            elif ed_text == True:
-                if input_pointer == 0:
-                    text_edi, img_edi, input_pointer, rectc = key_data(event, sim_init.BLACK, text_edi, font,
-                                                                       input_pointer)
-                elif input_pointer == 1:
-                    text_edo, img_edo, input_pointer, rectc = key_data(event, sim_init.BLACK, text_edo, font,
-                                                                       input_pointer)
-                    if input_pointer == 2:
+            elif sub_test.enabled == True:
+                if sub_test.pointer == 0:
+                    sub_test.key_data(event)
+                elif sub_test.pointer == 1:
+                    sub_test.key_data(event)
+                    if sub_test.pointer == 2:
                         for b_elem in sim_init.blocks_list:
-                            if b_elem.name == b_text:
-                                ed_text = False
-                                input_pointer = 0
-                                b_elem.change_number_ports(int(text_edi), int(text_edo))
+                            if b_elem.name == sub_test.ref_block:
+                                b_elem.change_number_ports(int(sub_test.p1_value), int(sub_test.p2_value))
                                 sim_init.line_list = [x for x in sim_init.line_list if not check_line_port(x, b_elem)]
+                                sub_test.reset()
 
     # Ctrl + click para cambiar el número de puertos de un bloque (parte 1)
     if pygame.key.get_mods() & pygame.KMOD_CTRL and pygame.mouse.get_pressed() == (1, 0, 0):
         for b_elem in sim_init.blocks_list:
-            if b_elem.rectf.collidepoint(event.pos) and ed_text == False:
-                text_edi = str(b_elem.in_ports)
-                text_edo = str(b_elem.out_ports)
-                img_edi = font.render(text_edi, True, sim_init.BLACK)
-                img_edo = font.render(text_edo, True, sim_init.BLACK)
-                rectc = img_edi.get_rect()
-                ed_text = True
-                input_pointer = 0
-                b_text = b_elem.name
+            if b_elem.rectf.collidepoint(event.pos) and sub_test.enabled == False:
+                sub_test.initial(b_elem.name,"i/o",[str(b_elem.in_ports),str(b_elem.out_ports)])
 
     # - updates (without draws) -
 
@@ -165,12 +142,8 @@ while running:
     sim_init.blockScreen(screen)
     sim_init.print_lines(screen)
 
-    if ed_text == True:
-        draw_textbox(screen, sim_init.BLACK, font, submenu_block, img_edi, img_edo, rectc, input_pointer)
-
-    ###########################################
-    # FUNCION DISPLAY SUBMENU HERE
-    ###########################################
+    if sub_test.enabled == True:
+        sub_test.draw_SubMenu(screen)
 
     pygame.display.flip()
 
