@@ -38,7 +38,7 @@ class InitSim:
         self.line_id.append(self.line_id[-1] + 1)
 
         # creación de la línea a partir del id, y data de origen y destino para la misma
-        line = Line(sid, srcData[0], srcData[1], (srcData[2], dstData[2]), dstData[0], dstData[1], 1)  # zorder sin utilizar todavia
+        line = Line(sid, srcData[0], srcData[1], (srcData[2], dstData[2]), dstData[0], dstData[1], zorder)  # zorder sin utilizar todavia
         self.line_list.append(line)
 
     def remove_block(self, del_list):
@@ -112,9 +112,13 @@ class Block(InitSim):
                                       self.height)  # Rect que define la colisión del bloque
         self.dragging = False  # Booleano para determinar si el bloque se está moviendo
         self.selected = False  # Booleano para determinar si el bloque está seleccionado en el plano
+        self.l_width = 5  # ancho linea selected
+        self.ls_width = 5  # ancho separacion linea-bloque selected
 
         self.text = pygame.font.SysFont(None, font_size)
         self.text_display = self.text.render(self.name, True, self.RED)
+
+
 
     def draw_Block(self, place):
         # Dibuja el bloque y los puertos
@@ -182,21 +186,17 @@ class Block(InitSim):
 
     def draw_selected(self, zone):
         # Dibuja linea de selección en torno a un bloque.
-        # XHACER: ancho linea y espacio que cambiar por algo definido en clase default.
-        l_width = 5  # ancho linea
-        ls_width = 5  # ancho separacion linea-bloque
-        pygame.draw.line(zone, self.BLACK, (self.left - ls_width, self.top - ls_width),
-                         (self.left + self.width + ls_width, self.top - ls_width), l_width)
-        pygame.draw.line(zone, self.BLACK, (self.left - ls_width, self.top - ls_width),
-                         (self.left - ls_width, self.top + self.height + ls_width), l_width)
-        pygame.draw.line(zone, self.BLACK, (self.left + self.width + ls_width, self.top + self.height + ls_width),
-                         (self.left + self.width + 5, self.top - ls_width), l_width)
-        pygame.draw.line(zone, self.BLACK, (self.left + self.width + ls_width, self.top + self.height + ls_width),
-                         (self.left - ls_width, self.top + self.height + ls_width), l_width)
+        pygame.draw.line(zone, self.BLACK, (self.left - self.ls_width, self.top - self.ls_width),
+                         (self.left + self.width + self.ls_width, self.top - self.ls_width), self.l_width)
+        pygame.draw.line(zone, self.BLACK, (self.left - self.ls_width, self.top - self.ls_width),
+                         (self.left - self.ls_width, self.top + self.height + self.ls_width), self.l_width)
+        pygame.draw.line(zone, self.BLACK, (self.left + self.width + self.ls_width, self.top + self.height + self.ls_width),
+                         (self.left + self.width + 5, self.top - self.ls_width), self.l_width)
+        pygame.draw.line(zone, self.BLACK, (self.left + self.width + self.ls_width, self.top + self.height + self.ls_width),
+                         (self.left - self.ls_width, self.top + self.height + self.ls_width), self.l_width)
 
     def change_number_ports(self, port_i, port_o):
         # Cambia el número de puertos de un bloque, con inputs desde el shell.
-        # port_o = int(input("Numero puertos output: "))
         self.in_ports = port_i
         self.out_ports = port_o
         self.place_ports()
@@ -264,12 +264,81 @@ class Line(InitSim):
 class SubMenu(InitSim):
     def __init__(self):
         super().__init__()
+        self.enabled = False
         self.coords = (20, 520, 210, 180)
-        # W.I.P
+        self.font = pygame.font.SysFont(None, 24)
+        self.pointer = 0
+
+    def initial(self,b_name,n_type,values):
+        self.enabled = True
+        self.ref_block = b_name
+        self.type_b = n_type
+        self.set_prompts(values)
+
+    def reset(self):
+        self.enabled = False
+        self.ref_block = ""
+        self.type_b = ""
+        self.pointer = 0
+
+    def set_prompts(self,values):
+        if self.type_b == "i/o":
+            self.p1 = "# inputs: "
+            self.p2 = "# outputs: "
+
+        elif self.type_b == "gain":
+            self.p1 = "Gain: "
+            self.p2 = ""
+
+        elif self.type_b == "tf":
+            self.p1 = "Numerator: "
+            self.p2 = "Denominator: "
+        else:
+            self.p1 = "Value 1: "
+            self.p2 = "Value 2: "
+
+        self.p1_value = values[0]
+        self.p2_value = values[1]
+
+        self.img_p1 = self.font.render(self.p1, True, self.BLACK)
+        self.img_p2 = self.font.render(self.p2, True, self.BLACK)
+        self.img_p1v = self.font.render(self.p1_value, True, self.BLACK)
+        self.img_p2v = self.font.render(self.p2_value, True, self.BLACK)
 
     def draw_SubMenu(self,zone):
         pygame.draw.rect(zone, self.BLACK, self.coords, width=2)
-        print("WIP")
+
+        zone.blit(self.img_p1, (self.coords[0] + 20, self.coords[1] + 20))
+        zone.blit(self.img_p2, (self.coords[0] + 20, self.coords[1] + 60))
+        zone.blit(self.img_p1v, (self.coords[0] + 20, self.coords[1] + 40))
+        zone.blit(self.img_p2v, (self.coords[0] + 20, self.coords[1] + 80))
+
+    def key_data(self, event):
+        if self.pointer == 0:
+            text = self.p1_value
+        elif self.pointer == 1:
+            text = self.p2_value
+
+        if event.key == pygame.K_BACKSPACE:
+            if len(text) > 0:
+                text = text[:-1]
+        elif pygame.K_0 <= event.key <= pygame.K_9:
+            text += event.unicode
+
+        if self.pointer == 0:
+            self.p1_value = text
+            self.img_p1v = self.font.render(text, True, self.BLACK)
+            self.rect = self.img_p1v.get_rect()
+        elif self.pointer == 1:
+            self.p2_value = text
+            self.img_p2v = self.font.render(text, True, self.BLACK)
+            self.rect = self.img_p2v.get_rect()
+
+        if (event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER) and len(text) > 0:
+            self.pointer += 1
+
+    def __str__(self):
+        return self.ref_block+","+self.type_b+","+self.p1+","+self.p1_value+","+self.p2+","+self.p2_value
 
 
 # --- functions --- (lower_case names)
@@ -290,40 +359,3 @@ def check_line_port(line, block):
         return True
     else:
         return False
-
-
-def draw_textbox(zone, color, font_t, block, img_edi, img_edo, rect, pointer):
-    pygame.draw.rect(zone, color, block, width=2)
-
-    text_i = "# input ports:"
-    text_o = "# output ports:"
-    img_i = font_t.render(text_i, True, color)
-    img_o = font_t.render(text_o, True, color)
-
-    zone.blit(img_i, (block.left + 20, block.top + 20))
-    zone.blit(img_o, (block.left + 20, block.top + 60))
-
-    zone.blit(img_edi, (block.left + 20, block.top + 40))
-    zone.blit(img_edo, (block.left + 20, block.top + 80))
-
-    if pointer == 0:
-        rect.topleft = (block.left + 20, block.top + 40)
-    elif pointer == 1:
-        rect.topleft = (block.left + 20, block.top + 80)
-    cursor = pygame.Rect(rect.topright, (3, rect.height))
-
-    if time.time() % 1 > 0.5:
-        pygame.draw.rect(zone, color, cursor)
-
-
-def key_data(event, color, text, font, pointer):
-    if event.key == pygame.K_BACKSPACE:
-        if len(text) > 0:
-            text = text[:-1]
-    elif pygame.K_0 <= event.key <= pygame.K_9:
-        text += event.unicode
-    elif (event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER) and len(text)>0:
-        pointer += 1
-    img = font.render(text, True, color)
-    rect = img.get_rect()
-    return text, img, pointer, rect
