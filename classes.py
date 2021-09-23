@@ -12,23 +12,32 @@ class InitSim:
         self.RED = (255, 0, 0)
         self.GREEN = (0, 255, 0)
         self.BLUE = (0, 0, 255)
+        self.YELLOW = (255, 255, 0)
+        self.MAGENTA = (255, 0, 255)
+        self.CYAN = (0, 255, 255)
 
         self.FPS = 60
 
         self.block_id = [0, 1, 2, 3, 4]
         self.line_id = [0, 1, 2, 3, 4]
 
+        self.base_blocks = []
         self.blocks_list = []  # Lista de bloques existente
         self.line_list = []  # Lista de lineas existente
 
-    def add_block(self, coords):
+        self.line_creation = 0  # Booleano (3 estados) para creación de una línea
+        self.only_one = False  # Booleano para impedir que más de un bloque puede efectuar una operación
+        self.enable_line_selection = False
+
+    def add_block(self, block):
         # asignacion de id a partir de una lista de valores disponibles
+        ##### REHACER ESTA PARTE PARA ACEPTAR DISTINTOS NOMBRES. #####
         sid = self.block_id[0]
         self.block_id = self.block_id[1:]
         self.block_id.append(self.block_id[-1] + 1)
 
         # creación del bloque a partir del id y datos
-        new_block = Block(sid, coords)
+        new_block = Block(block.b_type, sid, block.collision, block.color, block.ins, block.outs)
         self.blocks_list.append(new_block)
 
     def add_line(self, srcData, dstData, zorder):
@@ -79,7 +88,6 @@ class InitSim:
             if b_elem.selected == True:
                 b_elem.draw_selected(zone)
             b_elem.draw_Block(zone)
-            zone.blit(b_elem.text_display, (b_elem.left + 20, b_elem.top + 5))
 
     def port_availability(self, dst_line):
         # Comprueba si es que el puerto a conectar está libre para ello
@@ -88,11 +96,28 @@ class InitSim:
                 return False
         return True
 
+    def base_blocks_init(self):
+        block = BaseBlocks("Block",(60, 40, 120, 80),self.GREEN,1,1)
+        constant = BaseBlocks("Const",(60, 130, 60, 60),self.BLUE,0,1)
+        gain = BaseBlocks("Gain",(60, 200, 60, 60),self.YELLOW,1,1)
+        integrator = BaseBlocks("Integr",(60, 270, 80, 60),self.MAGENTA,1,1)
+        sumator = BaseBlocks("Sum",(60, 340, 60, 50),self.CYAN,2,1)
+
+        self.base_blocks.append(block)
+        self.base_blocks.append(constant)
+        self.base_blocks.append(gain)
+        self.base_blocks.append(integrator)
+        self.base_blocks.append(sumator)
+
+    def draw_base_blocks(self,zone):
+        for block in self.base_blocks:
+            block.draw_baseblock(zone)
+
 
 class Block(InitSim):
-    def __init__(self, sid, coords, in_ports=1, out_ports=1, font_size=24):
+    def __init__(self, type, sid, coords, color, in_ports=1, out_ports=1, font_size=24, ):
         super().__init__()
-        self.name = "Block" + str(sid)  # Nombre del bloque
+        self.name = type + str(sid)  # Nombre del bloque
         self.sid = sid  # id del bloque
         self.left = coords[0]  # Coordenada ubicación línea izquierda
         self.top = coords[1]  # Coordenada ubicación línea superior
@@ -114,20 +139,22 @@ class Block(InitSim):
         self.selected = False  # Booleano para determinar si el bloque está seleccionado en el plano
         self.l_width = 5  # ancho linea selected
         self.ls_width = 5  # ancho separacion linea-bloque selected
+        self.block_color = color
 
         self.text = pygame.font.SysFont(None, font_size)
         self.text_display = self.text.render(self.name, True, self.RED)
 
-
-
-    def draw_Block(self, place):
+    def draw_Block(self, zone):
         # Dibuja el bloque y los puertos
-        pygame.draw.rect(place, self.GREEN, (self.left, self.top, self.width, self.height))
+        pygame.draw.rect(zone, self.block_color, (self.left, self.top, self.width, self.height))
         for port_in_location in self.in_coords:
-            pygame.draw.circle(place, self.RED, port_in_location, self.port_radius)
+            pygame.draw.circle(zone, self.RED, port_in_location, self.port_radius)
 
         for port_out_location in self.out_coords:
-            pygame.draw.circle(place, self.RED, port_out_location, self.port_radius)
+            pygame.draw.circle(zone, self.RED, port_out_location, self.port_radius)
+
+
+        zone.blit(self.text_display, (self.left + 0.5*(self.width - self.text_display.get_width()), self.top + 5))
 
     def update_Block(self):
         # Actualiza ubicación y dimensiones del bloque y número de puertos
@@ -260,6 +287,20 @@ class Line(InitSim):
         # Imprime en el shell, el nombre de la línea y su origen y destino
         return self.name + ": From " + str(self.srcblock) + ", port " + str(self.srcport) + " to " + str(
             self.dstblock) + ", port " + str(self.dstport)
+
+
+class BaseBlocks(InitSim):
+    def __init__(self,b_type,coords,color,ins=1,outs=1):
+        super().__init__()
+        self.b_type = b_type #tipo de bloque
+        self.collision = pygame.rect.Rect(coords)
+        self.color = color
+        self.ins = ins
+        self.outs = outs
+
+    def draw_baseblock(self,zone):
+        pygame.draw.rect(zone, self.color, self.collision)
+
 
 class SubMenu(InitSim):
     def __init__(self):
