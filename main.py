@@ -1,3 +1,5 @@
+import pygame
+
 from classes import *
 
 # --- constants --- (UPPER_CASE names)
@@ -7,12 +9,13 @@ sim_init = InitSim()
 
 pygame.init()
 
+# Se inicializa la ventana
 screen = pygame.display.set_mode((sim_init.SCREEN_WIDTH, sim_init.SCREEN_HEIGHT))
 pygame.display.set_caption("PySimSnide")
-submenu_class = SubMenu()
 
 # - objects -
 
+# Se inicializan los bloques base
 sim_init.base_blocks_init()
 
 # - mainloop -
@@ -24,21 +27,26 @@ while running:
 
     # - events -
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+        if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
+            # Se termina la simulación
             running = False
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 3 and submenu_class.enabled == False:
+            # Agregar bloque
+            if event.button == 3 and sim_init.holding_CTRL == False:
                 for block in sim_init.base_blocks:
                     if block.collision.collidepoint(event.pos):
-                        sim_init.add_block(block)
+                        sim_init.add_block(block, event.pos)
 
-            elif event.button == 1:
+
+            elif event.button == 1 and sim_init.holding_CTRL == False:
                 for b_elem in sim_init.blocks_list:
                     if b_elem.rectf.collidepoint(event.pos):
                         b_elem.selected = True
                         sim_init.enable_line_selection = False
                         p_col = b_elem.port_collision(event.pos)
+
+                        # Mover bloque
                         if p_col[0] == -1 and sim_init.only_one == False:
                             b_elem.dragging = True
                             sim_init.only_one = True
@@ -46,36 +54,55 @@ while running:
                             offset_x = b_elem.left - mouse_x
                             offset_y = b_elem.top - mouse_y
 
+                        # Conectar puerto entrada bloque
                         elif p_col[0] == 'i':
                             dstLine = (b_elem.name, p_col[1], b_elem.in_coords[p_col[1]])  # block name, port number, port location
                             if sim_init.port_availability(dstLine) == True:
                                 if sim_init.line_creation == 0:
                                     sim_init.line_creation = 2
                                 elif sim_init.line_creation == 1:
-                                    sim_init.add_line(srcLine, dstLine, 1)
+                                    sim_init.add_line(srcLine, dstLine)
                                     sim_init.line_creation = 0
 
+                        #Conectar puerto salida bloque
                         elif p_col[0] == 'o':
                             srcLine = (b_elem.name, p_col[1], b_elem.out_coords[p_col[1]])  # block name, port number, port location
                             if sim_init.line_creation == 0:
                                 sim_init.line_creation = 1
                             elif sim_init.line_creation == 2:
-                                sim_init.add_line(srcLine, dstLine, 1)
+                                sim_init.add_line(srcLine, dstLine)
                                 sim_init.line_creation = 0
                     else:
                         b_elem.selected = False
 
+                # Se determina si algún bloque ha sido seleccionado en la pantalla
                 b_sel = [x for x in sim_init.blocks_list if x.selected == True]
                 if len(b_sel) == 0:
                     sim_init.enable_line_selection = True
 
+            # Ctrl + click derecho para cambiar el número de puertos de un bloque
+            elif event.button == 3 and sim_init.holding_CTRL == True:
+                for b_elem in sim_init.blocks_list:
+                    if b_elem.rectf.collidepoint(event.pos):
+                        b_elem.change_port_numbers()
+                        #sim_init.line_list = [x for x in sim_init.line_list if not sim_init.check_line_port(x, b_elem)]
+                        sim_init.line_list = [x for x in sim_init.line_list if not sim_init.check_line_port(x, b_elem)]
+
+            # Ctrl + click izquierdo para cambiar los parametros de un bloque
+            elif event.button == 1 and sim_init.holding_CTRL == True:
+                for b_elem in sim_init.blocks_list:
+                    if b_elem.rectf.collidepoint(event.pos):
+                        b_elem.change_params()
+
         elif event.type == pygame.MOUSEBUTTONUP:
+            # Se deja de mover un bloque y se actualizan las lineas conectadas a sus puertos
             for b_elem in sim_init.blocks_list:
                 if event.button == 1:
                     b_elem.dragging = False
                     sim_init.only_one = False
                     sim_init.update_lines()
 
+            # Se observa si alguna linea se ha seleccionado
             if sim_init.enable_line_selection == True:
                 for line in sim_init.line_list:
                     if event.button == 1:
@@ -85,6 +112,7 @@ while running:
                             line.selected = False
 
         elif event.type == pygame.MOUSEMOTION:
+            # Se mueve un bloque si es que está seleccionado
             for b_elem in sim_init.blocks_list:
                 if b_elem.dragging == True and sim_init.only_one == True:
                     mouse_x, mouse_y = event.pos
@@ -92,51 +120,46 @@ while running:
 
         elif event.type == pygame.KEYDOWN:
             # Eliminar un bloque y las líneas asociadas
-            if submenu_class.enabled == False and event.key == pygame.K_DELETE:
-                b_del = [x for x in sim_init.blocks_list if x.selected == True]
-                sim_init.remove_block(b_del)
-                if len(b_del) > 0:
-                    l_del = [x for x in sim_init.line_list if check_line_block(x, b_del)]
-                    sim_init.get_line_id_back(l_del)
-                    sim_init.line_list = [x for x in sim_init.line_list if not check_line_block(x, b_del)]
-                else:
-                    l_del = [x for x in sim_init.line_list if x.selected == True]
-                    sim_init.get_line_id_back(l_del)
-                    sim_init.line_list = [x for x in sim_init.line_list if x.selected == False]
+            if event.key == pygame.K_DELETE:
+                sim_init.remove_block_and_lines()
 
-            # Cambiar el número de puertos de un bloque (parte 2)
-            elif submenu_class.enabled == True:
-                if submenu_class.pointer == 0:
-                    submenu_class.key_data(event)
-                elif submenu_class.pointer == 1:
-                    submenu_class.key_data(event)
-                    if submenu_class.pointer == 2:
-                        for b_elem in sim_init.blocks_list:
-                            if b_elem.name == submenu_class.ref_block:
-                                b_elem.change_number_ports(int(submenu_class.p1_value), int(submenu_class.p2_value))
-                                sim_init.line_list = [x for x in sim_init.line_list if not check_line_port(x, b_elem)]
-                                submenu_class.reset()
+            # Indicar si es que la tecla Control está presionada
+            elif event.key == pygame.K_LCTRL or event.key == pygame.K_RCTRL:
+                sim_init.holding_CTRL = True
 
-    # Ctrl + click para cambiar el número de puertos de un bloque (parte 1)
-    if pygame.key.get_mods() & pygame.KMOD_CTRL and pygame.mouse.get_pressed() == (1, 0, 0):
-        for b_elem in sim_init.blocks_list:
-            if b_elem.rectf.collidepoint(event.pos) and submenu_class.enabled == False:
-                submenu_class.initial(b_elem.name,"i/o",[str(b_elem.in_ports),str(b_elem.out_ports)])
+            elif sim_init.holding_CTRL == True:
+                # Ctrl + G para guardar los bloques en un archivo
+                if event.key == pygame.K_g:
+                    sim_init.save()
+
+                # Ctrl + A para cargar los bloques desde un archivo
+                elif event.key == pygame.K_a:
+                    sim_init.open()
+
+                # Limpiar la pantalla de bloques para iniciar de nuevo
+                elif event.key == pygame.K_n:
+                    sim_init.clear_all()
+
+                # Iniciar la ejecución de datos asociados a los bloques
+                elif event.key == pygame.K_e:
+                    sim_init.execution_init()
+
+        elif event.type == pygame.KEYUP:
+            # Indicar que la tecla Control se dejó de presionar
+            if event.key == pygame.K_LCTRL or event.key == pygame.K_RCTRL:
+                sim_init.holding_CTRL = False
 
     # - updates (without draws) -
 
-    # empty
-
     # - draws (without updates) -
-    screen.fill(sim_init.WHITE)
-    pygame.draw.line(screen, sim_init.BLACK, [250, 0], [250, 720], 2)
+    screen.fill(sim_init.colors['white'])
 
-    sim_init.draw_base_blocks(screen)
-    sim_init.blockScreen(screen)
-    sim_init.print_lines(screen)
+    sim_init.draw_base_blocks(screen)           # Se dibujan los bloques base
+    sim_init.blockScreen(screen)                # Se dibujan los bloques de ejecución
+    sim_init.print_lines(screen)                # Se dibujan las lineas
 
-    if submenu_class.enabled == True:
-        submenu_class.draw_SubMenu(screen)
+    if sim_init.run_initialized == True:        # Si es que ya se corrió la primera iteración, iniciar el loop.
+        sim_init.execution_loop()
 
     pygame.display.flip()
 
@@ -146,3 +169,5 @@ while running:
 # - end -
 
 pygame.quit()
+
+print("Sim done =D")
