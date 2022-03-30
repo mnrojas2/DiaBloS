@@ -1586,7 +1586,7 @@ class Functions_call:
             labels = params['str_name'].replace(' ','').split(',')
             if len(labels) < params['vec_dim']:
                 for i in range(params['vec_dim'] - len(labels)):
-                    labels.append('arr' + str(i))
+                    labels.append(params['_name_'] + '-' + str(params['vec_dim'] + i - 1))
             elif len(labels) > params['vec_dim']:
                 labels = labels[:params['vec_dim']]
             if len(labels) == params['vec_dim'] == 1:
@@ -1616,7 +1616,7 @@ class Functions_call:
             labels = params['labels'].replace(' ','').split(',')
             if len(labels) < params['vec_dim']:
                 for i in range(params['vec_dim'] - len(labels)):
-                    labels.append('arr' + str(i))
+                    labels.append(params['_name_'] + '-' + str(params['vec_dim'] + i - 1))
             elif len(labels) > params['vec_dim']:
                 labels = labels[:params['vec_dim']]
             if len(labels) == params['vec_dim'] == 1:
