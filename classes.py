@@ -193,10 +193,6 @@ class InitSim:
                                    {'inputs': 2, 'outputs': 1, 'run_ord': 2, 'io_edit': 'input'}, {},
                                    'green', (70, 50))
 
-        terminator = BaseBlocks("Term", 'terminator',
-                                {'inputs': 1, 'outputs': 0, 'run_ord': 3, 'io_edit': False}, {},
-                                'red', (60, 60))
-
         sine = BaseBlocks("Sine", 'sine',
                           {'inputs': 0, 'outputs': 1, 'run_ord': 0, 'io_edit': False}, {'amplitude': 1.0, 'omega': 1.0, 'init_angle': 0},
                           'purple', (60, 60))
@@ -213,10 +209,6 @@ class InitSim:
                            {'inputs': 0, 'outputs': 1, 'run_ord': 0, 'io_edit': False}, {'sigma': 1, 'mu': 0},
                            (100,175,50), (60, 60))
 
-        scope = BaseBlocks("Scope", 'scope',
-                           {'inputs': 1, 'outputs': 0, 'run_ord': 3, 'io_edit': 'input'}, {},
-                           (220,20,60), (60, 60))
-
         testmo = BaseBlocks("TestMO", "test_MO",
                             {'inputs': 0, 'outputs': 2, 'run_ord': 0, 'io_edit': False}, {},
                             (0, 20, 60), (60, 60))
@@ -229,11 +221,19 @@ class InitSim:
                             {'inputs': 1, 'outputs': 2, 'run_ord': 2, 'io_edit': 'output'}, {'output_shape': 2.0},
                             (102, 30, 153), (60, 60))
 
-        exporter = BaseBlocks("Export", "export",
-                            {'inputs': 1, 'outputs': 0, 'run_ord': 3, 'io_edit': 'input'}, {'vector_name': 'default'},
+        terminator = BaseBlocks("Term", 'terminator',
+                                {'inputs': 1, 'outputs': 0, 'run_ord': 3, 'io_edit': False}, {},
+                                'red', (60, 60))
+
+        scope = BaseBlocks("Scope", 'scope',
+                           {'inputs': 1, 'outputs': 0, 'run_ord': 3, 'io_edit': False}, {'labels': 'Line0', '_init_start_': True},
+                           (220, 20, 60), (60, 60))
+
+        export = BaseBlocks("Export", "export",
+                            {'inputs': 1, 'outputs': 0, 'run_ord': 3, 'io_edit': False}, {'str_name': 'default', '_init_start_': True},
                             (255,160,0), (70, 60))
 
-        self.base_blocks = [step,sine,ramp,noise,integrator,gain,exponential,block,sumator,dotproduct,terminator,scope,exporter,mux,demux,testmo]
+        self.base_blocks = [step,sine,ramp,noise,integrator,gain,exponential,block,sumator,dotproduct,mux,demux,testmo,terminator,scope,export]
 
     def draw_base_blocks(self,zone):
         # Dibuja los bloques del menú y la línea separadora
@@ -268,10 +268,10 @@ class InitSim:
 
         file = filedialog.asksaveasfilename(initialfile=self.filename, filetypes=[('Text Files', '*.txt'),("All files", "*.*")])
 
+        if file == '':
+            return 1
         if file[-4:] != '.txt':
             file += '.txt'
-        if file == '':
-            return
 
         # Datos de InitSim
         init_dict = {
@@ -453,6 +453,10 @@ class InitSim:
             self.run_initialized = False
             return
 
+        # Obligar a guardar antes de ejecutar (para no perder el diagrama)
+        if self.save() == 1:
+            return
+
         # Actualización de módulos importados (funciones externas)
         for block in self.blocks_list:
             missing_file_flag = block.reload_external_data()
@@ -471,8 +475,8 @@ class InitSim:
 
         print("*****EXECUTION*****")
 
-        self.plotterms = {}
-        self.exportterms = {}
+        #self.plotterms = {}
+        #self.exportterms = {}
 
         # Comprobar la existencia de loops algebraicos (pt1)
         check_loop = self.count_computed_global_list()
@@ -483,6 +487,7 @@ class InitSim:
 
         for block in self.blocks_list:
             children = {}
+            out_value = {}
             if block.run_ord == 0:
                 # Se ejecuta la función (se diferencia entre función interna y externa primero)
                 if block.external == True:
@@ -504,7 +509,7 @@ class InitSim:
 
             if 'E' in out_value.keys() and out_value['E'] == True:
                 self.run_initialized = False            # Termina la ejecución de la simulación
-                self.reset_integrators()                # Resetea la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
+                self.reset_memblocks()                  # Resetea la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
                 print("*****EXECUTION STOPPED*****")
                 return
 
@@ -531,7 +536,7 @@ class InitSim:
                     # Se comprueba que la función no haya entregado error:
                     if 'E' in out_value.keys() and out_value['E'] == True:
                         self.run_initialized = False    # Termina la ejecución de la simulación
-                        self.reset_integrators()        # Resetea la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
+                        self.reset_memblocks()        # Resetea la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
                         print("*****EXECUTION STOPPED*****")
                         return
 
@@ -550,12 +555,12 @@ class InitSim:
                                     mblock.input_queue[tuple_child['dstport']] = out_value[tuple_child['srcport']]
                                     mblock.data_recieved += 1
                                     block.data_sent += 1
-                    elif block.run_ord == 3:
+                    '''elif block.run_ord == 3:
                         # Se termina esta rama
                         if 'Scope' in block.name:
                             self.plotterms[block.name] = np.array([out_value[0]])
                         elif 'Export' in block.name:
-                            self.exportterms[block.name] = np.array([out_value[0]])
+                            self.exportterms[block.name] = np.array([out_value[0]])#'''
 
             # Se compara el numero de bloques ejecutados de la etapa anterior. Si es cero, hay un loop algebraico
             if self.count_computed_global_list() == check_loop:
@@ -578,8 +583,8 @@ class InitSim:
 
         # Después de inicializar, esta función es la que constantemente se repite en loop
         self.reset_execution_data()                                 # Se resetean los valores de ejecución cambiados en la etapa anterior
-        #self.time_step += self.sim_dt                               # Se avanza sim_dt en la linea de tiempo de la ejecución
-        #self.timeline = np.append(self.timeline, self.time_step)  # Se agrega este nuevo valor de tiempo a la escala de tiempo
+        #self.time_step += self.sim_dt                              # Se avanza sim_dt en la linea de tiempo de la ejecución
+        #self.timeline = np.append(self.timeline, self.time_step)   # Se agrega este nuevo valor de tiempo a la escala de tiempo
 
         # Avance de tiempo con Runge-kutta 45
         # 0.5 -> 2*self.rk45_ints | 1.0 -> 1+self.rk45_ints
@@ -608,9 +613,6 @@ class InitSim:
                     if block.name != self.rk45_ints[self.rk_counter] and self.rk45_ints[self.rk_counter] != 'all':
                         skip_loop = True
 
-                    # testeo
-                    #print(block.name, " skip?: ", skip_loop) #'''
-
                 # Se ejecuta la función para únicamente entregar el resultado en memoria (se diferencia entre función interna y externa primero)
                 if block.external == True:
                     out_value = getattr(block.file_function, block.fun_name)(self.time_step, block.input_queue, block.params, True, skip_loop)
@@ -620,7 +622,7 @@ class InitSim:
                 # Se comprueba que la función no haya entregado error:
                 if 'E' in out_value.keys() and out_value['E'] == True:
                     self.run_initialized = False    # Termina la ejecución de la simulación
-                    self.reset_integrators()        # Resetea la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
+                    self.reset_memblocks()        # Resetea la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
                     print("*****EXECUTION STOPPED*****")
                     return
 
@@ -634,6 +636,10 @@ class InitSim:
                             mblock.input_queue[tuple_child['dstport']] = out_value[tuple_child['srcport']]
                             mblock.data_recieved += 1
                             block.data_sent += 1
+
+            elif block.run_ord == 3:
+                if self.rk45_len > 0 and self.rk_counter != 0:
+                    block.params['skip'] = True
 
         # Se ejecutan todos los bloques de acuerdo al orden de jerarquía definido en la primera iteración
         for hier in range(self.max_hier + 1):
@@ -649,7 +655,7 @@ class InitSim:
                     # Se comprueba que la función no haya entregado error:
                     if 'E' in out_value.keys() and out_value['E'] == True:
                         self.run_initialized = False    # Termina la ejecución de la simulación
-                        self.reset_integrators()        # Resetea la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
+                        self.reset_memblocks()          # Resetea la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
                         print("*****EXECUTION STOPPED*****")
                         return
 
@@ -668,7 +674,7 @@ class InitSim:
                                     mblock.input_queue[tuple_child['dstport']] = out_value[tuple_child['srcport']]
                                     mblock.data_recieved += 1
                                     block.data_sent += 1
-                    elif block.run_ord == 3:
+                    '''elif block.run_ord == 3:
                         # Se termina esta rama
                         if self.rk45_len == 0 or (self.rk45_len > 0 and self.rk_counter == 0):
                             if 'Scope' in block.name:
@@ -678,17 +684,15 @@ class InitSim:
                             elif 'Export' in block.name:
                                 aux_array = self.exportterms[block.name]
                                 aux_array = np.concatenate((aux_array, [out_value[0]]))
-                                self.exportterms[block.name] = aux_array
+                                self.exportterms[block.name] = aux_array#'''
             hier += 1
 
         # Se comprueba si que el tiempo total de simulación (ejecución) ha sido superado para finalizar con el loop.
         if self.time_step >= self.execution_time: # seconds
             self.run_initialized = False                        # Se finaliza el loop de ejecución
-            print(time.time() - self.execution_time_start)      # Se imprime el tiempo total tomado
 
-            ##########
             # Se grafican los datos guardados en los bloques
-            if len(self.plotterms) > 0:
+            '''if len(self.plotterms) > 0:
                 plt.figure()
                 for key in self.plotterms.keys():
                     plt.plot(self.timeline, self.plotterms[key])
@@ -706,16 +710,23 @@ class InitSim:
                             header += ',' + block.params['vector_name']
 
                 np.savetxt(self.filename[:-4]+'_exported.csv', export_mtx, delimiter=",", header=header)
-                #np.savez(self.filename[:-4]+'_exported.npy',t = self.timeline,...)
-                self.exportterms = {}
-            ##########
+                self.exportterms = {} #'''
 
-            # Resetea la inicializacion de los integradores (para que puedan ser ejecutados correctamente en la proxima simulación)
-            self.reset_integrators()
+            #Scope
+            self.plotScope()
+
+            #Export
+            self.exportData()
+
+            # Resetea la inicializacion de los bloques con ejecuciones iniciales especiales (para que puedan ser ejecutados correctamente en la proxima simulación)
+            self.reset_memblocks()
+
+            print("SIMULATION TIME:", time.time() - self.execution_time_start,'SECONDS')  # Se imprime el tiempo total tomado
 
             print("*****EXECUTION DONE*****")
 
         self.rk_counter += 1
+
 
     def children_recognition(self, block_name, children_list):
         # Compara el block_name (de blocks_list) y lo busca en children_list, si está entrega un True y una lista con diccionarios que contienen los puertos de salida y llegada para parent and child.
@@ -826,15 +837,55 @@ class InitSim:
             if block.b_type == 'Integr' and block.params['method'] == 'RK45':
                 rk_list.append(block.name)
         rk_len = len(rk_list)
-        # Se produce el vector mas largo que contiene el orden en que se ejecutarán los bloques
+        # Se produce el vector mas largo que contiene el orden concreto en que se ejecutarán los bloques
         rk_list = 3 * rk_list
         rk_list.append('all')
         return rk_list, rk_len
 
-    def reset_integrators(self):
+    def reset_memblocks(self):
+        # Reestablece todos los bloques del sistema que contengan instrucciones especiales para su primera ejecución
         for block in self.blocks_list:
-            if block.run_ord == 1:
+            if '_init_start_' in block.params.keys():
                 block.params['_init_start_'] = True
+
+    def plotScope(self):
+        # Grafica los datos obtenidos de los bloques Scope
+        scope_counter = 0
+        for block in self.blocks_list:
+            if block.b_type == 'Scope':
+                if scope_counter == 0:
+                    plt.figure()
+                plt.plot(self.timeline, block.params['vector'], label=block.params['vec_labels'])
+                scope_counter += 1
+        if scope_counter > 0:
+            plt.xlabel('Time [s]')
+            plt.legend()
+            plt.show()
+
+    def exportData(self):
+        # Reune los vectores a guardar y se exportan en formato .npz
+        vec_dict = {}
+        for block in self.blocks_list:
+            if block.b_type == 'Export':
+                labels = block.params['vec_labels']
+                vector = block.params['vector']
+                if block.params['vec_dim'] == 1:
+                    vec_dict[labels] = vector
+                elif block.params['vec_dim'] > 1:
+                    for i in range(block.params['vec_dim']):
+                        vec_dict[labels[i]] = vector[:,i]
+        np.savez(self.filename[:-4], t = self.timeline, **vec_dict)
+        print("DATA EXPORTED TO",self.filename[:-4] + '.npz')
+
+        '''# Formato a guardar: .csv
+        export_mtx = self.timeline
+        head = 't'
+        for block in self.blocks_list:
+            if block.b_type == 'Export':
+                vector = block.params['vector']
+                export_mtx = np.column_stack((export_mtx, vector))
+                head += ',' + block.params['vector_name']
+        np.savetxt(self.filename[:-4] + '_exported.csv', export_mtx, delimiter=",", header=head)#'''
 
 class Block(InitSim):
     # Clase para inicializar y mantener a los bloques
@@ -1339,6 +1390,7 @@ class Functions_call:
         elif change == False:
             return {0: np.array(params['value'])}
 
+
     def ramp(self, time, inputs, params):
         # Funcion rampa
         if params['slope'] == 0:
@@ -1348,20 +1400,24 @@ class Functions_call:
         elif params['slope'] < 0:
             return {0: np.array(np.minimum(0, params['slope'] * (time - params['delay'])))}
 
+
     def sine(self, time, inputs, params):
         # Funcion sinusoidal
         return {0: np.array(params['amplitude']*np.sin(params['omega']*time + params['init_angle']))}
+
 
     #vector
     def gain(self, time, inputs, params):
         # Funcion ganancia
         return {0: np.array(params['gain']*inputs[0])}
 
+
     #vector
     def exponential(self, time, inputs, params):
         # Funcion exponencial
 
         return {0: np.array(params['a']*np.exp(params['b']*inputs[0]))}
+
 
     def sumator(self, time, inputs, params):
         # Funcion sumador
@@ -1384,6 +1440,7 @@ class Functions_call:
                 return {'E': True}
         return {0: suma}
 
+
     def dotproduct(self, time, inputs, params):
         # Funcion producto punto
         mult = 1.0
@@ -1391,17 +1448,21 @@ class Functions_call:
             mult *= inputs[i]
         return {0: mult}
 
+
     def block(self, time, inputs, params):
         # Funcion bloque generico (No hace nada sin un archivo externo)
         return {0: np.array(inputs[0])}
+
 
     def terminator(self, time, inputs, params):
         # Funcion terminator
         return {0: np.array([0.0])}
 
+
     def noise(self, time, inputs, params):
         # Funcion noise (agrega ruido a la señal)
         return {0: np.array(params['sigma']**2*np.random.randn() + params['mu'])}
+
 
     def mux(self, time, inputs, params):
         # Funcion mux
@@ -1409,6 +1470,7 @@ class Functions_call:
         for i in range(1, len(inputs)):
             array = np.append(array, inputs[i])
         return {0: array}
+
 
     def demux(self, time, inputs, params):
         # Funcion demux
@@ -1426,20 +1488,8 @@ class Functions_call:
             outputs[i] = inputs[0][int(params['output_shape'])*i : int(params['output_shape'])*(i+1)]
         return outputs
 
+
     # bloques tipo memoria
-
-    def aux_int(self, t, x, u):
-        # Funcion auxiliar para solve_ivp
-        xd = u
-        return [xd]
-
-    '''if params['method'] == 'LSODA':
-            N = 2
-            t = np.linspace(0, params['dtime'], N)
-            output = solve_ivp(partial(self.aux_int, u=inputs[0]), (0, params['dtime']), params['mem'], 
-                                method='LSODA', t_eval=t)
-            params['mem'] = ((output.y).T)[-1, :]#'''
-
     def integrator(self, time, inputs, params, output_only=False, skip_loop=False, dtime=0.01):
         # Funcion integrador
         if params['_init_start_'] == True:
@@ -1519,18 +1569,66 @@ class Functions_call:
 
             return {0: mem_old}
 
+
     def export(self, time, inputs, params):
+        #Funcion exportar datos
+        # Para evitar guardar datos en los intervalos intermedios de RK45
+        if 'skip' in params.keys() and params['skip'] == True:
+            params['skip'] = False
+            return {0: inputs[0]}
+        # Iniciar el vector de guardado
+        if params['_init_start_'] == True:
+            aux_vector = np.array([inputs[0]])
+            try:
+                params['vec_dim'] = len(inputs[0])
+            except:
+                params['vec_dim'] = 1
+            labels = params['str_name'].replace(' ','').split(',')
+            if len(labels) < params['vec_dim']:
+                for i in range(params['vec_dim'] - len(labels)):
+                    labels.append('arr' + str(i))
+            elif len(labels) > params['vec_dim']:
+                labels = labels[:params['vec_dim']]
+            if len(labels) == params['vec_dim'] == 1:
+                labels = labels[0]
+            params['vec_labels'] = labels
+            params['_init_start_'] = False
+        else:
+            aux_vector = params['vector']
+            aux_vector = np.concatenate((aux_vector, [inputs[0]]))
+        params['vector'] = aux_vector
         return {0: inputs[0]}
+
 
     def scope(self, time, inputs, params):
+        # Funcion graficar datos (MatPlotLib)
+        # Para evitar guardar datos en los intervalos intermedios de RK45
+        if 'skip' in params.keys() and params['skip'] == True:
+            params['skip'] = False
+            return {0: inputs[0]}
+        # Iniciar el vector de guardado
+        if params['_init_start_'] == True:
+            aux_vector = np.array([inputs[0]])
+            try:
+                params['vec_dim'] = len(inputs[0])
+            except:
+                params['vec_dim'] = 1
+            labels = params['labels'].replace(' ','').split(',')
+            if len(labels) < params['vec_dim']:
+                for i in range(params['vec_dim'] - len(labels)):
+                    labels.append('arr' + str(i))
+            elif len(labels) > params['vec_dim']:
+                labels = labels[:params['vec_dim']]
+            if len(labels) == params['vec_dim'] == 1:
+                labels = labels[0]
+            params['vec_labels'] = labels
+            params['_init_start_'] = False
+        else:
+            aux_vector = params['vector']
+            aux_vector = np.concatenate((aux_vector, [inputs[0]]))
+        params['vector'] = aux_vector
         return {0: inputs[0]}
 
-        #incluir un getattr desde la clase principal?
-        #crear una nueva clase para manipular los scope
-
-    # lista global con todos los fig
-    # inicializacion especial en la primera parte (tal como integrator)
-    # Se actualiza dentro, no fuera
 
     # bloques con multiples salidas
     def test_MO(self, time, inputs, params):
