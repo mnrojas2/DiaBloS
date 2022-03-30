@@ -329,6 +329,8 @@ class InitSim:
         with open(file, 'w') as fp:
             json.dump(main_dict, fp, indent=4)
 
+        self.filename = file
+
         root.destroy()
         print("SAVED AS",file)
 
