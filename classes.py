@@ -1,15 +1,16 @@
-import pygame
-import numpy as np
-import time
-import json
-import tkinter as tk
-import importlib
+import pygame                           # LGPL
+import numpy as np                      # Liberal BSD
+import time                             # PSF
+import json                             # PSF
+import tkinter as tk                    # BSD/PSF
+import importlib                        # PSF
+from tqdm import tqdm                   # MPLv2.0 MIT
 from tkinter import ttk
 from tkinter import filedialog
-from matplotlib import pyplot as plt
-from scipy.integrate import solve_ivp
-from functools import partial
-import os
+from matplotlib import pyplot as plt    # BSD
+from scipy.integrate import solve_ivp   # BSD-3-Clause License
+from functools import partial           # PSF
+import os                               # PSF
 
 class InitSim:
     def __init__(self): #Clase que incluye todas las variables y funciones necesarias para la simulación
@@ -226,7 +227,7 @@ class InitSim:
                                 'red', (60, 60))
 
         scope = BaseBlocks("Scope", 'scope',
-                           {'inputs': 1, 'outputs': 0, 'run_ord': 3, 'io_edit': False}, {'labels': 'Line0', '_init_start_': True},
+                           {'inputs': 1, 'outputs': 0, 'run_ord': 3, 'io_edit': False}, {'labels': 'default', '_init_start_': True},
                            (220, 20, 60), (60, 60))
 
         export = BaseBlocks("Export", "export",
@@ -278,7 +279,6 @@ class InitSim:
             "wind_width": self.SCREEN_WIDTH,
             "wind_height": self.SCREEN_HEIGHT,
             "fps": self.FPS,
-            "line_creation": self.line_creation,
             "only_one": self.only_one,
             "enable_line_sel": self.enable_line_selection,
             "sim_time": self.sim_time,
@@ -339,7 +339,7 @@ class InitSim:
         root = tk.Tk()
         root.withdraw()
 
-        file = filedialog.askopenfilename(initialfile=self.filename, filetypes=[('Text Files', '*.txt'),("All files", "*.*")])
+        file = filedialog.askopenfilename(filetypes=[('Text Files', '*.txt'),("All files", "*.*")])
         if file == '':  # asksaveasfilename return `None` if dialog closed with "cancel".
             return
         root.destroy()
@@ -366,7 +366,7 @@ class InitSim:
         self.SCREEN_WIDTH = data['wind_width']
         self.SCREEN_HEIGHT = data['wind_height']
         self.FPS = data['fps']
-        self.line_creation = data['line_creation']
+        self.line_creation = 0
         self.only_one = data['only_one']
         self.enable_line_selection = data['enable_line_sel']
         self.sim_time = data['sim_time']
@@ -476,9 +476,8 @@ class InitSim:
         self.execution_time_start = time.time()
 
         print("*****EXECUTION*****")
-
-        #self.plotterms = {}
-        #self.exportterms = {}
+        # Inicialización de la barra de progreso
+        self.pbar = tqdm(desc='SIMULATION PROGRESS', total=int(self.execution_time/self.sim_dt), unit=' itr')
 
         # Comprobar la existencia de loops algebraicos (pt1)
         check_loop = self.count_computed_global_list()
@@ -557,12 +556,6 @@ class InitSim:
                                     mblock.input_queue[tuple_child['dstport']] = out_value[tuple_child['srcport']]
                                     mblock.data_recieved += 1
                                     block.data_sent += 1
-                    '''elif block.run_ord == 3:
-                        # Se termina esta rama
-                        if 'Scope' in block.name:
-                            self.plotterms[block.name] = np.array([out_value[0]])
-                        elif 'Export' in block.name:
-                            self.exportterms[block.name] = np.array([out_value[0]])#'''
 
             # Se compara el numero de bloques ejecutados de la etapa anterior. Si es cero, hay un loop algebraico
             if self.count_computed_global_list() == check_loop:
@@ -576,6 +569,7 @@ class InitSim:
 
         self.max_hier = self.get_max_hierarchy()  # Se determina el valor más alto de jerarquía para las próximas iteraciones
         self.run_initialized = True
+        self.rk_counter += 1
         # actualizar plots
 
     def execution_loop(self):
@@ -585,31 +579,29 @@ class InitSim:
 
         # Después de inicializar, esta función es la que constantemente se repite en loop
         self.reset_execution_data()                                 # Se resetean los valores de ejecución cambiados en la etapa anterior
-        #self.time_step += self.sim_dt                              # Se avanza sim_dt en la linea de tiempo de la ejecución
-        #self.timeline = np.append(self.timeline, self.time_step)   # Se agrega este nuevo valor de tiempo a la escala de tiempo
 
         # Avance de tiempo con Runge-kutta 45
         # 0.5 -> 2*self.rk45_ints | 1.0 -> 1+self.rk45_ints
         if self.rk45_len > 0:
             self.rk_counter %= 3*self.rk45_len +1
             if self.rk_counter == 0 or self.rk_counter == 2*self.rk45_len:
-                #print("advancing half step")
+                # Avance medio paso normal
                 self.time_step += self.sim_dt/2
+                self.pbar.update(1/2)                                 # Se actualiza la barra de progreso
                 if self.rk_counter == 0:
                     self.timeline = np.append(self.timeline, self.time_step)
-            #else:
-            #    print("skipping step")
 
         # Avance de tiempo normal
         elif self.rk45_len == 0:
-            #print("advancing full step")
-            self.time_step += self.sim_dt
+            # Avance paso completo
+            self.time_step += self.sim_dt                             # Se avanza sim_dt en la linea de tiempo de la ejecución
+            self.pbar.update(1)                                       # Se actualiza la barra de progreso
             self.timeline = np.append(self.timeline, self.time_step)  # Se agrega este nuevo valor de tiempo a la escala de tiempo
 
         # Se ejecutan primero los bloques con memoria para obtener sólo el valor producido en la etapa anterior (no ejecutar la función primaria de estas)
         for block in self.blocks_list:
             if block.run_ord == 1:
-                # Runge-kutta 45
+                # Se definen el o los bloques que se ejecutaran en el instante actual
                 skip_loop = False
                 if self.rk45_len > 0:
                     if block.name != self.rk45_ints[self.rk_counter] and self.rk45_ints[self.rk_counter] != 'all':
@@ -639,6 +631,7 @@ class InitSim:
                             mblock.data_recieved += 1
                             block.data_sent += 1
 
+            # Para los bloques terminales que guardan datos, se les indica si se está en un instante de tiempo normal o intermedio
             elif block.run_ord == 3:
                 if self.rk45_len > 0 and self.rk_counter != 0:
                     block.params['skip'] = True
@@ -676,43 +669,13 @@ class InitSim:
                                     mblock.input_queue[tuple_child['dstport']] = out_value[tuple_child['srcport']]
                                     mblock.data_recieved += 1
                                     block.data_sent += 1
-                    '''elif block.run_ord == 3:
-                        # Se termina esta rama
-                        if self.rk45_len == 0 or (self.rk45_len > 0 and self.rk_counter == 0):
-                            if 'Scope' in block.name:
-                                aux_array = self.plotterms[block.name]
-                                aux_array = np.concatenate((aux_array, [out_value[0]]))
-                                self.plotterms[block.name] = aux_array
-                            elif 'Export' in block.name:
-                                aux_array = self.exportterms[block.name]
-                                aux_array = np.concatenate((aux_array, [out_value[0]]))
-                                self.exportterms[block.name] = aux_array#'''
             hier += 1
 
         # Se comprueba si que el tiempo total de simulación (ejecución) ha sido superado para finalizar con el loop.
         if self.time_step >= self.execution_time: # seconds
             self.run_initialized = False                        # Se finaliza el loop de ejecución
-
-            # Se grafican los datos guardados en los bloques
-            '''if len(self.plotterms) > 0:
-                plt.figure()
-                for key in self.plotterms.keys():
-                    plt.plot(self.timeline, self.plotterms[key])
-                plt.show()
-                self.plotterms = {}
-
-            if len(self.exportterms) > 0:
-                export_mtx = self.timeline
-                header = 't'
-
-                for key in self.exportterms.keys():
-                    export_mtx = np.column_stack((export_mtx, self.exportterms[key]))
-                    for block in self.blocks_list:
-                        if block.name == key:
-                            header += ',' + block.params['vector_name']
-
-                np.savetxt(self.filename[:-4]+'_exported.csv', export_mtx, delimiter=",", header=header)
-                self.exportterms = {} #'''
+            self.pbar.close()                                   # Se finaliza la barra de progreso
+            print("SIMULATION TIME:", round(time.time() - self.execution_time_start, 5), 'SECONDS')  # Se imprime el tiempo total tomado
 
             #Scope
             self.plotScope()
@@ -722,9 +685,6 @@ class InitSim:
 
             # Resetea la inicializacion de los bloques con ejecuciones iniciales especiales (para que puedan ser ejecutados correctamente en la proxima simulación)
             self.reset_memblocks()
-
-            print("SIMULATION TIME:", time.time() - self.execution_time_start,'SECONDS')  # Se imprime el tiempo total tomado
-
             print("*****EXECUTION DONE*****")
 
         self.rk_counter += 1
@@ -867,8 +827,10 @@ class InitSim:
     def exportData(self):
         # Reune los vectores a guardar y se exportan en formato .npz
         vec_dict = {}
+        export_toggle = False
         for block in self.blocks_list:
             if block.b_type == 'Export':
+                export_toggle = True
                 labels = block.params['vec_labels']
                 vector = block.params['vector']
                 if block.params['vec_dim'] == 1:
@@ -876,8 +838,9 @@ class InitSim:
                 elif block.params['vec_dim'] > 1:
                     for i in range(block.params['vec_dim']):
                         vec_dict[labels[i]] = vector[:,i]
-        np.savez(self.filename[:-4], t = self.timeline, **vec_dict)
-        print("DATA EXPORTED TO",self.filename[:-4] + '.npz')
+        if export_toggle == True:
+            np.savez(self.filename[:-4], t = self.timeline, **vec_dict)
+            print("DATA EXPORTED TO",self.filename[:-4] + '.npz')
 
         '''# Formato a guardar: .csv
         export_mtx = self.timeline
@@ -1541,7 +1504,7 @@ class Functions_call:
                 params['mem'] += 0.5*params['dtime'] * (inputs[0] + params['mem_list'][-1])
 
             # Runge-Kutta 45
-            if params['method'] == 'RK45':
+            elif params['method'] == 'RK45':
                 K_list = params['RK45_Klist']
                 K_list[params['nb_loop']] = params['dtime'] * inputs[0]     # Calculo de K1, K2, K3 o K4
                 params['RK45_Klist'] = K_list
@@ -1585,7 +1548,11 @@ class Functions_call:
                 params['vec_dim'] = len(inputs[0])
             except:
                 params['vec_dim'] = 1
-            labels = params['str_name'].replace(' ','').split(',')
+
+            labels = params['str_name']
+            if labels == 'default':
+                labels = params['_name_'] + '-0'
+            labels = labels.replace(' ', '').split(',')
             if len(labels) < params['vec_dim']:
                 for i in range(params['vec_dim'] - len(labels)):
                     labels.append(params['_name_'] + '-' + str(params['vec_dim'] + i - 1))
@@ -1615,7 +1582,11 @@ class Functions_call:
                 params['vec_dim'] = len(inputs[0])
             except:
                 params['vec_dim'] = 1
-            labels = params['labels'].replace(' ','').split(',')
+
+            labels = params['labels']
+            if labels == 'default':
+                labels = params['_name_'] + '-0'
+            labels = labels.replace(' ','').split(',')
             if len(labels) < params['vec_dim']:
                 for i in range(params['vec_dim'] - len(labels)):
                     labels.append(params['_name_'] + '-' + str(params['vec_dim'] + i - 1))
