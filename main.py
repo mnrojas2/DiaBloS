@@ -1,13 +1,12 @@
 import pygame
-
 from classes import *
-
-# --- constants --- (UPPER_CASE names)
-sim_init = InitSim()
 
 # - init -
 
 pygame.init()
+
+# --- constants --- (UPPER_CASE names)
+sim_init = InitSim()
 
 # Se inicializa la ventana
 screen = pygame.display.set_mode((sim_init.SCREEN_WIDTH, sim_init.SCREEN_HEIGHT))
@@ -17,6 +16,13 @@ pygame.display.set_caption("PySimSnide")
 
 # Se inicializan los bloques base
 sim_init.base_blocks_init()
+sim_init.main_buttons(screen)
+
+new_b = sim_init.buttons_list[0]
+load_b = sim_init.buttons_list[1]
+save_b = sim_init.buttons_list[2]
+sim_b = sim_init.buttons_list[3]
+pp_b = sim_init.buttons_list[4]
 
 # - mainloop -
 
@@ -38,8 +44,23 @@ while running:
                     if block.collision.collidepoint(event.pos):
                         sim_init.add_block(block, event.pos)
 
-
             elif event.button == 1 and sim_init.holding_CTRL == False:
+                #####
+                if new_b.collision.collidepoint(event.pos):
+                    new_b.pressed = True
+                    #sim_init.clear_all()
+                elif load_b.collision.collidepoint(event.pos):
+                    load_b.pressed = True
+                    #sim_init.open()
+                elif save_b.collision.collidepoint(event.pos):
+                    save_b.pressed = True
+                    #sim_init.save()
+                elif sim_b.collision.collidepoint(event.pos):
+                    sim_b.pressed = True
+                    #sim_init.execution_init()
+                elif pp_b.collision.collidepoint(event.pos):
+                    pp_b.pressed = True
+                #####
                 for b_elem in sim_init.blocks_list:
                     if b_elem.rectf.collidepoint(event.pos):
                         b_elem.selected = True
@@ -85,7 +106,6 @@ while running:
                 for b_elem in sim_init.blocks_list:
                     if b_elem.rectf.collidepoint(event.pos):
                         b_elem.change_port_numbers()
-                        #sim_init.line_list = [x for x in sim_init.line_list if not sim_init.check_line_port(x, b_elem)]
                         sim_init.line_list = [x for x in sim_init.line_list if not sim_init.check_line_port(x, b_elem)]
 
             # Ctrl + click izquierdo para cambiar los parametros de un bloque
@@ -93,8 +113,31 @@ while running:
                 for b_elem in sim_init.blocks_list:
                     if b_elem.rectf.collidepoint(event.pos):
                         b_elem.change_params()
+                        b_elem.load_external_data()
 
         elif event.type == pygame.MOUSEBUTTONUP:
+            # Funciones para los botones
+            if new_b.collision.collidepoint(event.pos):
+                new_b.pressed = False
+                sim_init.clear_all()
+            elif load_b.collision.collidepoint(event.pos):
+                load_b.pressed = False
+                sim_init.open()
+            elif save_b.collision.collidepoint(event.pos):
+                save_b.pressed = False
+                sim_init.save()
+            elif sim_b.collision.collidepoint(event.pos):
+                sim_b.pressed = False
+                sim_init.execution_init()
+            elif pp_b.collision.collidepoint(event.pos):
+                if sim_init.execution_pauseplay == 'pause':
+                    sim_init.execution_pauseplay = 'play'
+                    pp_b.pressed = False
+                    print("Execution: PLAY")
+                elif sim_init.execution_pauseplay == 'play':
+                    sim_init.execution_pauseplay = 'pause'
+                    print("Execution: PAUSED")
+
             # Se deja de mover un bloque y se actualizan las lineas conectadas a sus puertos
             for b_elem in sim_init.blocks_list:
                 if event.button == 1:
@@ -116,6 +159,8 @@ while running:
             for b_elem in sim_init.blocks_list:
                 if b_elem.dragging == True and sim_init.only_one == True:
                     mouse_x, mouse_y = event.pos
+                    if b_elem.top < sim_init.button_margin:
+                        mouse_y = sim_init.button_margin - offset_y
                     b_elem.relocate_Block((mouse_x + offset_x, mouse_y + offset_y))
 
         elif event.type == pygame.KEYDOWN:
@@ -144,6 +189,10 @@ while running:
                 elif event.key == pygame.K_e:
                     sim_init.execution_init()
 
+                # Abrir la ventana de bloques
+                #elif event.key == pygame.K_r:
+                #    sim_init.display_base_blocks_menu()
+
         elif event.type == pygame.KEYUP:
             # Indicar que la tecla Control se dejó de presionar
             if event.key == pygame.K_LCTRL or event.key == pygame.K_RCTRL:
@@ -155,6 +204,7 @@ while running:
     screen.fill(sim_init.colors['white'])
 
     sim_init.draw_base_blocks(screen)           # Se dibujan los bloques base
+    sim_init.display_buttons(screen)
     sim_init.blockScreen(screen)                # Se dibujan los bloques de ejecución
     sim_init.print_lines(screen)                # Se dibujan las lineas
 
