@@ -1,0 +1,7 @@
+.idea/
+__pycache__/
+Lib/
+Scripts/
+data_rk45_test.npz
+pyvenv.cfg
+solve_ivp.py
