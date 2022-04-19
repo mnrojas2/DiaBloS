@@ -1,3 +1,7 @@
+"""
+main.py - Module to run the simulator interface
+"""
+
 import pygame
 from classes import *
 
