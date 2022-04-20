@@ -2,6 +2,8 @@
 __pycache__/
 Lib/
 Scripts/
+venv/
+docs/
 data_rk45_test.npz
 pyvenv.cfg
 solve_ivp.py
