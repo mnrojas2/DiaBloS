@@ -179,7 +179,7 @@ class InitSim:
                               'blue', (60, 60))
 
         gain = BaseBlocks("Gain", 'gain',
-                          {'inputs': 1, 'outputs': 1, 'run_ord': 2, 'io_edit': False}, {'gain': 1.0},
+                          {'inputs': 1, 'outputs': 1, 'run_ord': 2, 'io_edit': False}, {'gain': 1.0, 'mult_type': '.*'},
                           'yellow', (60, 60))
 
         integrator = BaseBlocks("Integr", 'integrator',
@@ -1374,6 +1374,13 @@ class Functions_call:
     #vector
     def gain(self, time, inputs, params):
         # Funcion ganancia
+        """
+        usar params['mult_type']
+        .*
+        K*u
+        u*K
+        K*u(vect)
+        """
         return {0: np.array(params['gain']*inputs[0])}
 
 
