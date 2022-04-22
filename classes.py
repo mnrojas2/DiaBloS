@@ -329,7 +329,7 @@ class InitSim:
         with open(file, 'w') as fp:
             json.dump(main_dict, fp, indent=4)
 
-        self.filename = file
+        self.filename = file.split('/')[-1] # Para conservar el nombre del archivo si es que se quiere guardar
 
         root.destroy()
         print("SAVED AS",file)
@@ -339,7 +339,7 @@ class InitSim:
         root = tk.Tk()
         root.withdraw()
 
-        file = filedialog.askopenfilename(filetypes=[('Text Files', '*.txt'),("All files", "*.*")])
+        file = filedialog.askopenfilename(initialfile=self.filename, filetypes=[('Text Files', '*.txt'),("All files", "*.*")])
         if file == '':  # asksaveasfilename return `None` if dialog closed with "cancel".
             return
         root.destroy()
@@ -1303,7 +1303,7 @@ class Tk_widget:
         string_shape = string
         for char in string_shape:
             if char not in "[],;":
-                string_copy = string_shape.replace(char, '')
+                string_shape = string_shape.replace(char, '')
 
         # unicamente soporte para matrices de 3 dimensiones shape = (a,b,c)
         first_dim = int(string_shape.count(']],[[') + 1)
