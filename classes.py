@@ -1374,7 +1374,7 @@ class Functions_call:
     #vector
     def gain(self, time, inputs, params):
         # Funcion ganancia
-        return {0: np.array(params['gain']*inputs[0])}
+        return {0: np.array(np.dot(params['gain'],inputs[0]))}
 
 
     #vector
