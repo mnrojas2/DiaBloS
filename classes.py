@@ -13,6 +13,9 @@ from functools import partial           # PSF
 import os                               # PSF
 
 class InitSim:
+    """
+    Class that manages the simulation interface and main functions
+    """
     def __init__(self): #Clase que incluye todas las variables y funciones necesarias para la simulación
         self.SCREEN_WIDTH = 1280
         self.SCREEN_HEIGHT = 720
@@ -190,7 +193,7 @@ class InitSim:
                              {'inputs': 2, 'outputs': 1, 'run_ord': 2, 'io_edit': 'input'}, {'sign': "++"},
                              'cyan', (70, 50))
 
-        dotproduct = BaseBlocks("DProd", 'dotproduct',
+        sigproduct = BaseBlocks("SgProd", 'sigproduct',
                                    {'inputs': 2, 'outputs': 1, 'run_ord': 2, 'io_edit': 'input'}, {},
                                    'green', (70, 50))
 
@@ -234,7 +237,7 @@ class InitSim:
                             {'inputs': 1, 'outputs': 0, 'run_ord': 3, 'io_edit': False}, {'str_name': 'default', '_init_start_': True},
                             (255,160,0), (70, 60))
 
-        self.base_blocks = [step,sine,ramp,noise,integrator,gain,exponential,block,sumator,dotproduct,mux,demux,testmo,terminator,scope,export]
+        self.base_blocks = [step,sine,ramp,noise,integrator,gain,exponential,block,sumator,sigproduct,mux,demux,testmo,terminator,scope,export]
 
     def draw_base_blocks(self,zone):
         # Dibuja los bloques del menú y la línea separadora
@@ -853,6 +856,9 @@ class InitSim:
         np.savetxt(self.filename[:-4] + '_exported.csv', export_mtx, delimiter=",", header=head)#'''
 
 class Block(InitSim):
+    """
+    Class to initialize, mantain and modify function blocks
+    """
     # Clase para inicializar y mantener a los bloques
     def __init__(self, b_type, sid, coords, color, in_ports=1, out_ports=1, run_ord=2, io_edit=True, fun_name='block', params={}, external=False):
         super().__init__()
@@ -1112,6 +1118,9 @@ class Block(InitSim):
 
 
 class Line(InitSim):
+    """
+    Class to initialize and maintain lines that connect blocks
+    """
     # Clase para la inicialización y mantención de las líneas
     def __init__(self, sid, srcblock, srcport, points, dstblock, dstport, zorder=0):
         super().__init__()
@@ -1174,6 +1183,9 @@ class Line(InitSim):
 
 
 class BaseBlocks(InitSim):
+    """
+    Class to create and show basic blocks used as a mark to generate functional blocks in the user interface
+    """
     # Produce un "boton" para generar bloques con las caracteristicas indicadas
     def __init__(self,b_type, fun_name, io_params, ex_params, b_color, coords, external=False):
         super().__init__()
@@ -1207,6 +1219,9 @@ class BaseBlocks(InitSim):
 
 
 class Button(InitSim):
+    """
+    Class to create and show buttons in the user interface
+    """
     # Produce un boton con texto
     def __init__(self, name, coords):
         super().__init__()
@@ -1248,6 +1263,9 @@ class Button(InitSim):
 
 
 class Tk_widget:
+    """
+    Class used to create popup windows for changing data, like ports and parameters.
+    """
     # Clase para poder producir los pop up windows para modificar datos
     def __init__(self, name, params):
         self.params = params
@@ -1338,9 +1356,15 @@ class Tk_widget:
 
 
 class Functions_call:
+    """
+    Class to contain all the default functions available to work with in the simulation interface
+    """
     #Funciones utilizadas durante la ejecución del sistema
 
     def step(self, time, inputs, params):
+        """
+        Step source function
+        """
         # Funcion escalón base
         if params['type'] == 'up':
             change = True if time < params['delay'] else False
@@ -1357,6 +1381,9 @@ class Functions_call:
 
 
     def ramp(self, time, inputs, params):
+        """
+        Ramp source function
+        """
         # Funcion rampa
         if params['slope'] == 0:
             return {0: 0}
@@ -1367,24 +1394,36 @@ class Functions_call:
 
 
     def sine(self, time, inputs, params):
+        """
+        Sinusoidal source function
+        """
         # Funcion sinusoidal
         return {0: np.array(params['amplitude']*np.sin(params['omega']*time + params['init_angle']))}
 
 
     #vector
     def gain(self, time, inputs, params):
+        """
+        Gain function
+        """
         # Funcion ganancia
         return {0: np.array(np.dot(params['gain'],inputs[0]))}
 
 
     #vector
     def exponential(self, time, inputs, params):
+        """
+        Exponential function
+        """
         # Funcion exponencial
 
         return {0: np.array(params['a']*np.exp(params['b']*inputs[0]))}
 
 
     def sumator(self, time, inputs, params):
+        """
+        Sumator function
+        """
         # Funcion sumador
         for i in range(len(inputs)-1):
             if inputs[i].shape != inputs[i+1].shape:
@@ -1406,7 +1445,10 @@ class Functions_call:
         return {0: suma}
 
 
-    def dotproduct(self, time, inputs, params):
+    def sigproduct(self, time, inputs, params):
+        """
+        Element-wise product between signals
+        """
         # Funcion producto punto
         mult = 1.0
         for i in range(len(inputs)):
@@ -1415,21 +1457,33 @@ class Functions_call:
 
 
     def block(self, time, inputs, params):
+        """
+        Generic block function - no actual use
+        """
         # Funcion bloque generico (No hace nada sin un archivo externo)
         return {0: np.array(inputs[0])}
 
 
     def terminator(self, time, inputs, params):
+        """
+        Signal terminator function
+        """
         # Funcion terminator
         return {0: np.array([0.0])}
 
 
     def noise(self, time, inputs, params):
+        """
+        Normal noise function
+        """
         # Funcion noise (agrega ruido a la señal)
         return {0: np.array(params['sigma']**2*np.random.randn() + params['mu'])}
 
 
     def mux(self, time, inputs, params):
+        """
+        Multiplexer function
+        """
         # Funcion mux
         array = np.array(inputs[0])
         for i in range(1, len(inputs)):
@@ -1438,6 +1492,9 @@ class Functions_call:
 
 
     def demux(self, time, inputs, params):
+        """
+        Demultiplexer function
+        """
         # Funcion demux
 
         # Primero se comprueba que las dimensiones del vector son suficientes para el demux. Entrega Error o Warning según largo.
@@ -1456,6 +1513,9 @@ class Functions_call:
 
     # bloques tipo memoria
     def integrator(self, time, inputs, params, output_only=False, skip_loop=False, dtime=0.01):
+        """
+        Integrator function
+        """
         # Funcion integrador
         if params['_init_start_'] == True:
             params['dtime'] = dtime
@@ -1536,6 +1596,9 @@ class Functions_call:
 
 
     def export(self, time, inputs, params):
+        """
+        Block to save and export block signals
+        """
         #Funcion exportar datos
         # Para evitar guardar datos en los intervalos intermedios de RK45
         if 'skip' in params.keys() and params['skip'] == True:
@@ -1570,6 +1633,9 @@ class Functions_call:
 
 
     def scope(self, time, inputs, params):
+        """
+        Function to plot block signals
+        """
         # Funcion graficar datos (MatPlotLib)
         # Para evitar guardar datos en los intervalos intermedios de RK45
         if 'skip' in params.keys() and params['skip'] == True:

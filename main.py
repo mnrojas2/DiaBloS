@@ -14,7 +14,7 @@ sim_init = InitSim()
 
 # Se inicializa la ventana
 screen = pygame.display.set_mode((sim_init.SCREEN_WIDTH, sim_init.SCREEN_HEIGHT))
-pygame.display.set_caption("PySimSnide")
+pygame.display.set_caption("PySimGraph")
 
 # - objects -
 
