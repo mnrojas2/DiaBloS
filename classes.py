@@ -52,6 +52,9 @@ class InitSim:
         self.execution_pauseplay = 'play'
 
     def main_buttons(self, zone):
+        """
+        Creates a button list with all the basic functions available
+        """
         # Crea una lista con los botones básicos para manejar la simulación
         new = Button('New', (40, 10, 100, 40))
         load = Button('Load', (160, 10, 100, 40))
@@ -64,6 +67,9 @@ class InitSim:
         self.button_margin = 80
 
     def display_buttons(self, zone):
+        """
+        Displays all the buttons on the screen
+        """
         # Dibuja los botones en la pantalla
         for button in self.buttons_list:
             button.draw_button(zone)
@@ -71,6 +77,9 @@ class InitSim:
     ##### ADD OR REMOVE BLOCKS AND LINES #####
 
     def add_block(self, block, m_pos=(0,0)):
+        """
+        Adds a block in the screen with a unique ID
+        """
         # agrega bloque primero asignando una id al mismo con base en los otros bloques presentes
         id_list = []
         sid = 0
@@ -98,6 +107,9 @@ class InitSim:
         self.blocks_list.append(new_block)
 
     def add_line(self, srcData, dstData):
+        """
+        Adds a line in the screen with a unique ID
+        """
         # agrega línea primero asignando una id dependiendo de las líneas existentes
         id_list = []
         sid = 0
@@ -118,6 +130,9 @@ class InitSim:
         self.line_list.append(line)
 
     def remove_block_and_lines(self):
+        """
+        Removes the block from the list and the lines connected with it
+        """
         # remueve el bloque de la lista, retornando también una segunda lista con los valores eliminados para su utilización en la eliminación de líneas
         b_del = [x.name for x in self.blocks_list if x.selected == True]
         self.blocks_list = [x for x in self.blocks_list if not (x.selected == True)]
@@ -128,12 +143,18 @@ class InitSim:
             self.line_list = [x for x in self.line_list if x.selected == False]
 
     def check_line_block(self, line, b_del_list):
+        """
+        Checks if there are lines left from a removed BLOCK
+        """
         # Comprueba si es que hay lineas a bloques recientemente eliminados
         if line.dstblock in b_del_list or line.srcblock in b_del_list:
             return True
         return False
 
     def check_line_port(self, line, block):
+        """
+        Checks if there are lines left from a removed PORT (of a block)
+        """
         # Comprueba si es que hay lineas a puertos recientemente eliminados
         if line.srcblock == block.name and line.srcport > block.out_ports - 1:
             return True
@@ -143,16 +164,25 @@ class InitSim:
             return False
 
     def print_lines(self, zone):
+        """
+        Draws lines connecting blocks in the screen
+        """
         # Dibuja las líneas a partir de una lista
         for line in self.line_list:
             line.draw_line(zone)
 
     def update_lines(self):
+        """
+        Updates lines according to the location of blocks if these changed place
+        """
         # Actualiza la ubicación de las líneas a partir de la ubicación de los bloques
         for line in self.line_list:
             line.update_line(self.blocks_list)
 
     def blockScreen(self, zone):
+        """
+        Draws existing blocks in the screen
+        """
         # Dibuja los bloques incluyendo al seleccionado
         for b_elem in self.blocks_list:
             if b_elem.selected == True:
@@ -160,6 +190,9 @@ class InitSim:
             b_elem.draw_Block(zone)
 
     def port_availability(self, dst_line):
+        """
+        Checks if an input port is free to get connected with a line to another port
+        """
         # Comprueba si es que el puerto a conectar está libre para ello
         for line in self.line_list:
             if line.dstblock == dst_line[0] and line.dstport == dst_line[1]:
@@ -169,6 +202,9 @@ class InitSim:
     ##### BASE BLOCKS #####
 
     def base_blocks_init(self):
+        """
+        Initializes the list of blocks available to use (base blocks)
+        """
         # Inicializa los bloques del menú, son estos los que se copian para generar los bloques y funciones.
         # Algunos datos se envían en forma de diccionarios para que se pueda observar qué es cada cosa
         # Los colores pueden definirse como strings (si es que están en self.colors) o directamente con los valores RGB en tupla.
@@ -240,6 +276,9 @@ class InitSim:
         self.base_blocks = [step,sine,ramp,noise,integrator,gain,exponential,block,sumator,sigproduct,mux,demux,testmo,terminator,scope,export]
 
     def draw_base_blocks(self,zone):
+        """
+        Draws base blocks in the screen
+        """
         # Dibuja los bloques del menú y la línea separadora
         pygame.draw.line(zone, self.colors['black'], [200, 60], [200, 710], 2)
         for i in range(len(self.base_blocks)):
@@ -266,6 +305,9 @@ class InitSim:
     ##### LOADING AND SAVING #####
 
     def save(self):
+        """
+        Saves blocks, lines and other data in a .txt
+        """
         # Guarda los datos en diccionarios, exportados a un .txt
         root = tk.Tk()
         root.withdraw()
@@ -338,6 +380,9 @@ class InitSim:
         print("SAVED AS",file)
 
     def open(self):
+        """
+        Loads blocks, lines and other data from a .txt
+        """
         # Abre el archivo .txt y carga los datos guardados para mostrarlos en pantalla
         root = tk.Tk()
         root.withdraw()
@@ -365,6 +410,9 @@ class InitSim:
         print("LOADED FROM", file)
 
     def update_sim_data(self,data):
+        """
+        Updates information related with the main class variables saved in a file to the current simulation
+        """
         # Reordena los datos de los diccionarios, para utilizarlos en las configuraciones de la simulación
         self.SCREEN_WIDTH = data['wind_width']
         self.SCREEN_HEIGHT = data['wind_height']
@@ -376,6 +424,9 @@ class InitSim:
         self.sim_dt = data['sim_dt']
 
     def update_blocks_data(self,block_data):
+        """
+        Updates information related with all the blocks saved in a file to the current simulation
+        """
         # Reordena los datos de los diccionarios, para utilizarlos creando un nuevo bloque
         block = Block(block_data['type'],
                       block_data['sid'],
@@ -395,6 +446,9 @@ class InitSim:
         self.blocks_list.append(block)
 
     def update_lines_data(self,line_data):
+        """
+        Updates information related with all the lines saved in a file to the current simulation
+        """
         # Reordena los datos de los diccionarios, para utilizarlos creando una nueva línea
         line = Line(line_data['sid'],
                     line_data['srcblock'],
@@ -408,6 +462,9 @@ class InitSim:
         self.line_list.append(line)
 
     def clear_all(self):
+        """
+        Cleans the screen from all blocks, lines and some main variables.
+        """
         # Elimina todos los bloques, lineas y variables, haciendo que la interfaz vuelva a quedar en el estado inicial.
         self.blocks_list = []
         self.line_list = []
@@ -418,6 +475,9 @@ class InitSim:
     ##### DIAGRAM EXECUTION #####
 
     def execution_init_time(self):
+        """
+        Creates a pop-up to ask for execution time and sampling time
+        """
         # Por medio de un popup window, determina el tiempo a simular y el muestreo de este para los datos (ejecutar).
         master = tk.Tk()
         master.title('Simulate')
@@ -446,6 +506,9 @@ class InitSim:
             return -1
 
     def execution_init(self):
+        """
+        Initializes the graph execution
+        """
         # Inicializa los parametros y bloques para la simulación del sistema, además de hacer la primera iteración de calculo
         self.execution_fun = Functions_call()
         self.time_step = 0
@@ -576,6 +639,9 @@ class InitSim:
         # actualizar plots
 
     def execution_loop(self):
+        """
+        Continues with the execution sequence in loop until time runs out or an special event.
+        """
         # Si el boton de play-pausa está en pausa, la simulación no corre hasta cambiar su estado
         if self.execution_pauseplay == 'pause':
             return
@@ -694,6 +760,9 @@ class InitSim:
 
 
     def children_recognition(self, block_name, children_list):
+        """
+        For a block, checks all the blocks that are connected to its outputs and sends a list with them.
+        """
         # Compara el block_name (de blocks_list) y lo busca en children_list, si está entrega un True y una lista con diccionarios que contienen los puertos de salida y llegada para parent and child.
         child_ports = []
         for child in children_list:
@@ -704,6 +773,9 @@ class InitSim:
         return True, child_ports
 
     def update_global_list(self, block_name, h_value, h_assign=False):
+        """
+        Updates the global execution list
+        """
         # Actualiza la lista global que controla los loops en la ejecución
         # h_assign se utiliza para asignar el grado de jerarquía unicamente en la primera iteración
         for elem in self.global_computed_list:
@@ -713,6 +785,9 @@ class InitSim:
                 elem['computed_data'] = True
 
     def check_global_list(self):
+        """
+        Checks if there are no blocks of a graph left unexecuted
+        """
         # Comprueba que no queden bloques sin ejecutar en la simulación
         for elem in self.global_computed_list:
             if elem['computed_data'] == False:
@@ -720,10 +795,16 @@ class InitSim:
         return True
 
     def count_computed_global_list(self):
+        """
+        Counts the number of already computed blocks of a graph
+        """
         # Cuenta el número de bloques ya ejecutados durante la simulación
         return len([x for x in self.global_computed_list if x['computed_data'] == True])
 
     def reset_execution_data(self):
+        """
+        Resets the execution state for all the blocks of a graph
+        """
         # Devuelve al estado inicial varios parametros tanto de los bloques, con de la lista global que controla los loops de ejecución
         for i in range(len(self.blocks_list)):
             self.global_computed_list[i]['computed_data'] = False
@@ -734,6 +815,9 @@ class InitSim:
             self.blocks_list[i].hierarchy = self.global_computed_list[i]['hierarchy']
 
     def get_max_hierarchy(self):
+        """
+        Finds in the global execution list the max value in hierarchy
+        """
         # Busca el grado de jerarquía más alto (o bajo?) para determinar el número de forloop necesario para correr el codigo
         maxValue = 0
         for elem in self.global_computed_list:
@@ -742,6 +826,9 @@ class InitSim:
         return maxValue
 
     def get_outputs(self, block_name):
+        """
+        Finds all the blocks that need a "block_name" result as input
+        """
         # A partir de las conexiones de las líneas entre puertos, busca cuales son los que necesitan a "block_name de input"
         # retorna una lista de diccionarios con los puertos de salida para block_name, como los bloques y puertos de llegada
         neighs = []
@@ -751,6 +838,9 @@ class InitSim:
         return neighs
 
     def get_neighbors(self, block_name):
+        """
+        Finds all the connected blocks to "block_name"
+        """
         # A partir de las conexiones de las líneas entre puertos, busca cuales son los que tienen a "block_name" de output o input
         # retorna una lista de bloques
         n_inputs = []
@@ -763,6 +853,9 @@ class InitSim:
         return n_inputs, n_outputs
 
     def check_diagram_integrity(self):
+        """
+        Checks if the graph diagram doesn't have blocks with ports unconnected before the simulation execution
+        """
         # Comprueba que el diagrama no tiene puertos sin conectar antes de ejecutar la simulación
         print("*****Checking diagram integrity*****")
         error_trigger = False
@@ -796,6 +889,9 @@ class InitSim:
         return 0
 
     def count_rk45_ints(self):
+        """
+        Checks all integrators and counts the ones that use 'RK45' as integration method
+        """
         # Produce una lista con los integradores que utilizan Runge-Kutta 45 como método de integración
         rk_list = []
         for block in self.blocks_list:
@@ -808,12 +904,18 @@ class InitSim:
         return rk_list, rk_len
 
     def reset_memblocks(self):
+        """
+        Resets the "_init_start_" parameter to all blocks
+        """
         # Reestablece todos los bloques del sistema que contengan instrucciones especiales para su primera ejecución
         for block in self.blocks_list:
             if '_init_start_' in block.params.keys():
                 block.params['_init_start_'] = True
 
     def plotScope(self):
+        """
+        Plots the data saved in Scope blocks
+        """
         # Grafica los datos obtenidos de los bloques Scope
         scope_counter = 0
         for block in self.blocks_list:
@@ -828,6 +930,9 @@ class InitSim:
             plt.show()
 
     def exportData(self):
+        """
+        Exports the data saved in Export blocks
+        """
         # Reune los vectores a guardar y se exportan en formato .npz
         vec_dict = {}
         export_toggle = False
@@ -843,7 +948,7 @@ class InitSim:
                         vec_dict[labels[i]] = vector[:,i]
         if export_toggle == True:
             np.savez(self.filename[:-4], t = self.timeline, **vec_dict)
-            print("DATA EXPORTED TO",self.filename[:-4] + '.npz')
+            print("DATA EXPORTED TO",'saves/' + self.filename[:-4] + '.npz')
 
         '''# Formato a guardar: .csv
         export_mtx = self.timeline
@@ -854,6 +959,7 @@ class InitSim:
                 export_mtx = np.column_stack((export_mtx, vector))
                 head += ',' + block.params['vector_name']
         np.savetxt(self.filename[:-4] + '_exported.csv', export_mtx, delimiter=",", header=head)#'''
+
 
 class Block(InitSim):
     """
