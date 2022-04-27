@@ -433,7 +433,7 @@
             "type": "Integr",
             "sid": 3,
             "coords_left": 644,
-            "coords_top": 525,
+            "coords_top": 524,
             "coords_width": 80,
             "coords_height": 60,
             "coords_height_base": 60,

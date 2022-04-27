@@ -571,9 +571,9 @@ class InitSim:
             elif block.run_ord == 1:
                 # Se ejecuta la función para únicamente entregar el resultado en memoria (se diferencia entre función interna y externa primero)
                 if block.external == True:
-                    out_value = getattr(block.file_function, block.fun_name)(self.time_step, block.input_queue, block.params, True, True, self.sim_dt)
+                    out_value = getattr(block.file_function, block.fun_name)(self.time_step, block.input_queue, block.params, True, False, self.sim_dt)
                 else:
-                    out_value = getattr(self.execution_fun, block.fun_name)(self.time_step, block.input_queue, block.params, True, True, self.sim_dt)
+                    out_value = getattr(self.execution_fun, block.fun_name)(self.time_step, block.input_queue, block.params, True, False, self.sim_dt)
                 children = self.get_outputs(block.name)
 
             if 'E' in out_value.keys() and out_value['E'] == True:
@@ -942,7 +942,7 @@ class InitSim:
                     for i in range(block.params['vec_dim']):
                         vec_dict[labels[i]] = vector[:,i]
         if export_toggle == True:
-            np.savez(self.filename[:-4], t = self.timeline, **vec_dict)
+            np.savez('saves/' + self.filename[:-4], t = self.timeline, **vec_dict)
             print("DATA EXPORTED TO",'saves/' + self.filename[:-4] + '.npz')
 
         '''# Formato a guardar: .csv
@@ -1613,7 +1613,7 @@ class Functions_call:
 
 
     # bloques tipo memoria
-    def integrator(self, time, inputs, params, output_only=False, next_add_in_memory=False, dtime=0.01):
+    def integrator(self, time, inputs, params, output_only=False, next_add_in_memory=True, dtime=0.01):
         """
         Integrator function
         """
@@ -1631,15 +1631,12 @@ class Functions_call:
 
             params['add_in_memory'] = True # Para entregar valores de output_only al principio
 
-        # skip_loop: True = solo entrega el valor de params['mem'],
-        #            False = entrega params['rk_aux'] y ejecuta el siguiente loop
-
         if output_only == True:
-            if params['add_in_memory'] == True:
-                params['add_in_memory'] = next_add_in_memory # Actualizar para siguiente loop
+            old_add_in_memory = params['add_in_memory']
+            params['add_in_memory'] = next_add_in_memory  # Actualizar para siguiente loop
+            if old_add_in_memory == True:
                 return {0: params['mem']}
             else:
-                params['add_in_memory'] = next_add_in_memory # Actualizar para siguiente loop
                 return {0: params['aux']}
         else:
             # Comprueba que los vectores de llegada tengan las mismas dimensiones que el vector memoria.
