@@ -550,6 +550,7 @@ class InitSim:
 
         # Comprobar la existencia de integradores que usen Runge-Kutta 45 e inicializar contador
         self.rk45_ints, self.rk45_len = self.count_rk45_ints()
+        self.rk45_len = 1
         self.rk_counter = 0
 
         for block in self.blocks_list:
@@ -671,16 +672,19 @@ class InitSim:
         for block in self.blocks_list:
             if block.run_ord == 1:
                 # Se definen el o los bloques que se ejecutaran en el instante actual
-                skip_loop = False
-                if self.rk45_len > 0:
-                    if block.name != self.rk45_ints[self.rk_counter] and self.rk45_ints[self.rk_counter] != 'all':
-                        skip_loop = True
+                #skip_loop = False
+                #if self.rk45_len > 0:
+                #    if block.name != self.rk45_ints[self.rk_counter] and self.rk45_ints[self.rk_counter] != 'all':
+                #        skip_loop = True
+                add_in_memory = False
+                if self.rk_counter == 3:
+                    add_in_memory = True
 
                 # Se ejecuta la función para únicamente entregar el resultado en memoria (se diferencia entre función interna y externa primero)
                 if block.external == True:
-                    out_value = getattr(block.file_function, block.fun_name)(self.time_step, block.input_queue, block.params, True, skip_loop)
+                    out_value = getattr(block.file_function, block.fun_name)(self.time_step, block.input_queue, block.params, True, add_in_memory)
                 else:
-                    out_value = getattr(self.execution_fun, block.fun_name)(self.time_step, block.input_queue, block.params, True, skip_loop)
+                    out_value = getattr(self.execution_fun, block.fun_name)(self.time_step, block.input_queue, block.params, True, add_in_memory)
 
                 # Se comprueba que la función no haya entregado error:
                 if 'E' in out_value.keys() and out_value['E'] == True:
@@ -1618,7 +1622,7 @@ class Functions_call:
 
 
     # bloques tipo memoria
-    def integrator(self, time, inputs, params, output_only=False, skip_loop=False, dtime=0.01):
+    def integrator(self, time, inputs, params, output_only=False, next_add_in_memory=False, dtime=0.01):
         """
         Integrator function
         """
@@ -1634,19 +1638,23 @@ class Functions_call:
                 params['nb_loop'] = 0
                 params['RK45_Klist'] = [0, 0, 0, 0]  # K1, K2, K3, K4
 
+            params['add_in_memory'] = True
+
         # skip_loop: True = solo entrega el valor de params['mem'],
         #            False = entrega params['rk_aux'] y ejecuta el siguiente loop
 
         if output_only == True:
-            params['skip'] = skip_loop
-            if params['method'] == 'RK45' and params['nb_loop'] != 0 and params['skip'] == False:
-                return {0: params['RK_aux']}
-            return {0: params['mem']}
+            #params['add_in_memory'] = add_in_memory
+            #if params['method'] == 'RK45' and params['nb_loop'] != 0 and params['add_in_memory'] == False:
+            #    return {0: params['aux']}
+            #return {0: params['mem']}
+            if params['add_in_memory'] == True:
+                params['add_in_memory'] = next_add_in_memory # Actualizar para siguiente loop
+                return {0: params['mem']}
+            else:
+                params['add_in_memory'] = next_add_in_memory # Actualizar para siguiente loop
+                return {0: params['aux']}
         else:
-            # Si en el instante t_i el integrador no debe integrar (según rk45), no se hace nada
-            if params['skip'] == True:
-                return {0: params['mem']}#'''
-
             # Comprueba que los vectores de llegada tengan las mismas dimensiones que el vector memoria.
             if params['mem'].shape != inputs[0].shape:
                 print("ERROR: Dimension Error in initial conditions in", params['_name_'])
@@ -1659,15 +1667,24 @@ class Functions_call:
             # Se integra según método escogido
             # Forward euler
             if params['method'] == 'FWD_RECT':
-                params['mem'] += params['dtime'] * inputs[0]
+                if params['add_in_memory'] == True:
+                    params['aux'] = params['dtime'] * inputs[0]
+                else:
+                    params['aux'] = 0.5*params['dtime'] * inputs[0]
 
             # Backwards euler
             elif params['method'] == 'BWD_RECT':
-                params['mem'] += params['dtime'] * params['mem_list'][-1]
+                if params['add_in_memory'] == True:
+                    params['aux'] = params['dtime'] * params['mem_list'][-1]
+                else:
+                    params['aux'] = 0.5*params['dtime'] * params['mem_list'][-1]
 
             # Tustin
             elif params['method'] == 'TUSTIN':
-                params['mem'] += 0.5*params['dtime'] * (inputs[0] + params['mem_list'][-1])
+                if params['add_in_memory'] == True:
+                    params['aux'] = 0.5*params['dtime'] * (inputs[0] + params['mem_list'][-1])
+                else:
+                    params['aux'] = 0.5*(0.5*params['dtime'] * (inputs[0] + params['mem_list'][-1]) )
 
             # Runge-Kutta 45
             elif params['method'] == 'RK45':
@@ -1678,25 +1695,28 @@ class Functions_call:
 
                 if params['nb_loop'] == 0:
                     params['nb_loop'] += 1
-                    params['RK_aux'] = np.array(params['mem'] + 0.5 * K1)
-                    return {0: params['RK_aux']}
+                    params['aux'] = np.array(params['mem'] + 0.5 * K1)
+                    return {0: params['aux']}
                 elif params['nb_loop'] == 1:
                     params['nb_loop'] += 1
-                    params['RK_aux'] = np.array(params['mem'] + 0.5 * K2)
-                    return {0: params['RK_aux']}
+                    params['aux'] = np.array(params['mem'] + 0.5 * K2)
+                    return {0: params['aux']}
                 elif params['nb_loop'] == 2:
                     params['nb_loop'] += 1
-                    params['RK_aux'] = np.array(params['mem'] + K3)
-                    return {0: params['RK_aux']}
+                    params['aux'] = np.array(params['mem'] + K3)
+                    return {0: params['aux']}
                 elif params['nb_loop'] == 3:
                     params['nb_loop'] = 0
-                    params['mem'] += (1 / 6) * (K1 + 2 * K2 + 2 * K3 + K4)
+                    params['aux'] = (1 / 6) * (K1 + 2 * K2 + 2 * K3 + K4)
 
-            aux_list = params['mem_list']
-            aux_list.append(inputs[0])
-            if len(aux_list) > params['mem_len']: # 5 solo por probar, dependería del método de integración
-                aux_list = aux_list[-5:]
-            params['mem_list'] = aux_list
+            if params['add_in_memory'] == True:
+                params['mem'] += params['aux']
+
+                aux_list = params['mem_list']
+                aux_list.append(inputs[0])
+                if len(aux_list) > params['mem_len']: # 5 solo por probar, dependería del método de integración
+                    aux_list = aux_list[-5:]
+                params['mem_list'] = aux_list
 
             return {0: mem_old}
 
