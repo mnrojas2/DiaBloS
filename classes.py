@@ -1,5 +1,6 @@
 import pygame                           # LGPL
 import numpy as np                      # Liberal BSD
+import copy                             # PSF
 import time                             # PSF
 import json                             # PSF
 import tkinter as tk                    # BSD/PSF
@@ -103,7 +104,8 @@ class InitSim:
         if mouse_y < self.button_margin:
             mouse_y = self.button_margin
         block_collision = (mouse_x, mouse_y, block.size[0], block.size[1])
-        new_block = Block(block.b_type, sid, block_collision, block.b_color, block.ins, block.outs, block.run_ord, block.io_edit, block.fun_name, block.params, block.external)
+
+        new_block = Block(block.b_type, sid, block_collision, block.b_color, block.ins, block.outs, block.run_ord, block.io_edit, block.fun_name, copy.deepcopy(block.params), block.external)
         self.blocks_list.append(new_block)
 
     def add_line(self, srcData, dstData):
@@ -549,8 +551,7 @@ class InitSim:
         check_loop = self.count_computed_global_list()
 
         # Comprobar la existencia de integradores que usen Runge-Kutta 45 e inicializar contador
-        self.rk45_ints, self.rk45_len = self.count_rk45_ints()
-        self.rk45_len = 1
+        self.rk45_len = self.count_rk45_ints()
         self.rk_counter = 0
 
         for block in self.blocks_list:
@@ -570,9 +571,9 @@ class InitSim:
             elif block.run_ord == 1:
                 # Se ejecuta la función para únicamente entregar el resultado en memoria (se diferencia entre función interna y externa primero)
                 if block.external == True:
-                    out_value = getattr(block.file_function, block.fun_name)(self.time_step, block.input_queue, block.params, True, False, self.sim_dt)
+                    out_value = getattr(block.file_function, block.fun_name)(self.time_step, block.input_queue, block.params, True, True, self.sim_dt)
                 else:
-                    out_value = getattr(self.execution_fun, block.fun_name)(self.time_step, block.input_queue, block.params, True, False, self.sim_dt)
+                    out_value = getattr(self.execution_fun, block.fun_name)(self.time_step, block.input_queue, block.params, True, True, self.sim_dt)
                 children = self.get_outputs(block.name)
 
             if 'E' in out_value.keys() and out_value['E'] == True:
@@ -652,9 +653,9 @@ class InitSim:
 
         # Avance de tiempo con Runge-kutta 45
         # 0.5 -> 2*self.rk45_ints | 1.0 -> 1+self.rk45_ints
-        if self.rk45_len > 0:
-            self.rk_counter %= 3*self.rk45_len +1
-            if self.rk_counter == 0 or self.rk_counter == 2*self.rk45_len:
+        if self.rk45_len == True:
+            self.rk_counter %= 4
+            if self.rk_counter == 0 or self.rk_counter == 2:
                 # Avance medio paso normal
                 self.time_step += self.sim_dt/2
                 self.pbar.update(1/2)                                 # Se actualiza la barra de progreso
@@ -662,7 +663,7 @@ class InitSim:
                     self.timeline = np.append(self.timeline, self.time_step)
 
         # Avance de tiempo normal
-        elif self.rk45_len == 0:
+        elif self.rk45_len == False:
             # Avance paso completo
             self.time_step += self.sim_dt                             # Se avanza sim_dt en la linea de tiempo de la ejecución
             self.pbar.update(1)                                       # Se actualiza la barra de progreso
@@ -671,14 +672,10 @@ class InitSim:
         # Se ejecutan primero los bloques con memoria para obtener sólo el valor producido en la etapa anterior (no ejecutar la función primaria de estas)
         for block in self.blocks_list:
             if block.run_ord == 1:
-                # Se definen el o los bloques que se ejecutaran en el instante actual
-                #skip_loop = False
-                #if self.rk45_len > 0:
-                #    if block.name != self.rk45_ints[self.rk_counter] and self.rk45_ints[self.rk_counter] != 'all':
-                #        skip_loop = True
-                add_in_memory = False
-                if self.rk_counter == 3:
-                    add_in_memory = True
+                # Se define si el resultado debe acumularse en la memoria o no
+                add_in_memory = True
+                if self.rk45_len == True and self.rk_counter != 3:
+                    add_in_memory = False
 
                 # Se ejecuta la función para únicamente entregar el resultado en memoria (se diferencia entre función interna y externa primero)
                 if block.external == True:
@@ -706,7 +703,7 @@ class InitSim:
 
             # Para los bloques terminales que guardan datos, se les indica si se está en un instante de tiempo normal o intermedio
             elif block.run_ord == 3:
-                if self.rk45_len > 0 and self.rk_counter != 0:
+                if self.rk45_len == True and self.rk_counter != 0:
                     block.params['skip'] = True
 
         # Se ejecutan todos los bloques de acuerdo al orden de jerarquía definido en la primera iteración
@@ -894,18 +891,12 @@ class InitSim:
 
     def count_rk45_ints(self):
         """
-        Checks all integrators and counts the ones that use 'RK45' as integration method
+        Checks all integrators and looks if there's at least one that use 'RK45' as integration method
         """
-        # Produce una lista con los integradores que utilizan Runge-Kutta 45 como método de integración
-        rk_list = []
         for block in self.blocks_list:
             if block.b_type == 'Integr' and block.params['method'] == 'RK45':
-                rk_list.append(block.name)
-        rk_len = len(rk_list)
-        # Se produce el vector mas largo que contiene el orden concreto en que se ejecutarán los bloques
-        rk_list = 3 * rk_list
-        rk_list.append('all')
-        return rk_list, rk_len
+                return True
+        return False
 
     def reset_memblocks(self):
         """
@@ -1638,16 +1629,12 @@ class Functions_call:
                 params['nb_loop'] = 0
                 params['RK45_Klist'] = [0, 0, 0, 0]  # K1, K2, K3, K4
 
-            params['add_in_memory'] = True
+            params['add_in_memory'] = True # Para entregar valores de output_only al principio
 
         # skip_loop: True = solo entrega el valor de params['mem'],
         #            False = entrega params['rk_aux'] y ejecuta el siguiente loop
 
         if output_only == True:
-            #params['add_in_memory'] = add_in_memory
-            #if params['method'] == 'RK45' and params['nb_loop'] != 0 and params['add_in_memory'] == False:
-            #    return {0: params['aux']}
-            #return {0: params['mem']}
             if params['add_in_memory'] == True:
                 params['add_in_memory'] = next_add_in_memory # Actualizar para siguiente loop
                 return {0: params['mem']}
@@ -1668,23 +1655,26 @@ class Functions_call:
             # Forward euler
             if params['method'] == 'FWD_RECT':
                 if params['add_in_memory'] == True:
-                    params['aux'] = params['dtime'] * inputs[0]
+                    params['mem'] += params['dtime'] * inputs[0]
                 else:
-                    params['aux'] = 0.5*params['dtime'] * inputs[0]
+                    params['aux'] = np.array(params['mem'] + 0.5 * params['dtime'] * inputs[0])
+                    return {0: params['aux']}
 
             # Backwards euler
             elif params['method'] == 'BWD_RECT':
                 if params['add_in_memory'] == True:
-                    params['aux'] = params['dtime'] * params['mem_list'][-1]
+                    params['mem'] += params['dtime'] * params['mem_list'][-1]
                 else:
-                    params['aux'] = 0.5*params['dtime'] * params['mem_list'][-1]
+                    params['aux'] = np.array(params['mem'] + 0.5 * params['dtime'] * params['mem_list'][-1])
+                    return {0: params['aux']}
 
             # Tustin
             elif params['method'] == 'TUSTIN':
                 if params['add_in_memory'] == True:
-                    params['aux'] = 0.5*params['dtime'] * (inputs[0] + params['mem_list'][-1])
+                    params['mem'] += 0.5*params['dtime'] * (inputs[0] + params['mem_list'][-1])
                 else:
-                    params['aux'] = 0.5*(0.5*params['dtime'] * (inputs[0] + params['mem_list'][-1]) )
+                    params['aux'] = np.array(params['mem'] + 0.25 * params['dtime'] * (inputs[0] + params['mem_list'][-1]))
+                    return {0: params['aux']}
 
             # Runge-Kutta 45
             elif params['method'] == 'RK45':
@@ -1707,16 +1697,13 @@ class Functions_call:
                     return {0: params['aux']}
                 elif params['nb_loop'] == 3:
                     params['nb_loop'] = 0
-                    params['aux'] = (1 / 6) * (K1 + 2 * K2 + 2 * K3 + K4)
+                    params['mem'] += (1 / 6) * (K1 + 2 * K2 + 2 * K3 + K4)
 
-            if params['add_in_memory'] == True:
-                params['mem'] += params['aux']
-
-                aux_list = params['mem_list']
-                aux_list.append(inputs[0])
-                if len(aux_list) > params['mem_len']: # 5 solo por probar, dependería del método de integración
-                    aux_list = aux_list[-5:]
-                params['mem_list'] = aux_list
+            aux_list = params['mem_list']
+            aux_list.append(inputs[0])
+            if len(aux_list) > params['mem_len']: # 5 solo por probar, dependería del método de integración
+                aux_list = aux_list[-5:]
+            params['mem_list'] = aux_list
 
             return {0: mem_old}
 
