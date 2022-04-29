@@ -165,7 +165,7 @@
             "fun_name": "integrator",
             "params": {
                 "init_conds": 0.0,
-                "method": "FWD_RECT",
+                "method": "RK45",
                 "_init_start_": true
             },
             "external": false
@@ -192,7 +192,7 @@
             "fun_name": "integrator",
             "params": {
                 "init_conds": 0.0,
-                "method": "FWD_RECT",
+                "method": "RK45",
                 "_init_start_": true,
                 "_name_": "Integr2",
                 "_inputs_": 1,

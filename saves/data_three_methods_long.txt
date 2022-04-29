@@ -5,7 +5,7 @@
         "fps": 60,
         "only_one": false,
         "enable_line_sel": true,
-        "sim_time": 10.0,
+        "sim_time": 100.0,
         "sim_dt": 0.01
     },
     "blocks_data": [
@@ -94,8 +94,8 @@
         {
             "type": "Gain",
             "sid": 0,
-            "coords_left": 526,
-            "coords_top": 187,
+            "coords_left": 524,
+            "coords_top": 212,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -140,6 +140,63 @@
                 "value": 1.0,
                 "delay": 0.0,
                 "type": "up"
+            },
+            "external": false
+        },
+        {
+            "type": "Integr",
+            "sid": 1,
+            "coords_left": 469,
+            "coords_top": 338,
+            "coords_width": 80,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                255,
+                0,
+                255
+            ],
+            "run_ord": 1,
+            "io_edit": false,
+            "fun_name": "integrator",
+            "params": {
+                "init_conds": 0.0,
+                "method": "RK45",
+                "_init_start_": true
+            },
+            "external": false
+        },
+        {
+            "type": "Integr",
+            "sid": 2,
+            "coords_left": 697,
+            "coords_top": 306,
+            "coords_width": 80,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                255,
+                0,
+                255
+            ],
+            "run_ord": 1,
+            "io_edit": false,
+            "fun_name": "integrator",
+            "params": {
+                "init_conds": 0.0,
+                "method": "RK45",
+                "_init_start_": true,
+                "_name_": "Integr2",
+                "_inputs_": 1,
+                "_outputs_": 1
             },
             "external": false
         },
@@ -376,7 +433,7 @@
             "type": "Integr",
             "sid": 3,
             "coords_left": 644,
-            "coords_top": 525,
+            "coords_top": 524,
             "coords_width": 80,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -406,10 +463,94 @@
             "external": false
         },
         {
+            "type": "Export",
+            "sid": 0,
+            "coords_left": 790,
+            "coords_top": 80,
+            "coords_width": 70,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 0,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                255,
+                160,
+                0
+            ],
+            "run_ord": 3,
+            "io_edit": false,
+            "fun_name": "export",
+            "params": {
+                "str_name": "x1a,x2a",
+                "_init_start_": true
+            },
+            "external": false
+        },
+        {
+            "type": "Export",
+            "sid": 1,
+            "coords_left": 983,
+            "coords_top": 272,
+            "coords_width": 70,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 0,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                255,
+                160,
+                0
+            ],
+            "run_ord": 3,
+            "io_edit": false,
+            "fun_name": "export",
+            "params": {
+                "str_name": "x1b,x2b",
+                "_init_start_": true,
+                "_name_": "Export1",
+                "_inputs_": 1,
+                "_outputs_": 0
+            },
+            "external": false
+        },
+        {
+            "type": "Export",
+            "sid": 2,
+            "coords_left": 805,
+            "coords_top": 465,
+            "coords_width": 70,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 0,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                255,
+                160,
+                0
+            ],
+            "run_ord": 3,
+            "io_edit": false,
+            "fun_name": "export",
+            "params": {
+                "str_name": "x1c,x2c",
+                "_init_start_": true,
+                "_name_": "Export2",
+                "_inputs_": 1,
+                "_outputs_": 0
+            },
+            "external": false
+        },
+        {
             "type": "Scope",
             "sid": 0,
-            "coords_left": 789,
-            "coords_top": 113,
+            "coords_left": 791,
+            "coords_top": 169,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -434,8 +575,8 @@
         {
             "type": "Scope",
             "sid": 1,
-            "coords_left": 975,
-            "coords_top": 327,
+            "coords_left": 987,
+            "coords_top": 376,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -452,19 +593,16 @@
             "io_edit": false,
             "fun_name": "scope",
             "params": {
-                "labels": "x1b,x2b",
-                "_init_start_": true,
-                "_name_": "Scope1",
-                "_inputs_": 1,
-                "_outputs_": 0
+                "labels": "x2a,x2b",
+                "_init_start_": true
             },
             "external": false
         },
         {
             "type": "Scope",
             "sid": 2,
-            "coords_left": 793,
-            "coords_top": 521,
+            "coords_left": 809,
+            "coords_top": 585,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -482,67 +620,7 @@
             "fun_name": "scope",
             "params": {
                 "labels": "x1c,x2c",
-                "_init_start_": true,
-                "_name_": "Scope2",
-                "_inputs_": 1,
-                "_outputs_": 0
-            },
-            "external": false
-        },
-        {
-            "type": "Integr",
-            "sid": 1,
-            "coords_left": 460,
-            "coords_top": 337,
-            "coords_width": 80,
-            "coords_height": 60,
-            "coords_height_base": 60,
-            "in_ports": 1,
-            "out_ports": 1,
-            "dragging": false,
-            "selected": false,
-            "b_color": [
-                255,
-                0,
-                255
-            ],
-            "run_ord": 1,
-            "io_edit": false,
-            "fun_name": "integrator",
-            "params": {
-                "init_conds": 0.0,
-                "method": "RK45",
                 "_init_start_": true
-            },
-            "external": false
-        },
-        {
-            "type": "Integr",
-            "sid": 2,
-            "coords_left": 703,
-            "coords_top": 306,
-            "coords_width": 80,
-            "coords_height": 60,
-            "coords_height_base": 60,
-            "in_ports": 1,
-            "out_ports": 1,
-            "dragging": false,
-            "selected": false,
-            "b_color": [
-                255,
-                0,
-                255
-            ],
-            "run_ord": 1,
-            "io_edit": false,
-            "fun_name": "integrator",
-            "params": {
-                "init_conds": 0.0,
-                "method": "RK45",
-                "_init_start_": true,
-                "_name_": "Integr2",
-                "_inputs_": 1,
-                "_outputs_": 1
             },
             "external": false
         }
@@ -589,11 +667,51 @@
             "selected": false
         },
         {
+            "name": "Line5",
+            "sid": 5,
+            "srcblock": "Integr2",
+            "srcport": 0,
+            "dstblock": "Mux0",
+            "dstport": 0,
+            "zorder": 0,
+            "selected": false
+        },
+        {
             "name": "Line7",
             "sid": 7,
             "srcblock": "Step1",
             "srcport": 0,
             "dstblock": "Sum0",
+            "dstport": 0,
+            "zorder": 0,
+            "selected": false
+        },
+        {
+            "name": "Line8",
+            "sid": 8,
+            "srcblock": "Sum0",
+            "srcport": 0,
+            "dstblock": "Integr1",
+            "dstport": 0,
+            "zorder": 0,
+            "selected": false
+        },
+        {
+            "name": "Line10",
+            "sid": 10,
+            "srcblock": "Gain1",
+            "srcport": 0,
+            "dstblock": "Integr2",
+            "dstport": 0,
+            "zorder": 0,
+            "selected": false
+        },
+        {
+            "name": "Line11",
+            "sid": 11,
+            "srcblock": "Integr2",
+            "srcport": 0,
+            "dstblock": "Gain2",
             "dstport": 0,
             "zorder": 0,
             "selected": false
@@ -605,6 +723,26 @@
             "srcport": 0,
             "dstblock": "Sum0",
             "dstport": 1,
+            "zorder": 0,
+            "selected": false
+        },
+        {
+            "name": "Line9",
+            "sid": 9,
+            "srcblock": "Integr1",
+            "srcport": 0,
+            "dstblock": "Mux0",
+            "dstport": 1,
+            "zorder": 0,
+            "selected": false
+        },
+        {
+            "name": "Line13",
+            "sid": 13,
+            "srcblock": "Integr1",
+            "srcport": 0,
+            "dstblock": "Gain1",
+            "dstport": 0,
             "zorder": 0,
             "selected": false
         },
@@ -663,7 +801,7 @@
             "sid": 4,
             "srcblock": "Integr0",
             "srcport": 0,
-            "dstblock": "Scope0",
+            "dstblock": "Export0",
             "dstport": 0,
             "zorder": 0,
             "selected": false
@@ -673,7 +811,7 @@
             "sid": 6,
             "srcblock": "Mux0",
             "srcport": 0,
-            "dstblock": "Scope1",
+            "dstblock": "Export1",
             "dstport": 0,
             "zorder": 0,
             "selected": false
@@ -683,67 +821,37 @@
             "sid": 19,
             "srcblock": "Integr3",
             "srcport": 0,
+            "dstblock": "Export2",
+            "dstport": 0,
+            "zorder": 0,
+            "selected": false
+        },
+        {
+            "name": "Line20",
+            "sid": 20,
+            "srcblock": "Integr0",
+            "srcport": 0,
+            "dstblock": "Scope0",
+            "dstport": 0,
+            "zorder": 0,
+            "selected": false
+        },
+        {
+            "name": "Line21",
+            "sid": 21,
+            "srcblock": "Mux0",
+            "srcport": 0,
+            "dstblock": "Scope1",
+            "dstport": 0,
+            "zorder": 0,
+            "selected": false
+        },
+        {
+            "name": "Line22",
+            "sid": 22,
+            "srcblock": "Integr3",
+            "srcport": 0,
             "dstblock": "Scope2",
-            "dstport": 0,
-            "zorder": 0,
-            "selected": false
-        },
-        {
-            "name": "Line5",
-            "sid": 5,
-            "srcblock": "Sum0",
-            "srcport": 0,
-            "dstblock": "Integr1",
-            "dstport": 0,
-            "zorder": 0,
-            "selected": false
-        },
-        {
-            "name": "Line8",
-            "sid": 8,
-            "srcblock": "Integr1",
-            "srcport": 0,
-            "dstblock": "Mux0",
-            "dstport": 1,
-            "zorder": 0,
-            "selected": false
-        },
-        {
-            "name": "Line9",
-            "sid": 9,
-            "srcblock": "Integr1",
-            "srcport": 0,
-            "dstblock": "Gain1",
-            "dstport": 0,
-            "zorder": 0,
-            "selected": false
-        },
-        {
-            "name": "Line10",
-            "sid": 10,
-            "srcblock": "Gain1",
-            "srcport": 0,
-            "dstblock": "Integr2",
-            "dstport": 0,
-            "zorder": 0,
-            "selected": false
-        },
-        {
-            "name": "Line11",
-            "sid": 11,
-            "srcblock": "Integr2",
-            "srcport": 0,
-            "dstblock": "Mux0",
-            "dstport": 0,
-            "zorder": 0,
-            "selected": false
-        },
-        {
-            "name": "Line13",
-            "sid": 13,
-            "srcblock": "Integr2",
-            "srcport": 0,
-            "dstblock": "Gain2",
             "dstport": 0,
             "zorder": 0,
             "selected": false

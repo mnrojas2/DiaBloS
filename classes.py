@@ -135,6 +135,9 @@ class InitSim:
         """
         Removes the block from the list and the lines connected with it
         """
+        # Se elimina la posibilidad de conectar otro bloque con el que se está a punto de eliminar
+        self.line_creation = 0
+
         # remueve el bloque de la lista, retornando también una segunda lista con los valores eliminados para su utilización en la eliminación de líneas
         b_del = [x.name for x in self.blocks_list if x.selected == True]
         self.blocks_list = [x for x in self.blocks_list if not (x.selected == True)]
@@ -1187,6 +1190,14 @@ class Block(InitSim):
 
         file_dir = dir(self.file_function)
         fun_list, fn_params = self.file_function._init_()
+
+        if hasattr(self.file_function, full_module_name):
+            pass
+        else:
+            print(self.name, "ERROR: NO FUNCTION",full_module_name,"WAS FOUND IN THE MODULE",full_module_name)
+            print("THE MAIN FUNCTION MUST HAVE THE SAME NAME AS THE FILE")
+            self.params['filename'] = '<no filename>'
+            return
 
         self.params.update(fn_params)
         self.run_ord = fun_list['run_ord']

@@ -5,7 +5,7 @@
         "fps": 60,
         "only_one": false,
         "enable_line_sel": true,
-        "sim_time": 10.0,
+        "sim_time": 40.0,
         "sim_dt": 0.01
     },
     "blocks_data": [
@@ -37,34 +37,9 @@
             "external": false
         },
         {
-            "type": "Block",
-            "sid": 0,
-            "coords_left": 409,
-            "coords_top": 116,
-            "coords_width": 120,
-            "coords_height": 60,
-            "coords_height_base": 60,
-            "in_ports": 2,
-            "out_ports": 1,
-            "dragging": false,
-            "selected": false,
-            "b_color": [
-                0,
-                255,
-                0
-            ],
-            "run_ord": 2,
-            "io_edit": false,
-            "fun_name": "axbu",
-            "params": {
-                "filename": "axbu"
-            },
-            "external": true
-        },
-        {
             "type": "Integr",
             "sid": 0,
-            "coords_left": 622,
+            "coords_left": 623,
             "coords_top": 116,
             "coords_width": 80,
             "coords_height": 60,
@@ -94,8 +69,8 @@
         {
             "type": "Gain",
             "sid": 0,
-            "coords_left": 526,
-            "coords_top": 187,
+            "coords_left": 531,
+            "coords_top": 198,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -117,10 +92,62 @@
             "external": false
         },
         {
+            "type": "Export",
+            "sid": 0,
+            "coords_left": 783,
+            "coords_top": 53,
+            "coords_width": 70,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 0,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                255,
+                160,
+                0
+            ],
+            "run_ord": 3,
+            "io_edit": false,
+            "fun_name": "export",
+            "params": {
+                "str_name": "x1a,x2a",
+                "_init_start_": true
+            },
+            "external": false
+        },
+        {
+            "type": "Scope",
+            "sid": 0,
+            "coords_left": 798,
+            "coords_top": 158,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 0,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                220,
+                20,
+                60
+            ],
+            "run_ord": 3,
+            "io_edit": false,
+            "fun_name": "scope",
+            "params": {
+                "labels": "x1a,x2a",
+                "_init_start_": true
+            },
+            "external": false
+        },
+        {
             "type": "Step",
             "sid": 1,
-            "coords_left": 240,
-            "coords_top": 329,
+            "coords_left": 257,
+            "coords_top": 299,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -146,8 +173,8 @@
         {
             "type": "Gain",
             "sid": 1,
-            "coords_left": 588,
-            "coords_top": 307,
+            "coords_left": 374,
+            "coords_top": 296,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -164,38 +191,18 @@
             "io_edit": false,
             "fun_name": "gain",
             "params": {
-                "gain": -1.0
+                "gain": [
+                    0.0,
+                    1.0
+                ]
             },
-            "external": false
-        },
-        {
-            "type": "Mux",
-            "sid": 0,
-            "coords_left": 852,
-            "coords_top": 328,
-            "coords_width": 60,
-            "coords_height": 60,
-            "coords_height_base": 60,
-            "in_ports": 2,
-            "out_ports": 1,
-            "dragging": false,
-            "selected": false,
-            "b_color": [
-                102,
-                51,
-                153
-            ],
-            "run_ord": 2,
-            "io_edit": "input",
-            "fun_name": "mux",
-            "params": {},
             "external": false
         },
         {
             "type": "Gain",
             "sid": 2,
-            "coords_left": 595,
-            "coords_top": 400,
+            "coords_left": 375,
+            "coords_top": 398,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -212,17 +219,23 @@
             "io_edit": false,
             "fun_name": "gain",
             "params": {
-                "gain": 1.0,
-                "_name_": "Gain2",
-                "_inputs_": 1,
-                "_outputs_": 1
+                "gain": [
+                    [
+                        0.0,
+                        1.0
+                    ],
+                    [
+                        -1.0,
+                        -0.4
+                    ]
+                ]
             },
             "external": false
         },
         {
             "type": "Sum",
             "sid": 0,
-            "coords_left": 352,
+            "coords_left": 495,
             "coords_top": 343,
             "coords_width": 70,
             "coords_height": 50,
@@ -245,138 +258,10 @@
             "external": false
         },
         {
-            "type": "Step",
-            "sid": 2,
-            "coords_left": 253,
-            "coords_top": 507,
-            "coords_width": 60,
-            "coords_height": 60,
-            "coords_height_base": 60,
-            "in_ports": 0,
-            "out_ports": 1,
-            "dragging": false,
-            "selected": false,
-            "b_color": [
-                0,
-                0,
-                255
-            ],
-            "run_ord": 0,
-            "io_edit": false,
-            "fun_name": "step",
-            "params": {
-                "value": 1.0,
-                "delay": 0.0,
-                "type": "up",
-                "_name_": "Step2",
-                "_inputs_": 0,
-                "_outputs_": 1
-            },
-            "external": false
-        },
-        {
-            "type": "Gain",
-            "sid": 3,
-            "coords_left": 373,
-            "coords_top": 507,
-            "coords_width": 60,
-            "coords_height": 60,
-            "coords_height_base": 60,
-            "in_ports": 1,
-            "out_ports": 1,
-            "dragging": false,
-            "selected": false,
-            "b_color": [
-                255,
-                255,
-                0
-            ],
-            "run_ord": 2,
-            "io_edit": false,
-            "fun_name": "gain",
-            "params": {
-                "gain": [
-                    0.0,
-                    1.0
-                ],
-                "mult_type": ".*",
-                "_name_": "Gain3",
-                "_inputs_": 1,
-                "_outputs_": 1
-            },
-            "external": false
-        },
-        {
-            "type": "Gain",
-            "sid": 4,
-            "coords_left": 373,
-            "coords_top": 580,
-            "coords_width": 60,
-            "coords_height": 60,
-            "coords_height_base": 60,
-            "in_ports": 1,
-            "out_ports": 1,
-            "dragging": false,
-            "selected": false,
-            "b_color": [
-                255,
-                255,
-                0
-            ],
-            "run_ord": 2,
-            "io_edit": false,
-            "fun_name": "gain",
-            "params": {
-                "gain": [
-                    [
-                        0.0,
-                        -1.0
-                    ],
-                    [
-                        1.0,
-                        0.0
-                    ]
-                ],
-                "mult_type": ".*",
-                "_name_": "Gain4",
-                "_inputs_": 1,
-                "_outputs_": 1
-            },
-            "external": false
-        },
-        {
-            "type": "Sum",
-            "sid": 1,
-            "coords_left": 508,
-            "coords_top": 530,
-            "coords_width": 70,
-            "coords_height": 50,
-            "coords_height_base": 50,
-            "in_ports": 2,
-            "out_ports": 1,
-            "dragging": false,
-            "selected": false,
-            "b_color": [
-                0,
-                255,
-                255
-            ],
-            "run_ord": 2,
-            "io_edit": "input",
-            "fun_name": "sumator",
-            "params": {
-                "sign": "++",
-                "_name_": "Sum1",
-                "_inputs_": 2,
-                "_outputs_": 1
-            },
-            "external": false
-        },
-        {
             "type": "Integr",
-            "sid": 3,
-            "coords_left": 644,
-            "coords_top": 525,
+            "sid": 1,
+            "coords_left": 614,
+            "coords_top": 333,
             "coords_width": 80,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -398,19 +283,16 @@
                     0.0
                 ],
                 "method": "RK45",
-                "_init_start_": true,
-                "_name_": "Integr3",
-                "_inputs_": 1,
-                "_outputs_": 1
+                "_init_start_": true
             },
             "external": false
         },
         {
-            "type": "Scope",
-            "sid": 0,
-            "coords_left": 789,
-            "coords_top": 113,
-            "coords_width": 60,
+            "type": "Export",
+            "sid": 1,
+            "coords_left": 773,
+            "coords_top": 275,
+            "coords_width": 70,
             "coords_height": 60,
             "coords_height_base": 60,
             "in_ports": 1,
@@ -418,24 +300,24 @@
             "dragging": false,
             "selected": false,
             "b_color": [
-                220,
-                20,
-                60
+                255,
+                160,
+                0
             ],
             "run_ord": 3,
             "io_edit": false,
-            "fun_name": "scope",
+            "fun_name": "export",
             "params": {
-                "labels": "x1a,x2a",
+                "str_name": "x1b,x2b",
                 "_init_start_": true
             },
             "external": false
         },
         {
             "type": "Scope",
-            "sid": 1,
-            "coords_left": 975,
-            "coords_top": 327,
+            "sid": 2,
+            "coords_left": 774,
+            "coords_top": 382,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -453,47 +335,92 @@
             "fun_name": "scope",
             "params": {
                 "labels": "x1b,x2b",
-                "_init_start_": true,
-                "_name_": "Scope1",
-                "_inputs_": 1,
-                "_outputs_": 0
+                "_init_start_": true
             },
             "external": false
         },
         {
-            "type": "Scope",
-            "sid": 2,
-            "coords_left": 793,
-            "coords_top": 521,
-            "coords_width": 60,
+            "type": "Block",
+            "sid": 0,
+            "coords_left": 375,
+            "coords_top": 118,
+            "coords_width": 120,
             "coords_height": 60,
             "coords_height_base": 60,
-            "in_ports": 1,
-            "out_ports": 0,
+            "in_ports": 2,
+            "out_ports": 1,
             "dragging": false,
             "selected": false,
             "b_color": [
-                220,
-                20,
-                60
+                0,
+                255,
+                0
             ],
-            "run_ord": 3,
+            "run_ord": 2,
             "io_edit": false,
-            "fun_name": "scope",
+            "fun_name": "axbu2",
             "params": {
-                "labels": "x1c,x2c",
-                "_init_start_": true,
-                "_name_": "Scope2",
-                "_inputs_": 1,
-                "_outputs_": 0
+                "filename": "axbu2"
+            },
+            "external": true
+        },
+        {
+            "type": "Step",
+            "sid": 2,
+            "coords_left": 238,
+            "coords_top": 478,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 0,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                0,
+                0,
+                255
+            ],
+            "run_ord": 0,
+            "io_edit": false,
+            "fun_name": "step",
+            "params": {
+                "value": 1.0,
+                "delay": 0.0,
+                "type": "up"
+            },
+            "external": false
+        },
+        {
+            "type": "Sum",
+            "sid": 1,
+            "coords_left": 374,
+            "coords_top": 520,
+            "coords_width": 70,
+            "coords_height": 50,
+            "coords_height_base": 50,
+            "in_ports": 3,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                0,
+                255,
+                255
+            ],
+            "run_ord": 2,
+            "io_edit": "input",
+            "fun_name": "sumator",
+            "params": {
+                "sign": "+++"
             },
             "external": false
         },
         {
             "type": "Integr",
-            "sid": 1,
-            "coords_left": 460,
-            "coords_top": 337,
+            "sid": 2,
+            "coords_left": 516,
+            "coords_top": 514,
             "coords_width": 80,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -518,9 +445,9 @@
         },
         {
             "type": "Integr",
-            "sid": 2,
-            "coords_left": 703,
-            "coords_top": 306,
+            "sid": 3,
+            "coords_left": 668,
+            "coords_top": 575,
             "coords_width": 80,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -539,18 +466,240 @@
             "params": {
                 "init_conds": 0.0,
                 "method": "RK45",
-                "_init_start_": true,
-                "_name_": "Integr2",
-                "_inputs_": 1,
-                "_outputs_": 1
+                "_init_start_": true
+            },
+            "external": false
+        },
+        {
+            "type": "Mux",
+            "sid": 0,
+            "coords_left": 827,
+            "coords_top": 503,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 2,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                102,
+                51,
+                153
+            ],
+            "run_ord": 2,
+            "io_edit": "input",
+            "fun_name": "mux",
+            "params": {},
+            "external": false
+        },
+        {
+            "type": "Export",
+            "sid": 2,
+            "coords_left": 962,
+            "coords_top": 474,
+            "coords_width": 70,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 0,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                255,
+                160,
+                0
+            ],
+            "run_ord": 3,
+            "io_edit": false,
+            "fun_name": "export",
+            "params": {
+                "str_name": "x1c,x2c",
+                "_init_start_": true
+            },
+            "external": false
+        },
+        {
+            "type": "Scope",
+            "sid": 1,
+            "coords_left": 963,
+            "coords_top": 562,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 0,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                220,
+                20,
+                60
+            ],
+            "run_ord": 3,
+            "io_edit": false,
+            "fun_name": "scope",
+            "params": {
+                "labels": "x1c,x2c",
+                "_init_start_": true
+            },
+            "external": false
+        },
+        {
+            "type": "Gain",
+            "sid": 3,
+            "coords_left": 278,
+            "coords_top": 599,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                255,
+                255,
+                0
+            ],
+            "run_ord": 2,
+            "io_edit": false,
+            "fun_name": "gain",
+            "params": {
+                "gain": -1.0
+            },
+            "external": false
+        },
+        {
+            "type": "Gain",
+            "sid": 4,
+            "coords_left": 449,
+            "coords_top": 629,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                255,
+                255,
+                0
+            ],
+            "run_ord": 2,
+            "io_edit": false,
+            "fun_name": "gain",
+            "params": {
+                "gain": -0.4
             },
             "external": false
         }
     ],
     "lines_data": [
         {
-            "name": "Line1",
-            "sid": 1,
+            "name": "Line2",
+            "sid": 2,
+            "srcblock": "Integr0",
+            "srcport": 0,
+            "dstblock": "Gain0",
+            "dstport": 0,
+            "zorder": 0,
+            "selected": false
+        },
+        {
+            "name": "Line4",
+            "sid": 4,
+            "srcblock": "Integr0",
+            "srcport": 0,
+            "dstblock": "Export0",
+            "dstport": 0,
+            "zorder": 0,
+            "selected": false
+        },
+        {
+            "name": "Line20",
+            "sid": 20,
+            "srcblock": "Integr0",
+            "srcport": 0,
+            "dstblock": "Scope0",
+            "dstport": 0,
+            "zorder": 0,
+            "selected": false
+        },
+        {
+            "name": "Line5",
+            "sid": 5,
+            "srcblock": "Step1",
+            "srcport": 0,
+            "dstblock": "Gain1",
+            "dstport": 0,
+            "zorder": 0,
+            "selected": false
+        },
+        {
+            "name": "Line6",
+            "sid": 6,
+            "srcblock": "Gain1",
+            "srcport": 0,
+            "dstblock": "Sum0",
+            "dstport": 0,
+            "zorder": 0,
+            "selected": false
+        },
+        {
+            "name": "Line7",
+            "sid": 7,
+            "srcblock": "Gain2",
+            "srcport": 0,
+            "dstblock": "Sum0",
+            "dstport": 1,
+            "zorder": 0,
+            "selected": false
+        },
+        {
+            "name": "Line8",
+            "sid": 8,
+            "srcblock": "Sum0",
+            "srcport": 0,
+            "dstblock": "Integr1",
+            "dstport": 0,
+            "zorder": 0,
+            "selected": false
+        },
+        {
+            "name": "Line9",
+            "sid": 9,
+            "srcblock": "Integr1",
+            "srcport": 0,
+            "dstblock": "Gain2",
+            "dstport": 0,
+            "zorder": 0,
+            "selected": false
+        },
+        {
+            "name": "Line10",
+            "sid": 10,
+            "srcblock": "Integr1",
+            "srcport": 0,
+            "dstblock": "Export1",
+            "dstport": 0,
+            "zorder": 0,
+            "selected": false
+        },
+        {
+            "name": "Line11",
+            "sid": 11,
+            "srcblock": "Integr1",
+            "srcport": 0,
+            "dstblock": "Scope2",
+            "dstport": 0,
+            "zorder": 0,
+            "selected": false
+        },
+        {
+            "name": "Line0",
+            "sid": 0,
             "srcblock": "Step0",
             "srcport": 0,
             "dstblock": "Block0",
@@ -559,21 +708,11 @@
             "selected": false
         },
         {
-            "name": "Line0",
-            "sid": 0,
+            "name": "Line1",
+            "sid": 1,
             "srcblock": "Block0",
             "srcport": 0,
             "dstblock": "Integr0",
-            "dstport": 0,
-            "zorder": 0,
-            "selected": false
-        },
-        {
-            "name": "Line2",
-            "sid": 2,
-            "srcblock": "Integr0",
-            "srcport": 0,
-            "dstblock": "Gain0",
             "dstport": 0,
             "zorder": 0,
             "selected": false
@@ -589,39 +728,29 @@
             "selected": false
         },
         {
-            "name": "Line7",
-            "sid": 7,
-            "srcblock": "Step1",
+            "name": "Line12",
+            "sid": 12,
+            "srcblock": "Step2",
             "srcport": 0,
-            "dstblock": "Sum0",
+            "dstblock": "Sum1",
             "dstport": 0,
             "zorder": 0,
             "selected": false
         },
         {
-            "name": "Line12",
-            "sid": 12,
-            "srcblock": "Gain2",
+            "name": "Line13",
+            "sid": 13,
+            "srcblock": "Sum1",
             "srcport": 0,
-            "dstblock": "Sum0",
-            "dstport": 1,
+            "dstblock": "Integr2",
+            "dstport": 0,
             "zorder": 0,
             "selected": false
         },
         {
             "name": "Line14",
             "sid": 14,
-            "srcblock": "Step2",
-            "srcport": 0,
-            "dstblock": "Gain3",
-            "dstport": 0,
-            "zorder": 0,
-            "selected": false
-        },
-        {
-            "name": "Line17",
-            "sid": 17,
-            "srcblock": "Sum1",
+            "srcblock": "Integr2",
             "srcport": 0,
             "dstblock": "Integr3",
             "dstport": 0,
@@ -631,9 +760,9 @@
         {
             "name": "Line15",
             "sid": 15,
-            "srcblock": "Gain3",
+            "srcblock": "Integr3",
             "srcport": 0,
-            "dstblock": "Sum1",
+            "dstblock": "Mux0",
             "dstport": 0,
             "zorder": 0,
             "selected": false
@@ -641,36 +770,26 @@
         {
             "name": "Line16",
             "sid": 16,
-            "srcblock": "Gain4",
+            "srcblock": "Integr2",
             "srcport": 0,
-            "dstblock": "Sum1",
+            "dstblock": "Mux0",
             "dstport": 1,
+            "zorder": 0,
+            "selected": false
+        },
+        {
+            "name": "Line17",
+            "sid": 17,
+            "srcblock": "Mux0",
+            "srcport": 0,
+            "dstblock": "Export2",
+            "dstport": 0,
             "zorder": 0,
             "selected": false
         },
         {
             "name": "Line18",
             "sid": 18,
-            "srcblock": "Integr3",
-            "srcport": 0,
-            "dstblock": "Gain4",
-            "dstport": 0,
-            "zorder": 0,
-            "selected": false
-        },
-        {
-            "name": "Line4",
-            "sid": 4,
-            "srcblock": "Integr0",
-            "srcport": 0,
-            "dstblock": "Scope0",
-            "dstport": 0,
-            "zorder": 0,
-            "selected": false
-        },
-        {
-            "name": "Line6",
-            "sid": 6,
             "srcblock": "Mux0",
             "srcport": 0,
             "dstblock": "Scope1",
@@ -683,67 +802,37 @@
             "sid": 19,
             "srcblock": "Integr3",
             "srcport": 0,
-            "dstblock": "Scope2",
+            "dstblock": "Gain3",
             "dstport": 0,
             "zorder": 0,
             "selected": false
         },
         {
-            "name": "Line5",
-            "sid": 5,
-            "srcblock": "Sum0",
+            "name": "Line21",
+            "sid": 21,
+            "srcblock": "Gain3",
             "srcport": 0,
-            "dstblock": "Integr1",
-            "dstport": 0,
+            "dstblock": "Sum1",
+            "dstport": 2,
             "zorder": 0,
             "selected": false
         },
         {
-            "name": "Line8",
-            "sid": 8,
-            "srcblock": "Integr1",
+            "name": "Line22",
+            "sid": 22,
+            "srcblock": "Gain4",
             "srcport": 0,
-            "dstblock": "Mux0",
+            "dstblock": "Sum1",
             "dstport": 1,
             "zorder": 0,
             "selected": false
         },
         {
-            "name": "Line9",
-            "sid": 9,
-            "srcblock": "Integr1",
-            "srcport": 0,
-            "dstblock": "Gain1",
-            "dstport": 0,
-            "zorder": 0,
-            "selected": false
-        },
-        {
-            "name": "Line10",
-            "sid": 10,
-            "srcblock": "Gain1",
-            "srcport": 0,
-            "dstblock": "Integr2",
-            "dstport": 0,
-            "zorder": 0,
-            "selected": false
-        },
-        {
-            "name": "Line11",
-            "sid": 11,
+            "name": "Line23",
+            "sid": 23,
             "srcblock": "Integr2",
             "srcport": 0,
-            "dstblock": "Mux0",
-            "dstport": 0,
-            "zorder": 0,
-            "selected": false
-        },
-        {
-            "name": "Line13",
-            "sid": 13,
-            "srcblock": "Integr2",
-            "srcport": 0,
-            "dstblock": "Gain2",
+            "dstblock": "Gain4",
             "dstport": 0,
             "zorder": 0,
             "selected": false
