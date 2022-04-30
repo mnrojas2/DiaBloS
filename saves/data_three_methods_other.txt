@@ -6,7 +6,7 @@
         "only_one": false,
         "enable_line_sel": true,
         "sim_time": 40.0,
-        "sim_dt": 0.01
+        "sim_dt": 0.1
     },
     "blocks_data": [
         {

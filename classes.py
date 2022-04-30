@@ -44,13 +44,14 @@ class InitSim:
 
         self.l_width = 5        # Ancho de linea en modo seleccionado
         self.ls_width = 5       # Ancho separacion entre linea-bloque en modo seleccionado
-        self.run_initialized = False
+        self.execution_initialized = False
 
         self.filename = 'data.txt' # Nombre del archivo cargado o por defecto
         self.sim_time = 1.0     # Tiempo de simulación por defecto
         self.sim_dt = 0.01      # diferencia de tiempo para simulación (default: 10ms)
 
         self.execution_pauseplay = 'play'
+        self.execution_stop = False
 
     def main_buttons(self, zone):
         """
@@ -63,8 +64,9 @@ class InitSim:
         #blocks = Button('Add block', (400, 15, 100, 40))
         sim = Button('Simulate', (400, 10, 100, 40))
         pauseplay = Button('_pauseplay_', (520, 10, 40, 40))
+        stop = Button('_stop_', (580, 10, 40, 40))
 
-        self.buttons_list = [new, load, save, sim, pauseplay]
+        self.buttons_list = [new, load, save, sim, pauseplay, stop]
         self.button_margin = 80
 
     def display_buttons(self, zone):
@@ -516,6 +518,7 @@ class InitSim:
         """
         # Inicializa los parametros y bloques para la simulación del sistema, además de hacer la primera iteración de calculo
         self.execution_fun = Functions_call()
+        self.execution_stop = False
         self.time_step = 0
         self.timeline = np.array([self.time_step])
 
@@ -523,7 +526,7 @@ class InitSim:
 
         # Para cancelar la simulación antes de correrla (habiendo presionado X en el pop up)
         if self.execution_time == -1:
-            self.run_initialized = False
+            self.execution_initialized = False
             return
 
         # Obligar a guardar antes de ejecutar (para no perder el diagrama)
@@ -547,6 +550,7 @@ class InitSim:
         self.execution_time_start = time.time()
 
         print("*****EXECUTION*****")
+
         # Inicialización de la barra de progreso
         self.pbar = tqdm(desc='SIMULATION PROGRESS', total=int(self.execution_time/self.sim_dt), unit=' itr')
 
@@ -557,6 +561,7 @@ class InitSim:
         self.rk45_len = self.count_rk45_ints()
         self.rk_counter = 0
 
+        # Se inicia el recorrido por el diagrama de bloques partiendo por los bloques del tipo source
         for block in self.blocks_list:
             children = {}
             out_value = {}
@@ -580,7 +585,7 @@ class InitSim:
                 children = self.get_outputs(block.name)
 
             if 'E' in out_value.keys() and out_value['E'] == True:
-                self.run_initialized = False            # Termina la ejecución de la simulación
+                self.execution_initialized = False            # Termina la ejecución de la simulación
                 self.reset_memblocks()                  # Resetea la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
                 print("*****EXECUTION STOPPED*****")
                 return
@@ -594,6 +599,7 @@ class InitSim:
                         mblock.data_recieved += 1
                         block.data_sent += 1
 
+        # Se continúa recorriendo el diagrama por los siguientes bloques
         h_count = 1
         while (self.check_global_list() != True):
             for block in self.blocks_list:
@@ -607,7 +613,7 @@ class InitSim:
 
                     # Se comprueba que la función no haya entregado error:
                     if 'E' in out_value.keys() and out_value['E'] == True:
-                        self.run_initialized = False    # Termina la ejecución de la simulación
+                        self.execution_initialized = False    # Termina la ejecución de la simulación
                         self.reset_memblocks()        # Resetea la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
                         print("*****EXECUTION STOPPED*****")
                         return
@@ -638,8 +644,9 @@ class InitSim:
 
             h_count += 1
 
-        self.max_hier = self.get_max_hierarchy()  # Se determina el valor más alto de jerarquía para las próximas iteraciones
-        self.run_initialized = True
+        # Se determina el valor más alto de jerarquía para las próximas iteraciones
+        self.max_hier = self.get_max_hierarchy()
+        self.execution_initialized = True
         self.rk_counter += 1
         # actualizar plots
 
@@ -688,7 +695,7 @@ class InitSim:
 
                 # Se comprueba que la función no haya entregado error:
                 if 'E' in out_value.keys() and out_value['E'] == True:
-                    self.run_initialized = False    # Termina la ejecución de la simulación
+                    self.execution_initialized = False    # Termina la ejecución de la simulación
                     self.reset_memblocks()        # Resetea la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
                     print("*****EXECUTION STOPPED*****")
                     return
@@ -722,7 +729,7 @@ class InitSim:
 
                     # Se comprueba que la función no haya entregado error:
                     if 'E' in out_value.keys() and out_value['E'] == True:
-                        self.run_initialized = False    # Termina la ejecución de la simulación
+                        self.execution_initialized = False    # Termina la ejecución de la simulación
                         self.reset_memblocks()          # Resetea la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
                         print("*****EXECUTION STOPPED*****")
                         return
@@ -746,19 +753,29 @@ class InitSim:
 
         # Se comprueba si que el tiempo total de simulación (ejecución) ha sido superado para finalizar con el loop.
         if self.time_step >= self.execution_time: # seconds
-            self.run_initialized = False                        # Se finaliza el loop de ejecución
+            self.execution_initialized = False                        # Se finaliza el loop de ejecución
             self.pbar.close()                                   # Se finaliza la barra de progreso
             print("SIMULATION TIME:", round(time.time() - self.execution_time_start, 5), 'SECONDS')  # Se imprime el tiempo total tomado
+
+            # Export
+            self.exportData()
 
             #Scope
             self.plotScope()
 
-            #Export
-            self.exportData()
-
             # Resetea la inicializacion de los bloques con ejecuciones iniciales especiales (para que puedan ser ejecutados correctamente en la proxima simulación)
             self.reset_memblocks()
             print("*****EXECUTION DONE*****")
+
+        elif self.execution_stop == True:
+            self.execution_stop = False
+
+            self.execution_initialized = False  # Se finaliza el loop de ejecución
+            self.pbar.close()  # Se finaliza la barra de progreso
+
+            # Resetea el flag para la inicializacion de los bloques con ejecuciones iniciales especiales (para que puedan ser ejecutados correctamente en la proxima simulación)
+            self.reset_memblocks()
+            print("*****EXECUTION STOPPED*****")
 
         self.rk_counter += 1
 
@@ -1359,6 +1376,9 @@ class Button(InitSim):
             pygame.draw.polygon(zone, self.colors['black'], ( (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height),(self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.75 * self.collision.height),(self.collision.left + 0.5 * self.collision.width, self.collision.top + 0.5 * self.collision.height) ))
             pygame.draw.rect(zone, self.colors['black'], (self.collision.left + 0.5 * self.collision.width, self.collision.top + 0.25 * self.collision.height, 4, 0.5 * self.collision.height))
             pygame.draw.rect(zone, self.colors['black'], (self.collision.left + 0.5 * self.collision.width + 8, self.collision.top + 0.25 * self.collision.height, 4, 0.5 * self.collision.height))
+
+        elif self.name == '_stop_':
+            pygame.draw.rect(zone, self.colors['black'], (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height, 0.5 * self.collision.width, 0.5 * self.collision.height))
 
     def set_color(self, color):
         # Define el color del bloque a partir de un string o directamente de una tupla con los valores RGB

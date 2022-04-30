@@ -32,6 +32,7 @@ def main_execution():
     save_b = sim_init.buttons_list[2]
     sim_b = sim_init.buttons_list[3]
     pp_b = sim_init.buttons_list[4]
+    st_b = sim_init.buttons_list[5]
 
     # - mainloop -
 
@@ -69,6 +70,8 @@ def main_execution():
                         #sim_init.execution_init()
                     elif pp_b.collision.collidepoint(event.pos):
                         pp_b.pressed = True
+                    elif st_b.collision.collidepoint(event.pos):
+                        st_b.pressed = True
                     #####
                     for b_elem in sim_init.blocks_list:
                         if b_elem.rectf.collidepoint(event.pos):
@@ -146,6 +149,9 @@ def main_execution():
                     elif sim_init.execution_pauseplay == 'play':
                         sim_init.execution_pauseplay = 'pause'
                         print("Execution: PAUSED")
+                elif st_b.collision.collidepoint(event.pos):
+                    st_b.pressed = False
+                    sim_init.execution_stop = True
 
                 # Se deja de mover un bloque y se actualizan las lineas conectadas a sus puertos
                 for b_elem in sim_init.blocks_list:
@@ -217,7 +223,7 @@ def main_execution():
         sim_init.blockScreen(screen)                # Se dibujan los bloques de ejecución
         sim_init.print_lines(screen)                # Se dibujan las lineas
 
-        if sim_init.run_initialized == True:        # Si es que ya se corrió la primera iteración, iniciar el loop.
+        if sim_init.execution_initialized == True:        # Si es que ya se corrió la primera iteración, iniciar el loop.
             sim_init.execution_loop()
 
         pygame.display.flip()
