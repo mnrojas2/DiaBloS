@@ -33,6 +33,7 @@ def main_execution():
     sim_b = sim_init.buttons_list[3]
     pp_b = sim_init.buttons_list[4]
     st_b = sim_init.buttons_list[5]
+    sh_sc = sim_init.buttons_list[6]
 
     # - mainloop -
 
@@ -72,6 +73,8 @@ def main_execution():
                         pp_b.pressed = True
                     elif st_b.collision.collidepoint(event.pos):
                         st_b.pressed = True
+                    elif sh_sc.collision.collidepoint(event.pos):
+                        sh_sc.pressed = True
                     #####
                     for b_elem in sim_init.blocks_list:
                         if b_elem.rectf.collidepoint(event.pos):
@@ -152,6 +155,9 @@ def main_execution():
                 elif st_b.collision.collidepoint(event.pos):
                     st_b.pressed = False
                     sim_init.execution_stop = True
+                elif sh_sc.collision.collidepoint(event.pos):
+                    sh_sc.pressed = False
+                    sim_init.plot_again()
 
                 # Se deja de mover un bloque y se actualizan las lineas conectadas a sus puertos
                 for b_elem in sim_init.blocks_list:

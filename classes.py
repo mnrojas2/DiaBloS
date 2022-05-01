@@ -44,6 +44,7 @@ class InitSim:
 
         self.l_width = 5        # Ancho de linea en modo seleccionado
         self.ls_width = 5       # Ancho separacion entre linea-bloque en modo seleccionado
+
         self.execution_initialized = False
 
         self.filename = 'data.txt' # Nombre del archivo cargado o por defecto
@@ -65,8 +66,9 @@ class InitSim:
         sim = Button('Simulate', (400, 10, 100, 40))
         pauseplay = Button('_pauseplay_', (520, 10, 40, 40))
         stop = Button('_stop_', (580, 10, 40, 40))
+        show_scope = Button('Plot', (640, 10, 60, 40))
 
-        self.buttons_list = [new, load, save, sim, pauseplay, stop]
+        self.buttons_list = [new, load, save, sim, pauseplay, stop, show_scope]
         self.button_margin = 80
 
     def display_buttons(self, zone):
@@ -943,6 +945,21 @@ class InitSim:
             plt.xlabel('Time [s]')
             plt.legend()
             plt.show()
+
+    def plot_again(self):
+        """
+        Plots the data saved in Scope blocks without needing to execute the simulation again
+        """
+        # Grafica de nuevo los gráficos sin la necesidad de tener que resimular el grafo
+        try:
+            scope_lengths = [len(x.params['vector']) for x in self.blocks_list if x.b_type == 'Scope']
+            if scope_lengths[0] > 0:
+                self.plotScope()
+            else:
+                print("ERROR: NOT ENOUGH SAMPLES TO PLOT")
+        except:
+            print("ERROR: GRAPH HAS NOT BEEN SIMULATED YET")
+            return
 
     def exportData(self):
         """

@@ -6,7 +6,7 @@
         "only_one": false,
         "enable_line_sel": true,
         "sim_time": 40.0,
-        "sim_dt": 0.1
+        "sim_dt": 0.01
     },
     "blocks_data": [
         {
@@ -367,8 +367,8 @@
         {
             "type": "Step",
             "sid": 2,
-            "coords_left": 238,
-            "coords_top": 478,
+            "coords_left": 240,
+            "coords_top": 477,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
