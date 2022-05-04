@@ -84,6 +84,15 @@ class InitSim:
     def add_block(self, block, m_pos=(0,0)):
         """
         Adds a block in the screen with a unique ID
+
+        :proposito: Agrega un bloque a la interfaz, con un ID único.
+        :descripcion: A partir de una lista visible de BaseBlocks, se crea una instancia de Bloque completo, el cual está disponible para editar parámetros como conectar con otros bloques.
+        :param block: Base-block que contiene los parámetros base para cada tipo de bloque.
+        :param m_pos: Coordenadas (x, y) para ubicar la esquina superior izquierda del futuro bloque.
+        :type block: BaseBlock class
+        :type m_pos: tuple
+        :limitaciones: -
+        :fallas: Puede que bajo un BaseBlock mal configurado, el bloque resultante no tenga las cualidades o parámetros correctos.
         """
         # agrega bloque primero asignando una id al mismo con base en los otros bloques presentes
         id_list = []
@@ -981,16 +990,6 @@ class InitSim:
         if export_toggle == True:
             np.savez('saves/' + self.filename[:-4], t = self.timeline, **vec_dict)
             print("DATA EXPORTED TO",'saves/' + self.filename[:-4] + '.npz')
-
-        '''# Formato a guardar: .csv
-        export_mtx = self.timeline
-        head = 't'
-        for block in self.blocks_list:
-            if block.b_type == 'Export':
-                vector = block.params['vector']
-                export_mtx = np.column_stack((export_mtx, vector))
-                head += ',' + block.params['vector_name']
-        np.savetxt(self.filename[:-4] + '_exported.csv', export_mtx, delimiter=",", header=head)#'''
 
 
 class Block(InitSim):

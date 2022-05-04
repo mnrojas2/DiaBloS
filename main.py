@@ -148,10 +148,10 @@ def main_execution():
                     if sim_init.execution_pauseplay == 'pause':
                         sim_init.execution_pauseplay = 'play'
                         pp_b.pressed = False
-                        print("Execution: PLAY")
+                        print("EXECUTION: PLAY")
                     elif sim_init.execution_pauseplay == 'play':
                         sim_init.execution_pauseplay = 'pause'
-                        print("Execution: PAUSED")
+                        print("\nEXECUTION: PAUSED")
                 elif st_b.collision.collidepoint(event.pos):
                     st_b.pressed = False
                     sim_init.execution_stop = True
