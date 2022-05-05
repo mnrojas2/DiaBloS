@@ -83,8 +83,6 @@ class InitSim:
 
     def add_block(self, block, m_pos=(0,0)):
         """
-        Adds a block in the screen with a unique ID
-
         :proposito: Agrega un bloque a la interfaz, con un ID único.
         :descripcion: A partir de una lista visible de BaseBlocks, se crea una instancia de Bloque completo, el cual está disponible para editar parámetros como conectar con otros bloques.
         :param block: Base-block que contiene los parámetros base para cada tipo de bloque.

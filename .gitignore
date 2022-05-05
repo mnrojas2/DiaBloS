@@ -4,4 +4,5 @@ Lib/
 Scripts/
 venv/
 docs/
+data_test/
 pyvenv.cfg
