@@ -5,4 +5,5 @@ Scripts/
 venv/
 docs/
 data_test/
+dynamic_plot/
 pyvenv.cfg
