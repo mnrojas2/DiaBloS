@@ -1,5 +1,6 @@
 import pygame                           # LGPL
 import numpy as np                      # Liberal BSD
+import copy                             # PSF
 import time                             # PSF
 import json                             # PSF
 import tkinter as tk                    # BSD/PSF
@@ -11,6 +12,7 @@ from matplotlib import pyplot as plt    # BSD
 from scipy.integrate import solve_ivp   # BSD-3-Clause License
 from functools import partial           # PSF
 import os                               # PSF
+from block_functions import *
 
 class InitSim:
     """
@@ -43,15 +45,20 @@ class InitSim:
 
         self.l_width = 5        # Ancho de linea en modo seleccionado
         self.ls_width = 5       # Ancho separacion entre linea-bloque en modo seleccionado
-        self.run_initialized = False
+
+        self.execution_initialized = False
 
         self.filename = 'data.txt' # Nombre del archivo cargado o por defecto
         self.sim_time = 1.0     # Tiempo de simulación por defecto
         self.sim_dt = 0.01      # diferencia de tiempo para simulación (default: 10ms)
 
         self.execution_pauseplay = 'play'
+        self.execution_stop = False
 
     def main_buttons(self, zone):
+        """
+        Creates a button list with all the basic functions available
+        """
         # Crea una lista con los botones básicos para manejar la simulación
         new = Button('New', (40, 10, 100, 40))
         load = Button('Load', (160, 10, 100, 40))
@@ -59,11 +66,16 @@ class InitSim:
         #blocks = Button('Add block', (400, 15, 100, 40))
         sim = Button('Simulate', (400, 10, 100, 40))
         pauseplay = Button('_pauseplay_', (520, 10, 40, 40))
+        stop = Button('_stop_', (580, 10, 40, 40))
+        show_scope = Button('Plot', (640, 10, 60, 40))
 
-        self.buttons_list = [new, load, save, sim, pauseplay]
+        self.buttons_list = [new, load, save, sim, pauseplay, stop, show_scope]
         self.button_margin = 80
 
     def display_buttons(self, zone):
+        """
+        Displays all the buttons on the screen
+        """
         # Dibuja los botones en la pantalla
         for button in self.buttons_list:
             button.draw_button(zone)
@@ -71,6 +83,16 @@ class InitSim:
     ##### ADD OR REMOVE BLOCKS AND LINES #####
 
     def add_block(self, block, m_pos=(0,0)):
+        """
+        :proposito: Agrega un bloque a la interfaz, con un ID único.
+        :descripcion: A partir de una lista visible de BaseBlocks, se crea una instancia de Bloque completo, el cual está disponible para editar parámetros como conectar con otros bloques.
+        :param block: Base-block que contiene los parámetros base para cada tipo de bloque.
+        :param m_pos: Coordenadas (x, y) para ubicar la esquina superior izquierda del futuro bloque.
+        :type block: BaseBlock class
+        :type m_pos: tuple
+        :limitaciones: -
+        :fallas: Puede que bajo un BaseBlock mal configurado, el bloque resultante no tenga las cualidades o parámetros correctos.
+        """
         # agrega bloque primero asignando una id al mismo con base en los otros bloques presentes
         id_list = []
         sid = 0
@@ -94,10 +116,14 @@ class InitSim:
         if mouse_y < self.button_margin:
             mouse_y = self.button_margin
         block_collision = (mouse_x, mouse_y, block.size[0], block.size[1])
-        new_block = Block(block.b_type, sid, block_collision, block.b_color, block.ins, block.outs, block.run_ord, block.io_edit, block.fun_name, block.params, block.external)
+
+        new_block = Block(block.b_type, sid, block_collision, block.b_color, block.ins, block.outs, block.run_ord, block.io_edit, block.fun_name, copy.deepcopy(block.params), block.external)
         self.blocks_list.append(new_block)
 
     def add_line(self, srcData, dstData):
+        """
+        Adds a line in the screen with a unique ID
+        """
         # agrega línea primero asignando una id dependiendo de las líneas existentes
         id_list = []
         sid = 0
@@ -118,6 +144,12 @@ class InitSim:
         self.line_list.append(line)
 
     def remove_block_and_lines(self):
+        """
+        Removes the block from the list and the lines connected with it
+        """
+        # Se elimina la posibilidad de conectar otro bloque con el que se está a punto de eliminar
+        self.line_creation = 0
+
         # remueve el bloque de la lista, retornando también una segunda lista con los valores eliminados para su utilización en la eliminación de líneas
         b_del = [x.name for x in self.blocks_list if x.selected == True]
         self.blocks_list = [x for x in self.blocks_list if not (x.selected == True)]
@@ -128,12 +160,18 @@ class InitSim:
             self.line_list = [x for x in self.line_list if x.selected == False]
 
     def check_line_block(self, line, b_del_list):
+        """
+        Checks if there are lines left from a removed BLOCK
+        """
         # Comprueba si es que hay lineas a bloques recientemente eliminados
         if line.dstblock in b_del_list or line.srcblock in b_del_list:
             return True
         return False
 
     def check_line_port(self, line, block):
+        """
+        Checks if there are lines left from a removed PORT (of a block)
+        """
         # Comprueba si es que hay lineas a puertos recientemente eliminados
         if line.srcblock == block.name and line.srcport > block.out_ports - 1:
             return True
@@ -143,16 +181,25 @@ class InitSim:
             return False
 
     def print_lines(self, zone):
+        """
+        Draws lines connecting blocks in the screen
+        """
         # Dibuja las líneas a partir de una lista
         for line in self.line_list:
             line.draw_line(zone)
 
     def update_lines(self):
+        """
+        Updates lines according to the location of blocks if these changed place
+        """
         # Actualiza la ubicación de las líneas a partir de la ubicación de los bloques
         for line in self.line_list:
             line.update_line(self.blocks_list)
 
     def blockScreen(self, zone):
+        """
+        Draws existing blocks in the screen
+        """
         # Dibuja los bloques incluyendo al seleccionado
         for b_elem in self.blocks_list:
             if b_elem.selected == True:
@@ -160,6 +207,9 @@ class InitSim:
             b_elem.draw_Block(zone)
 
     def port_availability(self, dst_line):
+        """
+        Checks if an input port is free to get connected with a line to another port
+        """
         # Comprueba si es que el puerto a conectar está libre para ello
         for line in self.line_list:
             if line.dstblock == dst_line[0] and line.dstport == dst_line[1]:
@@ -169,6 +219,9 @@ class InitSim:
     ##### BASE BLOCKS #####
 
     def base_blocks_init(self):
+        """
+        Initializes the list of blocks available to use (base blocks)
+        """
         # Inicializa los bloques del menú, son estos los que se copian para generar los bloques y funciones.
         # Algunos datos se envían en forma de diccionarios para que se pueda observar qué es cada cosa
         # Los colores pueden definirse como strings (si es que están en self.colors) o directamente con los valores RGB en tupla.
@@ -222,7 +275,7 @@ class InitSim:
                             (102, 51, 153), (60, 60))
 
         demux = BaseBlocks("Demux", "demux",
-                            {'inputs': 1, 'outputs': 2, 'run_ord': 2, 'io_edit': 'output'}, {'output_shape': 2.0},
+                            {'inputs': 1, 'outputs': 2, 'run_ord': 2, 'io_edit': 'output'}, {'output_shape': 1},
                             (102, 30, 153), (60, 60))
 
         terminator = BaseBlocks("Term", 'terminator',
@@ -240,6 +293,9 @@ class InitSim:
         self.base_blocks = [step,sine,ramp,noise,integrator,gain,exponential,block,sumator,sigproduct,mux,demux,testmo,terminator,scope,export]
 
     def draw_base_blocks(self,zone):
+        """
+        Draws base blocks in the screen
+        """
         # Dibuja los bloques del menú y la línea separadora
         pygame.draw.line(zone, self.colors['black'], [200, 60], [200, 710], 2)
         for i in range(len(self.base_blocks)):
@@ -266,6 +322,9 @@ class InitSim:
     ##### LOADING AND SAVING #####
 
     def save(self):
+        """
+        Saves blocks, lines and other data in a .txt
+        """
         # Guarda los datos en diccionarios, exportados a un .txt
         root = tk.Tk()
         root.withdraw()
@@ -338,6 +397,9 @@ class InitSim:
         print("SAVED AS",file)
 
     def open(self):
+        """
+        Loads blocks, lines and other data from a .txt
+        """
         # Abre el archivo .txt y carga los datos guardados para mostrarlos en pantalla
         root = tk.Tk()
         root.withdraw()
@@ -365,6 +427,9 @@ class InitSim:
         print("LOADED FROM", file)
 
     def update_sim_data(self,data):
+        """
+        Updates information related with the main class variables saved in a file to the current simulation
+        """
         # Reordena los datos de los diccionarios, para utilizarlos en las configuraciones de la simulación
         self.SCREEN_WIDTH = data['wind_width']
         self.SCREEN_HEIGHT = data['wind_height']
@@ -376,6 +441,9 @@ class InitSim:
         self.sim_dt = data['sim_dt']
 
     def update_blocks_data(self,block_data):
+        """
+        Updates information related with all the blocks saved in a file to the current simulation
+        """
         # Reordena los datos de los diccionarios, para utilizarlos creando un nuevo bloque
         block = Block(block_data['type'],
                       block_data['sid'],
@@ -395,6 +463,9 @@ class InitSim:
         self.blocks_list.append(block)
 
     def update_lines_data(self,line_data):
+        """
+        Updates information related with all the lines saved in a file to the current simulation
+        """
         # Reordena los datos de los diccionarios, para utilizarlos creando una nueva línea
         line = Line(line_data['sid'],
                     line_data['srcblock'],
@@ -408,6 +479,9 @@ class InitSim:
         self.line_list.append(line)
 
     def clear_all(self):
+        """
+        Cleans the screen from all blocks, lines and some main variables.
+        """
         # Elimina todos los bloques, lineas y variables, haciendo que la interfaz vuelva a quedar en el estado inicial.
         self.blocks_list = []
         self.line_list = []
@@ -418,6 +492,9 @@ class InitSim:
     ##### DIAGRAM EXECUTION #####
 
     def execution_init_time(self):
+        """
+        Creates a pop-up to ask for execution time and sampling time
+        """
         # Por medio de un popup window, determina el tiempo a simular y el muestreo de este para los datos (ejecutar).
         master = tk.Tk()
         master.title('Simulate')
@@ -446,8 +523,12 @@ class InitSim:
             return -1
 
     def execution_init(self):
+        """
+        Initializes the graph execution
+        """
         # Inicializa los parametros y bloques para la simulación del sistema, además de hacer la primera iteración de calculo
         self.execution_fun = Functions_call()
+        self.execution_stop = False
         self.time_step = 0
         self.timeline = np.array([self.time_step])
 
@@ -455,7 +536,7 @@ class InitSim:
 
         # Para cancelar la simulación antes de correrla (habiendo presionado X en el pop up)
         if self.execution_time == -1:
-            self.run_initialized = False
+            self.execution_initialized = False
             return
 
         # Obligar a guardar antes de ejecutar (para no perder el diagrama)
@@ -479,6 +560,7 @@ class InitSim:
         self.execution_time_start = time.time()
 
         print("*****EXECUTION*****")
+
         # Inicialización de la barra de progreso
         self.pbar = tqdm(desc='SIMULATION PROGRESS', total=int(self.execution_time/self.sim_dt), unit=' itr')
 
@@ -486,9 +568,10 @@ class InitSim:
         check_loop = self.count_computed_global_list()
 
         # Comprobar la existencia de integradores que usen Runge-Kutta 45 e inicializar contador
-        self.rk45_ints, self.rk45_len = self.count_rk45_ints()
+        self.rk45_len = self.count_rk45_ints()
         self.rk_counter = 0
 
+        # Se inicia el recorrido por el diagrama de bloques partiendo por los bloques del tipo source
         for block in self.blocks_list:
             children = {}
             out_value = {}
@@ -512,7 +595,7 @@ class InitSim:
                 children = self.get_outputs(block.name)
 
             if 'E' in out_value.keys() and out_value['E'] == True:
-                self.run_initialized = False            # Termina la ejecución de la simulación
+                self.execution_initialized = False            # Termina la ejecución de la simulación
                 self.reset_memblocks()                  # Resetea la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
                 print("*****EXECUTION STOPPED*****")
                 return
@@ -526,6 +609,7 @@ class InitSim:
                         mblock.data_recieved += 1
                         block.data_sent += 1
 
+        # Se continúa recorriendo el diagrama por los siguientes bloques
         h_count = 1
         while (self.check_global_list() != True):
             for block in self.blocks_list:
@@ -539,7 +623,7 @@ class InitSim:
 
                     # Se comprueba que la función no haya entregado error:
                     if 'E' in out_value.keys() and out_value['E'] == True:
-                        self.run_initialized = False    # Termina la ejecución de la simulación
+                        self.execution_initialized = False    # Termina la ejecución de la simulación
                         self.reset_memblocks()        # Resetea la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
                         print("*****EXECUTION STOPPED*****")
                         return
@@ -570,12 +654,16 @@ class InitSim:
 
             h_count += 1
 
-        self.max_hier = self.get_max_hierarchy()  # Se determina el valor más alto de jerarquía para las próximas iteraciones
-        self.run_initialized = True
+        # Se determina el valor más alto de jerarquía para las próximas iteraciones
+        self.max_hier = self.get_max_hierarchy()
+        self.execution_initialized = True
         self.rk_counter += 1
         # actualizar plots
 
     def execution_loop(self):
+        """
+        Continues with the execution sequence in loop until time runs out or an special event.
+        """
         # Si el boton de play-pausa está en pausa, la simulación no corre hasta cambiar su estado
         if self.execution_pauseplay == 'pause':
             return
@@ -585,9 +673,9 @@ class InitSim:
 
         # Avance de tiempo con Runge-kutta 45
         # 0.5 -> 2*self.rk45_ints | 1.0 -> 1+self.rk45_ints
-        if self.rk45_len > 0:
-            self.rk_counter %= 3*self.rk45_len +1
-            if self.rk_counter == 0 or self.rk_counter == 2*self.rk45_len:
+        if self.rk45_len == True:
+            self.rk_counter %= 4
+            if self.rk_counter == 0 or self.rk_counter == 2:
                 # Avance medio paso normal
                 self.time_step += self.sim_dt/2
                 self.pbar.update(1/2)                                 # Se actualiza la barra de progreso
@@ -595,7 +683,7 @@ class InitSim:
                     self.timeline = np.append(self.timeline, self.time_step)
 
         # Avance de tiempo normal
-        elif self.rk45_len == 0:
+        elif self.rk45_len == False:
             # Avance paso completo
             self.time_step += self.sim_dt                             # Se avanza sim_dt en la linea de tiempo de la ejecución
             self.pbar.update(1)                                       # Se actualiza la barra de progreso
@@ -604,21 +692,20 @@ class InitSim:
         # Se ejecutan primero los bloques con memoria para obtener sólo el valor producido en la etapa anterior (no ejecutar la función primaria de estas)
         for block in self.blocks_list:
             if block.run_ord == 1:
-                # Se definen el o los bloques que se ejecutaran en el instante actual
-                skip_loop = False
-                if self.rk45_len > 0:
-                    if block.name != self.rk45_ints[self.rk_counter] and self.rk45_ints[self.rk_counter] != 'all':
-                        skip_loop = True
+                # Se define si el resultado debe acumularse en la memoria o no
+                add_in_memory = True
+                if self.rk45_len == True and self.rk_counter != 3:
+                    add_in_memory = False
 
                 # Se ejecuta la función para únicamente entregar el resultado en memoria (se diferencia entre función interna y externa primero)
                 if block.external == True:
-                    out_value = getattr(block.file_function, block.fun_name)(self.time_step, block.input_queue, block.params, True, skip_loop)
+                    out_value = getattr(block.file_function, block.fun_name)(self.time_step, block.input_queue, block.params, True, add_in_memory)
                 else:
-                    out_value = getattr(self.execution_fun, block.fun_name)(self.time_step, block.input_queue, block.params, True, skip_loop)
+                    out_value = getattr(self.execution_fun, block.fun_name)(self.time_step, block.input_queue, block.params, True, add_in_memory)
 
                 # Se comprueba que la función no haya entregado error:
                 if 'E' in out_value.keys() and out_value['E'] == True:
-                    self.run_initialized = False    # Termina la ejecución de la simulación
+                    self.execution_initialized = False    # Termina la ejecución de la simulación
                     self.reset_memblocks()        # Resetea la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
                     print("*****EXECUTION STOPPED*****")
                     return
@@ -636,7 +723,7 @@ class InitSim:
 
             # Para los bloques terminales que guardan datos, se les indica si se está en un instante de tiempo normal o intermedio
             elif block.run_ord == 3:
-                if self.rk45_len > 0 and self.rk_counter != 0:
+                if self.rk45_len == True and self.rk_counter != 0:
                     block.params['skip'] = True
 
         # Se ejecutan todos los bloques de acuerdo al orden de jerarquía definido en la primera iteración
@@ -652,7 +739,7 @@ class InitSim:
 
                     # Se comprueba que la función no haya entregado error:
                     if 'E' in out_value.keys() and out_value['E'] == True:
-                        self.run_initialized = False    # Termina la ejecución de la simulación
+                        self.execution_initialized = False    # Termina la ejecución de la simulación
                         self.reset_memblocks()          # Resetea la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
                         print("*****EXECUTION STOPPED*****")
                         return
@@ -676,24 +763,37 @@ class InitSim:
 
         # Se comprueba si que el tiempo total de simulación (ejecución) ha sido superado para finalizar con el loop.
         if self.time_step >= self.execution_time: # seconds
-            self.run_initialized = False                        # Se finaliza el loop de ejecución
+            self.execution_initialized = False                        # Se finaliza el loop de ejecución
             self.pbar.close()                                   # Se finaliza la barra de progreso
             print("SIMULATION TIME:", round(time.time() - self.execution_time_start, 5), 'SECONDS')  # Se imprime el tiempo total tomado
 
+            # Export
+            self.exportData()
+
             #Scope
             self.plotScope()
-
-            #Export
-            self.exportData()
 
             # Resetea la inicializacion de los bloques con ejecuciones iniciales especiales (para que puedan ser ejecutados correctamente en la proxima simulación)
             self.reset_memblocks()
             print("*****EXECUTION DONE*****")
 
+        elif self.execution_stop == True:
+            self.execution_stop = False
+
+            self.execution_initialized = False  # Se finaliza el loop de ejecución
+            self.pbar.close()  # Se finaliza la barra de progreso
+
+            # Resetea el flag para la inicializacion de los bloques con ejecuciones iniciales especiales (para que puedan ser ejecutados correctamente en la proxima simulación)
+            self.reset_memblocks()
+            print("*****EXECUTION STOPPED*****")
+
         self.rk_counter += 1
 
 
     def children_recognition(self, block_name, children_list):
+        """
+        For a block, checks all the blocks that are connected to its outputs and sends a list with them.
+        """
         # Compara el block_name (de blocks_list) y lo busca en children_list, si está entrega un True y una lista con diccionarios que contienen los puertos de salida y llegada para parent and child.
         child_ports = []
         for child in children_list:
@@ -704,6 +804,9 @@ class InitSim:
         return True, child_ports
 
     def update_global_list(self, block_name, h_value, h_assign=False):
+        """
+        Updates the global execution list
+        """
         # Actualiza la lista global que controla los loops en la ejecución
         # h_assign se utiliza para asignar el grado de jerarquía unicamente en la primera iteración
         for elem in self.global_computed_list:
@@ -713,6 +816,9 @@ class InitSim:
                 elem['computed_data'] = True
 
     def check_global_list(self):
+        """
+        Checks if there are no blocks of a graph left unexecuted
+        """
         # Comprueba que no queden bloques sin ejecutar en la simulación
         for elem in self.global_computed_list:
             if elem['computed_data'] == False:
@@ -720,10 +826,16 @@ class InitSim:
         return True
 
     def count_computed_global_list(self):
+        """
+        Counts the number of already computed blocks of a graph
+        """
         # Cuenta el número de bloques ya ejecutados durante la simulación
         return len([x for x in self.global_computed_list if x['computed_data'] == True])
 
     def reset_execution_data(self):
+        """
+        Resets the execution state for all the blocks of a graph
+        """
         # Devuelve al estado inicial varios parametros tanto de los bloques, con de la lista global que controla los loops de ejecución
         for i in range(len(self.blocks_list)):
             self.global_computed_list[i]['computed_data'] = False
@@ -734,6 +846,9 @@ class InitSim:
             self.blocks_list[i].hierarchy = self.global_computed_list[i]['hierarchy']
 
     def get_max_hierarchy(self):
+        """
+        Finds in the global execution list the max value in hierarchy
+        """
         # Busca el grado de jerarquía más alto (o bajo?) para determinar el número de forloop necesario para correr el codigo
         maxValue = 0
         for elem in self.global_computed_list:
@@ -742,6 +857,9 @@ class InitSim:
         return maxValue
 
     def get_outputs(self, block_name):
+        """
+        Finds all the blocks that need a "block_name" result as input
+        """
         # A partir de las conexiones de las líneas entre puertos, busca cuales son los que necesitan a "block_name de input"
         # retorna una lista de diccionarios con los puertos de salida para block_name, como los bloques y puertos de llegada
         neighs = []
@@ -751,6 +869,9 @@ class InitSim:
         return neighs
 
     def get_neighbors(self, block_name):
+        """
+        Finds all the connected blocks to "block_name"
+        """
         # A partir de las conexiones de las líneas entre puertos, busca cuales son los que tienen a "block_name" de output o input
         # retorna una lista de bloques
         n_inputs = []
@@ -763,6 +884,9 @@ class InitSim:
         return n_inputs, n_outputs
 
     def check_diagram_integrity(self):
+        """
+        Checks if the graph diagram doesn't have blocks with ports unconnected before the simulation execution
+        """
         # Comprueba que el diagrama no tiene puertos sin conectar antes de ejecutar la simulación
         print("*****Checking diagram integrity*****")
         error_trigger = False
@@ -796,24 +920,27 @@ class InitSim:
         return 0
 
     def count_rk45_ints(self):
-        # Produce una lista con los integradores que utilizan Runge-Kutta 45 como método de integración
-        rk_list = []
+        """
+        Checks all integrators and looks if there's at least one that use 'RK45' as integration method
+        """
         for block in self.blocks_list:
             if block.b_type == 'Integr' and block.params['method'] == 'RK45':
-                rk_list.append(block.name)
-        rk_len = len(rk_list)
-        # Se produce el vector mas largo que contiene el orden concreto en que se ejecutarán los bloques
-        rk_list = 3 * rk_list
-        rk_list.append('all')
-        return rk_list, rk_len
+                return True
+        return False
 
     def reset_memblocks(self):
+        """
+        Resets the "_init_start_" parameter to all blocks
+        """
         # Reestablece todos los bloques del sistema que contengan instrucciones especiales para su primera ejecución
         for block in self.blocks_list:
             if '_init_start_' in block.params.keys():
                 block.params['_init_start_'] = True
 
     def plotScope(self):
+        """
+        Plots the data saved in Scope blocks
+        """
         # Grafica los datos obtenidos de los bloques Scope
         scope_counter = 0
         for block in self.blocks_list:
@@ -827,7 +954,25 @@ class InitSim:
             plt.legend()
             plt.show()
 
+    def plot_again(self):
+        """
+        Plots the data saved in Scope blocks without needing to execute the simulation again
+        """
+        # Grafica de nuevo los gráficos sin la necesidad de tener que resimular el grafo
+        try:
+            scope_lengths = [len(x.params['vector']) for x in self.blocks_list if x.b_type == 'Scope']
+            if scope_lengths[0] > 0:
+                self.plotScope()
+            else:
+                print("ERROR: NOT ENOUGH SAMPLES TO PLOT")
+        except:
+            print("ERROR: GRAPH HAS NOT BEEN SIMULATED YET")
+            return
+
     def exportData(self):
+        """
+        Exports the data saved in Export blocks
+        """
         # Reune los vectores a guardar y se exportan en formato .npz
         vec_dict = {}
         export_toggle = False
@@ -842,18 +987,9 @@ class InitSim:
                     for i in range(block.params['vec_dim']):
                         vec_dict[labels[i]] = vector[:,i]
         if export_toggle == True:
-            np.savez(self.filename[:-4], t = self.timeline, **vec_dict)
-            print("DATA EXPORTED TO",self.filename[:-4] + '.npz')
+            np.savez('saves/' + self.filename[:-4], t = self.timeline, **vec_dict)
+            print("DATA EXPORTED TO",'saves/' + self.filename[:-4] + '.npz')
 
-        '''# Formato a guardar: .csv
-        export_mtx = self.timeline
-        head = 't'
-        for block in self.blocks_list:
-            if block.b_type == 'Export':
-                vector = block.params['vector']
-                export_mtx = np.column_stack((export_mtx, vector))
-                head += ',' + block.params['vector_name']
-        np.savetxt(self.filename[:-4] + '_exported.csv', export_mtx, delimiter=",", header=head)#'''
 
 class Block(InitSim):
     """
@@ -1087,6 +1223,14 @@ class Block(InitSim):
         file_dir = dir(self.file_function)
         fun_list, fn_params = self.file_function._init_()
 
+        if hasattr(self.file_function, full_module_name):
+            pass
+        else:
+            print(self.name, "ERROR: NO FUNCTION",full_module_name,"WAS FOUND IN THE MODULE",full_module_name)
+            print("THE MAIN FUNCTION MUST HAVE THE SAME NAME AS THE FILE")
+            self.params['filename'] = '<no filename>'
+            return
+
         self.params.update(fn_params)
         self.run_ord = fun_list['run_ord']
         self.in_ports = fun_list['inputs']
@@ -1248,6 +1392,9 @@ class Button(InitSim):
             pygame.draw.rect(zone, self.colors['black'], (self.collision.left + 0.5 * self.collision.width, self.collision.top + 0.25 * self.collision.height, 4, 0.5 * self.collision.height))
             pygame.draw.rect(zone, self.colors['black'], (self.collision.left + 0.5 * self.collision.width + 8, self.collision.top + 0.25 * self.collision.height, 4, 0.5 * self.collision.height))
 
+        elif self.name == '_stop_':
+            pygame.draw.rect(zone, self.colors['black'], (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height, 0.5 * self.collision.width, 0.5 * self.collision.height))
+
     def set_color(self, color):
         # Define el color del bloque a partir de un string o directamente de una tupla con los valores RGB
         if type(color) == str:
@@ -1353,322 +1500,3 @@ class Tk_widget:
     def destroy(self):
         # Finaliza la ventana
         self.master.destroy()
-
-
-class Functions_call:
-    """
-    Class to contain all the default functions available to work with in the simulation interface
-    """
-    #Funciones utilizadas durante la ejecución del sistema
-
-    def step(self, time, inputs, params):
-        """
-        Step source function
-        """
-        # Funcion escalón base
-        if params['type'] == 'up':
-            change = True if time < params['delay'] else False
-        elif params['type'] == 'down':
-            change = True if time > params['delay'] else False
-        else:
-            print("ERROR: 'type' not defined correctly in", params['_name_'])
-            return {'E': True}
-
-        if change == True:
-            return {0: 0*abs(np.array(params['value']))}
-        elif change == False:
-            return {0: np.array(params['value'])}
-
-
-    def ramp(self, time, inputs, params):
-        """
-        Ramp source function
-        """
-        # Funcion rampa
-        if params['slope'] == 0:
-            return {0: 0}
-        elif params['slope'] > 0:
-            return {0: np.maximum(0,params['slope']*(time - params['delay']))}
-        elif params['slope'] < 0:
-            return {0: np.array(np.minimum(0, params['slope'] * (time - params['delay'])))}
-
-
-    def sine(self, time, inputs, params):
-        """
-        Sinusoidal source function
-        """
-        # Funcion sinusoidal
-        return {0: np.array(params['amplitude']*np.sin(params['omega']*time + params['init_angle']))}
-
-
-    #vector
-    def gain(self, time, inputs, params):
-        """
-        Gain function
-        """
-        # Funcion ganancia
-        return {0: np.array(np.dot(params['gain'],inputs[0]))}
-
-
-    #vector
-    def exponential(self, time, inputs, params):
-        """
-        Exponential function
-        """
-        # Funcion exponencial
-
-        return {0: np.array(params['a']*np.exp(params['b']*inputs[0]))}
-
-
-    def sumator(self, time, inputs, params):
-        """
-        Sumator function
-        """
-        # Funcion sumador
-        for i in range(len(inputs)-1):
-            if inputs[i].shape != inputs[i+1].shape:
-                print("ERROR: Dimensions don't fit in", params['_name_'])
-                return {'E': True}
-
-        if len(params['sign']) < len(inputs):
-            params['sign'] += (len(inputs)-len(params['sign']))*'+'
-
-        suma = np.zeros(inputs[0].shape)
-        for i in range(len(inputs)):
-            if params['sign'][i] == '+':
-                suma += inputs[i]
-            elif params['sign'][i] == '-':
-                suma -= inputs[i]
-            else:
-                print("ERROR: Symbols not defined in", params['_name_'])
-                return {'E': True}
-        return {0: suma}
-
-
-    def sigproduct(self, time, inputs, params):
-        """
-        Element-wise product between signals
-        """
-        # Funcion producto punto
-        mult = 1.0
-        for i in range(len(inputs)):
-            mult *= inputs[i]
-        return {0: mult}
-
-
-    def block(self, time, inputs, params):
-        """
-        Generic block function - no actual use
-        """
-        # Funcion bloque generico (No hace nada sin un archivo externo)
-        return {0: np.array(inputs[0])}
-
-
-    def terminator(self, time, inputs, params):
-        """
-        Signal terminator function
-        """
-        # Funcion terminator
-        return {0: np.array([0.0])}
-
-
-    def noise(self, time, inputs, params):
-        """
-        Normal noise function
-        """
-        # Funcion noise (agrega ruido a la señal)
-        return {0: np.array(params['sigma']**2*np.random.randn() + params['mu'])}
-
-
-    def mux(self, time, inputs, params):
-        """
-        Multiplexer function
-        """
-        # Funcion mux
-        array = np.array(inputs[0])
-        for i in range(1, len(inputs)):
-            array = np.append(array, inputs[i])
-        return {0: array}
-
-
-    def demux(self, time, inputs, params):
-        """
-        Demultiplexer function
-        """
-        # Funcion demux
-
-        # Primero se comprueba que las dimensiones del vector son suficientes para el demux. Entrega Error o Warning según largo.
-        if len(inputs[0]) / params['output_shape'] < params['_outputs_']:
-            print("ERROR: Not enough inputs or wrong output shape in", params['_name_'])
-            return {'E': True}
-
-        elif len(inputs[0]) / params['output_shape'] > params['_outputs_']:
-            print("WARNING: There are more elements in vector for the expected outputs. System will truncate. Block", params['_name_'])
-
-        outputs = {}
-        for i in range(params['_outputs_']):
-            outputs[i] = inputs[0][int(params['output_shape'])*i : int(params['output_shape'])*(i+1)]
-        return outputs
-
-
-    # bloques tipo memoria
-    def integrator(self, time, inputs, params, output_only=False, skip_loop=False, dtime=0.01):
-        """
-        Integrator function
-        """
-        # Funcion integrador
-        if params['_init_start_'] == True:
-            params['dtime'] = dtime
-            params['mem'] = np.array(params['init_conds'])
-            params['mem_list'] = [np.zeros(params['mem'].shape)]
-            params['mem_len'] = 5.0 # Agregar otros largos dependiendo del metodo
-            params['_init_start_'] = False
-
-            if params['method'] == 'RK45':
-                params['nb_loop'] = 0
-                params['RK45_Klist'] = [0, 0, 0, 0]  # K1, K2, K3, K4
-
-        # skip_loop: True = solo entrega el valor de params['mem'],
-        #            False = entrega params['rk_aux'] y ejecuta el siguiente loop
-
-        if output_only == True:
-            params['skip'] = skip_loop
-            if params['method'] == 'RK45' and params['nb_loop'] != 0 and params['skip'] == False:
-                return {0: params['RK_aux']}
-            return {0: params['mem']}
-        else:
-            # Si en el instante t_i el integrador no debe integrar (según rk45), no se hace nada
-            if params['skip'] == True:
-                return {0: params['mem']}#'''
-
-            # Comprueba que los vectores de llegada tengan las mismas dimensiones que el vector memoria.
-            if params['mem'].shape != inputs[0].shape:
-                print("ERROR: Dimension Error in initial conditions in", params['_name_'])
-                params['_init_start_'] = True
-                return {'E': True}
-
-            # Se entrega el valor antes de agregar, por lo que se guarda antes de cambiar
-            mem_old = params['mem']
-
-            # Se integra según método escogido
-            # Forward euler
-            if params['method'] == 'FWD_RECT':
-                params['mem'] += params['dtime'] * inputs[0]
-
-            # Backwards euler
-            elif params['method'] == 'BWD_RECT':
-                params['mem'] += params['dtime'] * params['mem_list'][-1]
-
-            # Tustin
-            elif params['method'] == 'TUSTIN':
-                params['mem'] += 0.5*params['dtime'] * (inputs[0] + params['mem_list'][-1])
-
-            # Runge-Kutta 45
-            elif params['method'] == 'RK45':
-                K_list = params['RK45_Klist']
-                K_list[params['nb_loop']] = params['dtime'] * inputs[0]     # Calculo de K1, K2, K3 o K4
-                params['RK45_Klist'] = K_list
-                K1, K2, K3, K4 = K_list
-
-                if params['nb_loop'] == 0:
-                    params['nb_loop'] += 1
-                    params['RK_aux'] = np.array(params['mem'] + 0.5 * K1)
-                    return {0: params['RK_aux']}
-                elif params['nb_loop'] == 1:
-                    params['nb_loop'] += 1
-                    params['RK_aux'] = np.array(params['mem'] + 0.5 * K2)
-                    return {0: params['RK_aux']}
-                elif params['nb_loop'] == 2:
-                    params['nb_loop'] += 1
-                    params['RK_aux'] = np.array(params['mem'] + K3)
-                    return {0: params['RK_aux']}
-                elif params['nb_loop'] == 3:
-                    params['nb_loop'] = 0
-                    params['mem'] += (1 / 6) * (K1 + 2 * K2 + 2 * K3 + K4)
-
-            aux_list = params['mem_list']
-            aux_list.append(inputs[0])
-            if len(aux_list) > params['mem_len']: # 5 solo por probar, dependería del método de integración
-                aux_list = aux_list[-5:]
-            params['mem_list'] = aux_list
-
-            return {0: mem_old}
-
-
-    def export(self, time, inputs, params):
-        """
-        Block to save and export block signals
-        """
-        #Funcion exportar datos
-        # Para evitar guardar datos en los intervalos intermedios de RK45
-        if 'skip' in params.keys() and params['skip'] == True:
-            params['skip'] = False
-            return {0: inputs[0]}
-        # Iniciar el vector de guardado
-        if params['_init_start_'] == True:
-            aux_vector = np.array([inputs[0]])
-            try:
-                params['vec_dim'] = len(inputs[0])
-            except:
-                params['vec_dim'] = 1
-
-            labels = params['str_name']
-            if labels == 'default':
-                labels = params['_name_'] + '-0'
-            labels = labels.replace(' ', '').split(',')
-            if len(labels) < params['vec_dim']:
-                for i in range(params['vec_dim'] - len(labels)):
-                    labels.append(params['_name_'] + '-' + str(params['vec_dim'] + i - 1))
-            elif len(labels) > params['vec_dim']:
-                labels = labels[:params['vec_dim']]
-            if len(labels) == params['vec_dim'] == 1:
-                labels = labels[0]
-            params['vec_labels'] = labels
-            params['_init_start_'] = False
-        else:
-            aux_vector = params['vector']
-            aux_vector = np.concatenate((aux_vector, [inputs[0]]))
-        params['vector'] = aux_vector
-        return {0: inputs[0]}
-
-
-    def scope(self, time, inputs, params):
-        """
-        Function to plot block signals
-        """
-        # Funcion graficar datos (MatPlotLib)
-        # Para evitar guardar datos en los intervalos intermedios de RK45
-        if 'skip' in params.keys() and params['skip'] == True:
-            params['skip'] = False
-            return {0: inputs[0]}
-        # Iniciar el vector de guardado
-        if params['_init_start_'] == True:
-            aux_vector = np.array([inputs[0]])
-            try:
-                params['vec_dim'] = len(inputs[0])
-            except:
-                params['vec_dim'] = 1
-
-            labels = params['labels']
-            if labels == 'default':
-                labels = params['_name_'] + '-0'
-            labels = labels.replace(' ','').split(',')
-            if len(labels) < params['vec_dim']:
-                for i in range(params['vec_dim'] - len(labels)):
-                    labels.append(params['_name_'] + '-' + str(params['vec_dim'] + i - 1))
-            elif len(labels) > params['vec_dim']:
-                labels = labels[:params['vec_dim']]
-            if len(labels) == params['vec_dim'] == 1:
-                labels = labels[0]
-            params['vec_labels'] = labels
-            params['_init_start_'] = False
-        else:
-            aux_vector = params['vector']
-            aux_vector = np.concatenate((aux_vector, [inputs[0]]))
-        params['vector'] = aux_vector
-        return {0: inputs[0]}
-
-
-    # bloques con multiples salidas
-    def test_MO(self, time, inputs, params):
-        return {0: np.array([1,5]), 1: np.array([-1])}

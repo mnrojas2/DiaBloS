@@ -5,7 +5,7 @@
         "fps": 60,
         "only_one": false,
         "enable_line_sel": true,
-        "sim_time": 10.0,
+        "sim_time": 100.0,
         "sim_dt": 0.01
     },
     "blocks_data": [
@@ -465,8 +465,8 @@
         {
             "type": "Export",
             "sid": 0,
-            "coords_left": 806,
-            "coords_top": 107,
+            "coords_left": 790,
+            "coords_top": 80,
             "coords_width": 70,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -491,8 +491,8 @@
         {
             "type": "Export",
             "sid": 1,
-            "coords_left": 988,
-            "coords_top": 331,
+            "coords_left": 983,
+            "coords_top": 272,
             "coords_width": 70,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -520,8 +520,8 @@
         {
             "type": "Export",
             "sid": 2,
-            "coords_left": 817,
-            "coords_top": 531,
+            "coords_left": 805,
+            "coords_top": 465,
             "coords_width": 70,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -543,6 +543,84 @@
                 "_name_": "Export2",
                 "_inputs_": 1,
                 "_outputs_": 0
+            },
+            "external": false
+        },
+        {
+            "type": "Scope",
+            "sid": 0,
+            "coords_left": 791,
+            "coords_top": 169,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 0,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                220,
+                20,
+                60
+            ],
+            "run_ord": 3,
+            "io_edit": false,
+            "fun_name": "scope",
+            "params": {
+                "labels": "x1a,x2a",
+                "_init_start_": true
+            },
+            "external": false
+        },
+        {
+            "type": "Scope",
+            "sid": 1,
+            "coords_left": 987,
+            "coords_top": 376,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 0,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                220,
+                20,
+                60
+            ],
+            "run_ord": 3,
+            "io_edit": false,
+            "fun_name": "scope",
+            "params": {
+                "labels": "x2a,x2b",
+                "_init_start_": true
+            },
+            "external": false
+        },
+        {
+            "type": "Scope",
+            "sid": 2,
+            "coords_left": 809,
+            "coords_top": 585,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 0,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                220,
+                20,
+                60
+            ],
+            "run_ord": 3,
+            "io_edit": false,
+            "fun_name": "scope",
+            "params": {
+                "labels": "x1c,x2c",
+                "_init_start_": true
             },
             "external": false
         }
@@ -744,6 +822,36 @@
             "srcblock": "Integr3",
             "srcport": 0,
             "dstblock": "Export2",
+            "dstport": 0,
+            "zorder": 0,
+            "selected": false
+        },
+        {
+            "name": "Line20",
+            "sid": 20,
+            "srcblock": "Integr0",
+            "srcport": 0,
+            "dstblock": "Scope0",
+            "dstport": 0,
+            "zorder": 0,
+            "selected": false
+        },
+        {
+            "name": "Line21",
+            "sid": 21,
+            "srcblock": "Mux0",
+            "srcport": 0,
+            "dstblock": "Scope1",
+            "dstport": 0,
+            "zorder": 0,
+            "selected": false
+        },
+        {
+            "name": "Line22",
+            "sid": 22,
+            "srcblock": "Integr3",
+            "srcport": 0,
+            "dstblock": "Scope2",
             "dstport": 0,
             "zorder": 0,
             "selected": false

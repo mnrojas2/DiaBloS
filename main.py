@@ -32,6 +32,8 @@ def main_execution():
     save_b = sim_init.buttons_list[2]
     sim_b = sim_init.buttons_list[3]
     pp_b = sim_init.buttons_list[4]
+    st_b = sim_init.buttons_list[5]
+    sh_sc = sim_init.buttons_list[6]
 
     # - mainloop -
 
@@ -69,6 +71,10 @@ def main_execution():
                         #sim_init.execution_init()
                     elif pp_b.collision.collidepoint(event.pos):
                         pp_b.pressed = True
+                    elif st_b.collision.collidepoint(event.pos):
+                        st_b.pressed = True
+                    elif sh_sc.collision.collidepoint(event.pos):
+                        sh_sc.pressed = True
                     #####
                     for b_elem in sim_init.blocks_list:
                         if b_elem.rectf.collidepoint(event.pos):
@@ -142,10 +148,16 @@ def main_execution():
                     if sim_init.execution_pauseplay == 'pause':
                         sim_init.execution_pauseplay = 'play'
                         pp_b.pressed = False
-                        print("Execution: PLAY")
+                        print("EXECUTION: PLAY")
                     elif sim_init.execution_pauseplay == 'play':
                         sim_init.execution_pauseplay = 'pause'
-                        print("Execution: PAUSED")
+                        print("\nEXECUTION: PAUSED")
+                elif st_b.collision.collidepoint(event.pos):
+                    st_b.pressed = False
+                    sim_init.execution_stop = True
+                elif sh_sc.collision.collidepoint(event.pos):
+                    sh_sc.pressed = False
+                    sim_init.plot_again()
 
                 # Se deja de mover un bloque y se actualizan las lineas conectadas a sus puertos
                 for b_elem in sim_init.blocks_list:
@@ -217,7 +229,7 @@ def main_execution():
         sim_init.blockScreen(screen)                # Se dibujan los bloques de ejecución
         sim_init.print_lines(screen)                # Se dibujan las lineas
 
-        if sim_init.run_initialized == True:        # Si es que ya se corrió la primera iteración, iniciar el loop.
+        if sim_init.execution_initialized == True:        # Si es que ya se corrió la primera iteración, iniciar el loop.
             sim_init.execution_loop()
 
         pygame.display.flip()
