@@ -3,6 +3,11 @@ import numpy as np
 
 #Funcion principal (para la ejecución)
 def axbu2(time, inputs, params):
+    # Excepciones
+    if inputs[1].shape != (2,) or inputs[0] != ():
+        print("ERROR: Vector dimensions don't match")
+        return {'E': True}
+
     # Funcion Ax + Bu
     A = np.array([[0, 1], [-1, -0.4]])
     B = np.array([0, 1])

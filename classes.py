@@ -597,6 +597,7 @@ class InitSim:
             if 'E' in out_value.keys() and out_value['E'] == True:
                 self.execution_initialized = False            # Termina la ejecución de la simulación
                 self.reset_memblocks()                  # Resetea la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
+                self.pbar.close()  # Se finaliza la barra de progreso
                 print("*****EXECUTION STOPPED*****")
                 return
 
@@ -625,6 +626,7 @@ class InitSim:
                     if 'E' in out_value.keys() and out_value['E'] == True:
                         self.execution_initialized = False    # Termina la ejecución de la simulación
                         self.reset_memblocks()        # Resetea la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
+                        self.pbar.close()  # Se finaliza la barra de progreso
                         print("*****EXECUTION STOPPED*****")
                         return
 
@@ -707,6 +709,7 @@ class InitSim:
                 if 'E' in out_value.keys() and out_value['E'] == True:
                     self.execution_initialized = False    # Termina la ejecución de la simulación
                     self.reset_memblocks()        # Resetea la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
+                    self.pbar.close()  # Se finaliza la barra de progreso
                     print("*****EXECUTION STOPPED*****")
                     return
 
@@ -741,6 +744,7 @@ class InitSim:
                     if 'E' in out_value.keys() and out_value['E'] == True:
                         self.execution_initialized = False    # Termina la ejecución de la simulación
                         self.reset_memblocks()          # Resetea la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
+                        self.pbar.close()  # Se finaliza la barra de progreso
                         print("*****EXECUTION STOPPED*****")
                         return
 
