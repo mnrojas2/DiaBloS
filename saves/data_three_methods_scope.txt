@@ -5,7 +5,7 @@
         "fps": 60,
         "only_one": false,
         "enable_line_sel": true,
-        "sim_time": 10.0,
+        "sim_time": 5.0,
         "sim_dt": 0.01
     },
     "blocks_data": [

@@ -662,6 +662,20 @@ class InitSim:
         self.rk_counter += 1
         # actualizar plots
 
+        ######## dynamic plot test ########
+        self.dyn_plot = False
+        if self.dyn_plot == True:
+            labels_list = []
+            for block in self.blocks_list:
+                if block.b_type == 'Scope':
+                    b_labels = block.params['vec_labels']
+                    labels_list.append(b_labels)
+
+            if labels_list != []:
+                self.plotty = DynamicPlot(self.sim_dt, labels_list)
+        ###################################
+
+
     def execution_loop(self):
         """
         Continues with the execution sequence in loop until time runs out or an special event.
@@ -775,7 +789,10 @@ class InitSim:
             self.exportData()
 
             #Scope
-            self.plotScope()
+            if self.dyn_plot == True:
+                self.plotty.end_dynamic()
+            else:
+                self.plotScope()
 
             # Resetea la inicializacion de los bloques con ejecuciones iniciales especiales (para que puedan ser ejecutados correctamente en la proxima simulación)
             self.reset_memblocks()
@@ -790,6 +807,16 @@ class InitSim:
             # Resetea el flag para la inicializacion de los bloques con ejecuciones iniciales especiales (para que puedan ser ejecutados correctamente en la proxima simulación)
             self.reset_memblocks()
             print("*****EXECUTION STOPPED*****")
+
+        ######## dynamic plot test ########
+        if self.dyn_plot == True:
+            vector_list = []
+            for block in self.blocks_list:
+                if block.b_type == 'Scope':
+                    b_vectors = block.params['vector']
+                    vector_list.append(b_vectors)
+            self.plotty.loop(self.timeline, vector_list)
+        ###################################
 
         self.rk_counter += 1
 
@@ -1010,6 +1037,7 @@ class Block(InitSim):
         self.top = coords[1]            # Coordenada ubicación línea superior
         self.width = coords[2]          # Ancho bloque
         self.height = coords[3]         # Altura bloque
+        self.dirimage = './icons/' + self.b_type + '.png'
         self.fun_name = fun_name        # Nombre función asociada para ejecución
         self.params = self.loading_params(params) # Parámetros asociados a la función
         self.init_params_list = list(self.params.keys()) # Lista de parámetros iniciales/editables
@@ -1019,6 +1047,7 @@ class Block(InitSim):
         self.height_base = self.height  # Variable que conserva valor de altura por defecto
         self.in_ports = in_ports        # Variable que contiene el número de puertos de entrada
         self.out_ports = out_ports      # Variable que contiene el número de puertos de salida
+
 
         # Datos básicos del bloque para identificación en funciones.
         self.params.update({'_name_': self.name,'_inputs_': self.in_ports ,'_outputs_': self.out_ports})
@@ -1075,6 +1104,26 @@ class Block(InitSim):
     def draw_Block(self, zone):
         # Dibuja el bloque y los puertos
         pygame.draw.rect(zone, self.b_color, (self.left, self.top, self.width, self.height))
+
+        ######################## importing icons test #########################
+
+        #prueba con iconos externos
+        image = pygame.image.load(self.dirimage)
+        image = pygame.transform.scale(image, (self.height_base, self.height_base))
+        zone.blit(image, (self.left + 0.5*(self.width-self.height_base), self.top + 0.5*(self.height - self.height_base)))
+
+        """
+        definir logo aqui
+        -independiente de cada bloque (if else aqui)
+            -facil de implementar, pero requiere que todos los bloques estén definidos desde aqui
+        -que cada bloque lo ingrese en una primera instancia como parametro
+            -mas util para agregar más funciones, pero afectaria en la limpieza del codigo
+        -que dependa de un archivo externo
+            -mas simple de trabajar, pero crearia una carpeta de más, con archivos que poco aportan a la idea en general
+        """
+
+        #######################################################################
+
         for port_in_location in self.in_coords:
             pygame.draw.circle(zone, self.colors['black'], port_in_location, self.port_radius)
 
@@ -1335,7 +1384,7 @@ class BaseBlocks(InitSim):
     Class to create and show basic blocks used as a mark to generate functional blocks in the user interface
     """
     # Produce un "boton" para generar bloques con las caracteristicas indicadas
-    def __init__(self,b_type, fun_name, io_params, ex_params, b_color, coords, external=False):
+    def __init__(self, b_type, fun_name, io_params, ex_params, b_color, coords, external=False):
         super().__init__()
         self.b_type = b_type
         self.fun_name = fun_name
@@ -1504,3 +1553,67 @@ class Tk_widget:
     def destroy(self):
         # Finaliza la ventana
         self.master.destroy()
+
+class DynamicPlot:
+    def __init__(self, dt, labels=['default']):
+        self.dt = dt                # muestreo
+        self.tlim = 100 * self.dt   # tamaño ventana en segundos
+        self.sort_labels(labels)
+
+        plt.ion()
+        self.axes = plt.gca()
+        self.axes.set_xlim(0, self.tlim)
+
+        self.linelist = ['line'+str(i) for i in range(len(self.labels))]
+
+        for i in range(len(self.linelist)):
+            line = self.linelist[i]
+            self.__dict__[line] = self.axes.plot([], [], label=self.labels[i])[0]
+
+        #self.line, = self.axes.plot([], [])
+
+    def loop(self, new_t, new_y):
+        """
+        new_t: vector con los datos de tiempo hasta ahora
+        new_y: lista de vectores con todos los datos de valores hasta ahora
+        """
+        #self.line, = set_data(new_t, new_y[0])
+        y = self.sort_vectors(new_y)
+
+        # asignar nuevos vectores
+        for i in range(len(self.linelist)):
+            plotline = getattr(self,self.linelist[i])
+            plotline.set_data(new_t, y[:,i])
+
+        # mover ventana
+        if len(new_t)*self.dt >= self.tlim:
+            self.axes.set_xlim(new_t[-1] - self.tlim, new_t[-1])
+
+        self.axes.relim()
+        self.axes.autoscale_view(True, True, True)
+        plt.legend()
+        plt.draw()
+        plt.pause(1e-17)
+
+    def sort_labels(self, labels):
+        """
+        Rearranges the list if some elements are lists too
+        """
+        self.labels = []
+        for elem in labels:
+            if isinstance(elem, str):
+                self.labels += [elem]
+            elif isinstance(elem, list):
+                self.labels += elem
+
+    def sort_vectors(self, ny):
+        """
+        Rearranges all vectors in one matrix
+        """
+        new_vec = ny[0]
+        for i in range(1,len(ny)):
+            new_vec = np.column_stack((new_vec, ny[i]))
+        return new_vec
+
+    def end_dynamic(self):
+        plt.ioff()
