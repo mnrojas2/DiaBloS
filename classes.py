@@ -1032,19 +1032,23 @@ class Block(InitSim):
         self.name = b_type + str(sid)   # Nombre del bloque
         self.b_type = b_type            # Tipo de bloque
         self.sid = sid                  # id del bloque
-        self.b_color = self.set_color(color) # color del bloque
+
         self.left = coords[0]           # Coordenada ubicación línea izquierda
         self.top = coords[1]            # Coordenada ubicación línea superior
         self.width = coords[2]          # Ancho bloque
         self.height = coords[3]         # Altura bloque
-        self.dirimage = './icons/' + self.b_type + '.png'
+        self.height_base = self.height  # Variable que conserva valor de altura por defecto
+
+        self.b_color = self.set_color(color)  # color del bloque
+        self.image = pygame.image.load('./icons/' + self.b_type + '.png')
+        self.image = pygame.transform.scale(self.image, (self.height_base, self.height_base))
+
         self.fun_name = fun_name        # Nombre función asociada para ejecución
         self.params = self.loading_params(params) # Parámetros asociados a la función
         self.init_params_list = list(self.params.keys()) # Lista de parámetros iniciales/editables
         self.external = external
 
         self.port_radius = 8            # Radio del circulo para el dibujado de los puertos
-        self.height_base = self.height  # Variable que conserva valor de altura por defecto
         self.in_ports = in_ports        # Variable que contiene el número de puertos de entrada
         self.out_ports = out_ports      # Variable que contiene el número de puertos de salida
 
@@ -1105,24 +1109,8 @@ class Block(InitSim):
         # Dibuja el bloque y los puertos
         pygame.draw.rect(zone, self.b_color, (self.left, self.top, self.width, self.height))
 
-        ######################## importing icons test #########################
-
-        #prueba con iconos externos
-        image = pygame.image.load(self.dirimage)
-        image = pygame.transform.scale(image, (self.height_base, self.height_base))
-        zone.blit(image, (self.left + 0.5*(self.width-self.height_base), self.top + 0.5*(self.height - self.height_base)))
-
-        """
-        definir logo aqui
-        -independiente de cada bloque (if else aqui)
-            -facil de implementar, pero requiere que todos los bloques estén definidos desde aqui
-        -que cada bloque lo ingrese en una primera instancia como parametro
-            -mas util para agregar más funciones, pero afectaria en la limpieza del codigo
-        -que dependa de un archivo externo
-            -mas simple de trabajar, pero crearia una carpeta de más, con archivos que poco aportan a la idea en general
-        """
-
-        #######################################################################
+        # Cargar iconos externo
+        zone.blit(self.image, (self.left + 0.5*(self.width-self.height_base), self.top + 0.5*(self.height - self.height_base)))
 
         for port_in_location in self.in_coords:
             pygame.draw.circle(zone, self.colors['black'], port_in_location, self.port_radius)
@@ -1395,6 +1383,8 @@ class BaseBlocks(InitSim):
         self.params = ex_params                           # parametros de ejecución en simulación
         self.b_color = self.set_color(b_color)            # Color caracteristico del bloque
         self.size = coords                                # Dimensiones del bloque
+        self.image = pygame.image.load('./icons/' + self.b_type + '.png')
+        self.image = pygame.transform.scale(self.image, (30, 30))
         self.external = external
 
         self.font_size = 24  # Tamaño del texto
@@ -1405,6 +1395,7 @@ class BaseBlocks(InitSim):
         # Dibuja el bloque
         self.collision = pygame.rect.Rect(40, 60 + 40*pos, 30, 30)
         pygame.draw.rect(zone, self.b_color, self.collision)
+        zone.blit(self.image, (40, 60 + 40*pos))
         zone.blit(self.text_display, (90, 70 + 40*pos))
 
     def set_color(self, color):
@@ -1554,6 +1545,7 @@ class Tk_widget:
         # Finaliza la ventana
         self.master.destroy()
 
+# rehacer con PyQT
 class DynamicPlot:
     def __init__(self, dt, labels=['default']):
         self.dt = dt                # muestreo

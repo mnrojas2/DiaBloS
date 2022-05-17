@@ -12,8 +12,8 @@
         {
             "type": "TestMO",
             "sid": 0,
-            "coords_left": 376,
-            "coords_top": 213,
+            "coords_left": 368,
+            "coords_top": 215,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -35,8 +35,8 @@
         {
             "type": "Scope",
             "sid": 0,
-            "coords_left": 515,
-            "coords_top": 181,
+            "coords_left": 534,
+            "coords_top": 169,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -61,8 +61,8 @@
         {
             "type": "Scope",
             "sid": 1,
-            "coords_left": 500,
-            "coords_top": 255,
+            "coords_left": 532,
+            "coords_top": 268,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
