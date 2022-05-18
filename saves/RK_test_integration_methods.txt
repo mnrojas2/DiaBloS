@@ -3,7 +3,6 @@
         "wind_width": 1280,
         "wind_height": 720,
         "fps": 60,
-        "line_creation": 0,
         "only_one": false,
         "enable_line_sel": true,
         "sim_time": 8.0,
@@ -157,8 +156,8 @@
         {
             "type": "Scope",
             "sid": 0,
-            "coords_left": 865,
-            "coords_top": 253,
+            "coords_left": 839,
+            "coords_top": 216,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -181,10 +180,36 @@
             "external": false
         },
         {
+            "type": "Export",
+            "sid": 0,
+            "coords_left": 837,
+            "coords_top": 326,
+            "coords_width": 70,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 0,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                255,
+                160,
+                0
+            ],
+            "run_ord": 3,
+            "io_edit": false,
+            "fun_name": "export",
+            "params": {
+                "str_name": "RK45,FWD,BWD,TUSTIN",
+                "_init_start_": true
+            },
+            "external": false
+        },
+        {
             "type": "Mux",
             "sid": 0,
-            "coords_left": 682,
-            "coords_top": 260,
+            "coords_left": 675,
+            "coords_top": 268,
             "coords_width": 60,
             "coords_height": 74,
             "coords_height_base": 60,
@@ -212,6 +237,16 @@
             "srcport": 0,
             "dstblock": "Integr0",
             "dstport": 0,
+            "points": [
+                [
+                    338,
+                    321.0
+                ],
+                [
+                    501,
+                    158.0
+                ]
+            ],
             "zorder": 0,
             "selected": false
         },
@@ -222,6 +257,16 @@
             "srcport": 0,
             "dstblock": "Integr1",
             "dstport": 0,
+            "points": [
+                [
+                    338,
+                    321.0
+                ],
+                [
+                    501,
+                    262.0
+                ]
+            ],
             "zorder": 0,
             "selected": false
         },
@@ -232,6 +277,16 @@
             "srcport": 0,
             "dstblock": "Integr2",
             "dstport": 0,
+            "points": [
+                [
+                    338,
+                    321.0
+                ],
+                [
+                    504,
+                    368.0
+                ]
+            ],
             "zorder": 0,
             "selected": false
         },
@@ -242,56 +297,136 @@
             "srcport": 0,
             "dstblock": "Integr3",
             "dstport": 0,
+            "points": [
+                [
+                    338,
+                    321.0
+                ],
+                [
+                    506,
+                    474.0
+                ]
+            ],
             "zorder": 0,
             "selected": false
         },
         {
             "name": "Line4",
             "sid": 4,
-            "srcblock": "Mux0",
+            "srcblock": "Integr0",
             "srcport": 0,
-            "dstblock": "Scope0",
+            "dstblock": "Mux0",
             "dstport": 0,
+            "points": [
+                [
+                    581,
+                    158.0
+                ],
+                [
+                    675,
+                    282.8
+                ]
+            ],
+            "zorder": 0,
+            "selected": false
+        },
+        {
+            "name": "Line5",
+            "sid": 5,
+            "srcblock": "Integr1",
+            "srcport": 0,
+            "dstblock": "Mux0",
+            "dstport": 1,
+            "points": [
+                [
+                    581,
+                    262.0
+                ],
+                [
+                    675,
+                    297.6
+                ]
+            ],
             "zorder": 0,
             "selected": false
         },
         {
             "name": "Line6",
             "sid": 6,
-            "srcblock": "Integr0",
+            "srcblock": "Integr2",
             "srcport": 0,
             "dstblock": "Mux0",
-            "dstport": 0,
+            "dstport": 2,
+            "points": [
+                [
+                    584,
+                    368.0
+                ],
+                [
+                    675,
+                    312.4
+                ]
+            ],
             "zorder": 0,
             "selected": false
         },
         {
             "name": "Line7",
             "sid": 7,
-            "srcblock": "Integr1",
+            "srcblock": "Integr3",
             "srcport": 0,
             "dstblock": "Mux0",
-            "dstport": 1,
+            "dstport": 3,
+            "points": [
+                [
+                    586,
+                    474.0
+                ],
+                [
+                    675,
+                    327.2
+                ]
+            ],
             "zorder": 0,
             "selected": false
         },
         {
             "name": "Line8",
             "sid": 8,
-            "srcblock": "Integr2",
+            "srcblock": "Mux0",
             "srcport": 0,
-            "dstblock": "Mux0",
-            "dstport": 2,
+            "dstblock": "Scope0",
+            "dstport": 0,
+            "points": [
+                [
+                    735,
+                    305.0
+                ],
+                [
+                    839,
+                    246.0
+                ]
+            ],
             "zorder": 0,
             "selected": false
         },
         {
             "name": "Line9",
             "sid": 9,
-            "srcblock": "Integr3",
+            "srcblock": "Mux0",
             "srcport": 0,
-            "dstblock": "Mux0",
-            "dstport": 3,
+            "dstblock": "Export0",
+            "dstport": 0,
+            "points": [
+                [
+                    735,
+                    305.0
+                ],
+                [
+                    837,
+                    356.0
+                ]
+            ],
             "zorder": 0,
             "selected": false
         }

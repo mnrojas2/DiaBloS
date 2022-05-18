@@ -140,7 +140,7 @@ class InitSim:
                 sid = len(id_list)
 
         # creación de la línea a partir del id, y data de origen y destino para la misma
-        line = Line(sid, srcData[0], srcData[1], (srcData[2], dstData[2]), dstData[0], dstData[1])  # zorder sin utilizar todavia
+        line = Line(sid, srcData[0], srcData[1], dstData[0], dstData[1], (srcData[2], dstData[2]))  # zorder sin utilizar todavia
         self.line_list.append(line)
 
     def remove_block_and_lines(self):
@@ -381,6 +381,7 @@ class InitSim:
                 "srcport": line.srcport,
                 "dstblock": line.dstblock,
                 "dstport": line.dstport,
+                "points": line.points,
                 "zorder": line.zorder,
                 "selected": line.selected
             }
@@ -470,9 +471,9 @@ class InitSim:
         line = Line(line_data['sid'],
                     line_data['srcblock'],
                     line_data['srcport'],
-                    ((0,0), (0,0)),
                     line_data['dstblock'],
                     line_data['dstport'],
+                    line_data['points'],
                     line_data['zorder'])  # zorder sin utilizar todavia
         line.selected = line_data['selected']
         line.update_line(self.blocks_list)
@@ -789,9 +790,11 @@ class InitSim:
             self.exportData()
 
             #Scope
+            ########## dynplot ###########
             if self.dyn_plot == True:
                 self.plotty.end_dynamic()
             else:
+                ##########################
                 self.plotScope()
 
             # Resetea la inicializacion de los bloques con ejecuciones iniciales especiales (para que puedan ser ejecutados correctamente en la proxima simulación)
@@ -1307,20 +1310,37 @@ class Line(InitSim):
     Class to initialize and maintain lines that connect blocks
     """
     # Clase para la inicialización y mantención de las líneas
-    def __init__(self, sid, srcblock, srcport, points, dstblock, dstport, zorder=0):
+    def __init__(self, sid, srcblock, srcport, dstblock, dstport, points, zorder=0):
         super().__init__()
         self.name = "Line" + str(sid)       # Nombre de la línea
         self.sid = sid                      # id de la línea
         self.srcblock = srcblock            # Nombre del bloque de origen
         self.srcport = srcport              # ID del puerto de origen del bloque
-        self.points = points                # puntos de vertice para la línea(?) ((a,b),(c,d),(e,f),...)
         self.dstblock = dstblock            # Nombre del bloque de origen
         self.dstport = dstport              # ID del puerto de origen del bloque
+
+        self.points = points                # puntos de vertice para la línea(?) ((a,b),(c,d),(e,f),...)
         self.zorder = zorder                # ID de prioridad al momento de dibujar el bloque
+
         self.selected = False               # Indica estado de selección en pantalla
 
     def draw_line(self,zone):
-        # Dibuja la línea con los datos del init
+        # Dibuja la línea con los datos del
+        """
+        -debe tener inicio y final
+        -debe formarse unicamente por lineas horizontales y verticales
+        -debe tener vertices removibles (el sistema lo que hace despues es producir diagonales)
+        -para el caso de conexion en un mismo bloque, debe pasar por fuera de este
+        -deseable que las lineas puedan evitar bloques como lineas paralelas (path planning)
+
+        -hacia adelante (derecha) que sea idealmente directo con lineas rectas
+        -hacia atras (izquierda) que baje o suba, linea recta horizontal directa, linea vertical hasta el bloque de llegada y linea horizontal hacia el punto
+
+        que se tiene hasta ahora:
+        -self points: guarda lista de puntos que sirven para vertices (actualmente unicamente se utiliza para el forloop de abajo que solo crea una linea (entre inicio y final)
+        -self.zorder: no hace nada, pero puede servir para indicar alguna jerarquia entre lineas
+        """
+
         for i in range(len(self.points) - 1):
             if self.selected == True:
                 line_width = 5
@@ -1382,18 +1402,19 @@ class BaseBlocks(InitSim):
         self.io_edit = io_params['io_edit']
         self.params = ex_params                           # parametros de ejecución en simulación
         self.b_color = self.set_color(b_color)            # Color caracteristico del bloque
-        self.size = coords                                # Dimensiones del bloque
+        self.size = coords                                # Dimensiones del bloque de simulacion (este no)
+        self.side_length = (30,30)
         self.image = pygame.image.load('./icons/' + self.b_type + '.png')
-        self.image = pygame.transform.scale(self.image, (30, 30))
+        self.image = pygame.transform.scale(self.image, self.side_length)
         self.external = external
 
         self.font_size = 24  # Tamaño del texto
         self.text = pygame.font.SysFont(None, self.font_size)
         self.text_display = self.text.render(self.fun_name, True, self.colors['black'])
 
-    def draw_baseblock(self,zone, pos):
+    def draw_baseblock(self, zone, pos):
         # Dibuja el bloque
-        self.collision = pygame.rect.Rect(40, 60 + 40*pos, 30, 30)
+        self.collision = pygame.rect.Rect(40, 60 + 40*pos, self.side_length[0], self.side_length[1])
         pygame.draw.rect(zone, self.b_color, self.collision)
         zone.blit(self.image, (40, 60 + 40*pos))
         zone.blit(self.text_display, (90, 70 + 40*pos))

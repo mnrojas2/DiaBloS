@@ -277,6 +277,16 @@
             "srcport": 0,
             "dstblock": "Sum0",
             "dstport": 0,
+            "points": [
+                [
+                    339,
+                    464.0
+                ],
+                [
+                    504,
+                    514.6666666666666
+                ]
+            ],
             "zorder": 0,
             "selected": false
         },
@@ -287,6 +297,16 @@
             "srcport": 0,
             "dstblock": "Sum0",
             "dstport": 1,
+            "points": [
+                [
+                    344,
+                    578.0
+                ],
+                [
+                    504,
+                    531.3333333333334
+                ]
+            ],
             "zorder": 0,
             "selected": false
         },
@@ -297,6 +317,16 @@
             "srcport": 0,
             "dstblock": "Scope2",
             "dstport": 0,
+            "points": [
+                [
+                    574,
+                    523.0
+                ],
+                [
+                    704,
+                    509.0
+                ]
+            ],
             "zorder": 0,
             "selected": false
         },
@@ -307,6 +337,16 @@
             "srcport": 0,
             "dstblock": "Scope1",
             "dstport": 0,
+            "points": [
+                [
+                    574,
+                    365.0
+                ],
+                [
+                    700,
+                    342.0
+                ]
+            ],
             "zorder": 0,
             "selected": false
         },
@@ -317,6 +357,16 @@
             "srcport": 0,
             "dstblock": "Integr0",
             "dstport": 0,
+            "points": [
+                [
+                    358,
+                    297.0
+                ],
+                [
+                    478,
+                    230.0
+                ]
+            ],
             "zorder": 0,
             "selected": false
         },
@@ -327,6 +377,16 @@
             "srcport": 0,
             "dstblock": "Integr1",
             "dstport": 0,
+            "points": [
+                [
+                    358,
+                    297.0
+                ],
+                [
+                    494,
+                    365.0
+                ]
+            ],
             "zorder": 0,
             "selected": false
         },
@@ -337,6 +397,16 @@
             "srcport": 0,
             "dstblock": "Scope0",
             "dstport": 0,
+            "points": [
+                [
+                    558,
+                    230.0
+                ],
+                [
+                    680,
+                    218.0
+                ]
+            ],
             "zorder": 0,
             "selected": false
         }
