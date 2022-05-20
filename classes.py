@@ -1319,7 +1319,7 @@ class Line(InitSim):
         self.dstblock = dstblock            # Nombre del bloque de origen
         self.dstport = dstport              # ID del puerto de origen del bloque
 
-        self.points = points                # puntos de vertice para la línea(?) ((a,b),(c,d),(e,f),...)
+        self.points = self.trajectory(points)                # puntos de vertice para la línea(?) ((a,b),(c,d),(e,f),...)
         self.zorder = zorder                # ID de prioridad al momento de dibujar el bloque
 
         self.selected = False               # Indica estado de selección en pantalla
@@ -1341,12 +1341,34 @@ class Line(InitSim):
         -self.zorder: no hace nada, pero puede servir para indicar alguna jerarquia entre lineas
         """
 
+
         for i in range(len(self.points) - 1):
             if self.selected == True:
                 line_width = 5
             else:
                 line_width = 2
             pygame.draw.line(zone, self.colors['black'], self.points[i], self.points[i + 1], line_width)
+
+    def trajectory(self, points):
+        if len(points) > 2:
+            return points
+        start = points[0]
+        finish = points[1]
+
+        # si ambos ejes tienen 'x' o 'y' en común:
+        if start[0] == finish[0] or start[1] == finish[1]:
+            points = (start, finish)
+        # si el puerto de llegada está a la derecha del puerto de salida
+        elif start[0] < finish[0]:
+            points = (start, (int(0.5*(start[0]+finish[0])), start[1]), (int(0.5*(start[0]+finish[0])), finish[1]), finish)
+        # si el puerto de llegada está a la izquierda del puerto de salida y más arriba o más abajo
+        elif start[0] > finish[0] and np.abs(start[1] - finish[1]) > 60:
+            points = (start, (start[0] + 30, start[1]), (start[0] + 30, int(0.5*(start[1]+finish[1]))), (finish[0] - 30, int(0.5*(start[1]+finish[1]))), (finish[0] - 30, finish[1]), finish)
+        # si el puerto de llegada está a la izquierda del puerto de salida y a una altura similar
+        elif start[0] > finish[0] and np.abs(start[1] - finish[1]) <= 60:
+            points = (start, (start[0] + 30, start[1]), (start[0] + 30, max(start[1], finish[1]) + 50), (finish[0] - 30, max(start[1], finish[1]) + 50), (finish[0] - 30, finish[1]), finish)
+
+        return points
 
     def update_line(self, block_list):
         # Actualiza el valor de la línea según la ubicación y tamaño del bloque
@@ -1355,31 +1377,33 @@ class Line(InitSim):
                 startline = block.out_coords[self.srcport]
             if block.name == self.dstblock:
                 endline = block.in_coords[self.dstport]
-        self.points = (startline, endline)
+        self.points = self.trajectory((startline, endline))
 
     def collision(self, m_coords):
         # Determinar colisión entre línea y posición de un click
         min_dst = 10
-        line_A = np.array(self.points[0])
-        line_B = np.array(self.points[1])
         m_coords = np.array(m_coords)
 
-        if all(line_A == m_coords) or all(line_B == m_coords):
-            distance_to_line = 0.0
-        elif np.arccos(np.dot((m_coords - line_A) / np.linalg.norm(m_coords - line_A),
-                              (line_B - line_A) / np.linalg.norm(line_B - line_A))) > np.pi / 2:
-            distance_to_line = np.linalg.norm(m_coords - line_A)
-        elif np.arccos(np.dot((m_coords - line_B) / np.linalg.norm(m_coords - line_B),
-                              (line_A - line_B) / np.linalg.norm(line_A - line_B))) > np.pi / 2:
-            distance_to_line = np.linalg.norm(m_coords - line_B)
-        else:
-            distance_to_line = np.linalg.norm(np.cross(line_A - line_B, line_A - m_coords)) / np.linalg.norm(
-                line_B - line_A)
+        for i in range(len(self.points) - 1):
+            line_A = np.array(self.points[i])       # pos inicio
+            line_B = np.array(self.points[i+1])     # pos final
 
-        if distance_to_line > min_dst:
-            return False
-        else:
-            return True
+            if all(line_A == m_coords) or all(line_B == m_coords):
+                distance_to_line = 0.0
+            elif np.arccos(np.dot((m_coords - line_A) / np.linalg.norm(m_coords - line_A),
+                                  (line_B - line_A) / np.linalg.norm(line_B - line_A))) > np.pi / 2:
+                distance_to_line = np.linalg.norm(m_coords - line_A)
+            elif np.arccos(np.dot((m_coords - line_B) / np.linalg.norm(m_coords - line_B),
+                                  (line_A - line_B) / np.linalg.norm(line_A - line_B))) > np.pi / 2:
+                distance_to_line = np.linalg.norm(m_coords - line_B)
+            else:
+                distance_to_line = np.linalg.norm(np.cross(line_A - line_B, line_A - m_coords)) / np.linalg.norm(
+                    line_B - line_A)
+    
+            if distance_to_line <= min_dst:
+                return True
+        return False
+
 
     def __str__(self):
         # Imprime en la consola, el nombre de la línea, su origen y destino
