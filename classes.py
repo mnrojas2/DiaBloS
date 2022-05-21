@@ -448,7 +448,7 @@ class InitSim:
         # Reordena los datos de los diccionarios, para utilizarlos creando un nuevo bloque
         block = Block(block_data['type'],
                       block_data['sid'],
-                      (block_data['coords_left'],block_data['coords_top'],block_data['coords_width'],block_data['coords_height']),
+                      (block_data['coords_left'],block_data['coords_top'],block_data['coords_width'],block_data['coords_height_base']),
                       block_data['b_color'],
                       block_data['in_ports'],
                       block_data['out_ports'],
@@ -457,7 +457,7 @@ class InitSim:
                       block_data['fun_name'],
                       block_data['params'],
                       block_data['external'])
-        block.height_base = block_data['coords_height_base']
+        block.height = block_data['coords_height']
         block.selected = block_data['selected']
         block.dragging = block_data['dragging']
         #block.loading_params(block_data['params'])
@@ -1316,10 +1316,16 @@ class Line(InitSim):
         self.sid = sid                      # id de la línea
         self.srcblock = srcblock            # Nombre del bloque de origen
         self.srcport = srcport              # ID del puerto de origen del bloque
-        self.dstblock = dstblock            # Nombre del bloque de origen
-        self.dstport = dstport              # ID del puerto de origen del bloque
+        self.dstblock = dstblock            # Nombre del bloque de destino
+        self.dstport = dstport              # ID del puerto de destino del bloque
 
-        self.points = self.trajectory(points)                # puntos de vertice para la línea(?) ((a,b),(c,d),(e,f),...)
+        # Variables para creación de líneas
+        self.total_srcports = srcport + 1
+        self.total_dstports = dstport + 1
+        self.srcbottom = points[0][1]
+        self.dstbottom = points[0][1]
+
+        self.points = self.trajectory(points)   # puntos de vertice para la línea(?) ((a,b),(c,d),(e,f),...)
         self.zorder = zorder                # ID de prioridad al momento de dibujar el bloque
 
         self.selected = False               # Indica estado de selección en pantalla
@@ -1327,21 +1333,13 @@ class Line(InitSim):
     def draw_line(self,zone):
         # Dibuja la línea con los datos del
         """
-        -debe tener inicio y final
-        -debe formarse unicamente por lineas horizontales y verticales
-        -debe tener vertices removibles (el sistema lo que hace despues es producir diagonales)
         -para el caso de conexion en un mismo bloque, debe pasar por fuera de este
+        -deseable tener vertices removibles (el sistema lo que hace despues es producir diagonales)
         -deseable que las lineas puedan evitar bloques como lineas paralelas (path planning)
 
-        -hacia adelante (derecha) que sea idealmente directo con lineas rectas
-        -hacia atras (izquierda) que baje o suba, linea recta horizontal directa, linea vertical hasta el bloque de llegada y linea horizontal hacia el punto
-
-        que se tiene hasta ahora:
-        -self points: guarda lista de puntos que sirven para vertices (actualmente unicamente se utiliza para el forloop de abajo que solo crea una linea (entre inicio y final)
-        -self.zorder: no hace nada, pero puede servir para indicar alguna jerarquia entre lineas
+        self.total_srcports = numero total de puertos en el bloque de salida
+        self.total_dstports = numero total de puertos en el bloque de llegada
         """
-
-
         for i in range(len(self.points) - 1):
             if self.selected == True:
                 line_width = 5
@@ -1350,24 +1348,45 @@ class Line(InitSim):
             pygame.draw.line(zone, self.colors['black'], self.points[i], self.points[i + 1], line_width)
 
     def trajectory(self, points):
+        """
+        Crea los puntos intermedios que se muestran en la interfaz
+        """
         if len(points) > 2:
             return points
         start = points[0]
-        finish = points[1]
+        finish = points[-1]
+
+        h_src = 20*(self.total_srcports-self.srcport) # 30: distancia horizontal desde el puerto al vertice adyacente
+        h_dst = 20*(self.total_dstports-self.dstport) # 30: distancia horizontal desde el puerto al vertice adyacente
+        v_dst = 20*(self.total_dstports-self.dstport) # 50: distancia vertical desde el puerto al vertice adyacente
+        b_dst = 25*max(self.total_dstports, self.total_srcports) # 60: distancia separacion entre puertos (cubre bloque normal)
 
         # si ambos ejes tienen 'x' o 'y' en común:
-        if start[0] == finish[0] or start[1] == finish[1]:
-            points = (start, finish)
+        if start[0] == finish[0] or (start[1] == finish[1] and start[0] < finish[0]):
+            points = (start,
+                      finish)
         # si el puerto de llegada está a la derecha del puerto de salida
         elif start[0] < finish[0]:
-            points = (start, (int(0.5*(start[0]+finish[0])), start[1]), (int(0.5*(start[0]+finish[0])), finish[1]), finish)
+            points = (start,
+                      (max(start[0]+10,finish[0] - h_dst), start[1]),
+                      (max(start[0]+10,finish[0] - h_dst), finish[1]),
+                      finish)
         # si el puerto de llegada está a la izquierda del puerto de salida y más arriba o más abajo
-        elif start[0] > finish[0] and np.abs(start[1] - finish[1]) > 60:
-            points = (start, (start[0] + 30, start[1]), (start[0] + 30, int(0.5*(start[1]+finish[1]))), (finish[0] - 30, int(0.5*(start[1]+finish[1]))), (finish[0] - 30, finish[1]), finish)
+        elif start[0] > finish[0] and np.abs(start[1] - finish[1]) > b_dst:
+            points = (start,
+                      (start[0] + h_src, start[1]),
+                      (start[0] + h_src, int(0.5*(start[1]+finish[1]))),
+                      (finish[0] - h_dst, int(0.5*(start[1]+finish[1]))),
+                      (finish[0] - h_dst, finish[1]),
+                      finish)
         # si el puerto de llegada está a la izquierda del puerto de salida y a una altura similar
-        elif start[0] > finish[0] and np.abs(start[1] - finish[1]) <= 60:
-            points = (start, (start[0] + 30, start[1]), (start[0] + 30, max(start[1], finish[1]) + 50), (finish[0] - 30, max(start[1], finish[1]) + 50), (finish[0] - 30, finish[1]), finish)
-
+        elif start[0] > finish[0] and np.abs(start[1] - finish[1]) <= b_dst:
+            points = (start,
+                      (start[0] + h_src, start[1]),
+                      (start[0] + h_src, max(self.srcbottom, self.dstbottom) + v_dst),
+                      (finish[0] - h_dst, max(self.srcbottom, self.dstbottom) + v_dst),
+                      (finish[0] - h_dst, finish[1]),
+                      finish)
         return points
 
     def update_line(self, block_list):
@@ -1375,8 +1394,12 @@ class Line(InitSim):
         for block in block_list:
             if block.name == self.srcblock:
                 startline = block.out_coords[self.srcport]
+                self.total_srcports = block.out_ports
+                self.srcbottom = block.top + block.height
             if block.name == self.dstblock:
                 endline = block.in_coords[self.dstport]
+                self.total_dstports = block.in_ports
+                self.dstbottom = block.top + block.height
         self.points = self.trajectory((startline, endline))
 
     def collision(self, m_coords):
@@ -1403,7 +1426,6 @@ class Line(InitSim):
             if distance_to_line <= min_dst:
                 return True
         return False
-
 
     def __str__(self):
         # Imprime en la consola, el nombre de la línea, su origen y destino
