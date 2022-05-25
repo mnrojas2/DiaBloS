@@ -255,7 +255,7 @@
                     158.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -283,7 +283,7 @@
                     262.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -311,7 +311,7 @@
                     368.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -339,7 +339,7 @@
                     472.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -367,7 +367,7 @@
                     282.8
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -395,7 +395,7 @@
                     297.6
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -423,7 +423,7 @@
                     312.4
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -451,7 +451,7 @@
                     327.2
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -479,8 +479,8 @@
                     245.0
                 ]
             ],
-            "zorder": 0,
-            "selected": false
+            "cptr": 0,
+            "selected": true
         },
         {
             "name": "Line9",
@@ -507,8 +507,8 @@
                     356.0
                 ]
             ],
-            "zorder": 0,
-            "selected": false
+            "cptr": 0,
+            "selected": true
         }
     ]
 }

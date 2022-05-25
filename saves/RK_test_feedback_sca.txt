@@ -332,7 +332,7 @@
                     362.6666666666667
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -360,7 +360,7 @@
                     379.3333333333333
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -388,7 +388,7 @@
                     171.66666666666666
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -416,7 +416,7 @@
                     127.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -436,7 +436,7 @@
                     180.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -464,7 +464,7 @@
                     475.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -492,7 +492,7 @@
                     507.6666666666667
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -520,7 +520,7 @@
                     429.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -548,7 +548,7 @@
                     227.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -576,7 +576,7 @@
                     548.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -612,7 +612,7 @@
                     524.3333333333334
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -648,7 +648,7 @@
                     188.33333333333334
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         }
     ]

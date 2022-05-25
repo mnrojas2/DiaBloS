@@ -141,8 +141,8 @@
                     176.14285714285714
                 ]
             ],
-            "zorder": 0,
-            "selected": false
+            "cptr": 0,
+            "selected": true
         },
         {
             "name": "Line1",
@@ -169,7 +169,7 @@
                     221.57142857142856
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -197,7 +197,7 @@
                     236.71428571428572
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -225,7 +225,7 @@
                     206.42857142857144
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -253,7 +253,7 @@
                     191.28571428571428
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -281,8 +281,8 @@
                     251.85714285714286
                 ]
             ],
-            "zorder": 0,
-            "selected": false
+            "cptr": 0,
+            "selected": true
         }
     ]
 }

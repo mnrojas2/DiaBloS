@@ -597,7 +597,7 @@
                     83.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -625,7 +625,7 @@
                     188.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -653,7 +653,7 @@
                     326.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -681,7 +681,7 @@
                     359.6666666666667
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -709,7 +709,7 @@
                     376.3333333333333
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -737,7 +737,7 @@
                     363.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -773,7 +773,7 @@
                     428.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -801,7 +801,7 @@
                     305.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -829,7 +829,7 @@
                     412.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -849,7 +849,7 @@
                     138.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -869,7 +869,7 @@
                     148.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -897,7 +897,7 @@
                     532.5
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -925,7 +925,7 @@
                     544.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -953,7 +953,7 @@
                     605.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -981,7 +981,7 @@
                     523.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -1009,7 +1009,7 @@
                     543.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -1037,7 +1037,7 @@
                     504.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -1065,7 +1065,7 @@
                     592.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -1101,7 +1101,7 @@
                     629.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -1129,7 +1129,7 @@
                     557.5
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -1165,7 +1165,7 @@
                     545.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -1201,7 +1201,7 @@
                     659.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         },
         {
@@ -1237,7 +1237,7 @@
                     158.0
                 ]
             ],
-            "zorder": 0,
+            "cptr": 0,
             "selected": false
         }
     ]

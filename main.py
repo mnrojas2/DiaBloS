@@ -219,6 +219,16 @@ def main_execution():
                 if event.key == pygame.K_LCTRL or event.key == pygame.K_RCTRL:
                     sim_init.holding_CTRL = False
 
+                elif event.key == pygame.K_UP:
+                    for line in sim_init.line_list:
+                        if line.selected == True:
+                            line.change_color(1)
+
+                elif event.key == pygame.K_DOWN:
+                    for line in sim_init.line_list:
+                        if line.selected == True:
+                            line.change_color(-1)
+
         # - updates (without draws) -
 
         # - draws (without updates) -

@@ -23,14 +23,22 @@ class InitSim:
         self.SCREEN_HEIGHT = 720
 
         self.colors = {'black': (0,0,0),
-                       'white': (255,255,255),
                        'red': (255,0,0),
                        'green': (0,255,0),
                        'blue': (0,0,255),
                        'yellow': (255,255,0),
                        'magenta': (255,0,255),
                        'cyan': (0,255,255),
-                       'purple': (128,0,255)}
+                       'purple': (128,0,255),
+                       'orange': (255, 128, 0),
+                       'aqua': (0, 255, 128),
+                       'pink': (255, 0, 128),
+                       'lime_green': (128, 255, 0),
+                       'light_blue': (0, 128, 255),
+                       'dark_red': (128, 0, 0),
+                       'dark_green': (0, 128, 0),
+                       'dark_blue': (0, 0, 128),
+                       'white': (255,255,255)}
 
         self.FPS = 60
 
@@ -382,7 +390,7 @@ class InitSim:
                 "dstblock": line.dstblock,
                 "dstport": line.dstport,
                 "points": line.points,
-                "zorder": line.zorder,
+                "cptr": line.cptr,
                 "selected": line.selected
             }
             lines_dict.append(line_dict)
@@ -474,7 +482,7 @@ class InitSim:
                     line_data['dstblock'],
                     line_data['dstport'],
                     line_data['points'],
-                    line_data['zorder'])  # zorder sin utilizar todavia
+                    line_data['cptr'])
         line.selected = line_data['selected']
         line.update_line(self.blocks_list)
         self.line_list.append(line)
@@ -1310,7 +1318,7 @@ class Line(InitSim):
     Class to initialize and maintain lines that connect blocks
     """
     # Clase para la inicialización y mantención de las líneas
-    def __init__(self, sid, srcblock, srcport, dstblock, dstport, points, zorder=0):
+    def __init__(self, sid, srcblock, srcport, dstblock, dstport, points, cptr=0):
         super().__init__()
         self.name = "Line" + str(sid)       # Nombre de la línea
         self.sid = sid                      # id de la línea
@@ -1326,26 +1334,18 @@ class Line(InitSim):
         self.dstbottom = points[0][1]
 
         self.points = self.trajectory(points)   # puntos de vertice para la línea(?) ((a,b),(c,d),(e,f),...)
-        self.zorder = zorder                # ID de prioridad al momento de dibujar el bloque
+        self.cptr = cptr                      # ID de prioridad al momento de dibujar el bloque
 
-        self.selected = False               # Indica estado de selección en pantalla
+        self.selected = False                   # Indica estado de selección en pantalla
 
     def draw_line(self,zone):
-        # Dibuja la línea con los datos del
-        """
-        -para el caso de conexion en un mismo bloque, debe pasar por fuera de este
-        -deseable tener vertices removibles (el sistema lo que hace despues es producir diagonales)
-        -deseable que las lineas puedan evitar bloques como lineas paralelas (path planning)
-
-        self.total_srcports = numero total de puertos en el bloque de salida
-        self.total_dstports = numero total de puertos en el bloque de llegada
-        """
+        # Dibuja la línea con los datos
         for i in range(len(self.points) - 1):
             if self.selected == True:
                 line_width = 5
             else:
                 line_width = 2
-            pygame.draw.line(zone, self.colors['black'], self.points[i], self.points[i + 1], line_width)
+            pygame.draw.line(zone, self.colors[list(self.colors.keys())[self.cptr]], self.points[i], self.points[i + 1], line_width)
 
     def trajectory(self, points):
         """
@@ -1426,6 +1426,13 @@ class Line(InitSim):
             if distance_to_line <= min_dst:
                 return True
         return False
+
+    def change_color(self, ptr):
+        self.cptr += ptr
+        if self.cptr < 0:
+            self.cptr = len(list(self.colors.keys()))-2
+        elif self.cptr == len(list(self.colors.keys()))-1:
+            self.cptr = 0
 
     def __str__(self):
         # Imprime en la consola, el nombre de la línea, su origen y destino
