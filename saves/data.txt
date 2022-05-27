@@ -39,7 +39,7 @@
         {
             "type": "Sum",
             "sid": 0,
-            "coords_left": 793,
+            "coords_left": 792,
             "coords_top": 161,
             "coords_width": 70,
             "coords_height": 106,
@@ -57,7 +57,7 @@
             "io_edit": "input",
             "fun_name": "sumator",
             "params": {
-                "sign": "++"
+                "sign": "++++++"
             },
             "external": false
         },
@@ -84,7 +84,7 @@
             "params": {
                 "amplitude": 1.0,
                 "omega": 1.0,
-                "init_angle": 0
+                "init_angle": 0.0
             },
             "external": false
         },
@@ -109,8 +109,34 @@
             "io_edit": false,
             "fun_name": "noise",
             "params": {
-                "sigma": 1,
-                "mu": 0
+                "sigma": 1.0,
+                "mu": 0.0
+            },
+            "external": false
+        },
+        {
+            "type": "Scope",
+            "sid": 0,
+            "coords_left": 1000,
+            "coords_top": 184,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 0,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                220,
+                20,
+                60
+            ],
+            "run_ord": 3,
+            "io_edit": false,
+            "fun_name": "scope",
+            "params": {
+                "labels": "x1",
+                "_init_start_": true
             },
             "external": false
         }
@@ -129,20 +155,20 @@
                     161.0
                 ],
                 [
-                    673,
+                    672,
                     161.0
                 ],
                 [
-                    673,
+                    672,
                     176.14285714285714
                 ],
                 [
-                    793,
+                    792,
                     176.14285714285714
                 ]
             ],
             "cptr": 0,
-            "selected": true
+            "selected": false
         },
         {
             "name": "Line1",
@@ -157,15 +183,15 @@
                     359.0
                 ],
                 [
-                    733,
+                    732,
                     359.0
                 ],
                 [
-                    733,
+                    732,
                     221.57142857142856
                 ],
                 [
-                    793,
+                    792,
                     221.57142857142856
                 ]
             ],
@@ -185,15 +211,15 @@
                     359.0
                 ],
                 [
-                    753,
+                    752,
                     359.0
                 ],
                 [
-                    753,
+                    752,
                     236.71428571428572
                 ],
                 [
-                    793,
+                    792,
                     236.71428571428572
                 ]
             ],
@@ -213,15 +239,15 @@
                     244.0
                 ],
                 [
-                    713,
+                    712,
                     244.0
                 ],
                 [
-                    713,
+                    712,
                     206.42857142857144
                 ],
                 [
-                    793,
+                    792,
                     206.42857142857144
                 ]
             ],
@@ -241,15 +267,15 @@
                     244.0
                 ],
                 [
-                    693,
+                    692,
                     244.0
                 ],
                 [
-                    693,
+                    692,
                     191.28571428571428
                 ],
                 [
-                    793,
+                    792,
                     191.28571428571428
                 ]
             ],
@@ -269,20 +295,40 @@
                     161.0
                 ],
                 [
-                    773,
+                    772,
                     161.0
                 ],
                 [
-                    773,
+                    772,
                     251.85714285714286
                 ],
                 [
-                    793,
+                    792,
                     251.85714285714286
                 ]
             ],
             "cptr": 0,
-            "selected": true
+            "selected": false
+        },
+        {
+            "name": "Line6",
+            "sid": 6,
+            "srcblock": "Sum0",
+            "srcport": 0,
+            "dstblock": "Scope0",
+            "dstport": 0,
+            "points": [
+                [
+                    862,
+                    214.0
+                ],
+                [
+                    1000,
+                    214.0
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
         }
     ]
 }

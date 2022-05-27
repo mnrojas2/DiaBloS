@@ -34,6 +34,7 @@ def main_execution():
     pp_b = sim_init.buttons_list[4]
     st_b = sim_init.buttons_list[5]
     sh_sc = sim_init.buttons_list[6]
+    dy_sc = sim_init.buttons_list[7]
 
     # - mainloop -
 
@@ -56,26 +57,10 @@ def main_execution():
                             sim_init.add_block(block, event.pos)
 
                 elif event.button == 1 and sim_init.holding_CTRL == False:
-                    #####
-                    if new_b.collision.collidepoint(event.pos):
-                        new_b.pressed = True
-                        #sim_init.clear_all()
-                    elif load_b.collision.collidepoint(event.pos):
-                        load_b.pressed = True
-                        #sim_init.open()
-                    elif save_b.collision.collidepoint(event.pos):
-                        save_b.pressed = True
-                        #sim_init.save()
-                    elif sim_b.collision.collidepoint(event.pos):
-                        sim_b.pressed = True
-                        #sim_init.execution_init()
-                    elif pp_b.collision.collidepoint(event.pos):
-                        pp_b.pressed = True
-                    elif st_b.collision.collidepoint(event.pos):
-                        st_b.pressed = True
-                    elif sh_sc.collision.collidepoint(event.pos):
-                        sh_sc.pressed = True
-                    #####
+                    for button in sim_init.buttons_list:
+                        if button.collision.collidepoint(event.pos):
+                            button.pressed = True
+
                     for b_elem in sim_init.blocks_list:
                         if b_elem.rectf.collidepoint(event.pos):
                             b_elem.selected = True
@@ -158,6 +143,15 @@ def main_execution():
                 elif sh_sc.collision.collidepoint(event.pos):
                     sh_sc.pressed = False
                     sim_init.plot_again()
+                elif dy_sc.collision.collidepoint(event.pos):
+                    if sim_init.dynamic_plot == False:
+                        sim_init.dynamic_plot = True
+                        print("DYNAMIC PLOT: ON")
+                    elif sim_init.dynamic_plot == True:
+                        sim_init.dynamic_plot = False
+                        dy_sc.pressed = False
+                        print("DYNAMIC PLOT: OFF")
+
 
                 # Se deja de mover un bloque y se actualizan las lineas conectadas a sus puertos
                 for b_elem in sim_init.blocks_list:

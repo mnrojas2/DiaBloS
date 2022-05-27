@@ -14,6 +14,9 @@ from functools import partial           # PSF
 import os                               # PSF
 from block_functions import *
 
+import pyqtgraph as pg
+from pyqtgraph.Qt import QtCore
+
 class InitSim:
     """
     Class that manages the simulation interface and main functions
@@ -62,6 +65,7 @@ class InitSim:
 
         self.execution_pauseplay = 'play'
         self.execution_stop = False
+        self.dynamic_plot = False
 
     def main_buttons(self, zone):
         """
@@ -76,8 +80,9 @@ class InitSim:
         pauseplay = Button('_pauseplay_', (520, 10, 40, 40))
         stop = Button('_stop_', (580, 10, 40, 40))
         show_scope = Button('Plot', (640, 10, 60, 40))
+        dynamic_scope = Button('Dyn Plot', (720, 10, 80, 40))
 
-        self.buttons_list = [new, load, save, sim, pauseplay, stop, show_scope]
+        self.buttons_list = [new, load, save, sim, pauseplay, stop, show_scope, dynamic_scope]
         self.button_margin = 80
 
     def display_buttons(self, zone):
@@ -672,16 +677,7 @@ class InitSim:
         # actualizar plots
 
         ######## dynamic plot test ########
-        self.dyn_plot = False
-        if self.dyn_plot == True:
-            labels_list = []
-            for block in self.blocks_list:
-                if block.b_type == 'Scope':
-                    b_labels = block.params['vec_labels']
-                    labels_list.append(b_labels)
-
-            if labels_list != []:
-                self.plotty = DynamicPlot(self.sim_dt, labels_list)
+        self.dynamic_plot_function(0)
         ###################################
 
 
@@ -798,11 +794,7 @@ class InitSim:
             self.exportData()
 
             #Scope
-            ########## dynplot ###########
-            if self.dyn_plot == True:
-                self.plotty.end_dynamic()
-            else:
-                ##########################
+            if self.dynamic_plot == False:
                 self.plotScope()
 
             # Resetea la inicializacion de los bloques con ejecuciones iniciales especiales (para que puedan ser ejecutados correctamente en la proxima simulación)
@@ -820,13 +812,7 @@ class InitSim:
             print("*****EXECUTION STOPPED*****")
 
         ######## dynamic plot test ########
-        if self.dyn_plot == True:
-            vector_list = []
-            for block in self.blocks_list:
-                if block.b_type == 'Scope':
-                    b_vectors = block.params['vector']
-                    vector_list.append(b_vectors)
-            self.plotty.loop(self.timeline, vector_list)
+        self.dynamic_plot_function(1)
         ###################################
 
         self.rk_counter += 1
@@ -1031,6 +1017,33 @@ class InitSim:
         if export_toggle == True:
             np.savez('saves/' + self.filename[:-4], t = self.timeline, **vec_dict)
             print("DATA EXPORTED TO",'saves/' + self.filename[:-4] + '.npz')
+
+    def dynamic_plot_function(self, step):
+        if self.dynamic_plot == False:
+            return
+
+        if step == 0: # init
+            labels_list = []
+            for block in self.blocks_list:
+                if block.b_type == 'Scope':
+                    b_labels = block.params['vec_labels']
+                    labels_list.append(b_labels)
+
+            if labels_list != []:
+                self.plotty = DynamicPlot(self.sim_dt, labels_list)
+
+        if step == 1: # loop
+            vector_list = []
+            for block in self.blocks_list:
+                if block.b_type == 'Scope':
+                    b_vectors = block.params['vector']
+                    vector_list.append(b_vectors)
+            if len(vector_list) > 0:
+                self.plotty.loop(self.timeline, vector_list)
+            else:
+                self.dynamic_plot = False
+                self.buttons_list[7].pressed = False
+                print("DYNAMIC PLOT: OFF")
 
 
 class Block(InitSim):
@@ -1621,6 +1634,7 @@ class Tk_widget:
 
 # rehacer con PyQT
 class DynamicPlot:
+    '''
     def __init__(self, dt, labels=['default']):
         self.dt = dt                # muestreo
         self.tlim = 100 * self.dt   # tamaño ventana en segundos
@@ -1661,6 +1675,58 @@ class DynamicPlot:
         plt.draw()
         plt.pause(1e-17)
 
+        def end_dynamic(self):
+            plt.ioff()#'''
+
+        # data_three_methods_other
+        # -no dynplot: 264.57 seconds
+        # -pyqtgraph: 307.99 seconds
+        # -matplotlib: ~1000 seconds
+
+    def __init__(self, dt, labels=['default']):
+        self.dt = dt
+        self.xrange = 100*self.dt
+        self.sort_labels(labels)
+
+        self.app = pg.mkQApp("Scope")
+        self.win = pg.GraphicsLayoutWidget(show=True)
+        self.win.resize(1280, 720)
+        self.win.setWindowTitle('Scope')
+
+        pg.setConfigOptions(antialias=True)
+
+        self.linelist = ['line' + str(i) for i in range(len(self.labels))]
+        self.plot_win = self.win.addPlot(title='Dynamic Plot')
+
+        for i in range(len(self.linelist)):
+            self.__dict__[self.linelist[i]] = self.plot_win.plot([], [], label=self.labels[i])
+
+        self.plot_win.showGrid(x=True, y=True)
+
+    def plot_config(self, settings_dict={}):
+        return
+
+    def create_plot_item(self, name):
+        plotItem = pg.PlotItem(viewBox=vb, name=name, axisItems={'bottom': self.axisTime})
+        plotItem.showGrid(True, True)
+        return plotItem
+
+    def loop(self, new_t, new_y):
+        y = self.sort_vectors(new_y)
+
+        if len(new_t)*self.dt >= self.xrange:
+            self.plot_win.setXRange(new_t[-1] - self.xrange, new_t[-1])
+
+        # asignar nuevos vectores
+        pg.QtGui.QApplication.processEvents()
+
+        for i in range(len(self.linelist)):
+            plotline = getattr(self, self.linelist[i])
+            if len(self.linelist) == 1:
+                plotline.setData(new_t, y, name=self.labels[i], clear=True)  # '''
+            else:
+                plotline.setData(new_t, y[:,i], name=self.labels[i], clear=True) #'''
+
     def sort_labels(self, labels):
         """
         Rearranges the list if some elements are lists too
@@ -1680,6 +1746,3 @@ class DynamicPlot:
         for i in range(1,len(ny)):
             new_vec = np.column_stack((new_vec, ny[i]))
         return new_vec
-
-    def end_dynamic(self):
-        plt.ioff()
