@@ -677,7 +677,7 @@ class InitSim:
         # actualizar plots
 
         ######## dynamic plot test ########
-        self.dynamic_plot_function(0)
+        self.dynamic_pyqt_plot_function(0)
         ###################################
 
 
@@ -812,7 +812,7 @@ class InitSim:
             print("*****EXECUTION STOPPED*****")
 
         ######## dynamic plot test ########
-        self.dynamic_plot_function(1)
+        self.dynamic_pyqt_plot_function(1)
         ###################################
 
         self.rk_counter += 1
@@ -990,7 +990,10 @@ class InitSim:
         try:
             scope_lengths = [len(x.params['vector']) for x in self.blocks_list if x.b_type == 'Scope']
             if scope_lengths[0] > 0:
-                self.plotScope()
+                if self.dynamic_plot == True:
+                    self.pyqtPlotScope()
+                else:
+                    self.plotScope()
             else:
                 print("ERROR: NOT ENOUGH SAMPLES TO PLOT")
         except:
@@ -1018,7 +1021,8 @@ class InitSim:
             np.savez('saves/' + self.filename[:-4], t = self.timeline, **vec_dict)
             print("DATA EXPORTED TO",'saves/' + self.filename[:-4] + '.npz')
 
-    def dynamic_plot_function(self, step):
+    # Pyqtgraph functions (not MIT licensed)
+    def dynamic_pyqt_plot_function(self, step):
         if self.dynamic_plot == False:
             return
 
@@ -1032,7 +1036,7 @@ class InitSim:
             if labels_list != []:
                 self.plotty = DynamicPlot(self.sim_dt, labels_list)
 
-        if step == 1: # loop
+        elif step == 1: # loop
             vector_list = []
             for block in self.blocks_list:
                 if block.b_type == 'Scope':
@@ -1044,6 +1048,20 @@ class InitSim:
                 self.dynamic_plot = False
                 self.buttons_list[7].pressed = False
                 print("DYNAMIC PLOT: OFF")
+
+    def pyqtPlotScope(self):
+        labels_list = []
+        vector_list = []
+        for block in self.blocks_list:
+            if block.b_type == 'Scope':
+                b_labels = block.params['vec_labels']
+                labels_list.append(b_labels)
+                b_vectors = block.params['vector']
+                vector_list.append(b_vectors)
+
+        if labels_list != [] and len(vector_list) > 0:
+            self.plotty = DynamicPlot(self.sim_dt, labels_list)
+            self.plotty.loop(self.timeline, vector_list)
 
 
 class Block(InitSim):
@@ -1441,6 +1459,8 @@ class Line(InitSim):
         return False
 
     def change_color(self, ptr):
+        # Puntero que indica qué color se elige de la lista de colores definida arriba
+        # De forma hardcodeada se salta el último elemento que corresponde al color blanco (para evitar lineas "invisibles")
         self.cptr += ptr
         if self.cptr < 0:
             self.cptr = len(list(self.colors.keys()))-2
@@ -1632,7 +1652,7 @@ class Tk_widget:
         # Finaliza la ventana
         self.master.destroy()
 
-# rehacer con PyQT
+
 class DynamicPlot:
     '''
     def __init__(self, dt, labels=['default']):
@@ -1688,7 +1708,7 @@ class DynamicPlot:
         self.xrange = 100*self.dt
         self.sort_labels(labels)
 
-        self.app = pg.mkQApp("Scope")
+        self.app = pg.mkQApp("")
         self.win = pg.GraphicsLayoutWidget(show=True)
         self.win.resize(1280, 720)
         self.win.setWindowTitle('Scope')
@@ -1697,19 +1717,17 @@ class DynamicPlot:
 
         self.linelist = ['line' + str(i) for i in range(len(self.labels))]
         self.plot_win = self.win.addPlot(title='Dynamic Plot')
+        self.legend = pg.LegendItem(offset=(0., 1.))
+        self.legend.setParentItem(self.plot_win)
 
         for i in range(len(self.linelist)):
-            self.__dict__[self.linelist[i]] = self.plot_win.plot([], [], label=self.labels[i])
+            self.__dict__[self.linelist[i]] = self.plot_win.plot([], [], label=self.labels[i], pen=pg.intColor(i))
+            self.legend.addItem(self.__dict__[self.linelist[i]], self.labels[i])
 
         self.plot_win.showGrid(x=True, y=True)
 
     def plot_config(self, settings_dict={}):
         return
-
-    def create_plot_item(self, name):
-        plotItem = pg.PlotItem(viewBox=vb, name=name, axisItems={'bottom': self.axisTime})
-        plotItem.showGrid(True, True)
-        return plotItem
 
     def loop(self, new_t, new_y):
         y = self.sort_vectors(new_y)
