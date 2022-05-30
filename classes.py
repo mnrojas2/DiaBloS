@@ -328,10 +328,6 @@ class InitSim:
         root.destroy()
         return
 
-        # separar por partes (usar run_ord)
-        # agregar un contador si es necesario
-        # La otra sería un: <nombre bloque> |<-| |<numero de bloques>| |->|
-
     ##### LOADING AND SAVING #####
 
     def save(self):
@@ -1023,6 +1019,9 @@ class InitSim:
 
     # Pyqtgraph functions (not MIT licensed)
     def dynamic_pyqt_plot_function(self, step):
+        """
+        Plots the data saved in Scope blocks dynamically with pyqtgraph
+        """
         if self.dynamic_plot == False:
             return
 
@@ -1050,6 +1049,9 @@ class InitSim:
                 print("DYNAMIC PLOT: OFF")
 
     def pyqtPlotScope(self):
+        """
+        Plots the data saved in Scope blocks without needing to execute the simulation again using pyqtgraph
+        """
         labels_list = []
         vector_list = []
         for block in self.blocks_list:
@@ -1654,50 +1656,10 @@ class Tk_widget:
 
 
 class DynamicPlot:
-    '''
-    def __init__(self, dt, labels=['default']):
-        self.dt = dt                # muestreo
-        self.tlim = 100 * self.dt   # tamaño ventana en segundos
-        self.sort_labels(labels)
-
-        plt.ion()
-        self.axes = plt.gca()
-        self.axes.set_xlim(0, self.tlim)
-
-        self.linelist = ['line'+str(i) for i in range(len(self.labels))]
-
-        for i in range(len(self.linelist)):
-            line = self.linelist[i]
-            self.__dict__[line] = self.axes.plot([], [], label=self.labels[i])[0]
-
-        #self.line, = self.axes.plot([], [])
-
-    def loop(self, new_t, new_y):
-        """
-        new_t: vector con los datos de tiempo hasta ahora
-        new_y: lista de vectores con todos los datos de valores hasta ahora
-        """
-        #self.line, = set_data(new_t, new_y[0])
-        y = self.sort_vectors(new_y)
-
-        # asignar nuevos vectores
-        for i in range(len(self.linelist)):
-            plotline = getattr(self,self.linelist[i])
-            plotline.set_data(new_t, y[:,i])
-
-        # mover ventana
-        if len(new_t)*self.dt >= self.tlim:
-            self.axes.set_xlim(new_t[-1] - self.tlim, new_t[-1])
-
-        self.axes.relim()
-        self.axes.autoscale_view(True, True, True)
-        plt.legend()
-        plt.draw()
-        plt.pause(1e-17)
-
-        def end_dynamic(self):
-            plt.ioff()#'''
-
+    """
+    Class that manages the display of dynamic plots through the simulation
+    *It uses pyqtgraph as base (GPL license)
+    """
         # data_three_methods_other
         # -no dynplot: 264.57 seconds
         # -pyqtgraph: 307.99 seconds
@@ -1730,6 +1692,9 @@ class DynamicPlot:
         return
 
     def loop(self, new_t, new_y):
+        """
+        Updates the time and scope vectors and plot them
+        """
         y = self.sort_vectors(new_y)
 
         if len(new_t)*self.dt >= self.xrange:
