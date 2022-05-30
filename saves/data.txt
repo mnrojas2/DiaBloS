@@ -1,0 +1,334 @@
+{
+    "sim_data": {
+        "wind_width": 1280,
+        "wind_height": 720,
+        "fps": 60,
+        "only_one": false,
+        "enable_line_sel": true,
+        "sim_time": 1.0,
+        "sim_dt": 0.01
+    },
+    "blocks_data": [
+        {
+            "type": "Step",
+            "sid": 0,
+            "coords_left": 268,
+            "coords_top": 131,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 0,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                0,
+                0,
+                255
+            ],
+            "run_ord": 0,
+            "io_edit": false,
+            "fun_name": "step",
+            "params": {
+                "value": 1.0,
+                "delay": 0.0,
+                "type": "up"
+            },
+            "external": false
+        },
+        {
+            "type": "Sum",
+            "sid": 0,
+            "coords_left": 792,
+            "coords_top": 161,
+            "coords_width": 70,
+            "coords_height": 106,
+            "coords_height_base": 50,
+            "in_ports": 6,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                0,
+                255,
+                255
+            ],
+            "run_ord": 2,
+            "io_edit": "input",
+            "fun_name": "sumator",
+            "params": {
+                "sign": "++++++"
+            },
+            "external": false
+        },
+        {
+            "type": "Sine",
+            "sid": 0,
+            "coords_left": 273,
+            "coords_top": 329,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 0,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                128,
+                0,
+                255
+            ],
+            "run_ord": 0,
+            "io_edit": false,
+            "fun_name": "sine",
+            "params": {
+                "amplitude": 1.0,
+                "omega": 1.0,
+                "init_angle": 0.0
+            },
+            "external": false
+        },
+        {
+            "type": "Noise",
+            "sid": 0,
+            "coords_left": 274,
+            "coords_top": 214,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 0,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                100,
+                175,
+                50
+            ],
+            "run_ord": 0,
+            "io_edit": false,
+            "fun_name": "noise",
+            "params": {
+                "sigma": 1.0,
+                "mu": 0.0
+            },
+            "external": false
+        },
+        {
+            "type": "Scope",
+            "sid": 0,
+            "coords_left": 1000,
+            "coords_top": 184,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 0,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                220,
+                20,
+                60
+            ],
+            "run_ord": 3,
+            "io_edit": false,
+            "fun_name": "scope",
+            "params": {
+                "labels": "x1",
+                "_init_start_": true
+            },
+            "external": false
+        }
+    ],
+    "lines_data": [
+        {
+            "name": "Line0",
+            "sid": 0,
+            "srcblock": "Step0",
+            "srcport": 0,
+            "dstblock": "Sum0",
+            "dstport": 0,
+            "points": [
+                [
+                    328,
+                    161.0
+                ],
+                [
+                    672,
+                    161.0
+                ],
+                [
+                    672,
+                    176.14285714285714
+                ],
+                [
+                    792,
+                    176.14285714285714
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line1",
+            "sid": 1,
+            "srcblock": "Sine0",
+            "srcport": 0,
+            "dstblock": "Sum0",
+            "dstport": 3,
+            "points": [
+                [
+                    333,
+                    359.0
+                ],
+                [
+                    732,
+                    359.0
+                ],
+                [
+                    732,
+                    221.57142857142856
+                ],
+                [
+                    792,
+                    221.57142857142856
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line3",
+            "sid": 3,
+            "srcblock": "Sine0",
+            "srcport": 0,
+            "dstblock": "Sum0",
+            "dstport": 4,
+            "points": [
+                [
+                    333,
+                    359.0
+                ],
+                [
+                    752,
+                    359.0
+                ],
+                [
+                    752,
+                    236.71428571428572
+                ],
+                [
+                    792,
+                    236.71428571428572
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line5",
+            "sid": 5,
+            "srcblock": "Noise0",
+            "srcport": 0,
+            "dstblock": "Sum0",
+            "dstport": 2,
+            "points": [
+                [
+                    334,
+                    244.0
+                ],
+                [
+                    712,
+                    244.0
+                ],
+                [
+                    712,
+                    206.42857142857144
+                ],
+                [
+                    792,
+                    206.42857142857144
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line4",
+            "sid": 4,
+            "srcblock": "Noise0",
+            "srcport": 0,
+            "dstblock": "Sum0",
+            "dstport": 1,
+            "points": [
+                [
+                    334,
+                    244.0
+                ],
+                [
+                    692,
+                    244.0
+                ],
+                [
+                    692,
+                    191.28571428571428
+                ],
+                [
+                    792,
+                    191.28571428571428
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line2",
+            "sid": 2,
+            "srcblock": "Step0",
+            "srcport": 0,
+            "dstblock": "Sum0",
+            "dstport": 5,
+            "points": [
+                [
+                    328,
+                    161.0
+                ],
+                [
+                    772,
+                    161.0
+                ],
+                [
+                    772,
+                    251.85714285714286
+                ],
+                [
+                    792,
+                    251.85714285714286
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line6",
+            "sid": 6,
+            "srcblock": "Sum0",
+            "srcport": 0,
+            "dstblock": "Scope0",
+            "dstport": 0,
+            "points": [
+                [
+                    862,
+                    214.0
+                ],
+                [
+                    1000,
+                    214.0
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        }
+    ]
+}

@@ -277,7 +277,25 @@
             "srcport": 0,
             "dstblock": "Sum0",
             "dstport": 0,
-            "zorder": 0,
+            "points": [
+                [
+                    339,
+                    464.0
+                ],
+                [
+                    464,
+                    464.0
+                ],
+                [
+                    464,
+                    514.6666666666666
+                ],
+                [
+                    504,
+                    514.6666666666666
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         },
         {
@@ -287,7 +305,25 @@
             "srcport": 0,
             "dstblock": "Sum0",
             "dstport": 1,
-            "zorder": 0,
+            "points": [
+                [
+                    344,
+                    578.0
+                ],
+                [
+                    484,
+                    578.0
+                ],
+                [
+                    484,
+                    531.3333333333334
+                ],
+                [
+                    504,
+                    531.3333333333334
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         },
         {
@@ -297,7 +333,25 @@
             "srcport": 0,
             "dstblock": "Scope2",
             "dstport": 0,
-            "zorder": 0,
+            "points": [
+                [
+                    574,
+                    523.0
+                ],
+                [
+                    684,
+                    523.0
+                ],
+                [
+                    684,
+                    509.0
+                ],
+                [
+                    704,
+                    509.0
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         },
         {
@@ -307,7 +361,25 @@
             "srcport": 0,
             "dstblock": "Scope1",
             "dstport": 0,
-            "zorder": 0,
+            "points": [
+                [
+                    574,
+                    365.0
+                ],
+                [
+                    680,
+                    365.0
+                ],
+                [
+                    680,
+                    342.0
+                ],
+                [
+                    700,
+                    342.0
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         },
         {
@@ -317,7 +389,25 @@
             "srcport": 0,
             "dstblock": "Integr0",
             "dstport": 0,
-            "zorder": 0,
+            "points": [
+                [
+                    358,
+                    297.0
+                ],
+                [
+                    458,
+                    297.0
+                ],
+                [
+                    458,
+                    230.0
+                ],
+                [
+                    478,
+                    230.0
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         },
         {
@@ -327,7 +417,25 @@
             "srcport": 0,
             "dstblock": "Integr1",
             "dstport": 0,
-            "zorder": 0,
+            "points": [
+                [
+                    358,
+                    297.0
+                ],
+                [
+                    474,
+                    297.0
+                ],
+                [
+                    474,
+                    365.0
+                ],
+                [
+                    494,
+                    365.0
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         },
         {
@@ -337,7 +445,25 @@
             "srcport": 0,
             "dstblock": "Scope0",
             "dstport": 0,
-            "zorder": 0,
+            "points": [
+                [
+                    558,
+                    230.0
+                ],
+                [
+                    660,
+                    230.0
+                ],
+                [
+                    660,
+                    218.0
+                ],
+                [
+                    680,
+                    218.0
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         }
     ]

@@ -14,6 +14,9 @@ from functools import partial           # PSF
 import os                               # PSF
 from block_functions import *
 
+import pyqtgraph as pg
+from pyqtgraph.Qt import QtCore
+
 class InitSim:
     """
     Class that manages the simulation interface and main functions
@@ -23,14 +26,22 @@ class InitSim:
         self.SCREEN_HEIGHT = 720
 
         self.colors = {'black': (0,0,0),
-                       'white': (255,255,255),
                        'red': (255,0,0),
                        'green': (0,255,0),
                        'blue': (0,0,255),
                        'yellow': (255,255,0),
                        'magenta': (255,0,255),
                        'cyan': (0,255,255),
-                       'purple': (128,0,255)}
+                       'purple': (128,0,255),
+                       'orange': (255, 128, 0),
+                       'aqua': (0, 255, 128),
+                       'pink': (255, 0, 128),
+                       'lime_green': (128, 255, 0),
+                       'light_blue': (0, 128, 255),
+                       'dark_red': (128, 0, 0),
+                       'dark_green': (0, 128, 0),
+                       'dark_blue': (0, 0, 128),
+                       'white': (255,255,255)}
 
         self.FPS = 60
 
@@ -54,6 +65,7 @@ class InitSim:
 
         self.execution_pauseplay = 'play'
         self.execution_stop = False
+        self.dynamic_plot = False
 
     def main_buttons(self, zone):
         """
@@ -68,8 +80,9 @@ class InitSim:
         pauseplay = Button('_pauseplay_', (520, 10, 40, 40))
         stop = Button('_stop_', (580, 10, 40, 40))
         show_scope = Button('Plot', (640, 10, 60, 40))
+        dynamic_scope = Button('Dyn Plot', (720, 10, 80, 40))
 
-        self.buttons_list = [new, load, save, sim, pauseplay, stop, show_scope]
+        self.buttons_list = [new, load, save, sim, pauseplay, stop, show_scope, dynamic_scope]
         self.button_margin = 80
 
     def display_buttons(self, zone):
@@ -140,7 +153,7 @@ class InitSim:
                 sid = len(id_list)
 
         # creación de la línea a partir del id, y data de origen y destino para la misma
-        line = Line(sid, srcData[0], srcData[1], (srcData[2], dstData[2]), dstData[0], dstData[1])  # zorder sin utilizar todavia
+        line = Line(sid, srcData[0], srcData[1], dstData[0], dstData[1], (srcData[2], dstData[2]))  # zorder sin utilizar todavia
         self.line_list.append(line)
 
     def remove_block_and_lines(self):
@@ -315,10 +328,6 @@ class InitSim:
         root.destroy()
         return
 
-        # separar por partes (usar run_ord)
-        # agregar un contador si es necesario
-        # La otra sería un: <nombre bloque> |<-| |<numero de bloques>| |->|
-
     ##### LOADING AND SAVING #####
 
     def save(self):
@@ -381,7 +390,8 @@ class InitSim:
                 "srcport": line.srcport,
                 "dstblock": line.dstblock,
                 "dstport": line.dstport,
-                "zorder": line.zorder,
+                "points": line.points,
+                "cptr": line.cptr,
                 "selected": line.selected
             }
             lines_dict.append(line_dict)
@@ -447,7 +457,7 @@ class InitSim:
         # Reordena los datos de los diccionarios, para utilizarlos creando un nuevo bloque
         block = Block(block_data['type'],
                       block_data['sid'],
-                      (block_data['coords_left'],block_data['coords_top'],block_data['coords_width'],block_data['coords_height']),
+                      (block_data['coords_left'],block_data['coords_top'],block_data['coords_width'],block_data['coords_height_base']),
                       block_data['b_color'],
                       block_data['in_ports'],
                       block_data['out_ports'],
@@ -456,7 +466,7 @@ class InitSim:
                       block_data['fun_name'],
                       block_data['params'],
                       block_data['external'])
-        block.height_base = block_data['coords_height_base']
+        block.height = block_data['coords_height']
         block.selected = block_data['selected']
         block.dragging = block_data['dragging']
         #block.loading_params(block_data['params'])
@@ -470,10 +480,10 @@ class InitSim:
         line = Line(line_data['sid'],
                     line_data['srcblock'],
                     line_data['srcport'],
-                    ((0,0), (0,0)),
                     line_data['dstblock'],
                     line_data['dstport'],
-                    line_data['zorder'])  # zorder sin utilizar todavia
+                    line_data['points'],
+                    line_data['cptr'])
         line.selected = line_data['selected']
         line.update_line(self.blocks_list)
         self.line_list.append(line)
@@ -597,6 +607,7 @@ class InitSim:
             if 'E' in out_value.keys() and out_value['E'] == True:
                 self.execution_initialized = False            # Termina la ejecución de la simulación
                 self.reset_memblocks()                  # Resetea la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
+                self.pbar.close()  # Se finaliza la barra de progreso
                 print("*****EXECUTION STOPPED*****")
                 return
 
@@ -625,6 +636,7 @@ class InitSim:
                     if 'E' in out_value.keys() and out_value['E'] == True:
                         self.execution_initialized = False    # Termina la ejecución de la simulación
                         self.reset_memblocks()        # Resetea la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
+                        self.pbar.close()  # Se finaliza la barra de progreso
                         print("*****EXECUTION STOPPED*****")
                         return
 
@@ -659,6 +671,11 @@ class InitSim:
         self.execution_initialized = True
         self.rk_counter += 1
         # actualizar plots
+
+        ######## dynamic plot test ########
+        self.dynamic_pyqt_plot_function(0)
+        ###################################
+
 
     def execution_loop(self):
         """
@@ -707,6 +724,7 @@ class InitSim:
                 if 'E' in out_value.keys() and out_value['E'] == True:
                     self.execution_initialized = False    # Termina la ejecución de la simulación
                     self.reset_memblocks()        # Resetea la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
+                    self.pbar.close()  # Se finaliza la barra de progreso
                     print("*****EXECUTION STOPPED*****")
                     return
 
@@ -741,6 +759,7 @@ class InitSim:
                     if 'E' in out_value.keys() and out_value['E'] == True:
                         self.execution_initialized = False    # Termina la ejecución de la simulación
                         self.reset_memblocks()          # Resetea la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
+                        self.pbar.close()  # Se finaliza la barra de progreso
                         print("*****EXECUTION STOPPED*****")
                         return
 
@@ -771,7 +790,8 @@ class InitSim:
             self.exportData()
 
             #Scope
-            self.plotScope()
+            if self.dynamic_plot == False:
+                self.plotScope()
 
             # Resetea la inicializacion de los bloques con ejecuciones iniciales especiales (para que puedan ser ejecutados correctamente en la proxima simulación)
             self.reset_memblocks()
@@ -786,6 +806,10 @@ class InitSim:
             # Resetea el flag para la inicializacion de los bloques con ejecuciones iniciales especiales (para que puedan ser ejecutados correctamente en la proxima simulación)
             self.reset_memblocks()
             print("*****EXECUTION STOPPED*****")
+
+        ######## dynamic plot test ########
+        self.dynamic_pyqt_plot_function(1)
+        ###################################
 
         self.rk_counter += 1
 
@@ -962,7 +986,10 @@ class InitSim:
         try:
             scope_lengths = [len(x.params['vector']) for x in self.blocks_list if x.b_type == 'Scope']
             if scope_lengths[0] > 0:
-                self.plotScope()
+                if self.dynamic_plot == True:
+                    self.pyqtPlotScope()
+                else:
+                    self.plotScope()
             else:
                 print("ERROR: NOT ENOUGH SAMPLES TO PLOT")
         except:
@@ -990,6 +1017,54 @@ class InitSim:
             np.savez('saves/' + self.filename[:-4], t = self.timeline, **vec_dict)
             print("DATA EXPORTED TO",'saves/' + self.filename[:-4] + '.npz')
 
+    # Pyqtgraph functions (not MIT licensed)
+    def dynamic_pyqt_plot_function(self, step):
+        """
+        Plots the data saved in Scope blocks dynamically with pyqtgraph
+        """
+        if self.dynamic_plot == False:
+            return
+
+        if step == 0: # init
+            labels_list = []
+            for block in self.blocks_list:
+                if block.b_type == 'Scope':
+                    b_labels = block.params['vec_labels']
+                    labels_list.append(b_labels)
+
+            if labels_list != []:
+                self.plotty = DynamicPlot(self.sim_dt, labels_list)
+
+        elif step == 1: # loop
+            vector_list = []
+            for block in self.blocks_list:
+                if block.b_type == 'Scope':
+                    b_vectors = block.params['vector']
+                    vector_list.append(b_vectors)
+            if len(vector_list) > 0:
+                self.plotty.loop(self.timeline, vector_list)
+            else:
+                self.dynamic_plot = False
+                self.buttons_list[7].pressed = False
+                print("DYNAMIC PLOT: OFF")
+
+    def pyqtPlotScope(self):
+        """
+        Plots the data saved in Scope blocks without needing to execute the simulation again using pyqtgraph
+        """
+        labels_list = []
+        vector_list = []
+        for block in self.blocks_list:
+            if block.b_type == 'Scope':
+                b_labels = block.params['vec_labels']
+                labels_list.append(b_labels)
+                b_vectors = block.params['vector']
+                vector_list.append(b_vectors)
+
+        if labels_list != [] and len(vector_list) > 0:
+            self.plotty = DynamicPlot(self.sim_dt, labels_list)
+            self.plotty.loop(self.timeline, vector_list)
+
 
 class Block(InitSim):
     """
@@ -1001,20 +1076,26 @@ class Block(InitSim):
         self.name = b_type + str(sid)   # Nombre del bloque
         self.b_type = b_type            # Tipo de bloque
         self.sid = sid                  # id del bloque
-        self.b_color = self.set_color(color) # color del bloque
+
         self.left = coords[0]           # Coordenada ubicación línea izquierda
         self.top = coords[1]            # Coordenada ubicación línea superior
         self.width = coords[2]          # Ancho bloque
         self.height = coords[3]         # Altura bloque
+        self.height_base = self.height  # Variable que conserva valor de altura por defecto
+
+        self.b_color = self.set_color(color)  # color del bloque
+        self.image = pygame.image.load('./icons/' + self.b_type + '.png')
+        self.image = pygame.transform.scale(self.image, (self.height_base, self.height_base))
+
         self.fun_name = fun_name        # Nombre función asociada para ejecución
         self.params = self.loading_params(params) # Parámetros asociados a la función
         self.init_params_list = list(self.params.keys()) # Lista de parámetros iniciales/editables
         self.external = external
 
         self.port_radius = 8            # Radio del circulo para el dibujado de los puertos
-        self.height_base = self.height  # Variable que conserva valor de altura por defecto
         self.in_ports = in_ports        # Variable que contiene el número de puertos de entrada
         self.out_ports = out_ports      # Variable que contiene el número de puertos de salida
+
 
         # Datos básicos del bloque para identificación en funciones.
         self.params.update({'_name_': self.name,'_inputs_': self.in_ports ,'_outputs_': self.out_ports})
@@ -1071,6 +1152,10 @@ class Block(InitSim):
     def draw_Block(self, zone):
         # Dibuja el bloque y los puertos
         pygame.draw.rect(zone, self.b_color, (self.left, self.top, self.width, self.height))
+
+        # Cargar iconos externo
+        zone.blit(self.image, (self.left + 0.5*(self.width-self.height_base), self.top + 0.5*(self.height - self.height_base)))
+
         for port_in_location in self.in_coords:
             pygame.draw.circle(zone, self.colors['black'], port_in_location, self.port_radius)
 
@@ -1266,59 +1351,123 @@ class Line(InitSim):
     Class to initialize and maintain lines that connect blocks
     """
     # Clase para la inicialización y mantención de las líneas
-    def __init__(self, sid, srcblock, srcport, points, dstblock, dstport, zorder=0):
+    def __init__(self, sid, srcblock, srcport, dstblock, dstport, points, cptr=0):
         super().__init__()
         self.name = "Line" + str(sid)       # Nombre de la línea
         self.sid = sid                      # id de la línea
         self.srcblock = srcblock            # Nombre del bloque de origen
         self.srcport = srcport              # ID del puerto de origen del bloque
-        self.points = points                # puntos de vertice para la línea(?) ((a,b),(c,d),(e,f),...)
-        self.dstblock = dstblock            # Nombre del bloque de origen
-        self.dstport = dstport              # ID del puerto de origen del bloque
-        self.zorder = zorder                # ID de prioridad al momento de dibujar el bloque
-        self.selected = False               # Indica estado de selección en pantalla
+        self.dstblock = dstblock            # Nombre del bloque de destino
+        self.dstport = dstport              # ID del puerto de destino del bloque
+
+        # Variables para creación de líneas
+        self.total_srcports = srcport + 1
+        self.total_dstports = dstport + 1
+        self.srcbottom = points[0][1]
+        self.dstbottom = points[0][1]
+
+        self.points = self.trajectory(points)   # puntos de vertice para la línea(?) ((a,b),(c,d),(e,f),...)
+        self.cptr = cptr                      # ID de prioridad al momento de dibujar el bloque
+
+        self.selected = False                   # Indica estado de selección en pantalla
 
     def draw_line(self,zone):
-        # Dibuja la línea con los datos del init
+        # Dibuja la línea con los datos
         for i in range(len(self.points) - 1):
             if self.selected == True:
                 line_width = 5
             else:
                 line_width = 2
-            pygame.draw.line(zone, self.colors['black'], self.points[i], self.points[i + 1], line_width)
+            pygame.draw.line(zone, self.colors[list(self.colors.keys())[self.cptr]], self.points[i], self.points[i + 1], line_width)
+
+    def trajectory(self, points):
+        """
+        Crea los puntos intermedios que se muestran en la interfaz
+        """
+        if len(points) > 2:
+            return points
+        start = points[0]
+        finish = points[-1]
+
+        h_src = 20*(self.total_srcports-self.srcport) # 30: distancia horizontal desde el puerto al vertice adyacente
+        h_dst = 20*(self.total_dstports-self.dstport) # 30: distancia horizontal desde el puerto al vertice adyacente
+        v_dst = 20*(self.total_dstports-self.dstport) # 50: distancia vertical desde el puerto al vertice adyacente
+        b_dst = 25*max(self.total_dstports, self.total_srcports) # 60: distancia separacion entre puertos (cubre bloque normal)
+
+        # si ambos ejes tienen 'x' o 'y' en común:
+        if start[0] == finish[0] or (start[1] == finish[1] and start[0] < finish[0]):
+            points = (start,
+                      finish)
+        # si el puerto de llegada está a la derecha del puerto de salida
+        elif start[0] < finish[0]:
+            points = (start,
+                      (max(start[0]+10,finish[0] - h_dst), start[1]),
+                      (max(start[0]+10,finish[0] - h_dst), finish[1]),
+                      finish)
+        # si el puerto de llegada está a la izquierda del puerto de salida y más arriba o más abajo
+        elif start[0] > finish[0] and np.abs(start[1] - finish[1]) > b_dst:
+            points = (start,
+                      (start[0] + h_src, start[1]),
+                      (start[0] + h_src, int(0.5*(start[1]+finish[1]))),
+                      (finish[0] - h_dst, int(0.5*(start[1]+finish[1]))),
+                      (finish[0] - h_dst, finish[1]),
+                      finish)
+        # si el puerto de llegada está a la izquierda del puerto de salida y a una altura similar
+        elif start[0] > finish[0] and np.abs(start[1] - finish[1]) <= b_dst:
+            points = (start,
+                      (start[0] + h_src, start[1]),
+                      (start[0] + h_src, max(self.srcbottom, self.dstbottom) + v_dst),
+                      (finish[0] - h_dst, max(self.srcbottom, self.dstbottom) + v_dst),
+                      (finish[0] - h_dst, finish[1]),
+                      finish)
+        return points
 
     def update_line(self, block_list):
         # Actualiza el valor de la línea según la ubicación y tamaño del bloque
         for block in block_list:
             if block.name == self.srcblock:
                 startline = block.out_coords[self.srcport]
+                self.total_srcports = block.out_ports
+                self.srcbottom = block.top + block.height
             if block.name == self.dstblock:
                 endline = block.in_coords[self.dstport]
-        self.points = (startline, endline)
+                self.total_dstports = block.in_ports
+                self.dstbottom = block.top + block.height
+        self.points = self.trajectory((startline, endline))
 
     def collision(self, m_coords):
         # Determinar colisión entre línea y posición de un click
         min_dst = 10
-        line_A = np.array(self.points[0])
-        line_B = np.array(self.points[1])
         m_coords = np.array(m_coords)
 
-        if all(line_A == m_coords) or all(line_B == m_coords):
-            distance_to_line = 0.0
-        elif np.arccos(np.dot((m_coords - line_A) / np.linalg.norm(m_coords - line_A),
-                              (line_B - line_A) / np.linalg.norm(line_B - line_A))) > np.pi / 2:
-            distance_to_line = np.linalg.norm(m_coords - line_A)
-        elif np.arccos(np.dot((m_coords - line_B) / np.linalg.norm(m_coords - line_B),
-                              (line_A - line_B) / np.linalg.norm(line_A - line_B))) > np.pi / 2:
-            distance_to_line = np.linalg.norm(m_coords - line_B)
-        else:
-            distance_to_line = np.linalg.norm(np.cross(line_A - line_B, line_A - m_coords)) / np.linalg.norm(
-                line_B - line_A)
+        for i in range(len(self.points) - 1):
+            line_A = np.array(self.points[i])       # pos inicio
+            line_B = np.array(self.points[i+1])     # pos final
 
-        if distance_to_line > min_dst:
-            return False
-        else:
-            return True
+            if all(line_A == m_coords) or all(line_B == m_coords):
+                distance_to_line = 0.0
+            elif np.arccos(np.dot((m_coords - line_A) / np.linalg.norm(m_coords - line_A),
+                                  (line_B - line_A) / np.linalg.norm(line_B - line_A))) > np.pi / 2:
+                distance_to_line = np.linalg.norm(m_coords - line_A)
+            elif np.arccos(np.dot((m_coords - line_B) / np.linalg.norm(m_coords - line_B),
+                                  (line_A - line_B) / np.linalg.norm(line_A - line_B))) > np.pi / 2:
+                distance_to_line = np.linalg.norm(m_coords - line_B)
+            else:
+                distance_to_line = np.linalg.norm(np.cross(line_A - line_B, line_A - m_coords)) / np.linalg.norm(
+                    line_B - line_A)
+    
+            if distance_to_line <= min_dst:
+                return True
+        return False
+
+    def change_color(self, ptr):
+        # Puntero que indica qué color se elige de la lista de colores definida arriba
+        # De forma hardcodeada se salta el último elemento que corresponde al color blanco (para evitar lineas "invisibles")
+        self.cptr += ptr
+        if self.cptr < 0:
+            self.cptr = len(list(self.colors.keys()))-2
+        elif self.cptr == len(list(self.colors.keys()))-1:
+            self.cptr = 0
 
     def __str__(self):
         # Imprime en la consola, el nombre de la línea, su origen y destino
@@ -1331,7 +1480,7 @@ class BaseBlocks(InitSim):
     Class to create and show basic blocks used as a mark to generate functional blocks in the user interface
     """
     # Produce un "boton" para generar bloques con las caracteristicas indicadas
-    def __init__(self,b_type, fun_name, io_params, ex_params, b_color, coords, external=False):
+    def __init__(self, b_type, fun_name, io_params, ex_params, b_color, coords, external=False):
         super().__init__()
         self.b_type = b_type
         self.fun_name = fun_name
@@ -1341,17 +1490,21 @@ class BaseBlocks(InitSim):
         self.io_edit = io_params['io_edit']
         self.params = ex_params                           # parametros de ejecución en simulación
         self.b_color = self.set_color(b_color)            # Color caracteristico del bloque
-        self.size = coords                                # Dimensiones del bloque
+        self.size = coords                                # Dimensiones del bloque de simulacion (este no)
+        self.side_length = (30,30)
+        self.image = pygame.image.load('./icons/' + self.b_type + '.png')
+        self.image = pygame.transform.scale(self.image, self.side_length)
         self.external = external
 
         self.font_size = 24  # Tamaño del texto
         self.text = pygame.font.SysFont(None, self.font_size)
         self.text_display = self.text.render(self.fun_name, True, self.colors['black'])
 
-    def draw_baseblock(self,zone, pos):
+    def draw_baseblock(self, zone, pos):
         # Dibuja el bloque
-        self.collision = pygame.rect.Rect(40, 60 + 40*pos, 30, 30)
+        self.collision = pygame.rect.Rect(40, 60 + 40*pos, self.side_length[0], self.side_length[1])
         pygame.draw.rect(zone, self.b_color, self.collision)
+        zone.blit(self.image, (40, 60 + 40*pos))
         zone.blit(self.text_display, (90, 70 + 40*pos))
 
     def set_color(self, color):
@@ -1500,3 +1653,79 @@ class Tk_widget:
     def destroy(self):
         # Finaliza la ventana
         self.master.destroy()
+
+
+class DynamicPlot:
+    """
+    Class that manages the display of dynamic plots through the simulation
+    *It uses pyqtgraph as base (GPL license)
+    """
+        # data_three_methods_other
+        # -no dynplot: 264.57 seconds
+        # -pyqtgraph: 307.99 seconds
+        # -matplotlib: ~1000 seconds
+
+    def __init__(self, dt, labels=['default']):
+        self.dt = dt
+        self.xrange = 100*self.dt
+        self.sort_labels(labels)
+
+        self.app = pg.mkQApp("")
+        self.win = pg.GraphicsLayoutWidget(show=True)
+        self.win.resize(1280, 720)
+        self.win.setWindowTitle('Scope')
+
+        pg.setConfigOptions(antialias=True)
+
+        self.linelist = ['line' + str(i) for i in range(len(self.labels))]
+        self.plot_win = self.win.addPlot(title='Dynamic Plot')
+        self.legend = pg.LegendItem(offset=(0., 1.))
+        self.legend.setParentItem(self.plot_win)
+
+        for i in range(len(self.linelist)):
+            self.__dict__[self.linelist[i]] = self.plot_win.plot([], [], label=self.labels[i], pen=pg.intColor(i))
+            self.legend.addItem(self.__dict__[self.linelist[i]], self.labels[i])
+
+        self.plot_win.showGrid(x=True, y=True)
+
+    def plot_config(self, settings_dict={}):
+        return
+
+    def loop(self, new_t, new_y):
+        """
+        Updates the time and scope vectors and plot them
+        """
+        y = self.sort_vectors(new_y)
+
+        if len(new_t)*self.dt >= self.xrange:
+            self.plot_win.setXRange(new_t[-1] - self.xrange, new_t[-1])
+
+        # asignar nuevos vectores
+        pg.QtGui.QApplication.processEvents()
+
+        for i in range(len(self.linelist)):
+            plotline = getattr(self, self.linelist[i])
+            if len(self.linelist) == 1:
+                plotline.setData(new_t, y, name=self.labels[i], clear=True)  # '''
+            else:
+                plotline.setData(new_t, y[:,i], name=self.labels[i], clear=True) #'''
+
+    def sort_labels(self, labels):
+        """
+        Rearranges the list if some elements are lists too
+        """
+        self.labels = []
+        for elem in labels:
+            if isinstance(elem, str):
+                self.labels += [elem]
+            elif isinstance(elem, list):
+                self.labels += elem
+
+    def sort_vectors(self, ny):
+        """
+        Rearranges all vectors in one matrix
+        """
+        new_vec = ny[0]
+        for i in range(1,len(ny)):
+            new_vec = np.column_stack((new_vec, ny[i]))
+        return new_vec

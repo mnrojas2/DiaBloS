@@ -465,8 +465,8 @@
         {
             "type": "Export",
             "sid": 0,
-            "coords_left": 806,
-            "coords_top": 107,
+            "coords_left": 790,
+            "coords_top": 80,
             "coords_width": 70,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -491,8 +491,8 @@
         {
             "type": "Export",
             "sid": 1,
-            "coords_left": 988,
-            "coords_top": 331,
+            "coords_left": 984,
+            "coords_top": 261,
             "coords_width": 70,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -520,8 +520,8 @@
         {
             "type": "Export",
             "sid": 2,
-            "coords_left": 817,
-            "coords_top": 531,
+            "coords_left": 807,
+            "coords_top": 458,
             "coords_width": 70,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -545,6 +545,84 @@
                 "_outputs_": 0
             },
             "external": false
+        },
+        {
+            "type": "Scope",
+            "sid": 0,
+            "coords_left": 798,
+            "coords_top": 173,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 0,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                220,
+                20,
+                60
+            ],
+            "run_ord": 3,
+            "io_edit": false,
+            "fun_name": "scope",
+            "params": {
+                "labels": "x1a,x2a",
+                "_init_start_": true
+            },
+            "external": false
+        },
+        {
+            "type": "Scope",
+            "sid": 1,
+            "coords_left": 1005,
+            "coords_top": 378,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 0,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                220,
+                20,
+                60
+            ],
+            "run_ord": 3,
+            "io_edit": false,
+            "fun_name": "scope",
+            "params": {
+                "labels": "x1b,x2b",
+                "_init_start_": true
+            },
+            "external": false
+        },
+        {
+            "type": "Scope",
+            "sid": 2,
+            "coords_left": 802,
+            "coords_top": 589,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 0,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                220,
+                20,
+                60
+            ],
+            "run_ord": 3,
+            "io_edit": false,
+            "fun_name": "scope",
+            "params": {
+                "labels": "x1c,x2c",
+                "_init_start_": true
+            },
+            "external": false
         }
     ],
     "lines_data": [
@@ -555,7 +633,17 @@
             "srcport": 0,
             "dstblock": "Block0",
             "dstport": 0,
-            "zorder": 0,
+            "points": [
+                [
+                    304,
+                    136.0
+                ],
+                [
+                    409,
+                    136.0
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         },
         {
@@ -565,7 +653,17 @@
             "srcport": 0,
             "dstblock": "Integr0",
             "dstport": 0,
-            "zorder": 0,
+            "points": [
+                [
+                    529,
+                    146.0
+                ],
+                [
+                    622,
+                    146.0
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         },
         {
@@ -575,7 +673,33 @@
             "srcport": 0,
             "dstblock": "Gain0",
             "dstport": 0,
-            "zorder": 0,
+            "points": [
+                [
+                    702,
+                    146.0
+                ],
+                [
+                    722,
+                    146.0
+                ],
+                [
+                    722,
+                    194
+                ],
+                [
+                    504,
+                    194
+                ],
+                [
+                    504,
+                    242.0
+                ],
+                [
+                    524,
+                    242.0
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         },
         {
@@ -585,7 +709,33 @@
             "srcport": 0,
             "dstblock": "Block0",
             "dstport": 1,
-            "zorder": 0,
+            "points": [
+                [
+                    584,
+                    242.0
+                ],
+                [
+                    604,
+                    242.0
+                ],
+                [
+                    604,
+                    199
+                ],
+                [
+                    389,
+                    199
+                ],
+                [
+                    389,
+                    156.0
+                ],
+                [
+                    409,
+                    156.0
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         },
         {
@@ -595,7 +745,25 @@
             "srcport": 0,
             "dstblock": "Mux0",
             "dstport": 0,
-            "zorder": 0,
+            "points": [
+                [
+                    777,
+                    336.0
+                ],
+                [
+                    812,
+                    336.0
+                ],
+                [
+                    812,
+                    348.0
+                ],
+                [
+                    852,
+                    348.0
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         },
         {
@@ -605,7 +773,25 @@
             "srcport": 0,
             "dstblock": "Sum0",
             "dstport": 0,
-            "zorder": 0,
+            "points": [
+                [
+                    300,
+                    359.0
+                ],
+                [
+                    312,
+                    359.0
+                ],
+                [
+                    312,
+                    359.6666666666667
+                ],
+                [
+                    352,
+                    359.6666666666667
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         },
         {
@@ -615,7 +801,17 @@
             "srcport": 0,
             "dstblock": "Integr1",
             "dstport": 0,
-            "zorder": 0,
+            "points": [
+                [
+                    422,
+                    368.0
+                ],
+                [
+                    469,
+                    368.0
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         },
         {
@@ -625,7 +821,25 @@
             "srcport": 0,
             "dstblock": "Integr2",
             "dstport": 0,
-            "zorder": 0,
+            "points": [
+                [
+                    648,
+                    337.0
+                ],
+                [
+                    677,
+                    337.0
+                ],
+                [
+                    677,
+                    336.0
+                ],
+                [
+                    697,
+                    336.0
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         },
         {
@@ -635,7 +849,33 @@
             "srcport": 0,
             "dstblock": "Gain2",
             "dstport": 0,
-            "zorder": 0,
+            "points": [
+                [
+                    777,
+                    336.0
+                ],
+                [
+                    797,
+                    336.0
+                ],
+                [
+                    797,
+                    383
+                ],
+                [
+                    575,
+                    383
+                ],
+                [
+                    575,
+                    430.0
+                ],
+                [
+                    595,
+                    430.0
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         },
         {
@@ -645,7 +885,33 @@
             "srcport": 0,
             "dstblock": "Sum0",
             "dstport": 1,
-            "zorder": 0,
+            "points": [
+                [
+                    655,
+                    430.0
+                ],
+                [
+                    675,
+                    430.0
+                ],
+                [
+                    675,
+                    403
+                ],
+                [
+                    332,
+                    403
+                ],
+                [
+                    332,
+                    376.3333333333333
+                ],
+                [
+                    352,
+                    376.3333333333333
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         },
         {
@@ -655,7 +921,17 @@
             "srcport": 0,
             "dstblock": "Mux0",
             "dstport": 1,
-            "zorder": 0,
+            "points": [
+                [
+                    549,
+                    368.0
+                ],
+                [
+                    852,
+                    368.0
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         },
         {
@@ -665,7 +941,25 @@
             "srcport": 0,
             "dstblock": "Gain1",
             "dstport": 0,
-            "zorder": 0,
+            "points": [
+                [
+                    549,
+                    368.0
+                ],
+                [
+                    568,
+                    368.0
+                ],
+                [
+                    568,
+                    337.0
+                ],
+                [
+                    588,
+                    337.0
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         },
         {
@@ -675,7 +969,17 @@
             "srcport": 0,
             "dstblock": "Gain3",
             "dstport": 0,
-            "zorder": 0,
+            "points": [
+                [
+                    313,
+                    537.0
+                ],
+                [
+                    373,
+                    537.0
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         },
         {
@@ -685,7 +989,25 @@
             "srcport": 0,
             "dstblock": "Integr3",
             "dstport": 0,
-            "zorder": 0,
+            "points": [
+                [
+                    578,
+                    555.0
+                ],
+                [
+                    624,
+                    555.0
+                ],
+                [
+                    624,
+                    554.0
+                ],
+                [
+                    644,
+                    554.0
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         },
         {
@@ -695,7 +1017,25 @@
             "srcport": 0,
             "dstblock": "Sum1",
             "dstport": 0,
-            "zorder": 0,
+            "points": [
+                [
+                    433,
+                    537.0
+                ],
+                [
+                    468,
+                    537.0
+                ],
+                [
+                    468,
+                    546.6666666666666
+                ],
+                [
+                    508,
+                    546.6666666666666
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         },
         {
@@ -705,7 +1045,25 @@
             "srcport": 0,
             "dstblock": "Sum1",
             "dstport": 1,
-            "zorder": 0,
+            "points": [
+                [
+                    433,
+                    610.0
+                ],
+                [
+                    488,
+                    610.0
+                ],
+                [
+                    488,
+                    563.3333333333334
+                ],
+                [
+                    508,
+                    563.3333333333334
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         },
         {
@@ -715,7 +1073,33 @@
             "srcport": 0,
             "dstblock": "Gain4",
             "dstport": 0,
-            "zorder": 0,
+            "points": [
+                [
+                    724,
+                    554.0
+                ],
+                [
+                    744,
+                    554.0
+                ],
+                [
+                    744,
+                    582
+                ],
+                [
+                    353,
+                    582
+                ],
+                [
+                    353,
+                    610.0
+                ],
+                [
+                    373,
+                    610.0
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         },
         {
@@ -725,7 +1109,25 @@
             "srcport": 0,
             "dstblock": "Export0",
             "dstport": 0,
-            "zorder": 0,
+            "points": [
+                [
+                    702,
+                    146.0
+                ],
+                [
+                    770,
+                    146.0
+                ],
+                [
+                    770,
+                    110.0
+                ],
+                [
+                    790,
+                    110.0
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         },
         {
@@ -735,7 +1137,25 @@
             "srcport": 0,
             "dstblock": "Export1",
             "dstport": 0,
-            "zorder": 0,
+            "points": [
+                [
+                    912,
+                    358.0
+                ],
+                [
+                    964,
+                    358.0
+                ],
+                [
+                    964,
+                    291.0
+                ],
+                [
+                    984,
+                    291.0
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         },
         {
@@ -745,7 +1165,109 @@
             "srcport": 0,
             "dstblock": "Export2",
             "dstport": 0,
-            "zorder": 0,
+            "points": [
+                [
+                    724,
+                    554.0
+                ],
+                [
+                    787,
+                    554.0
+                ],
+                [
+                    787,
+                    488.0
+                ],
+                [
+                    807,
+                    488.0
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line20",
+            "sid": 20,
+            "srcblock": "Integr0",
+            "srcport": 0,
+            "dstblock": "Scope0",
+            "dstport": 0,
+            "points": [
+                [
+                    702,
+                    146.0
+                ],
+                [
+                    778,
+                    146.0
+                ],
+                [
+                    778,
+                    203.0
+                ],
+                [
+                    798,
+                    203.0
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line21",
+            "sid": 21,
+            "srcblock": "Mux0",
+            "srcport": 0,
+            "dstblock": "Scope1",
+            "dstport": 0,
+            "points": [
+                [
+                    912,
+                    358.0
+                ],
+                [
+                    985,
+                    358.0
+                ],
+                [
+                    985,
+                    408.0
+                ],
+                [
+                    1005,
+                    408.0
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line22",
+            "sid": 22,
+            "srcblock": "Integr3",
+            "srcport": 0,
+            "dstblock": "Scope2",
+            "dstport": 0,
+            "points": [
+                [
+                    724,
+                    554.0
+                ],
+                [
+                    782,
+                    554.0
+                ],
+                [
+                    782,
+                    619.0
+                ],
+                [
+                    802,
+                    619.0
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         }
     ]
