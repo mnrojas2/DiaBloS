@@ -9,7 +9,6 @@ from tqdm import tqdm                   # MPLv2.0 MIT
 from tkinter import ttk
 from tkinter import filedialog
 from matplotlib import pyplot as plt    # BSD
-from scipy.integrate import solve_ivp   # BSD-3-Clause License
 from functools import partial           # PSF
 import os                               # PSF
 from block_functions import *
