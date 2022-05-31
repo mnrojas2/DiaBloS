@@ -62,6 +62,7 @@ class InitSim:
         self.filename = 'data.txt' # Nombre del archivo cargado o por defecto
         self.sim_time = 1.0     # Tiempo de simulación por defecto
         self.sim_dt = 0.01      # diferencia de tiempo para simulación (default: 10ms)
+        self.plot_trange = 100  # ancho ventana plot dinámico (defecto: 100 muestras)
 
         self.execution_pauseplay = 'play'
         self.execution_stop = False
@@ -521,12 +522,19 @@ class InitSim:
         entry2.grid(row=1, column=1)
         entry2.insert(10, self.sim_dt)
 
-        tk.Button(master, text='Accept', command=master.quit).grid(row=2, column=1, sticky=tk.W, pady=4)
+        # Ancho de ventana para gráficos en tiempo real
+        tk.Label(master, text="Time range Plot").grid(row=2)
+        entry3 = tk.Entry(master)
+        entry3.grid(row=2, column=1)
+        entry3.insert(10, self.plot_trange)
+
+        tk.Button(master, text='Accept', command=master.quit).grid(row=3, column=1, sticky=tk.W, pady=4)
         tk.mainloop()
 
         try:
             self.sim_time = float(entry.get())
             self.sim_dt = float(entry2.get())
+            self.plot_trange = float(entry3.get())
             master.destroy()
             return self.sim_time
         except:
@@ -1032,8 +1040,10 @@ class InitSim:
                     b_labels = block.params['vec_labels']
                     labels_list.append(b_labels)
 
+            print(len(self.timeline))
+
             if labels_list != []:
-                self.plotty = DynamicPlot(self.sim_dt, labels_list)
+                self.plotty = DynamicPlot(self.sim_dt, labels_list, self.plot_trange)
 
         elif step == 1: # loop
             vector_list = []
@@ -1062,7 +1072,7 @@ class InitSim:
                 vector_list.append(b_vectors)
 
         if labels_list != [] and len(vector_list) > 0:
-            self.plotty = DynamicPlot(self.sim_dt, labels_list)
+            self.plotty = DynamicPlot(self.sim_dt, labels_list, len(self.timeline))
             self.plotty.loop(self.timeline, vector_list)
 
 
@@ -1665,9 +1675,9 @@ class DynamicPlot:
         # -pyqtgraph: 307.99 seconds
         # -matplotlib: ~1000 seconds
 
-    def __init__(self, dt, labels=['default']):
+    def __init__(self, dt, labels=['default'], xrange=100):
         self.dt = dt
-        self.xrange = 100*self.dt
+        self.xrange = xrange*self.dt
         self.sort_labels(labels)
 
         self.app = pg.mkQApp("")
