@@ -1039,8 +1039,6 @@ class InitSim:
                     b_labels = block.params['vec_labels']
                     labels_list.append(b_labels)
 
-            print(len(self.timeline))
-
             if labels_list != []:
                 self.plotty = DynamicPlot(self.sim_dt, labels_list, self.plot_trange)
 

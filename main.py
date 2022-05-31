@@ -189,7 +189,7 @@ def main_execution():
 
                 elif sim_init.holding_CTRL == True:
                     # Ctrl + G para guardar los bloques en un archivo
-                    if event.key == pygame.K_g:
+                    if event.key == pygame.K_s:
                         sim_init.save()
 
                     # Ctrl + A para cargar los bloques desde un archivo
