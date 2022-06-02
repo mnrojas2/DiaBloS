@@ -71,7 +71,9 @@ Before executing the diagram, beware of the following issues or the simulation w
 FIRST EXPERIENCE
 ----------------
 
-1) Load data.txt to see a basic graph.
+1) Press 'Load' or 'Ctrl+A' to open a file
+#) Go to saves/ folder and open data.txt.
+#) You will see a simple diagram with one Step block and one Scope block
 #) Optional: Press "Dyn Plot" to enable the dynamic plot mode.
 #) Press 'Simulate' or 'Ctrl+E' to execute the graph.
 #) A pop-up will appear letting you change some values before executing.
