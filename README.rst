@@ -13,11 +13,10 @@ You will need the following packages (pip installation recommended):
 - tkinter
 - tqdm
 - pyqtgraph
-- functools
 
 On CMD or Terminal write::
 
-    pip install pygame numpy matplotlib json tkinter tqdm pyqtgraph functools
+    pip install pygame numpy matplotlib json tkinter tqdm pyqtgraph
 
 ::
 

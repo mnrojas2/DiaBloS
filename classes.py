@@ -58,7 +58,7 @@ class InitSim:
 
         self.execution_initialized = False
 
-        self.filename = 'data.txt' # Nombre del archivo cargado o por defecto
+        self.filename = 'data.dat' # Nombre del archivo cargado o por defecto
         self.sim_time = 1.0     # Tiempo de simulación por defecto
         self.sim_dt = 0.01      # diferencia de tiempo para simulación (default: 10ms)
         self.plot_trange = 100  # ancho ventana plot dinámico (defecto: 100 muestras)
@@ -332,18 +332,18 @@ class InitSim:
 
     def save(self):
         """
-        Saves blocks, lines and other data in a .txt
+        Saves blocks, lines and other data in a .dat file
         """
-        # Guarda los datos en diccionarios, exportados a un .txt
+        # Guarda los datos en diccionarios, exportados a un .dat
         root = tk.Tk()
         root.withdraw()
 
-        file = filedialog.asksaveasfilename(initialfile=self.filename, filetypes=[('Text Files', '*.txt'),("All files", "*.*")])
+        file = filedialog.asksaveasfilename(initialfile=self.filename, filetypes=[('Data Files', '*.dat'),("All files", "*.*")])
 
         if file == '':
             return 1
-        if file[-4:] != '.txt':
-            file += '.txt'
+        if file[-4:] != '.dat':
+            file += '.dat'
 
         # Datos de InitSim
         init_dict = {
@@ -408,13 +408,13 @@ class InitSim:
 
     def open(self):
         """
-        Loads blocks, lines and other data from a .txt
+        Loads blocks, lines and other data from a .dat
         """
-        # Abre el archivo .txt y carga los datos guardados para mostrarlos en pantalla
+        # Abre el archivo .dat y carga los datos guardados para mostrarlos en pantalla
         root = tk.Tk()
         root.withdraw()
 
-        file = filedialog.askopenfilename(initialfile=self.filename, filetypes=[('Text Files', '*.txt'),("All files", "*.*")])
+        file = filedialog.askopenfilename(initialfile=self.filename, filetypes=[('Data Files', '*.dat'),("All files", "*.*")])
         if file == '':  # asksaveasfilename return `None` if dialog closed with "cancel".
             return
         root.destroy()
@@ -1265,7 +1265,7 @@ class Block(InitSim):
         return ed_dict
 
     def loading_params(self, new_params):
-        # Cargar los datos desde el .txt, transformando las listas en np.ndarrays.
+        # Cargar los datos desde el .dat, transformando las listas en np.ndarrays.
         try:
             for key in new_params.keys():
                 if isinstance(new_params[key], list):
