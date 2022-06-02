@@ -17,7 +17,7 @@ You will need the following packages (pip installation recommended):
 
 On CMD or Terminal write::
 
-pip install pygame numpy matplotlib json tkinter tqdm pyqtgraph functools
+    pip install pygame numpy matplotlib json tkinter tqdm pyqtgraph functools
 
 ::
 
@@ -58,9 +58,27 @@ a) Beware these ports can only connect if one of them is a source port and the o
 #) A drain port can only connect with one source port, but you can connect multiple drain ports to the same source port.
 #) To delete a line, first select it with LMB, then press DEL.
 
+Diagram simulation
+------------------
+
+Before executing the diagram, beware of the following issues or the simulation won't start:
+
+1) All ports from all blocks must be connected.
+#) Beware of algebraic loops in the diagram.
+#) If working with vectors, be sure all parameters/arguments will be consistent with their inputs and outputs.
+
+
 FIRST EXPERIENCE
 ----------------
 
-1) Load data.txt to see a basic graph
-#) Press 'Simulate' or 'Ctrl+E' to execute the graph
+1) Load data.txt to see a basic graph.
+#) Optional: Press "Dyn Plot" to enable the dynamic plot mode.
+#) Press 'Simulate' or 'Ctrl+E' to execute the graph.
+#) A pop-up will appear letting you change some values before executing.
+#) Optional: Change the simulation time.
+#) Optional: Change the sampling rate.
+#) Optional: Change the window size for the dynamic plot.
+#) Accept your changes.
+#) Save the diagram. (Could be with the same filename or a different one).
+#) The program will start reading and executing the diagram showing a bar in the terminal.
 
