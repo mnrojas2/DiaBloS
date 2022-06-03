@@ -71,7 +71,7 @@ FIRST EXPERIENCE
 ----------------
 
 1) Press 'Load' or 'Ctrl+A' to open a file
-#) Go to saves/ folder and open data.txt.
+#) Go to saves/ folder and open basic-example.dat.
 #) You will see a simple diagram with one Step block and one Scope block
 #) Optional: Press "Dyn Plot" to enable the dynamic plot mode.
 #) Press 'Simulate' or 'Ctrl+E' to execute the graph.
@@ -83,3 +83,24 @@ FIRST EXPERIENCE
 #) Save the diagram. (Could be with the same filename or a different one).
 #) The program will start reading and executing the diagram showing a bar in the terminal.
 
+
+Some Block arguments
+--------------------
+
+1) Specific argument values ::
+
+    Step.type: 'up', 'down'
+    Integrator.method: 'FWD_RECT', 'BWD_RECT', 'TUSTIN', 'RK45'
+
+#) Value arguments can be written in the following ways (if allowed) ::
+
+    Gain.gain: a
+    Gain.gain: [[a, b],[c, d]]
+
+
+#) Nametype arguments ::
+
+    Scope.labels: "name,name2,..." (without quotation marks)
+    Export.str_name: "name,name2,name3,..." (without quotation marks)
+
+::
