@@ -5,15 +5,41 @@
         "fps": 60,
         "only_one": false,
         "enable_line_sel": true,
-        "sim_time": 2.0,
+        "sim_time": 10.0,
         "sim_dt": 0.01
     },
     "blocks_data": [
         {
+            "type": "Scope",
+            "sid": 0,
+            "coords_left": 490,
+            "coords_top": 252,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 0,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                220,
+                20,
+                60
+            ],
+            "run_ord": 3,
+            "io_edit": false,
+            "fun_name": "scope",
+            "params": {
+                "labels": "default",
+                "_init_start_": true
+            },
+            "external": false
+        },
+        {
             "type": "Step",
             "sid": 0,
-            "coords_left": 320,
-            "coords_top": 257,
+            "coords_left": 318,
+            "coords_top": 252,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -35,32 +61,6 @@
                 "type": "up"
             },
             "external": false
-        },
-        {
-            "type": "Scope",
-            "sid": 0,
-            "coords_left": 481,
-            "coords_top": 265,
-            "coords_width": 60,
-            "coords_height": 60,
-            "coords_height_base": 60,
-            "in_ports": 1,
-            "out_ports": 0,
-            "dragging": false,
-            "selected": false,
-            "b_color": [
-                220,
-                20,
-                60
-            ],
-            "run_ord": 3,
-            "io_edit": false,
-            "fun_name": "scope",
-            "params": {
-                "labels": "default",
-                "_init_start_": true
-            },
-            "external": false
         }
     ],
     "lines_data": [
@@ -73,20 +73,12 @@
             "dstport": 0,
             "points": [
                 [
-                    380,
-                    287.0
+                    378,
+                    282.0
                 ],
                 [
-                    461,
-                    287.0
-                ],
-                [
-                    461,
-                    295.0
-                ],
-                [
-                    481,
-                    295.0
+                    490,
+                    282.0
                 ]
             ],
             "cptr": 0,
