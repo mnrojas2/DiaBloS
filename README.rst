@@ -14,7 +14,7 @@ You will need the following packages::
 
 To install the packages you can use pip (recommended)::
 
-pip install pygame numpy matplotlib tk tqdm pyqtgraph
+    pip install pygame numpy matplotlib tk tqdm pyqtgraph
 
 You will also need these packages, but they should come with Python 3.9.7 by default::
 
