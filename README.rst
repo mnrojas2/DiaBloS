@@ -1,24 +1,31 @@
-SimuSnide
-=========
+<SimuSnide> - A graphical programming library/tool for dynamical systems in Python
+==================================================================================
 
 INSTALLATION
 ============
 
-You will need the following packages (pip installation recommended):
+You will need the following packages::
 
-- pygame
-- numpy
-- matplotlib
+- pygame (>=2.1.2)
+- numpy (>=1.22.3)
+- matplotlib (>=3.5.2)
+- tqdm (>=4.64.0)
+- pyqtgraph (>=0.12.3)
+
+To install the packages you can use pip (recommended)::
+
+pip install pygame numpy matplotlib tk tqdm pyqtgraph
+
+You will also need these packages, but they should come with Python 3.9.7 by default::
+
+- os
+- importlib
 - json
-- tkinter
-- tqdm
-- pyqtgraph
+- tkinter (tk)
+- functools
+- copy
+- time
 
-On CMD or Terminal write::
-
-    pip install pygame numpy matplotlib json tkinter tqdm pyqtgraph
-
-::
 
 KEYS AND SHORTCUTS
 ==================
@@ -87,18 +94,18 @@ FIRST EXPERIENCE
 Some Block arguments
 --------------------
 
-1) Specific argument values ::
+1) Specific argument values::
 
     Step.type: 'up', 'down'
     Integrator.method: 'FWD_RECT', 'BWD_RECT', 'TUSTIN', 'RK45'
 
-#) Value arguments can be written in the following ways (if allowed) ::
+#) Value arguments can be written in the following ways (if allowed)::
 
     Gain.gain: a
     Gain.gain: [[a, b],[c, d]]
 
 
-#) Nametype arguments ::
+#) Nametype arguments::
 
     Scope.labels: "name,name2,..." (without quotation marks)
     Export.str_name: "name,name2,name3,..." (without quotation marks)
