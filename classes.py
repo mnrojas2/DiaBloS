@@ -279,10 +279,6 @@ class InitSim:
                            {'inputs': 0, 'outputs': 1, 'run_ord': 0, 'io_edit': False}, {'sigma': 1, 'mu': 0},
                            (100,175,50), (60, 60))
 
-        testmo = BaseBlocks("TestMO", "test_MO",
-                            {'inputs': 0, 'outputs': 2, 'run_ord': 0, 'io_edit': False}, {},
-                            (0, 20, 60), (60, 60))
-
         mux = BaseBlocks("Mux", "mux",
                             {'inputs': 2, 'outputs': 1, 'run_ord': 2, 'io_edit': 'input'}, {},
                             (102, 51, 153), (60, 60))
@@ -303,7 +299,7 @@ class InitSim:
                             {'inputs': 1, 'outputs': 0, 'run_ord': 3, 'io_edit': False}, {'str_name': 'default', '_init_start_': True},
                             (255,160,0), (70, 60))
 
-        self.base_blocks = [step,sine,ramp,noise,integrator,gain,exponential,block,sumator,sigproduct,mux,demux,testmo,terminator,scope,export]
+        self.base_blocks = [step,sine,ramp,noise,integrator,gain,exponential,block,sumator,sigproduct,mux,demux,terminator,scope,export]
 
     def draw_base_blocks(self,zone):
         """

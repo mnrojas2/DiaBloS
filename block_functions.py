@@ -321,8 +321,3 @@ class Functions_call:
             aux_vector = np.concatenate((aux_vector, [inputs[0]]))
         params['vector'] = aux_vector
         return {0: inputs[0]}
-
-
-    # bloques con multiples salidas
-    def test_MO(self, time, inputs, params):
-        return {0: np.array([1,5]), 1: np.array([-1])}
