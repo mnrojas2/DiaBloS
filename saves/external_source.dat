@@ -23,8 +23,8 @@
             "selected": false,
             "b_color": [
                 0,
-                255,
-                0
+                0,
+                255
             ],
             "run_ord": 0,
             "io_edit": false,

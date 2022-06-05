@@ -114,6 +114,7 @@ def main_execution():
                         if b_elem.rectf.collidepoint(event.pos):
                             b_elem.change_params()
                             b_elem.load_external_data()
+                            sim_init.line_list = [x for x in sim_init.line_list if not sim_init.check_line_port(x, b_elem)]
 
             elif event.type == pygame.MOUSEBUTTONUP:
                 # Funciones para los botones

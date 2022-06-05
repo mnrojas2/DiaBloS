@@ -22,8 +22,8 @@
             "dragging": false,
             "selected": false,
             "b_color": [
-                0,
                 255,
+                128,
                 0
             ],
             "run_ord": 2,

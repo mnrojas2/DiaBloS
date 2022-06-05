@@ -110,4 +110,15 @@ Some Block arguments
     Scope.labels: "name,name2,..." (without quotation marks)
     Export.str_name: "name,name2,name3,..." (without quotation marks)
 
-::
+
+Loading external .py functions
+------------------------------
+
+This tool allows external loading of functions by using the block "Block".
+
+1) The name of the file and main function (executing function) must be the same.
+#) The external function file must in inside the 'external' folder.
+#) The '_init_' function is used to assign parameters/arguments, block type, input/output values and color.
+#) Libraries used to execute that block in particular must be added in that .py file only.
+#) There are two examples to help program these blocks 'my_function_src' and 'my_function_mid'.
+#) There are two simulation examples to execute these files, 'external_source.dat' and 'external_middle.dat'.

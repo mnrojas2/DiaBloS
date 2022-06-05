@@ -5,16 +5,21 @@ import time                             # PSF
 import json                             # PSF
 import tkinter as tk                    # BSD/PSF
 import importlib                        # PSF
+
 from tqdm import tqdm                   # MPLv2.0 MIT
 from tkinter import ttk
 from tkinter import filedialog
 from matplotlib import pyplot as plt    # BSD
 from functools import partial           # PSF
+
 import os                               # PSF
-from block_functions import *
+import sys                              # PSF
+sys.path.append('./external/')
 
 import pyqtgraph as pg
 from pyqtgraph.Qt import QtCore
+
+from block_functions import *
 
 class InitSim:
     """
@@ -1323,6 +1328,7 @@ class Block(InitSim):
         self.run_ord = fun_list['run_ord']
         self.in_ports = fun_list['inputs']
         self.out_ports = fun_list['outputs']
+        self.b_color = self.set_color(fun_list['color'])
         self.fun_name = full_module_name
         self.update_Block()
         print("MODULE FUNCTION:", full_module_name, "WAS LOADED")

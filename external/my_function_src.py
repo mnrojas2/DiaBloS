@@ -2,13 +2,13 @@
 Python module for external functions
 
 #. WARNING: You must add all the necessary libraries here to make the function work in the main loop.
-#. This file includes an example with a gain function. It only scale the input with the value it's set in the parameter 'gain'.
+#. This file includes an example with a multiple output source function. It only exports 2 values, through different ports.
 
 """
 import numpy as np
 
 #Funcion principal (para la ejecución)
-def my_function_mid(time, inputs, params):
+def my_function_src(time, inputs, params):
     """
     External function 'my_function'
     
@@ -22,7 +22,8 @@ def my_function_mid(time, inputs, params):
     :rtype: dict{numpy.darray}
     """
     
-    return {0: np.array(params['gain']*inputs[0])}
+    return {0: np.array([params['value_1']]),
+            1: np.array([params['value_2']])}
 
 #Funcion para inicializar los datos y parámetros necesarios para el bloque
 def _init_():
@@ -30,12 +31,14 @@ def _init_():
     External function initialization data
     """
     io_data = {
-        'run_ord': 2,
-        'inputs': 1,
-        'outputs': 1,
+        'run_ord': 0,
+        'inputs': 0,
+        'outputs': 2,
+        'color': 'blue'
     } #. Dictionary with the block type, number of inputs and number of outputs.
     params = {
-        'gain': 1.5
+        'value_1': 1,
+        'value_2': -1
     } #. Dictionary with the necessary parameters for the function.
     return io_data, params
 
