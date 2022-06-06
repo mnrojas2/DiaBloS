@@ -1,16 +1,23 @@
+==================================================================================
 <SimuSnide> - A graphical programming library/tool for dynamical systems in Python
 ==================================================================================
+
+.. note::
+
+    Work in progress.
+
+.. contents::
 
 INSTALLATION
 ============
 
 You will need the following packages::
 
-- pygame (>=2.1.2)
-- numpy (>=1.22.3)
-- matplotlib (>=3.5.2)
-- tqdm (>=4.64.0)
-- pyqtgraph (>=0.12.3)
+    - pygame (>=2.1.2)
+    - numpy (>=1.22.3)
+    - matplotlib (>=3.5.2)
+    - tqdm (>=4.64.0)
+    - pyqtgraph (>=0.12.3)
 
 To install the packages you can use pip (recommended)::
 
@@ -18,13 +25,13 @@ To install the packages you can use pip (recommended)::
 
 You will also need these packages, but they should come with Python 3.9.7 by default::
 
-- os
-- importlib
-- json
-- tkinter (tk)
-- functools
-- copy
-- time
+    - os
+    - importlib
+    - json
+    - tkinter (tk)
+    - functools
+    - copy
+    - time
 
 
 KEYS AND SHORTCUTS
@@ -102,7 +109,7 @@ Some Block arguments
 #) Value arguments can be written in the following ways (if allowed)::
 
     Gain.gain: a
-    Gain.gain: [[a, b],[c, d]]
+    Gain.gain: [[a, b],[c, d]] *with {a,b,c,d} = float/int type.
 
 
 #) Nametype arguments::
@@ -117,8 +124,8 @@ Loading external .py functions
 This tool allows external loading of functions by using the block "Block".
 
 1) The name of the file and main function (executing function) must be the same.
-#) The external function file must in inside the 'external' folder.
+#) The file must be inside the 'external' folder.
 #) The '_init_' function is used to assign parameters/arguments, block type, input/output values and color.
-#) Libraries used to execute that block in particular must be added in that .py file only.
+#) Libraries used to execute that block in particular must be added in that '.py' file only.
 #) There are two examples to help program these blocks 'my_function_src' and 'my_function_mid'.
 #) There are two simulation examples to execute these files, 'external_source.dat' and 'external_middle.dat'.
