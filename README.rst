@@ -34,8 +34,8 @@ You will also need these packages, but they should come with Python 3.9.7 by def
     - time
 
 
-KEYS AND SHORTCUTS
-==================
+KEYS, SHORTCUTS AND TIPS
+========================
 
 Basics
 ------
@@ -80,24 +80,6 @@ Before executing the diagram, beware of the following issues or the simulation w
 #) Beware of algebraic loops in the diagram.
 #) If working with vectors, be sure all parameters/arguments will be consistent with their inputs and outputs.
 
-
-FIRST EXPERIENCE
-----------------
-
-1) Press 'Load' or 'Ctrl+A' to open a file
-#) Go to saves/ folder and open basic-example.dat.
-#) You will see a simple diagram with one Step block and one Scope block
-#) Optional: Press "Dyn Plot" to enable the dynamic plot mode.
-#) Press 'Simulate' or 'Ctrl+E' to execute the graph.
-#) A pop-up will appear letting you change some values before executing.
-#) Optional: Change the simulation time.
-#) Optional: Change the sampling rate.
-#) Optional: Change the window size for the dynamic plot.
-#) Accept your changes.
-#) Save the diagram. (Could be with the same filename or a different one).
-#) The program will start reading and executing the diagram showing a bar in the terminal.
-
-
 Some Block arguments
 --------------------
 
@@ -129,3 +111,19 @@ This tool allows external loading of functions by using the block "Block".
 #) Libraries used to execute that block in particular must be added in that '.py' file only.
 #) There are two examples to help program these blocks 'my_function_src' and 'my_function_mid'.
 #) There are two simulation examples to execute these files, 'external_source.dat' and 'external_middle.dat'.
+
+FIRST EXPERIENCE
+================
+
+1) Press 'Load' or 'Ctrl+A' to open a file
+#) Go to saves/ folder and open basic-example.dat.
+#) You will see a simple diagram with one Step block and one Scope block
+#) Optional: Press "Dyn Plot" to enable the dynamic plot mode.
+#) Press 'Simulate' or 'Ctrl+E' to execute the graph.
+#) A pop-up will appear letting you change some values before executing.
+#) Optional: Change the simulation time.
+#) Optional: Change the sampling rate.
+#) Optional: Change the window size for the dynamic plot.
+#) Accept your changes.
+#) Save the diagram. (Could be with the same filename or a different one).
+#) The program will start reading and executing the diagram showing a bar in the terminal.
