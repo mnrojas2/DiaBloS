@@ -1,0 +1,174 @@
+{
+    "sim_data": {
+        "wind_width": 1280,
+        "wind_height": 720,
+        "fps": 60,
+        "only_one": false,
+        "enable_line_sel": true,
+        "sim_time": 1.0,
+        "sim_dt": 0.01
+    },
+    "blocks_data": [
+        {
+            "type": "Step",
+            "sid": 0,
+            "coords_left": 354,
+            "coords_top": 246,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 0,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                0,
+                0,
+                255
+            ],
+            "run_ord": 0,
+            "io_edit": false,
+            "fun_name": "step",
+            "params": {
+                "value": 1.0,
+                "delay": 0.0,
+                "type": "up"
+            },
+            "external": false
+        },
+        {
+            "type": "Sum",
+            "sid": 0,
+            "coords_left": 559,
+            "coords_top": 271,
+            "coords_width": 70,
+            "coords_height": 50,
+            "coords_height_base": 50,
+            "in_ports": 2,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                0,
+                255,
+                255
+            ],
+            "run_ord": 2,
+            "io_edit": "input",
+            "fun_name": "sumator",
+            "params": {
+                "sign": "++"
+            },
+            "external": false
+        },
+        {
+            "type": "Term",
+            "sid": 0,
+            "coords_left": 738,
+            "coords_top": 259,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 0,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                255,
+                0,
+                0
+            ],
+            "run_ord": 3,
+            "io_edit": false,
+            "fun_name": "terminator",
+            "params": {},
+            "external": false
+        }
+    ],
+    "lines_data": [
+        {
+            "name": "Line0",
+            "sid": 0,
+            "srcblock": "Step0",
+            "srcport": 0,
+            "dstblock": "Sum0",
+            "dstport": 0,
+            "points": [
+                [
+                    414,
+                    276.0
+                ],
+                [
+                    519,
+                    276.0
+                ],
+                [
+                    519,
+                    287.6666666666667
+                ],
+                [
+                    559,
+                    287.6666666666667
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line1",
+            "sid": 1,
+            "srcblock": "Step0",
+            "srcport": 0,
+            "dstblock": "Sum0",
+            "dstport": 1,
+            "points": [
+                [
+                    414,
+                    276.0
+                ],
+                [
+                    539,
+                    276.0
+                ],
+                [
+                    539,
+                    304.3333333333333
+                ],
+                [
+                    559,
+                    304.3333333333333
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line2",
+            "sid": 2,
+            "srcblock": "Sum0",
+            "srcport": 0,
+            "dstblock": "Term0",
+            "dstport": 0,
+            "points": [
+                [
+                    629,
+                    296.0
+                ],
+                [
+                    718,
+                    296.0
+                ],
+                [
+                    718,
+                    289.0
+                ],
+                [
+                    738,
+                    289.0
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        }
+    ]
+}

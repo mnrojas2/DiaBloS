@@ -41,6 +41,8 @@ def main_execution():
     clock = pygame.time.Clock()
     running = True
 
+    canvas_left_limit = 200
+
     while running:
 
         # - events -
@@ -51,26 +53,26 @@ def main_execution():
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 # Agregar bloque
-                if event.button == 3 and sim_init.holding_CTRL == False:
-                    for block in sim_init.base_blocks:
-                        if block.collision.collidepoint(event.pos):
-                            sim_init.add_block(block, event.pos)
-
-                elif event.button == 1 and sim_init.holding_CTRL == False:
+                if event.button == 1 and sim_init.holding_CTRL == False:
                     for button in sim_init.buttons_list:
                         if button.collision.collidepoint(event.pos):
                             button.pressed = True
 
+                    for block in sim_init.base_blocks:
+                        if block.collision.collidepoint(event.pos):
+                            sim_init.add_block(block, event.pos)
+
                     for b_elem in sim_init.blocks_list:
-                        if b_elem.rectf.collidepoint(event.pos):
+                        if b_elem.rectf.collidepoint(event.pos) and sim_init.only_one == False:
                             b_elem.selected = True
+                            sim_init.only_one = True
                             sim_init.enable_line_selection = False
                             p_col = b_elem.port_collision(event.pos)
 
                             # Mover bloque
-                            if p_col[0] == -1 and sim_init.only_one == False:
+                            if p_col[0] == -1: # and sim_init.only_one == False:
                                 b_elem.dragging = True
-                                sim_init.only_one = True
+                                #sim_init.only_one = True
                                 mouse_x, mouse_y = event.pos
                                 offset_x = b_elem.left - mouse_x
                                 offset_y = b_elem.top - mouse_y
@@ -101,20 +103,20 @@ def main_execution():
                     if len(b_sel) == 0:
                         sim_init.enable_line_selection = True
 
-                # Ctrl + click derecho para cambiar el número de puertos de un bloque
-                elif event.button == 3 and sim_init.holding_CTRL == True:
-                    for b_elem in sim_init.blocks_list:
-                        if b_elem.rectf.collidepoint(event.pos):
-                            b_elem.change_port_numbers()
-                            sim_init.line_list = [x for x in sim_init.line_list if not sim_init.check_line_port(x, b_elem)]
+                # click derecho para cambiar los parametros o numero de puertos de un bloque
+                elif event.button == 3:
+                    if sim_init.holding_CTRL == False:
+                        for b_elem in sim_init.blocks_list:
+                            if b_elem.rectf.collidepoint(event.pos):
+                                b_elem.change_params()
+                                b_elem.load_external_data()
+                                sim_init.line_list = [x for x in sim_init.line_list if not sim_init.check_line_port(x, b_elem)]
 
-                # Ctrl + click izquierdo para cambiar los parametros de un bloque
-                elif event.button == 1 and sim_init.holding_CTRL == True:
-                    for b_elem in sim_init.blocks_list:
-                        if b_elem.rectf.collidepoint(event.pos):
-                            b_elem.change_params()
-                            b_elem.load_external_data()
-                            sim_init.line_list = [x for x in sim_init.line_list if not sim_init.check_line_port(x, b_elem)]
+                    elif sim_init.holding_CTRL == True:
+                        for b_elem in sim_init.blocks_list:
+                            if b_elem.rectf.collidepoint(event.pos):
+                                b_elem.change_port_numbers()
+                                sim_init.line_list = [x for x in sim_init.line_list if not sim_init.check_line_port(x, b_elem)]
 
             elif event.type == pygame.MOUSEBUTTONUP:
                 # Funciones para los botones
@@ -157,7 +159,10 @@ def main_execution():
                 # Se deja de mover un bloque y se actualizan las lineas conectadas a sus puertos
                 for b_elem in sim_init.blocks_list:
                     if event.button == 1:
-                        b_elem.dragging = False
+                        if b_elem.left < canvas_left_limit:
+                            sim_init.remove_block_and_lines()
+                        else:
+                            b_elem.dragging = False
                         sim_init.only_one = False
                         sim_init.update_lines()
 

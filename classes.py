@@ -16,7 +16,7 @@ import os                               # PSF
 import sys                              # PSF
 sys.path.append('./external/')
 
-import pyqtgraph as pg
+import pyqtgraph as pg                  # MIT
 from pyqtgraph.Qt import QtCore
 
 from block_functions import *
@@ -81,11 +81,11 @@ class InitSim:
         load = Button('Load', (160, 10, 100, 40))
         save = Button('Save', (280, 10, 100, 40))
         #blocks = Button('Add block', (400, 15, 100, 40))
-        sim = Button('Simulate', (400, 10, 100, 40))
-        pauseplay = Button('_pauseplay_', (520, 10, 40, 40))
-        stop = Button('_stop_', (580, 10, 40, 40))
-        show_scope = Button('Plot', (640, 10, 60, 40))
-        dynamic_scope = Button('Dyn Plot', (720, 10, 80, 40))
+        sim = Button('_play_', (400, 10, 40, 40))
+        pauseplay = Button('_pause_', (460, 10, 40, 40))
+        stop = Button('_stop_', (520, 10, 40, 40))
+        show_scope = Button('Plot', (580, 10, 60, 40))
+        dynamic_scope = Button('Dyn Plot', (660, 10, 80, 40))
 
         self.buttons_list = [new, load, save, sim, pauseplay, stop, show_scope, dynamic_scope]
         self.button_margin = 80
@@ -331,20 +331,23 @@ class InitSim:
 
     ##### LOADING AND SAVING #####
 
-    def save(self):
+    def save(self, autosave=False):
         """
         Saves blocks, lines and other data in a .dat file
         """
         # Guarda los datos en diccionarios, exportados a un .dat
-        root = tk.Tk()
-        root.withdraw()
+        if autosave == False:
+            root = tk.Tk()
+            root.withdraw()
 
-        file = filedialog.asksaveasfilename(initialfile=self.filename, filetypes=[('Data Files', '*.dat'),("All files", "*.*")])
+            file = filedialog.asksaveasfilename(initialfile=self.filename, filetypes=[('Data Files', '*.dat'),("All files", "*.*")])
 
-        if file == '':
-            return 1
-        if file[-4:] != '.dat':
-            file += '.dat'
+            if file == '':
+                return 1
+            if file[-4:] != '.dat':
+                file += '.dat'
+        else:
+            file = 'saves/autosave/'+self.filename[:-4]+'_AUTOSAVE.dat'
 
         # Datos de InitSim
         init_dict = {
@@ -402,9 +405,10 @@ class InitSim:
         with open(file, 'w') as fp:
             json.dump(main_dict, fp, indent=4)
 
-        self.filename = file.split('/')[-1] # Para conservar el nombre del archivo si es que se quiere guardar
+        if autosave == False:
+            self.filename = file.split('/')[-1]  # Para conservar el nombre del archivo si es que se quiere guardar
+            root.destroy()
 
-        root.destroy()
         print("SAVED AS",file)
 
     def open(self):
@@ -545,6 +549,9 @@ class InitSim:
         Initializes the graph execution
         """
         # Inicializa los parametros y bloques para la simulación del sistema, además de hacer la primera iteración de calculo
+
+        print("*****INIT NEW EXECUTION*****")
+
         self.execution_fun = Functions_call()
         self.execution_stop = False
         self.time_step = 0
@@ -558,7 +565,7 @@ class InitSim:
             return
 
         # Obligar a guardar antes de ejecutar (para no perder el diagrama)
-        if self.save() == 1:
+        if self.save(True) == 1:
             return
 
         # Actualización de módulos importados (funciones externas)
@@ -577,7 +584,7 @@ class InitSim:
         self.reset_execution_data()
         self.execution_time_start = time.time()
 
-        print("*****EXECUTION*****")
+        print("*****EXECUTION START*****")
 
         # Inicialización de la barra de progreso
         self.pbar = tqdm(desc='SIMULATION PROGRESS', total=int(self.execution_time/self.sim_dt), unit=' itr')
@@ -790,7 +797,7 @@ class InitSim:
 
         # Se comprueba si que el tiempo total de simulación (ejecución) ha sido superado para finalizar con el loop.
         if self.time_step >= self.execution_time: # seconds
-            self.execution_initialized = False                        # Se finaliza el loop de ejecución
+            self.execution_initialized = False                  # Se finaliza el loop de ejecución
             self.pbar.close()                                   # Se finaliza la barra de progreso
             print("SIMULATION TIME:", round(time.time() - self.execution_time_start, 5), 'SECONDS')  # Se imprime el tiempo total tomado
 
@@ -1511,10 +1518,10 @@ class BaseBlocks(InitSim):
 
     def draw_baseblock(self, zone, pos):
         # Dibuja el bloque
-        self.collision = pygame.rect.Rect(40, 60 + 40*pos, self.side_length[0], self.side_length[1])
+        self.collision = pygame.rect.Rect(40, 80 + 40*pos, self.side_length[0], self.side_length[1])
         pygame.draw.rect(zone, self.b_color, self.collision)
-        zone.blit(self.image, (40, 60 + 40*pos))
-        zone.blit(self.text_display, (90, 70 + 40*pos))
+        zone.blit(self.image, (40, 80 + 40*pos))
+        zone.blit(self.text_display, (90, 90 + 40*pos))
 
     def set_color(self, color):
         # Define el color del bloque a partir de un string o directamente de una tupla con los valores RGB
@@ -1549,10 +1556,15 @@ class Button(InitSim):
         if not (self.name[0] == self.name[-1] == '_'):
             zone.blit(self.text_display, (self.collision.left + 0.5 * (self.collision.width - self.text_display.get_width()),
                                  self.collision.top + 0.5 * (self.collision.height - self.text_display.get_height())))
-        elif self.name == '_pauseplay_':
-            pygame.draw.polygon(zone, self.colors['black'], ( (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height),(self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.75 * self.collision.height),(self.collision.left + 0.5 * self.collision.width, self.collision.top + 0.5 * self.collision.height) ))
-            pygame.draw.rect(zone, self.colors['black'], (self.collision.left + 0.5 * self.collision.width, self.collision.top + 0.25 * self.collision.height, 4, 0.5 * self.collision.height))
-            pygame.draw.rect(zone, self.colors['black'], (self.collision.left + 0.5 * self.collision.width + 8, self.collision.top + 0.25 * self.collision.height, 4, 0.5 * self.collision.height))
+        elif self.name == '_play_':
+            pygame.draw.polygon(zone, self.colors['black'], (
+            (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height),
+            (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.75 * self.collision.height),
+            (self.collision.left + 0.75 * self.collision.width, self.collision.top + 0.5 * self.collision.height)))
+
+        elif self.name == '_pause_':
+            pygame.draw.rect(zone, self.colors['black'], (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height, 8, 0.5 * self.collision.height))
+            pygame.draw.rect(zone, self.colors['black'], (self.collision.left + 0.25 * self.collision.width + 12, self.collision.top + 0.25 * self.collision.height, 8, 0.5 * self.collision.height))
 
         elif self.name == '_stop_':
             pygame.draw.rect(zone, self.colors['black'], (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height, 0.5 * self.collision.width, 0.5 * self.collision.height))
