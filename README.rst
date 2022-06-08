@@ -48,10 +48,10 @@ Basics
 Blocks
 ------
 
-1) RMB over block menu (left list): Create a block
-#) Ctrl + RMB over block: Input/Output menu (if applicable)
-#) Ctrl + LMB over block: Parameters/Attributes menu
-#) LMB over block: move the block
+1) To create a block press LMB over the list in the left and move the new element to the white canvas
+#) To delete a block just move it back to the list in the left
+#) RMB: Parameters/Attributes menu
+#) Ctrl + RMB: Input/Output menu (if applicable)
 
 Tips:
 
