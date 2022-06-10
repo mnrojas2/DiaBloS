@@ -29,6 +29,9 @@ class InitSim:
         self.SCREEN_WIDTH = 1280
         self.SCREEN_HEIGHT = 720
 
+        self.canvas_top_limit = 60
+        self.canvas_left_limit = 200
+
         self.colors = {'black': (0,0,0),
                        'red': (255,0,0),
                        'green': (0,255,0),
@@ -49,7 +52,7 @@ class InitSim:
 
         self.FPS = 60
 
-        self.base_blocks = []  # Lista de bloques base (lista)
+        self.menu_blocks = []  # Lista de bloques base (lista)
         self.blocks_list = []  # Lista de bloques existente
         self.line_list = []    # Lista de lineas existente
 
@@ -88,22 +91,24 @@ class InitSim:
         dynamic_scope = Button('Dyn Plot', (660, 10, 80, 40))
 
         self.buttons_list = [new, load, save, sim, pauseplay, stop, show_scope, dynamic_scope]
-        self.button_margin = 80
 
     def display_buttons(self, zone):
         """
         Displays all the buttons on the screen
         """
         # Dibuja los botones en la pantalla
+        pygame.draw.line(zone, self.colors['black'], [200, 60], [1260, 60], 2)
         for button in self.buttons_list:
             button.draw_button(zone)
+
+
 
     ##### ADD OR REMOVE BLOCKS AND LINES #####
 
     def add_block(self, block, m_pos=(0,0)):
         """
         :proposito: Agrega un bloque a la interfaz, con un ID único.
-        :descripcion: A partir de una lista visible de BaseBlocks, se crea una instancia de Bloque completo, el cual está disponible para editar parámetros como conectar con otros bloques.
+        :descripcion: A partir de una lista visible de MenuBlocks, se crea una instancia de Bloque completo, el cual está disponible para editar parámetros como conectar con otros bloques.
         :param block: Base-block que contiene los parámetros base para cada tipo de bloque.
         :param m_pos: Coordenadas (x, y) para ubicar la esquina superior izquierda del futuro bloque.
         :type block: BaseBlock class
@@ -131,8 +136,6 @@ class InitSim:
         #block_collision = (np.random.randint(0.25*self.SCREEN_WIDTH,0.75*self.SCREEN_WIDTH), np.random.randint(0.25*self.SCREEN_HEIGHT,0.75*self.SCREEN_HEIGHT), block.size[0], block.size[1])
         mouse_x = m_pos[0]
         mouse_y = m_pos[1]
-        if mouse_y < self.button_margin:
-            mouse_y = self.button_margin
         block_collision = (mouse_x, mouse_y, block.size[0], block.size[1])
 
         new_block = Block(block.b_type, sid, block_collision, block.b_color, block.ins, block.outs, block.run_ord, block.io_edit, block.fun_name, copy.deepcopy(block.params), block.external)
@@ -198,7 +201,7 @@ class InitSim:
         else:
             return False
 
-    def print_lines(self, zone):
+    def display_lines(self, zone):
         """
         Draws lines connecting blocks in the screen
         """
@@ -214,7 +217,7 @@ class InitSim:
         for line in self.line_list:
             line.update_line(self.blocks_list)
 
-    def blockScreen(self, zone):
+    def display_blocks(self, zone):
         """
         Draws existing blocks in the screen
         """
@@ -234,100 +237,86 @@ class InitSim:
                 return False
         return True
 
-    ##### BASE BLOCKS #####
+    ##### MENU BLOCKS #####
 
-    def base_blocks_init(self):
+    def menu_blocks_init(self):
         """
-        Initializes the list of blocks available to use (base blocks)
+        Initializes the list of blocks available to use (menu blocks)
         """
         # Inicializa los bloques del menú, son estos los que se copian para generar los bloques y funciones.
         # Algunos datos se envían en forma de diccionarios para que se pueda observar qué es cada cosa
         # Los colores pueden definirse como strings (si es que están en self.colors) o directamente con los valores RGB en tupla.
 
-        block = BaseBlocks("Block",'block',
+        block = MenuBlocks("Block",'block',
                            {'inputs': 1, 'outputs': 1, 'run_ord': 2, 'io_edit': False}, {"filename": '<no filename>'},
                            'green', (120, 60), True)
 
-        step = BaseBlocks("Step", 'step',
+        step = MenuBlocks("Step", 'step',
                               {'inputs': 0, 'outputs': 1, 'run_ord': 0, 'io_edit': False}, {'value': 1.0, 'delay': 0.0, 'type': 'up'},
                               'blue', (60, 60))
 
-        gain = BaseBlocks("Gain", 'gain',
+        gain = MenuBlocks("Gain", 'gain',
                           {'inputs': 1, 'outputs': 1, 'run_ord': 2, 'io_edit': False}, {'gain': 1.0},
                           'yellow', (60, 60))
 
-        integrator = BaseBlocks("Integr", 'integrator',
+        integrator = MenuBlocks("Integr", 'integrator',
                                 {'inputs': 1, 'outputs': 1, 'run_ord': 1, 'io_edit': False}, {'init_conds': 0.0, 'method': 'FWD_RECT', '_init_start_': True},
                                 'magenta', (80, 60))
 
-        sumator = BaseBlocks("Sum", 'sumator',
+        sumator = MenuBlocks("Sum", 'sumator',
                              {'inputs': 2, 'outputs': 1, 'run_ord': 2, 'io_edit': 'input'}, {'sign': "++"},
                              'cyan', (70, 50))
 
-        sigproduct = BaseBlocks("SgProd", 'sigproduct',
+        sigproduct = MenuBlocks("SgProd", 'sigproduct',
                                    {'inputs': 2, 'outputs': 1, 'run_ord': 2, 'io_edit': 'input'}, {},
                                    'green', (70, 50))
 
-        sine = BaseBlocks("Sine", 'sine',
+        sine = MenuBlocks("Sine", 'sine',
                           {'inputs': 0, 'outputs': 1, 'run_ord': 0, 'io_edit': False}, {'amplitude': 1.0, 'omega': 1.0, 'init_angle': 0},
                           'purple', (60, 60))
 
-        exponential = BaseBlocks("Exp", 'exponential',
+        exponential = MenuBlocks("Exp", 'exponential',
                                  {'inputs': 1, 'outputs': 1, 'run_ord': 2, 'io_edit': False}, {'a': 1.0, 'b': 1.0},
                                  (255,0,128), (60, 60))  # a*e^bx
 
-        ramp = BaseBlocks("Ramp", 'ramp',
+        ramp = MenuBlocks("Ramp", 'ramp',
                           {'inputs': 0, 'outputs': 1, 'run_ord': 0, 'io_edit': False}, {'slope': 1.0, 'delay': 0.0},
                           (255,127,0), (60, 60))
 
-        noise = BaseBlocks("Noise", 'noise',
+        noise = MenuBlocks("Noise", 'noise',
                            {'inputs': 0, 'outputs': 1, 'run_ord': 0, 'io_edit': False}, {'sigma': 1, 'mu': 0},
                            (100,175,50), (60, 60))
 
-        mux = BaseBlocks("Mux", "mux",
+        mux = MenuBlocks("Mux", "mux",
                             {'inputs': 2, 'outputs': 1, 'run_ord': 2, 'io_edit': 'input'}, {},
                             (102, 51, 153), (60, 60))
 
-        demux = BaseBlocks("Demux", "demux",
+        demux = MenuBlocks("Demux", "demux",
                             {'inputs': 1, 'outputs': 2, 'run_ord': 2, 'io_edit': 'output'}, {'output_shape': 1},
                             (102, 30, 153), (60, 60))
 
-        terminator = BaseBlocks("Term", 'terminator',
+        terminator = MenuBlocks("Term", 'terminator',
                                 {'inputs': 1, 'outputs': 0, 'run_ord': 3, 'io_edit': False}, {},
                                 'red', (60, 60))
 
-        scope = BaseBlocks("Scope", 'scope',
+        scope = MenuBlocks("Scope", 'scope',
                            {'inputs': 1, 'outputs': 0, 'run_ord': 3, 'io_edit': False}, {'labels': 'default', '_init_start_': True},
                            (220, 20, 60), (60, 60))
 
-        export = BaseBlocks("Export", "export",
+        export = MenuBlocks("Export", "export",
                             {'inputs': 1, 'outputs': 0, 'run_ord': 3, 'io_edit': False}, {'str_name': 'default', '_init_start_': True},
                             (255,160,0), (70, 60))
 
-        self.base_blocks = [step,sine,ramp,noise,integrator,gain,exponential,block,sumator,sigproduct,mux,demux,terminator,scope,export]
+        self.menu_blocks = [step,sine,ramp,noise,integrator,gain,exponential,block,sumator,sigproduct,mux,demux,terminator,scope,export]
 
-    def draw_base_blocks(self,zone):
+    def display_menu_blocks(self,zone):
         """
-        Draws base blocks in the screen
+        Draws menu blocks in the screen
         """
         # Dibuja los bloques del menú y la línea separadora
         pygame.draw.line(zone, self.colors['black'], [200, 60], [200, 710], 2)
-        for i in range(len(self.base_blocks)):
-            self.base_blocks[i].draw_baseblock(zone, i)
-
-    def display_base_blocks_menu(self):
-        # Función base para Tkinter de forma que se puedan cargar la lista de bloques
-        root = tk.Tk()
-        root.title('Blocks')
-        for i in range(len(self.base_blocks)):
-            tk.Button(root,
-                      text=self.base_blocks[i].fun_name,
-                      width=15,
-                      command=lambda i=i: self.add_block(self.base_blocks[i])).grid(row=i, column=0, sticky=tk.W, pady=4)
-        tk.Button(root, text='Ok', command=root.quit).grid(row=len(self.base_blocks)+1, column=0, sticky=tk.W, pady=4)
-        tk.mainloop()
-        root.destroy()
-        return
+        for i in range(len(self.menu_blocks)):
+            self.menu_blocks[i].draw_baseblock(zone, i)
 
     ##### LOADING AND SAVING #####
 
@@ -1491,7 +1480,7 @@ class Line(InitSim):
             self.dstblock) + ", port " + str(self.dstport)
 
 
-class BaseBlocks(InitSim):
+class MenuBlocks(InitSim):
     """
     Class to create and show basic blocks used as a mark to generate functional blocks in the user interface
     """
@@ -1556,6 +1545,16 @@ class Button(InitSim):
         if not (self.name[0] == self.name[-1] == '_'):
             zone.blit(self.text_display, (self.collision.left + 0.5 * (self.collision.width - self.text_display.get_width()),
                                  self.collision.top + 0.5 * (self.collision.height - self.text_display.get_height())))
+
+        elif self.name == '_new_':
+            print("new_symbol")
+
+        elif self.name == '_open_':
+            print("open_symbol")
+
+        elif self.name == '_save_':
+            print("save_symbol")
+
         elif self.name == '_play_':
             pygame.draw.polygon(zone, self.colors['black'], (
             (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height),
@@ -1568,6 +1567,12 @@ class Button(InitSim):
 
         elif self.name == '_stop_':
             pygame.draw.rect(zone, self.colors['black'], (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height, 0.5 * self.collision.width, 0.5 * self.collision.height))
+
+        elif self.name == '_plot_':
+            print("plot_symbol")
+
+        elif self.name == 'dynamic_plot':
+            print("switchable_symbol")
 
     def set_color(self, color):
         # Define el color del bloque a partir de un string o directamente de una tupla con los valores RGB

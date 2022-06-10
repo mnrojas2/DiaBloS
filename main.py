@@ -24,7 +24,7 @@ def main_execution():
     # - objects -
 
     # Se inicializan los bloques base
-    sim_init.base_blocks_init()
+    sim_init.menu_blocks_init()
     sim_init.main_buttons(screen)
 
     new_b = sim_init.buttons_list[0]
@@ -41,8 +41,6 @@ def main_execution():
     clock = pygame.time.Clock()
     running = True
 
-    canvas_left_limit = 200
-
     while running:
 
         # - events -
@@ -58,11 +56,11 @@ def main_execution():
                         if button.collision.collidepoint(event.pos):
                             button.pressed = True
 
-                    for block in sim_init.base_blocks:
+                    for block in sim_init.menu_blocks:
                         if block.collision.collidepoint(event.pos):
                             sim_init.add_block(block, event.pos)
 
-                    for b_elem in sim_init.blocks_list:
+                    for b_elem in sim_init.blocks_list[::-1]:
                         if b_elem.rectf.collidepoint(event.pos) and sim_init.only_one == False:
                             b_elem.selected = True
                             sim_init.only_one = True
@@ -70,9 +68,8 @@ def main_execution():
                             p_col = b_elem.port_collision(event.pos)
 
                             # Mover bloque
-                            if p_col[0] == -1: # and sim_init.only_one == False:
+                            if p_col[0] == -1:
                                 b_elem.dragging = True
-                                #sim_init.only_one = True
                                 mouse_x, mouse_y = event.pos
                                 offset_x = b_elem.left - mouse_x
                                 offset_y = b_elem.top - mouse_y
@@ -159,7 +156,7 @@ def main_execution():
                 # Se deja de mover un bloque y se actualizan las lineas conectadas a sus puertos
                 for b_elem in sim_init.blocks_list:
                     if event.button == 1:
-                        if b_elem.left < canvas_left_limit:
+                        if b_elem.left < sim_init.canvas_left_limit or b_elem.top < sim_init.canvas_top_limit:
                             sim_init.remove_block_and_lines()
                         else:
                             b_elem.dragging = False
@@ -180,8 +177,6 @@ def main_execution():
                 for b_elem in sim_init.blocks_list:
                     if b_elem.dragging == True and sim_init.only_one == True:
                         mouse_x, mouse_y = event.pos
-                        if b_elem.top < sim_init.button_margin:
-                            mouse_y = sim_init.button_margin - offset_y
                         b_elem.relocate_Block((mouse_x + offset_x, mouse_y + offset_y))
 
             elif event.type == pygame.KEYDOWN:
@@ -210,10 +205,6 @@ def main_execution():
                     elif event.key == pygame.K_e:
                         sim_init.execution_init()
 
-                    # Abrir la ventana de bloques
-                    #elif event.key == pygame.K_r:
-                    #    sim_init.display_base_blocks_menu()
-
             elif event.type == pygame.KEYUP:
                 # Indicar que la tecla Control se dejó de presionar
                 if event.key == pygame.K_LCTRL or event.key == pygame.K_RCTRL:
@@ -229,17 +220,15 @@ def main_execution():
                         if line.selected == True:
                             line.change_color(-1)
 
-        # - updates (without draws) -
-
-        # - draws (without updates) -
+        # - draws -
         screen.fill(sim_init.colors['white'])
 
-        sim_init.draw_base_blocks(screen)           # Se dibujan los bloques base
-        sim_init.display_buttons(screen)
-        sim_init.blockScreen(screen)                # Se dibujan los bloques de ejecución
-        sim_init.print_lines(screen)                # Se dibujan las lineas
+        sim_init.display_menu_blocks(screen)       # Se dibujan los bloques base
+        sim_init.display_buttons(screen)           # Se dibuja la barra de botones
+        sim_init.display_blocks(screen)            # Se dibujan los bloques de ejecución
+        sim_init.display_lines(screen)             # Se dibujan las lineas
 
-        if sim_init.execution_initialized == True:        # Si es que ya se corrió la primera iteración, iniciar el loop.
+        if sim_init.execution_initialized == True: # Si es que ya se corrió la primera iteración, iniciar el loop.
             sim_init.execution_loop()
 
         pygame.display.flip()
