@@ -25,7 +25,7 @@ def main_execution():
 
     # Se inicializan los bloques base
     sim_init.menu_blocks_init()
-    sim_init.main_buttons(screen)
+    sim_init.main_buttons_init(screen)
 
     new_b = sim_init.buttons_list[0]
     load_b = sim_init.buttons_list[1]
@@ -130,12 +130,12 @@ def main_execution():
                     sim_b.pressed = False
                     sim_init.execution_init()
                 elif pp_b.collision.collidepoint(event.pos):
-                    if sim_init.execution_pauseplay == 'pause':
-                        sim_init.execution_pauseplay = 'play'
+                    if sim_init.execution_pause == True:
+                        sim_init.execution_pause = False
                         pp_b.pressed = False
                         print("EXECUTION: PLAY")
-                    elif sim_init.execution_pauseplay == 'play':
-                        sim_init.execution_pauseplay = 'pause'
+                    elif sim_init.execution_pause == False:
+                        sim_init.execution_pause = True
                         print("\nEXECUTION: PAUSED")
                 elif st_b.collision.collidepoint(event.pos):
                     st_b.pressed = False

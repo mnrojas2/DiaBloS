@@ -61,21 +61,21 @@ class InitSim:
         self.enable_line_selection = False  # Booleano para indicar si es posible seleccionar una línea o no
         self.holding_CTRL = False           # Booleano para controlar el estado de la tecla CTRL
 
-        self.l_width = 5        # Ancho de linea en modo seleccionado
-        self.ls_width = 5       # Ancho separacion entre linea-bloque en modo seleccionado
+        self.l_width = 5                    # Ancho de linea en modo seleccionado
+        self.ls_width = 5                   # Ancho separacion entre linea-bloque en modo seleccionado
 
-        self.execution_initialized = False
+        self.execution_initialized = False  # Booleano para indicar si el grafo se ejecutó al menos una vez
 
-        self.filename = 'data.dat' # Nombre del archivo cargado o por defecto
-        self.sim_time = 1.0     # Tiempo de simulación por defecto
-        self.sim_dt = 0.01      # diferencia de tiempo para simulación (default: 10ms)
-        self.plot_trange = 100  # ancho ventana plot dinámico (defecto: 100 muestras)
+        self.filename = 'data.dat'          # Nombre del archivo cargado o por defecto
+        self.sim_time = 1.0                 # Tiempo de simulación por defecto
+        self.sim_dt = 0.01                  # Tiempo de muestreo base para simulación (Por defecto: 10ms)
+        self.plot_trange = 100              # Ancho de la ventana para el plot dinámico (Por defecto: 100 muestras)
 
-        self.execution_pauseplay = 'play'
-        self.execution_stop = False
-        self.dynamic_plot = False
+        self.execution_pause = False        # Booleano que indica si la ejecución se pausó en algún momento
+        self.execution_stop = False         # Booleano que indica si la ejecución se detuvo completamente
+        self.dynamic_plot = False           # Booleano que indica si es que se muestra el plot avanzando de forma dinámica
 
-    def main_buttons(self, zone):
+    def main_buttons_init(self, zone):
         """
         Creates a button list with all the basic functions available
         """
@@ -83,14 +83,13 @@ class InitSim:
         new = Button('New', (40, 10, 100, 40))
         load = Button('Load', (160, 10, 100, 40))
         save = Button('Save', (280, 10, 100, 40))
-        #blocks = Button('Add block', (400, 15, 100, 40))
         sim = Button('_play_', (400, 10, 40, 40))
-        pauseplay = Button('_pause_', (460, 10, 40, 40))
+        pause = Button('_pause_', (460, 10, 40, 40))
         stop = Button('_stop_', (520, 10, 40, 40))
-        show_scope = Button('Plot', (580, 10, 60, 40))
-        dynamic_scope = Button('Dyn Plot', (660, 10, 80, 40))
+        plt_once = Button('Plot', (580, 10, 60, 40))
+        dynamic_plt = Button('Dyn Plot', (660, 10, 80, 40))
 
-        self.buttons_list = [new, load, save, sim, pauseplay, stop, show_scope, dynamic_scope]
+        self.buttons_list = [new, load, save, sim, pause, stop, plt_once, dynamic_plt]
 
     def display_buttons(self, zone):
         """
@@ -114,7 +113,7 @@ class InitSim:
         :type block: BaseBlock class
         :type m_pos: tuple
         :limitaciones: -
-        :fallas: Puede que bajo un BaseBlock mal configurado, el bloque resultante no tenga las cualidades o parámetros correctos.
+        :fallas: Puede que bajo un MenuBlock mal configurado, el bloque resultante no tenga las cualidades o parámetros correctos.
         """
         # agrega bloque primero asignando una id al mismo con base en los otros bloques presentes
         id_list = []
@@ -133,7 +132,6 @@ class InitSim:
                 sid = len(id_list)
 
         # creación del bloque a partir del id y datos del bloque base del cual se 'copia'
-        #block_collision = (np.random.randint(0.25*self.SCREEN_WIDTH,0.75*self.SCREEN_WIDTH), np.random.randint(0.25*self.SCREEN_HEIGHT,0.75*self.SCREEN_HEIGHT), block.size[0], block.size[1])
         mouse_x = m_pos[0]
         mouse_y = m_pos[1]
         block_collision = (mouse_x, mouse_y, block.size[0], block.size[1])
@@ -246,6 +244,8 @@ class InitSim:
         # Inicializa los bloques del menú, son estos los que se copian para generar los bloques y funciones.
         # Algunos datos se envían en forma de diccionarios para que se pueda observar qué es cada cosa
         # Los colores pueden definirse como strings (si es que están en self.colors) o directamente con los valores RGB en tupla.
+        
+        # blockname, function_name, {# inputs, # output, execution hierarchy}, {<specific argument/parameters>}, color, (width, height), allows_io_change
 
         block = MenuBlocks("Block",'block',
                            {'inputs': 1, 'outputs': 1, 'run_ord': 2, 'io_edit': False}, {"filename": '<no filename>'},
@@ -316,7 +316,7 @@ class InitSim:
         # Dibuja los bloques del menú y la línea separadora
         pygame.draw.line(zone, self.colors['black'], [200, 60], [200, 710], 2)
         for i in range(len(self.menu_blocks)):
-            self.menu_blocks[i].draw_baseblock(zone, i)
+            self.menu_blocks[i].draw_menublock(zone, i)
 
     ##### LOADING AND SAVING #####
 
@@ -335,10 +335,10 @@ class InitSim:
                 return 1
             if file[-4:] != '.dat':
                 file += '.dat'
-        else:
+        else: # Opción para cuando se va a ejecutar un grafo
             file = 'saves/autosave/'+self.filename[:-4]+'_AUTOSAVE.dat'
 
-        # Datos de InitSim
+        # Datos de InitSim (clase principal)
         init_dict = {
             "wind_width": self.SCREEN_WIDTH,
             "wind_height": self.SCREEN_HEIGHT,
@@ -499,7 +499,7 @@ class InitSim:
         """
         Creates a pop-up to ask for execution time and sampling time
         """
-        # Por medio de un popup window, determina el tiempo a simular y el muestreo de este para los datos (ejecutar).
+        # Por medio de una ventana pop-up, determina el tiempo a simular y el muestreo de este para los datos (ejecutar).
         master = tk.Tk()
         master.title('Simulate')
 
@@ -541,12 +541,12 @@ class InitSim:
 
         print("*****INIT NEW EXECUTION*****")
 
-        self.execution_fun = Functions_call()
-        self.execution_stop = False
-        self.time_step = 0
-        self.timeline = np.array([self.time_step])
+        self.execution_function = Functions_call()          # Se llama a la clase que contiene las funciones para la ejecución
+        self.execution_stop = False                         # Evitar que la ejecución se detenga antes de ejecutarse por error
+        self.time_step = 0                                  # Primera iteración que irá aumentando self.sim_dt segundos
+        self.timeline = np.array([self.time_step])          # Lista que contiene el valor de todas las iteraciones pasadas
 
-        self.execution_time = self.execution_init_time()
+        self.execution_time = self.execution_init_time()    # Se inicializan algunos parametros entre ellos el tiempo máximo de simulación
 
         # Para cancelar la simulación antes de correrla (habiendo presionado X en el pop up)
         if self.execution_time == -1:
@@ -594,7 +594,7 @@ class InitSim:
                 if block.external == True:
                     out_value = getattr(block.file_function, block.fun_name)(self.time_step, block.input_queue, block.params)
                 else:
-                    out_value = getattr(self.execution_fun, block.fun_name)(self.time_step, block.input_queue, block.params)
+                    out_value = getattr(self.execution_function, block.fun_name)(self.time_step, block.input_queue, block.params)
                 block.computed_data = True
                 block.hierarchy = 0
                 self.update_global_list(block.name, 0, True)
@@ -605,7 +605,7 @@ class InitSim:
                 if block.external == True:
                     out_value = getattr(block.file_function, block.fun_name)(self.time_step, block.input_queue, block.params, True, False, self.sim_dt)
                 else:
-                    out_value = getattr(self.execution_fun, block.fun_name)(self.time_step, block.input_queue, block.params, True, False, self.sim_dt)
+                    out_value = getattr(self.execution_function, block.fun_name)(self.time_step, block.input_queue, block.params, True, False, self.sim_dt)
                 children = self.get_outputs(block.name)
 
             if 'E' in out_value.keys() and out_value['E'] == True:
@@ -634,7 +634,7 @@ class InitSim:
                     if block.external == True:
                         out_value = getattr(block.file_function, block.fun_name)(self.time_step, block.input_queue, block.params)
                     else:
-                        out_value = getattr(self.execution_fun, block.fun_name)(self.time_step, block.input_queue, block.params)
+                        out_value = getattr(self.execution_function, block.fun_name)(self.time_step, block.input_queue, block.params)
 
                     # Se comprueba que la función no haya entregado error:
                     if 'E' in out_value.keys() and out_value['E'] == True:
@@ -676,17 +676,16 @@ class InitSim:
         self.rk_counter += 1
         # actualizar plots
 
-        ######## dynamic plot test ########
+        # Se inicializa la función de plot dinámico, en caso de estar activo el booleano
         self.dynamic_pyqt_plot_function(0)
-        ###################################
 
 
     def execution_loop(self):
         """
         Continues with the execution sequence in loop until time runs out or an special event.
         """
-        # Si el boton de play-pausa está en pausa, la simulación no corre hasta cambiar su estado
-        if self.execution_pauseplay == 'pause':
+        # Si el boton de pausa está presionado, la simulación no correrá hasta que se vuelva a presionar
+        if self.execution_pause == True:
             return
 
         # Después de inicializar, esta función es la que constantemente se repite en loop
@@ -722,7 +721,7 @@ class InitSim:
                 if block.external == True:
                     out_value = getattr(block.file_function, block.fun_name)(self.time_step, block.input_queue, block.params, True, add_in_memory)
                 else:
-                    out_value = getattr(self.execution_fun, block.fun_name)(self.time_step, block.input_queue, block.params, True, add_in_memory)
+                    out_value = getattr(self.execution_function, block.fun_name)(self.time_step, block.input_queue, block.params, True, add_in_memory)
 
                 # Se comprueba que la función no haya entregado error:
                 if 'E' in out_value.keys() and out_value['E'] == True:
@@ -757,7 +756,7 @@ class InitSim:
                     if block.external == True:
                         out_value = getattr(block.file_function, block.fun_name)(self.time_step, block.input_queue, block.params)
                     else:
-                        out_value = getattr(self.execution_fun, block.fun_name)(self.time_step, block.input_queue, block.params)
+                        out_value = getattr(self.execution_function, block.fun_name)(self.time_step, block.input_queue, block.params)
 
                     # Se comprueba que la función no haya entregado error:
                     if 'E' in out_value.keys() and out_value['E'] == True:
@@ -811,9 +810,8 @@ class InitSim:
             self.reset_memblocks()
             print("*****EXECUTION STOPPED*****")
 
-        ######## dynamic plot test ########
+        # Se llama a la función del plot dinámico para guardar los nuevos datos, en caso de estar activo
         self.dynamic_pyqt_plot_function(1)
-        ###################################
 
         self.rk_counter += 1
 
@@ -1021,7 +1019,7 @@ class InitSim:
             np.savez('saves/' + self.filename[:-4], t = self.timeline, **vec_dict)
             print("DATA EXPORTED TO",'saves/' + self.filename[:-4] + '.npz')
 
-    # Pyqtgraph functions (not MIT licensed)
+    # Pyqtgraph functions
     def dynamic_pyqt_plot_function(self, step):
         """
         Plots the data saved in Scope blocks dynamically with pyqtgraph
@@ -1505,7 +1503,7 @@ class MenuBlocks(InitSim):
         self.text = pygame.font.SysFont(None, self.font_size)
         self.text_display = self.text.render(self.fun_name, True, self.colors['black'])
 
-    def draw_baseblock(self, zone, pos):
+    def draw_menublock(self, zone, pos):
         # Dibuja el bloque
         self.collision = pygame.rect.Rect(40, 80 + 40*pos, self.side_length[0], self.side_length[1])
         pygame.draw.rect(zone, self.b_color, self.collision)
@@ -1535,17 +1533,23 @@ class Button(InitSim):
         self.font_text = pygame.font.SysFont(None, self.font_size)
         self.text_display = self.font_text.render(name, True, self.colors['black']) # Render del botón
 
+        #self.activated = True
+
     def draw_button(self, zone):
         # Dibuja el boton en la pantalla, con su nombre en el centro
         if self.pressed == True:
-            color = (64, 64, 64)
-        else:
             color = (128, 128, 128)
+        else:
+            color = (192, 192, 192)
         pygame.draw.rect(zone, color, self.collision)
         if not (self.name[0] == self.name[-1] == '_'):
             zone.blit(self.text_display, (self.collision.left + 0.5 * (self.collision.width - self.text_display.get_width()),
                                  self.collision.top + 0.5 * (self.collision.height - self.text_display.get_height())))
 
+        # cambiar pygame symbols por iconos en png
+        # se requieren aun mas archivos
+        # simplifica el proceso
+        # escalable para tamaño como mas botones
         elif self.name == '_new_':
             print("new_symbol")
 
@@ -1684,12 +1688,8 @@ class Tk_widget:
 class DynamicPlot:
     """
     Class that manages the display of dynamic plots through the simulation
-    *It uses pyqtgraph as base (GPL license)
+    *It uses pyqtgraph as base (MIT license, but interactions with PyQT5 (GPL))
     """
-        # data_three_methods_other
-        # -no dynplot: 264.57 seconds
-        # -pyqtgraph: 307.99 seconds
-        # -matplotlib: ~1000 seconds
 
     def __init__(self, dt, labels=['default'], xrange=100):
         self.dt = dt
