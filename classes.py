@@ -86,10 +86,9 @@ class InitSim:
         sim = Button('_play_', (400, 10, 40, 40))
         pause = Button('_pause_', (460, 10, 40, 40))
         stop = Button('_stop_', (520, 10, 40, 40))
-        plt_once = Button('Plot', (580, 10, 60, 40))
-        dynamic_plt = Button('Dyn Plot', (660, 10, 80, 40))
+        rplt = Button('Plot', (580, 10, 60, 40))
 
-        self.buttons_list = [new, load, save, sim, pause, stop, plt_once, dynamic_plt]
+        self.buttons_list = [new, load, save, sim, pause, stop, rplt]
 
     def display_buttons(self, zone):
         """
@@ -521,13 +520,21 @@ class InitSim:
         entry3.grid(row=2, column=1)
         entry3.insert(10, self.plot_trange)
 
-        tk.Button(master, text='Accept', command=master.quit).grid(row=3, column=1, sticky=tk.W, pady=4)
+        tk.Label(master, text="Dynamic Plot:").grid(row=3)
+        r = tk.IntVar()
+        tk_off = tk.Radiobutton(master, text="OFF", variable=r, value=False)
+        tk_off.grid(row=4, column=0)
+        tk_on = tk.Radiobutton(master, text="ON", variable=r, value=True)
+        tk_on.grid(row=4, column=1)
+
+        tk.Button(master, text='Accept', command=master.quit).grid(row=8, column=1, sticky=tk.W, pady=4)
         tk.mainloop()
 
         try:
             self.sim_time = float(entry.get())
             self.sim_dt = float(entry2.get())
             self.plot_trange = float(entry3.get())
+            self.dynamic_plot = r.get()
             master.destroy()
             return self.sim_time
         except:
@@ -794,7 +801,7 @@ class InitSim:
 
             #Scope
             if self.dynamic_plot == False:
-                self.plotScope()
+                self.pyqtPlotScope()
 
             # Resetea la inicializacion de los bloques con ejecuciones iniciales especiales (para que puedan ser ejecutados correctamente en la proxima simulación)
             self.reset_memblocks()
@@ -964,9 +971,6 @@ class InitSim:
                 block.params['_init_start_'] = True
 
     def plotScope(self):
-        """
-        Plots the data saved in Scope blocks
-        """
         # Grafica los datos obtenidos de los bloques Scope
         scope_counter = 0
         for block in self.blocks_list:
@@ -988,10 +992,11 @@ class InitSim:
         try:
             scope_lengths = [len(x.params['vector']) for x in self.blocks_list if x.b_type == 'Scope']
             if scope_lengths[0] > 0:
-                if self.dynamic_plot == True:
+                self.pyqtPlotScope()
+                '''if self.dynamic_plot == True:
                     self.pyqtPlotScope()
                 else:
-                    self.plotScope()
+                    self.plotScope()#'''
             else:
                 print("ERROR: NOT ENOUGH SAMPLES TO PLOT")
         except:
@@ -1047,7 +1052,6 @@ class InitSim:
                 self.plotty.loop(self.timeline, vector_list)
             else:
                 self.dynamic_plot = False
-                self.buttons_list[7].pressed = False
                 print("DYNAMIC PLOT: OFF")
 
     def pyqtPlotScope(self):

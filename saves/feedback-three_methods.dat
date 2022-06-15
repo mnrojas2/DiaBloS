@@ -69,8 +69,8 @@
         {
             "type": "Export",
             "sid": 0,
-            "coords_left": 783,
-            "coords_top": 53,
+            "coords_left": 796,
+            "coords_top": 78,
             "coords_width": 70,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -585,16 +585,16 @@
                     148.0
                 ],
                 [
-                    763,
+                    776,
                     148.0
                 ],
                 [
-                    763,
-                    83.0
+                    776,
+                    108.0
                 ],
                 [
-                    783,
-                    83.0
+                    796,
+                    108.0
                 ]
             ],
             "cptr": 0,

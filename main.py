@@ -34,7 +34,6 @@ def main_execution():
     pp_b = sim_init.buttons_list[4]
     st_b = sim_init.buttons_list[5]
     sh_sc = sim_init.buttons_list[6]
-    dy_sc = sim_init.buttons_list[7]
 
     # - mainloop -
 
@@ -143,14 +142,6 @@ def main_execution():
                 elif sh_sc.collision.collidepoint(event.pos):
                     sh_sc.pressed = False
                     sim_init.plot_again()
-                elif dy_sc.collision.collidepoint(event.pos):
-                    if sim_init.dynamic_plot == False:
-                        sim_init.dynamic_plot = True
-                        print("DYNAMIC PLOT: ON")
-                    elif sim_init.dynamic_plot == True:
-                        sim_init.dynamic_plot = False
-                        dy_sc.pressed = False
-                        print("DYNAMIC PLOT: OFF")
 
 
                 # Se deja de mover un bloque y se actualizan las lineas conectadas a sus puertos
