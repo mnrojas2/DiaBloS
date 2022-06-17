@@ -21,7 +21,6 @@ def my_function_mid(time, inputs, params):
     :return: Dictionary with the output(s) as float or numpy vector
     :rtype: dict{numpy.darray}
     """
-    
     return {0: np.array(params['gain']*inputs[0])}
 
 #Funcion para inicializar los datos y parámetros necesarios para el bloque

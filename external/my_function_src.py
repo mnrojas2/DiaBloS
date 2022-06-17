@@ -21,7 +21,6 @@ def my_function_src(time, inputs, params):
     :return: Dictionary with the output(s) as float or numpy vector
     :rtype: dict{numpy.darray}
     """
-    
     return {0: np.array([params['value_1']]),
             1: np.array([params['value_2']])}
 

@@ -80,13 +80,13 @@ class InitSim:
         Creates a button list with all the basic functions available
         """
         # Crea una lista con los botones básicos para manejar la simulación
-        new = Button('New', (40, 10, 100, 40))
-        load = Button('Load', (160, 10, 100, 40))
-        save = Button('Save', (280, 10, 100, 40))
-        sim = Button('_play_', (400, 10, 40, 40))
-        pause = Button('_pause_', (460, 10, 40, 40))
-        stop = Button('_stop_', (520, 10, 40, 40))
-        rplt = Button('Plot', (580, 10, 60, 40))
+        new = Button('_new_', (40, 10, 40, 40))
+        load = Button('_load_', (100, 10, 40, 40))
+        save = Button('_save_', (160, 10, 40, 40))
+        sim = Button('_play_', (220, 10, 40, 40))
+        pause = Button('_pause_', (280, 10, 40, 40))
+        stop = Button('_stop_', (340, 10, 40, 40))
+        rplt = Button('_plot_', (400, 10, 40, 40))
 
         self.buttons_list = [new, load, save, sim, pause, stop, rplt]
 
@@ -970,20 +970,6 @@ class InitSim:
             if '_init_start_' in block.params.keys():
                 block.params['_init_start_'] = True
 
-    def plotScope(self):
-        # Grafica los datos obtenidos de los bloques Scope
-        scope_counter = 0
-        for block in self.blocks_list:
-            if block.b_type == 'Scope':
-                if scope_counter == 0:
-                    plt.figure()
-                plt.plot(self.timeline, block.params['vector'], label=block.params['vec_labels'])
-                scope_counter += 1
-        if scope_counter > 0:
-            plt.xlabel('Time [s]')
-            plt.legend()
-            plt.show()
-
     def plot_again(self):
         """
         Plots the data saved in Scope blocks without needing to execute the simulation again
@@ -1550,18 +1536,32 @@ class Button(InitSim):
             zone.blit(self.text_display, (self.collision.left + 0.5 * (self.collision.width - self.text_display.get_width()),
                                  self.collision.top + 0.5 * (self.collision.height - self.text_display.get_height())))
 
-        # cambiar pygame symbols por iconos en png
-        # se requieren aun mas archivos
-        # simplifica el proceso
-        # escalable para tamaño como mas botones
         elif self.name == '_new_':
-            print("new_symbol")
+            pygame.draw.polygon(zone, self.colors['black'], (
+                (self.collision.left + 0.3 * self.collision.width, self.collision.top + 0.25 * self.collision.height),
+                (self.collision.left + 0.3 * self.collision.width, self.collision.top + 0.75 * self.collision.height),
+                (self.collision.left + 0.7 * self.collision.width, self.collision.top + 0.75 * self.collision.height),
+                (self.collision.left + 0.7 * self.collision.width, self.collision.top + 0.4 * self.collision.height),
+                (self.collision.left + 0.55 * self.collision.width, self.collision.top + 0.25 * self.collision.height)
+            ), 2)
 
-        elif self.name == '_open_':
-            print("open_symbol")
+        elif self.name == '_load_':
+            pygame.draw.polygon(zone, self.colors['black'], (
+                (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height),
+                (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.75 * self.collision.height),
+                (self.collision.left + 0.75 * self.collision.width, self.collision.top + 0.75 * self.collision.height),
+                (self.collision.left + 0.75 * self.collision.width, self.collision.top + 0.35 * self.collision.height),
+                (self.collision.left + 0.45 * self.collision.width, self.collision.top + 0.35 * self.collision.height),
+                (self.collision.left + 0.35 * self.collision.width, self.collision.top + 0.25 * self.collision.height),
+            ), 2)
 
         elif self.name == '_save_':
-            print("save_symbol")
+            pygame.draw.rect(zone, self.colors['black'], (
+                self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height,
+                0.5*self.collision.width, 0.5*self.collision.height), 2)
+            pygame.draw.rect(zone, self.colors['black'], (
+                self.collision.left + 0.375 * self.collision.width, self.collision.top + 0.5 * self.collision.height,
+                0.25 * self.collision.width, 0.25 * self.collision.height), 2)
 
         elif self.name == '_play_':
             pygame.draw.polygon(zone, self.colors['black'], (
@@ -1577,7 +1577,21 @@ class Button(InitSim):
             pygame.draw.rect(zone, self.colors['black'], (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height, 0.5 * self.collision.width, 0.5 * self.collision.height))
 
         elif self.name == '_plot_':
-            print("plot_symbol")
+            pygame.draw.line(zone, self.colors['red'],
+                             [self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.75 * self.collision.height],
+                             [self.collision.left + 0.45 * self.collision.width, self.collision.top + 0.4 * self.collision.height], 2)
+            pygame.draw.line(zone, self.colors['red'],
+                             [self.collision.left + 0.45 * self.collision.width, self.collision.top + 0.4 * self.collision.height],
+                             [self.collision.left + 0.55 * self.collision.width, self.collision.top + 0.65 * self.collision.height],2)
+            pygame.draw.line(zone, self.colors['red'],
+                             [self.collision.left + 0.55 * self.collision.width, self.collision.top + 0.65 * self.collision.height],
+                             [self.collision.left + 0.75 * self.collision.width, self.collision.top + 0.25 * self.collision.height], 2)
+            pygame.draw.line(zone, self.colors['black'],
+                             [self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height],
+                             [self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.75 * self.collision.height], 2)
+            pygame.draw.line(zone, self.colors['black'],
+                             [self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.75 * self.collision.height],
+                             [self.collision.left + 0.75 * self.collision.width, self.collision.top + 0.75 * self.collision.height], 2)
 
         elif self.name == 'dynamic_plot':
             print("switchable_symbol")
