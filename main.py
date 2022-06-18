@@ -116,19 +116,19 @@ def main_execution():
 
             elif event.type == pygame.MOUSEBUTTONUP:
                 # Funciones para los botones
-                if new_b.collision.collidepoint(event.pos):
+                if new_b.collision.collidepoint(event.pos) and new_b.active == True:
                     new_b.pressed = False
                     sim_init.clear_all()
-                elif load_b.collision.collidepoint(event.pos):
+                elif load_b.collision.collidepoint(event.pos) and load_b.active == True:
                     load_b.pressed = False
                     sim_init.open()
-                elif save_b.collision.collidepoint(event.pos):
+                elif save_b.collision.collidepoint(event.pos) and save_b.active == True:
                     save_b.pressed = False
                     sim_init.save()
-                elif sim_b.collision.collidepoint(event.pos):
+                elif sim_b.collision.collidepoint(event.pos) and sim_b.active == True:
                     sim_b.pressed = False
                     sim_init.execution_init()
-                elif pp_b.collision.collidepoint(event.pos):
+                elif pp_b.collision.collidepoint(event.pos) and pp_b.active == True:
                     if sim_init.execution_pause == True:
                         sim_init.execution_pause = False
                         pp_b.pressed = False
@@ -136,10 +136,10 @@ def main_execution():
                     elif sim_init.execution_pause == False:
                         sim_init.execution_pause = True
                         print("\nEXECUTION: PAUSED")
-                elif st_b.collision.collidepoint(event.pos):
+                elif st_b.collision.collidepoint(event.pos) and st_b.active == True:
                     st_b.pressed = False
                     sim_init.execution_stop = True
-                elif sh_sc.collision.collidepoint(event.pos):
+                elif sh_sc.collision.collidepoint(event.pos) and sh_sc.active == True:
                     sh_sc.pressed = False
                     sim_init.plot_again()
 

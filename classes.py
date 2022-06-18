@@ -9,7 +9,6 @@ import importlib                        # PSF
 from tqdm import tqdm                   # MPLv2.0 MIT
 from tkinter import ttk
 from tkinter import filedialog
-from matplotlib import pyplot as plt    # BSD
 from functools import partial           # PSF
 
 import os                               # PSF
@@ -48,6 +47,8 @@ class InitSim:
                        'dark_red': (128, 0, 0),
                        'dark_green': (0, 128, 0),
                        'dark_blue': (0, 0, 128),
+                       'gray': (128,128,128),
+                       'light_gray': (192,192,192),
                        'white': (255,255,255)}
 
         self.FPS = 60
@@ -86,7 +87,7 @@ class InitSim:
         sim = Button('_play_', (220, 10, 40, 40))
         pause = Button('_pause_', (280, 10, 40, 40))
         stop = Button('_stop_', (340, 10, 40, 40))
-        rplt = Button('_plot_', (400, 10, 40, 40))
+        rplt = Button('_plot_', (400, 10, 40, 40), False)
 
         self.buttons_list = [new, load, save, sim, pause, stop, rplt]
 
@@ -681,7 +682,11 @@ class InitSim:
         self.max_hier = self.get_max_hierarchy()
         self.execution_initialized = True
         self.rk_counter += 1
-        # actualizar plots
+
+        # Habilitar boton de plot si es que hay al menos un scope
+        for block in self.blocks_list:
+            if block.b_type == 'Scope':
+                self.buttons_list[6].active = True
 
         # Se inicializa la función de plot dinámico, en caso de estar activo el booleano
         self.dynamic_pyqt_plot_function(0)
@@ -1513,12 +1518,13 @@ class Button(InitSim):
     Class to create and show buttons in the user interface
     """
     # Produce un boton con texto
-    def __init__(self, name, coords):
+    def __init__(self, name, coords, active=True):
         super().__init__()
         self.name = name                                                            # Nombre que se mostrará en el botón
         self.coords = coords                                                        # Ubicación del botón
         self.collision = pygame.rect.Rect(coords)                                   # Colisión del botón
         self.pressed = False
+        self.active = active
         self.font_size = 24  # Tamaño del texto
         self.font_text = pygame.font.SysFont(None, self.font_size)
         self.text_display = self.font_text.render(name, True, self.colors['black']) # Render del botón
@@ -1527,17 +1533,23 @@ class Button(InitSim):
 
     def draw_button(self, zone):
         # Dibuja el boton en la pantalla, con su nombre en el centro
-        if self.pressed == True:
-            color = (128, 128, 128)
+        if self.active == False:
+            text_color = 'gray'
+            bg_color = 'light_gray'
         else:
-            color = (192, 192, 192)
-        pygame.draw.rect(zone, color, self.collision)
+            text_color = 'black'
+            if self.pressed == True:
+                bg_color = 'gray'
+            else:
+                bg_color = 'light_gray'
+
+        pygame.draw.rect(zone, self.colors[bg_color], self.collision)
         if not (self.name[0] == self.name[-1] == '_'):
             zone.blit(self.text_display, (self.collision.left + 0.5 * (self.collision.width - self.text_display.get_width()),
                                  self.collision.top + 0.5 * (self.collision.height - self.text_display.get_height())))
 
         elif self.name == '_new_':
-            pygame.draw.polygon(zone, self.colors['black'], (
+            pygame.draw.polygon(zone, self.colors[text_color], (
                 (self.collision.left + 0.3 * self.collision.width, self.collision.top + 0.25 * self.collision.height),
                 (self.collision.left + 0.3 * self.collision.width, self.collision.top + 0.75 * self.collision.height),
                 (self.collision.left + 0.7 * self.collision.width, self.collision.top + 0.75 * self.collision.height),
@@ -1546,7 +1558,7 @@ class Button(InitSim):
             ), 2)
 
         elif self.name == '_load_':
-            pygame.draw.polygon(zone, self.colors['black'], (
+            pygame.draw.polygon(zone, self.colors[text_color], (
                 (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height),
                 (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.75 * self.collision.height),
                 (self.collision.left + 0.75 * self.collision.width, self.collision.top + 0.75 * self.collision.height),
@@ -1556,25 +1568,25 @@ class Button(InitSim):
             ), 2)
 
         elif self.name == '_save_':
-            pygame.draw.rect(zone, self.colors['black'], (
+            pygame.draw.rect(zone, self.colors[text_color], (
                 self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height,
                 0.5*self.collision.width, 0.5*self.collision.height), 2)
-            pygame.draw.rect(zone, self.colors['black'], (
+            pygame.draw.rect(zone, self.colors[text_color], (
                 self.collision.left + 0.375 * self.collision.width, self.collision.top + 0.5 * self.collision.height,
                 0.25 * self.collision.width, 0.25 * self.collision.height), 2)
 
         elif self.name == '_play_':
-            pygame.draw.polygon(zone, self.colors['black'], (
+            pygame.draw.polygon(zone, self.colors[text_color], (
             (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height),
             (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.75 * self.collision.height),
             (self.collision.left + 0.75 * self.collision.width, self.collision.top + 0.5 * self.collision.height)))
 
         elif self.name == '_pause_':
-            pygame.draw.rect(zone, self.colors['black'], (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height, 8, 0.5 * self.collision.height))
-            pygame.draw.rect(zone, self.colors['black'], (self.collision.left + 0.25 * self.collision.width + 12, self.collision.top + 0.25 * self.collision.height, 8, 0.5 * self.collision.height))
+            pygame.draw.rect(zone, self.colors[text_color], (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height, 8, 0.5 * self.collision.height))
+            pygame.draw.rect(zone, self.colors[text_color], (self.collision.left + 0.25 * self.collision.width + 12, self.collision.top + 0.25 * self.collision.height, 8, 0.5 * self.collision.height))
 
         elif self.name == '_stop_':
-            pygame.draw.rect(zone, self.colors['black'], (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height, 0.5 * self.collision.width, 0.5 * self.collision.height))
+            pygame.draw.rect(zone, self.colors[text_color], (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height, 0.5 * self.collision.width, 0.5 * self.collision.height))
 
         elif self.name == '_plot_':
             pygame.draw.line(zone, self.colors['red'],
@@ -1586,15 +1598,12 @@ class Button(InitSim):
             pygame.draw.line(zone, self.colors['red'],
                              [self.collision.left + 0.55 * self.collision.width, self.collision.top + 0.65 * self.collision.height],
                              [self.collision.left + 0.75 * self.collision.width, self.collision.top + 0.25 * self.collision.height], 2)
-            pygame.draw.line(zone, self.colors['black'],
+            pygame.draw.line(zone, self.colors[text_color],
                              [self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height],
                              [self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.75 * self.collision.height], 2)
-            pygame.draw.line(zone, self.colors['black'],
+            pygame.draw.line(zone, self.colors[text_color],
                              [self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.75 * self.collision.height],
                              [self.collision.left + 0.75 * self.collision.width, self.collision.top + 0.75 * self.collision.height], 2)
-
-        elif self.name == 'dynamic_plot':
-            print("switchable_symbol")
 
     def set_color(self, color):
         # Define el color del bloque a partir de un string o directamente de una tupla con los valores RGB
