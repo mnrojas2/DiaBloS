@@ -25,7 +25,7 @@ def main_execution():
 
     # Se inicializan los bloques base
     sim_init.menu_blocks_init()
-    sim_init.main_buttons_init(screen)
+    sim_init.main_buttons_init()
 
     new_b = sim_init.buttons_list[0]
     load_b = sim_init.buttons_list[1]
