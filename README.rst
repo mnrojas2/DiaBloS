@@ -116,7 +116,7 @@ FIRST EXPERIENCE
 ================
 
 1) Press 'Load' or 'Ctrl+A' to open a file
-#) Go to saves/ folder and open basic-example.dat.
+#) Go to examples/ and open basic-example.dat.
 #) You will see a simple diagram with one Step block and one Scope block
 #) Optional: Press "Dyn Plot" to enable the dynamic plot mode.
 #) Press 'Simulate' or 'Ctrl+E' to execute the graph.
