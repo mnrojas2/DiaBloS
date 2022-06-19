@@ -336,7 +336,7 @@ class InitSim:
             if file[-4:] != '.dat':
                 file += '.dat'
         else: # Opción para cuando se va a ejecutar un grafo
-            file = 'saves/autosave/'+self.filename[:-4]+'_AUTOSAVE.dat'
+            file = 'saves/'+self.filename[:-4]+'_AUTOSAVE.dat'
 
         # Datos de InitSim (clase principal)
         init_dict = {
