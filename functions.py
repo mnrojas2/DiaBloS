@@ -1,10 +1,11 @@
 import numpy as np
 
-class Functions_call:
+
+class FunctionsCall:
     """
     Class to contain all the default functions available to work with in the simulation interface
     """
-    #Funciones utilizadas durante la ejecución del sistema
+    # Funciones utilizadas durante la ejecución del sistema
 
     def step(self, time, inputs, params):
         """
@@ -16,14 +17,13 @@ class Functions_call:
         elif params['type'] == 'down':
             change = True if time > params['delay'] else False
         else:
-            print("ERROR: 'type' not defined correctly in", params['_name_'])
+            print("ERROR: 'type' not correctly defined in", params['_name_'])
             return {'E': True}
 
-        if change == True:
+        if change:
             return {0: 0*abs(np.array(params['value']))}
-        elif change == False:
+        else:
             return {0: np.array(params['value'])}
-
 
     def ramp(self, time, inputs, params):
         """
@@ -33,10 +33,9 @@ class Functions_call:
         if params['slope'] == 0:
             return {0: 0}
         elif params['slope'] > 0:
-            return {0: np.maximum(0,params['slope']*(time - params['delay']))}
+            return {0: np.maximum(0, params['slope']*(time - params['delay']))}
         elif params['slope'] < 0:
             return {0: np.array(np.minimum(0, params['slope'] * (time - params['delay'])))}
-
 
     def sine(self, time, inputs, params):
         """
@@ -45,17 +44,13 @@ class Functions_call:
         # Funcion sinusoidal
         return {0: np.array(params['amplitude']*np.sin(params['omega']*time + params['init_angle']))}
 
-
-    #vector
     def gain(self, time, inputs, params):
         """
         Gain function
         """
         # Funcion ganancia
-        return {0: np.array(np.dot(params['gain'],inputs[0]))}
+        return {0: np.array(np.dot(params['gain'], inputs[0]))}
 
-
-    #vector
     def exponential(self, time, inputs, params):
         """
         Exponential function
@@ -63,7 +58,6 @@ class Functions_call:
         # Funcion exponencial
 
         return {0: np.array(params['a']*np.exp(params['b']*inputs[0]))}
-
 
     def sumator(self, time, inputs, params):
         """
@@ -89,7 +83,6 @@ class Functions_call:
                 return {'E': True}
         return {0: suma}
 
-
     def sigproduct(self, time, inputs, params):
         """
         Element-wise product between signals
@@ -100,14 +93,12 @@ class Functions_call:
             mult *= inputs[i]
         return {0: mult}
 
-
     def block(self, time, inputs, params):
         """
         Generic block function - no actual use
         """
         # Funcion bloque generico (No hace nada sin un archivo externo)
         return {0: np.array(inputs[0])}
-
 
     def terminator(self, time, inputs, params):
         """
@@ -116,14 +107,12 @@ class Functions_call:
         # Funcion terminator
         return {0: np.array([0.0])}
 
-
     def noise(self, time, inputs, params):
         """
         Normal noise function
         """
         # Funcion noise (agrega ruido a la señal)
         return {0: np.array(params['sigma']**2*np.random.randn() + params['mu'])}
-
 
     def mux(self, time, inputs, params):
         """
@@ -134,7 +123,6 @@ class Functions_call:
         for i in range(1, len(inputs)):
             array = np.append(array, inputs[i])
         return {0: array}
-
 
     def demux(self, time, inputs, params):
         """
@@ -152,33 +140,31 @@ class Functions_call:
 
         outputs = {}
         for i in range(params['_outputs_']):
-            outputs[i] = inputs[0][int(params['output_shape'])*i : int(params['output_shape'])*(i+1)]
+            outputs[i] = inputs[0][int(params['output_shape'])*i: int(params['output_shape'])*(i+1)]
         return outputs
 
-
-    # bloques tipo memoria
     def integrator(self, time, inputs, params, output_only=False, next_add_in_memory=True, dtime=0.01):
         """
         Integrator function
         """
         # Funcion integrador
-        if params['_init_start_'] == True:
+        if params['_init_start_']:
             params['dtime'] = dtime
             params['mem'] = np.array(params['init_conds'])
             params['mem_list'] = [np.zeros(params['mem'].shape)]
-            params['mem_len'] = 5.0 # Agregar otros largos dependiendo del metodo
+            params['mem_len'] = 5.0  # Agregar otros largos dependiendo del metodo
             params['_init_start_'] = False
 
             if params['method'] == 'RK45':
                 params['nb_loop'] = 0
                 params['RK45_Klist'] = [0, 0, 0, 0]  # K1, K2, K3, K4
 
-            params['add_in_memory'] = True # Para entregar valores de output_only al principio
+            params['add_in_memory'] = True  # Para entregar valores de output_only al principio
 
-        if output_only == True:
+        if output_only:
             old_add_in_memory = params['add_in_memory']
             params['add_in_memory'] = next_add_in_memory  # Actualizar para siguiente loop
-            if old_add_in_memory == True:
+            if old_add_in_memory:
                 return {0: params['mem']}
             else:
                 return {0: params['aux']}
@@ -195,7 +181,7 @@ class Functions_call:
             # Se integra según método escogido
             # Forward euler
             if params['method'] == 'FWD_RECT':
-                if params['add_in_memory'] == True:
+                if params['add_in_memory']:
                     params['mem'] += params['dtime'] * inputs[0]
                 else:
                     params['aux'] = np.array(params['mem'] + 0.5 * params['dtime'] * inputs[0])
@@ -203,7 +189,7 @@ class Functions_call:
 
             # Backwards euler
             elif params['method'] == 'BWD_RECT':
-                if params['add_in_memory'] == True:
+                if params['add_in_memory']:
                     params['mem'] += params['dtime'] * params['mem_list'][-1]
                 else:
                     params['aux'] = np.array(params['mem'] + 0.5 * params['dtime'] * params['mem_list'][-1])
@@ -211,7 +197,7 @@ class Functions_call:
 
             # Tustin
             elif params['method'] == 'TUSTIN':
-                if params['add_in_memory'] == True:
+                if params['add_in_memory']:
                     params['mem'] += 0.5*params['dtime'] * (inputs[0] + params['mem_list'][-1])
                 else:
                     params['aux'] = np.array(params['mem'] + 0.25 * params['dtime'] * (inputs[0] + params['mem_list'][-1]))
@@ -242,24 +228,23 @@ class Functions_call:
 
             aux_list = params['mem_list']
             aux_list.append(inputs[0])
-            if len(aux_list) > params['mem_len']: # 5 solo por probar, dependería del método de integración
+            if len(aux_list) > params['mem_len']:  # 5 solo por probar, dependería del método de integración
                 aux_list = aux_list[-5:]
             params['mem_list'] = aux_list
 
             return {0: mem_old}
 
-
     def export(self, time, inputs, params):
         """
         Block to save and export block signals
         """
-        #Funcion exportar datos
+        # Funcion exportar datos
         # Para evitar guardar datos en los intervalos intermedios de RK45
-        if 'skip' in params.keys() and params['skip'] == True:
+        if 'skip' in params.keys() and params['skip']:
             params['skip'] = False
             return {0: inputs[0]}
         # Iniciar el vector de guardado
-        if params['_init_start_'] == True:
+        if params['_init_start_']:
             aux_vector = np.array([inputs[0]])
             try:
                 params['vec_dim'] = len(inputs[0])
@@ -285,18 +270,17 @@ class Functions_call:
         params['vector'] = aux_vector
         return {0: inputs[0]}
 
-
     def scope(self, time, inputs, params):
         """
         Function to plot block signals
         """
         # Funcion graficar datos (MatPlotLib)
         # Para evitar guardar datos en los intervalos intermedios de RK45
-        if 'skip' in params.keys() and params['skip'] == True:
+        if 'skip' in params.keys() and params['skip']:
             params['skip'] = False
             return {0: inputs[0]}
         # Iniciar el vector de guardado
-        if params['_init_start_'] == True:
+        if params['_init_start_']:
             aux_vector = np.array([inputs[0]])
             try:
                 params['vec_dim'] = len(inputs[0])
@@ -306,7 +290,7 @@ class Functions_call:
             labels = params['labels']
             if labels == 'default':
                 labels = params['_name_'] + '-0'
-            labels = labels.replace(' ','').split(',')
+            labels = labels.replace(' ', '').split(',')
             if len(labels) < params['vec_dim']:
                 for i in range(params['vec_dim'] - len(labels)):
                     labels.append(params['_name_'] + '-' + str(params['vec_dim'] + i - 1))

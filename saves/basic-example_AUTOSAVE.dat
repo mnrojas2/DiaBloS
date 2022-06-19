@@ -5,15 +5,15 @@
         "fps": 60,
         "only_one": false,
         "enable_line_sel": true,
-        "sim_time": 10.0,
+        "sim_time": 1.0,
         "sim_dt": 0.01
     },
     "blocks_data": [
         {
             "type": "Scope",
             "sid": 0,
-            "coords_left": 490,
-            "coords_top": 252,
+            "coords_left": 511,
+            "coords_top": 286,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -58,7 +58,7 @@
             "params": {
                 "value": 1.0,
                 "delay": 0.0,
-                "type": "up"
+                "type": "up,"
             },
             "external": false
         }
@@ -77,8 +77,16 @@
                     282.0
                 ],
                 [
-                    490,
+                    491,
                     282.0
+                ],
+                [
+                    491,
+                    316.0
+                ],
+                [
+                    511,
+                    316.0
                 ]
             ],
             "cptr": 0,
