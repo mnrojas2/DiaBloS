@@ -8,7 +8,7 @@ Python module for external functions
 import numpy as np
 
 #Funcion principal (para la ejecución)
-def my_function_mid(time, inputs, params):
+def my_function_pcs(time, inputs, params):
     """
     External function 'my_function'
     

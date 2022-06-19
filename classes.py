@@ -964,6 +964,8 @@ class InitSim:
         for block in self.blocks_list:
             if block.b_type == 'Integr' and block.params['method'] == 'RK45':
                 return True
+            elif block.b_type == 'Block' and 'method' in block.params.keys() and block.params['method'] == 'RK45':
+                return True
         return False
 
     def reset_memblocks(self):

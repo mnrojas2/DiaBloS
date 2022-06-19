@@ -23,14 +23,14 @@
             "selected": false,
             "b_color": [
                 255,
-                128,
-                0
+                0,
+                255
             ],
-            "run_ord": 2,
+            "run_ord": 1,
             "io_edit": false,
-            "fun_name": "my_function_mid",
+            "fun_name": "external_rk45",
             "params": {
-                "filename": "my_function_mid"
+                "filename": "external_rk45"
             },
             "external": true
         },
