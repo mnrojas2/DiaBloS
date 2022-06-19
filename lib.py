@@ -864,7 +864,7 @@ class InitSim:
         Counts the number of already computed blocks of a graph
         """
         # Cuenta el número de bloques ya ejecutados durante la simulación
-        return len([x for x in self.global_computed_list if not x['computed_data']])
+        return len([x for x in self.global_computed_list if x['computed_data']])
 
     def reset_execution_data(self):
         """
