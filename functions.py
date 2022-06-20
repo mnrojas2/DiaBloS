@@ -234,6 +234,36 @@ class FunctionsCall:
 
             return {0: mem_old}
 
+    def delay(self, time, inputs, params):
+        """
+        Block to save a value and export it iterations later
+        """
+        if params['_init_start_']:
+            params['mem_list'] = [inputs[0]]
+            params['_init_start_'] = False
+        else:
+            aux_list = params['mem_list']
+            aux_list.append(inputs[0])
+        if len(aux_list) > params['delay_len']:
+            aux_list = aux_list[params['delay_len']:]
+        params['mem_list'] = aux_list
+        return {0: aux_list[0,:]}
+
+    def derivative(self, time, inputs, params):
+        """
+        Derivative function
+        """
+        if params['_init_start_']:
+            params['t_old'] = time
+            params['i_old'] = inputs[0]
+            params['_init_start_'] = False
+            return {0: 0.0}
+        dt = time - params['t_old']
+        di = inputs[0] - params['i_old']
+        params['t_old'] = time
+        params['i_old'] = inputs[0]
+        return {0: np.array(di / dt)}
+
     def export(self, time, inputs, params):
         """
         Block to save and export block signals

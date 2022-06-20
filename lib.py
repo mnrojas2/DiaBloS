@@ -259,6 +259,11 @@ class InitSim:
                         {'inputs': 1, 'outputs': 1, 'run_ord': 1, 'io_edit': False}, {'init_conds': 0.0, 'method': 'FWD_RECT', '_init_start_': True},
                         'magenta', (80, 60))
 
+        derivative = MenuBlocks("Deriv", 'derivative',
+                                {'inputs': 1, 'outputs': 1, 'run_ord': 2, 'io_edit': False},
+                                {'_init_start_': True},
+                                'aqua', (80, 60))
+
         sumator = MenuBlocks("Sum", 'sumator',
                         {'inputs': 2, 'outputs': 1, 'run_ord': 2, 'io_edit': 'input'}, {'sign': "++"},
                         'cyan', (70, 50))
@@ -303,7 +308,7 @@ class InitSim:
                         {'inputs': 1, 'outputs': 0, 'run_ord': 3, 'io_edit': False}, {'str_name': 'default', '_init_start_': True},
                         (255, 160, 0), (70, 60))
 
-        self.menu_blocks = [step, sine, ramp, noise, integrator, gain, exponential, block, sumator, sigproduct, mux, demux, terminator, scope, export]
+        self.menu_blocks = [step, sine, ramp, noise, integrator, derivative, gain, exponential, block, sumator, sigproduct, mux, demux, terminator, scope, export]
 
     def display_menu_blocks(self, zone):
         """
