@@ -1,6 +1,7 @@
 .idea/
 __pycache__/
 lib/site-packages/
+lib/__pycache__/
 Scripts/
 venv/
 docs/
