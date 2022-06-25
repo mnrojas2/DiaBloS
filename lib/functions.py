@@ -1,3 +1,7 @@
+"""
+functions.py - Contains all the functions associated with the blocks in the simulation
+"""
+
 import numpy as np
 
 

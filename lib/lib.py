@@ -1,3 +1,8 @@
+"""
+lib.py - Contains all the core functions and classes for the simulation and execution of the graphs
+"""
+
+
 import pygame                           # LGPL
 import numpy as np                      # Liberal BSD
 import copy                             # PSF

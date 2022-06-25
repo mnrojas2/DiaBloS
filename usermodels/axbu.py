@@ -1,7 +1,16 @@
+"""
+Python module for external functions
+
+#. WARNING: You must add all the necessary libraries here to make the function work in the main loop.
+#. This file includes an example for a linealized dynamic system used in "feedback-three_methods.dat".
+
+"""
+
 # Se deben agregar las librerias necesarias para correr la funcion en cada archivo
 import numpy as np
 
-#Funcion principal (para la ejecución)
+# Funcion principal (para la ejecución)
+# Must have the same time as the file
 def axbu(time, inputs, params):
     # Excepciones
     if inputs[1].shape != (2,) or inputs[0] != ():
@@ -24,11 +33,3 @@ def _init_():
     }
     params = {}
     return io_data, params
-
-#cada archivo tiene 2 funciones, un ejecutable y un inicializador
-#el nombre del archivo que sea igual al ejecutable o mejor al del bloque asignado (cambiar cuando se inicializa el nombre de la funcion)
-
-#- el inicializador es unicamente para darle la información al programa de los datos ajustables para el bloque
-#-- por ejemplo el nombre, el tipo, el numero de inputs y outputs
-
-#- el ejecutable hace de funcion al momento de correr la simulacion/ejecucion
