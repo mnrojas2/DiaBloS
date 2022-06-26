@@ -7,11 +7,12 @@ Python module for external functions
 """
 import numpy as np
 
-# Funcion principal (para la ejecución)
+# Main function (executable in the simulation)
+# This function must have the same name as the file
 def my_function_src(time, inputs, params):
     return {0: np.array([params['value']])}
 
-# Funcion para inicializar los datos y parámetros necesarios para el bloque
+# Initialization function (to set function type, inputs, outputs and color and other parameters specific for the function)
 def _init_():
     """
     External function initialization data
@@ -21,8 +22,8 @@ def _init_():
         'inputs': 0,
         'outputs': 1,
         'color': 'blue'
-    } #. Dictionary with the block type, number of inputs and number of outputs.
+    }                       #. Dictionary with the block type, number of inputs and number of outputs.
     params = {
         'value': 1
-    } #. Dictionary with the necessary parameters for the function.
+    }                       #. Dictionary with the necessary parameters for the function.
     return io_data, params

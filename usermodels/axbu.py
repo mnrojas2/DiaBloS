@@ -6,11 +6,8 @@ Python module for external functions
 
 """
 
-# Se deben agregar las librerias necesarias para correr la funcion en cada archivo
 import numpy as np
 
-# Funcion principal (para la ejecución)
-# Must have the same time as the file
 def axbu(time, inputs, params):
     # Excepciones
     if inputs[1].shape != (2,) or inputs[0] != ():
@@ -23,7 +20,6 @@ def axbu(time, inputs, params):
     sol = np.dot(A, inputs[1]) + np.dot(B, inputs[0])
     return {0: sol}
 
-#Funcion para inicializar los datos y parámetros necesarios para el bloque
 def _init_():
     io_data = {
         'inputs': 2,

@@ -5,22 +5,10 @@ Python module for external functions
 #. This file includes an example for a delay function used in "external_delay.dat"
 
 """
-import numpy as np
 
-# Funcion principal (para la ejecución)
-# Must have the same time as the file
 def external_delay(time, inputs, params):
     """
     External function 'external_delay'
-    
-    :param time: Time value for the main loop.
-    :param inputs: Dictionary with all the input values
-    :param params: Dictionary with all the necessary parameters for the function 
-    :type time: float 
-    :type inputs: dict{numpy.darray}
-    :type params: dict{str}
-    :return: Dictionary with the output(s) as float or numpy vector
-    :rtype: dict{numpy.darray}
     """
     if params['_init_start_']:
         params['mem_list'] = [inputs[0]]
@@ -34,7 +22,6 @@ def external_delay(time, inputs, params):
     params['mem_list'] = aux_list
     return {0: aux_list[0]}
 
-#Funcion para inicializar los datos y parámetros necesarios para el bloque
 def _init_():
     """
     External function initialization data
@@ -44,9 +31,9 @@ def _init_():
         'inputs': 1,
         'outputs': 1,
         'color': 'aqua'
-    } #. Dictionary with the block type, number of inputs and number of outputs.
+    }
     params = {
         '_init_start_': True,
         'delay_len': 10
-    } #. Dictionary with the necessary parameters for the function.
+    }
     return io_data, params

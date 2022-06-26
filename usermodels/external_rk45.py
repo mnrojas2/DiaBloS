@@ -7,20 +7,9 @@ Python module for external functions
 """
 import numpy as np
 
-# Funcion principal (para la ejecución)
-# Must have the same time as the file
 def external_rk45(time, inputs, params, output_only=False, next_add_in_memory=True, dtime=0.01):
     """
     External function 'external_rk45'
-    
-    :param time: Time value for the main loop.
-    :param inputs: Dictionary with all the input values
-    :param params: Dictionary with all the necessary parameters for the function 
-    :type time: float 
-    :type inputs: dict{numpy.darray}
-    :type params: dict{str}
-    :return: Dictionary with the output(s) as float or numpy vector
-    :rtype: dict{numpy.darray}
     """
     # Funcion integrador
     if params['_init_start_'] == True:
@@ -81,7 +70,6 @@ def external_rk45(time, inputs, params, output_only=False, next_add_in_memory=Tr
 
         return {0: mem_old}
 
-#Funcion para inicializar los datos y parámetros necesarios para el bloque
 def _init_():
     """
     External function initialization data
@@ -91,10 +79,10 @@ def _init_():
         'inputs': 1,
         'outputs': 1,
         'color': 'magenta'
-    } #. Dictionary with the block type, number of inputs and number of outputs.
+    }
     params = {
         'init_conds': 0.0,
         'method': 'RK45',
         '_init_start_': True
-    } #. Dictionary with the necessary parameters for the function.
+    }
     return io_data, params

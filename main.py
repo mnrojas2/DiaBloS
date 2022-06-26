@@ -3,11 +3,9 @@ main.py - Module to run the simulator interface
 """
 
 import pygame
-import sys                              # PSF
+import sys
 sys.path.append('./lib/')
 from lib import *
-
-# - init -
 
 def main_execution():
     """

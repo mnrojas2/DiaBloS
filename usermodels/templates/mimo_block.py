@@ -7,11 +7,15 @@ Python module for external functions
 """
 import numpy as np
 
-# Funcion principal (para la ejecución)
+# Main function (executable in the simulation)
+# This function must have the same name as the file
 def mimo_block(time, inputs, params):
+    """
+    Main function
+    """
     return {0: np.array(inputs[1]), 1: np.array(inputs[0])}
 
-# Funcion para inicializar los datos y parámetros necesarios para el bloque
+# Initialization function (to set function type, inputs, outputs and color and other parameters specific for the function)
 def _init_():
     """
     External function initialization data
@@ -21,6 +25,6 @@ def _init_():
         'inputs': 1,
         'outputs': 1,
         'color': 'orange'
-    }               #. Dictionary with the block type, number of inputs and outputs and color block.
-    params = {}     #. Dictionary with the necessary parameters for the function.
+    }                       #. Dictionary with the block type, number of inputs and outputs and color block.
+    params = {}             #. Dictionary with the necessary parameters for the function.
     return io_data, params
