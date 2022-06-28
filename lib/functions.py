@@ -15,7 +15,6 @@ class FunctionsCall:
         """
         Step source function
         """
-        # Funcion escalón base
         if params['type'] == 'up':
             change = True if time < params['delay'] else False
         elif params['type'] == 'down':
@@ -33,7 +32,6 @@ class FunctionsCall:
         """
         Ramp source function
         """
-        # Funcion rampa
         if params['slope'] == 0:
             return {0: 0}
         elif params['slope'] > 0:
@@ -45,29 +43,24 @@ class FunctionsCall:
         """
         Sinusoidal source function
         """
-        # Funcion sinusoidal
         return {0: np.array(params['amplitude']*np.sin(params['omega']*time + params['init_angle']))}
 
     def gain(self, time, inputs, params):
         """
         Gain function
         """
-        # Funcion ganancia
         return {0: np.array(np.dot(params['gain'], inputs[0]))}
 
     def exponential(self, time, inputs, params):
         """
         Exponential function
         """
-        # Funcion exponencial
-
         return {0: np.array(params['a']*np.exp(params['b']*inputs[0]))}
 
     def sumator(self, time, inputs, params):
         """
         Sumator function
         """
-        # Funcion sumador
         for i in range(len(inputs)-1):
             if inputs[i].shape != inputs[i+1].shape:
                 print("ERROR: Dimensions don't fit in", params['_name_'])
@@ -91,7 +84,6 @@ class FunctionsCall:
         """
         Element-wise product between signals
         """
-        # Funcion producto punto
         mult = 1.0
         for i in range(len(inputs)):
             mult *= inputs[i]
@@ -101,28 +93,24 @@ class FunctionsCall:
         """
         Generic block function - no actual use
         """
-        # Funcion bloque generico (No hace nada sin un archivo externo)
         return {0: np.array(inputs[0])}
 
     def terminator(self, time, inputs, params):
         """
         Signal terminator function
         """
-        # Funcion terminator
         return {0: np.array([0.0])}
 
     def noise(self, time, inputs, params):
         """
         Normal noise function
         """
-        # Funcion noise (agrega ruido a la señal)
         return {0: np.array(params['sigma']**2*np.random.randn() + params['mu'])}
 
     def mux(self, time, inputs, params):
         """
         Multiplexer function
         """
-        # Funcion mux
         array = np.array(inputs[0])
         for i in range(1, len(inputs)):
             array = np.append(array, inputs[i])
@@ -132,9 +120,7 @@ class FunctionsCall:
         """
         Demultiplexer function
         """
-        # Funcion demux
-
-        # Primero se comprueba que las dimensiones del vector son suficientes para el demux. Entrega Error o Warning según largo.
+        # Check input dimensions first
         if len(inputs[0]) / params['output_shape'] < params['_outputs_']:
             print("ERROR: Not enough inputs or wrong output shape in", params['_name_'])
             return {'E': True}
@@ -151,38 +137,38 @@ class FunctionsCall:
         """
         Integrator function
         """
-        # Funcion integrador
+        # Initialization (this step happens only in the first iteration)
         if params['_init_start_']:
             params['dtime'] = dtime
             params['mem'] = np.array(params['init_conds'])
             params['mem_list'] = [np.zeros(params['mem'].shape)]
-            params['mem_len'] = 5.0  # Agregar otros largos dependiendo del metodo
+            params['mem_len'] = 5.0
             params['_init_start_'] = False
 
             if params['method'] == 'RK45':
                 params['nb_loop'] = 0
                 params['RK45_Klist'] = [0, 0, 0, 0]  # K1, K2, K3, K4
 
-            params['add_in_memory'] = True  # Para entregar valores de output_only al principio
+            params['add_in_memory'] = True  # It defines if the saved value is sent to the next block or not
 
         if output_only:
             old_add_in_memory = params['add_in_memory']
-            params['add_in_memory'] = next_add_in_memory  # Actualizar para siguiente loop
+            params['add_in_memory'] = next_add_in_memory  # Update for next loop
             if old_add_in_memory:
                 return {0: params['mem']}
             else:
                 return {0: params['aux']}
         else:
-            # Comprueba que los vectores de llegada tengan las mismas dimensiones que el vector memoria.
+            # Checks if the new input vector dimensions match.
             if params['mem'].shape != inputs[0].shape:
                 print("ERROR: Dimension Error in initial conditions in", params['_name_'])
                 params['_init_start_'] = True
                 return {'E': True}
 
-            # Se entrega el valor antes de agregar, por lo que se guarda antes de cambiar
+            # The old value is saved
             mem_old = params['mem']
 
-            # Se integra según método escogido
+            # Integration process according to chosen method
             # Forward euler
             if params['method'] == 'FWD_RECT':
                 if params['add_in_memory']:
@@ -210,7 +196,7 @@ class FunctionsCall:
             # Runge-Kutta 45
             elif params['method'] == 'RK45':
                 K_list = params['RK45_Klist']
-                K_list[params['nb_loop']] = params['dtime'] * inputs[0]     # Calculo de K1, K2, K3 o K4
+                K_list[params['nb_loop']] = params['dtime'] * inputs[0]     # K1, K2, K3 or K4
                 params['RK45_Klist'] = K_list
                 K1, K2, K3, K4 = K_list
 
@@ -232,7 +218,7 @@ class FunctionsCall:
 
             aux_list = params['mem_list']
             aux_list.append(inputs[0])
-            if len(aux_list) > params['mem_len']:  # 5 solo por probar, dependería del método de integración
+            if len(aux_list) > params['mem_len']:
                 aux_list = aux_list[-5:]
             params['mem_list'] = aux_list
 
@@ -257,12 +243,11 @@ class FunctionsCall:
         """
         Block to save and export block signals
         """
-        # Funcion exportar datos
-        # Para evitar guardar datos en los intervalos intermedios de RK45
+        # To prevent saving data in the wrong iterations (integration method RK45 in use)
         if 'skip' in params.keys() and params['skip']:
             params['skip'] = False
             return {0: inputs[0]}
-        # Iniciar el vector de guardado
+        # Initialization of the saving vector
         if params['_init_start_']:
             aux_vector = np.array([inputs[0]])
             try:
@@ -293,12 +278,11 @@ class FunctionsCall:
         """
         Function to plot block signals
         """
-        # Funcion graficar datos (MatPlotLib)
-        # Para evitar guardar datos en los intervalos intermedios de RK45
+        # To prevent saving data in the wrong iterations (integration method RK45 in use)
         if 'skip' in params.keys() and params['skip']:
             params['skip'] = False
             return {0: inputs[0]}
-        # Iniciar el vector de guardado
+        # Initialization of the saving vector
         if params['_init_start_']:
             aux_vector = np.array([inputs[0]])
             try:
