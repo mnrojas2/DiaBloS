@@ -1,5 +1,5 @@
 ==================================================================================
-<SimuSnide> - A graphical programming library/tool for dynamical systems in Python
+DiaBloS - A graphical programming library/tool for dynamical systems in Python
 ==================================================================================
 
 .. note::

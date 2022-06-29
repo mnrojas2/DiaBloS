@@ -532,8 +532,6 @@ class InitSim:
         Initializes the graph execution
         """
 
-        print("*****INIT NEW EXECUTION*****")
-
         self.execution_function = FunctionsCall()          # Se llama a la clase que contiene las funciones para la ejecución
         self.execution_stop = False                         # Evitar que la ejecución se detenga antes de ejecutarse por error
         self.time_step = 0                                  # Primera iteración que irá aumentando self.sim_dt segundos
@@ -542,13 +540,15 @@ class InitSim:
         self.execution_time = self.execution_init_time()    # Se inicializan algunos parametros entre ellos el tiempo máximo de simulación
 
         # Para cancelar la simulación antes de correrla (habiendo presionado X en el pop up)
-        if self.execution_time == -1:
+        if self.execution_time == -1 or len(self.blocks_list) == 0:
             self.execution_initialized = False
             return
 
         # Obligar a guardar antes de ejecutar (para no perder el diagrama)
         if self.save(True) == 1:
             return
+
+        print("*****INIT NEW EXECUTION*****")
 
         # Actualización de módulos importados (funciones externas)
         for block in self.blocks_list:
@@ -1091,7 +1091,9 @@ class Block(InitSim):
         self.input_queue = {}           # Diccionario el cual almacena los datos que llegan desde otros bloques
 
     def update_Block(self):
-        # Actualiza ubicación y dimensiones del bloque como también definir la de los puertos
+        """
+        Updates location and size of the block, including its ports
+        """
         self.in_coords = []
         self.out_coords = []
 
@@ -1116,7 +1118,9 @@ class Block(InitSim):
                 self.out_coords.append(port_out)
 
     def draw_Block(self, zone):
-        # Dibuja el bloque y los puertos
+        """
+        Draws block and its ports
+        """
         pygame.draw.rect(zone, self.b_color, (self.left, self.top, self.width, self.height))
 
         # Cargar iconos externo
@@ -1129,6 +1133,9 @@ class Block(InitSim):
             pygame.draw.circle(zone, self.colors['black'], port_out_location, self.port_radius)
 
     def draw_selected(self, zone):
+        """
+        Draws the black line indicating that the block is selected.
+        """
         # Dibuja linea de selección en torno a un bloque.
         pygame.draw.line(zone, self.colors['black'], (self.left - self.ls_width, self.top - self.ls_width),
                          (self.left + self.width + self.ls_width, self.top - self.ls_width), self.l_width)
@@ -1144,14 +1151,18 @@ class Block(InitSim):
             zone.blit(self.function_display, (self.left + 0.5 * (self.width - self.function_display.get_width()), self.top + self.height + 15))
 
     def set_color(self, color):
-        # Define el color del bloque a partir de un string o directamente de una tupla con los valores RGB
+        """
+        Defines color from a string or value in RGB
+        """
         if type(color) == str:
             return self.colors[color]
         elif type(color) == tuple or list:
             return color
 
     def port_collision(self, m_coords):
-        # Observa si el mouse toca alguno de los puertos de un bloque. Retorna una tupla con el tipo de puerto y su id.
+        """
+        Checks if a point collides with one of the ports of a block. Returns a tuple with the port type and port id.
+        """
         for i in range(len(self.in_coords)):
             p_coords = self.in_coords[i]
             distance = np.sqrt((m_coords[0] - p_coords[0]) ** 2 + (m_coords[1] - p_coords[1]) ** 2)
@@ -1164,20 +1175,28 @@ class Block(InitSim):
                 return ("o", j)
         return (-1, -1)
 
-    def relocate_Block(self, new_coords):  # new_coords = (left,top)
-        # Función simple para reubicar el bloque en el plano, requiere coordenadas de la esquina superior izquierda
+    def relocate_Block(self, new_coords):
+        """
+        Relocates port using its new coordinates (left, top)
+        """
+        # new_coords = (left,top)
         self.left = new_coords[0]
         self.top = new_coords[1]
         self.update_Block()
 
-    def resize_Block(self, new_coords):  # new_dims = (width,height)
-        # Función simple para redimensionar el bloque en el plano, requiere ancho y altura ingresado como tupla
+    def resize_Block(self, new_coords):
+        """
+        Resizes block using its new coordinates (width, height)
+        """
+        # new_dims = (width,height)
         self.width = new_coords[0]
         self.height = new_coords[1]
         self.update_Block()
 
     def change_port_numbers(self):
-        # Funcion que habilita un pop up con la opción de cambiar el numero de entrada o salida a un bloque
+        """
+        Generates a pop-up window for the user to change number of input and/or output ports for the block.
+        """
         # Esta definido por 3 estados en el que se permite editar solo inputs, solo output o ambos
         if self.io_edit == 'both':
             # Se pueden editar inputs y outputs
@@ -1211,6 +1230,9 @@ class Block(InitSim):
         self.params['_outputs_'] = self.out_ports
 
     def saving_params(self):
+        """
+        Saves parameters only defined at initialization
+        """
         # Actualizar funcion para aceptar los arrays como corresponde
         # Guarda únicamente los parámetros definidos inicialmente, no los agregados durante la ejecución
         ed_dict = {}
@@ -1224,7 +1246,9 @@ class Block(InitSim):
         return ed_dict
 
     def loading_params(self, new_params):
-        # Cargar los datos desde el .dat, transformando las listas en np.ndarrays.
+        """
+        Loads parameters from a dictionary list, converting lists in array vectors.
+        """
         try:
             for key in new_params.keys():
                 if isinstance(new_params[key], list):
@@ -1234,7 +1258,9 @@ class Block(InitSim):
             return new_params
 
     def change_params(self):
-        # Se cambian los valores de los parametros para cada bloque a partir del diccionario con la lista completa de parametros y la lista que indica que se puede editar
+        """
+        Generates a pop-up window to change modifiable parameters only
+        """
         if self.params == {}:
             return
 
@@ -1259,7 +1285,9 @@ class Block(InitSim):
             widget_params.destroy()
 
     def load_external_data(self):
-        # Carga la funcion desde un archivo .py externo
+        """
+        Loads initialization data of a function located in a external .py file
+        """
         if not self.external:
             return
 
@@ -1291,7 +1319,9 @@ class Block(InitSim):
         print("MODULE FUNCTION:", full_module_name, "WAS LOADED")
 
     def reload_external_data(self):
-        # Actualiza unicamente los parametros de la funcion del archivo externo
+        """
+        Reloads the external function parameters
+        """
         if not self.external:
             return 0
 
@@ -1316,7 +1346,6 @@ class Line(InitSim):
     """
     Class to initialize and maintain lines that connect blocks
     """
-    # Clase para la inicialización y mantención de las líneas
     def __init__(self, sid, srcblock, srcport, dstblock, dstport, points, cptr=0):
         super().__init__()
         self.name = "Line" + str(sid)       # Nombre de la línea
@@ -1338,7 +1367,9 @@ class Line(InitSim):
         self.selected = False                   # Indica estado de selección en pantalla
 
     def draw_line(self, zone):
-        # Dibuja la línea con los datos
+        """
+        Draws line
+        """
         for i in range(len(self.points) - 1):
             if self.selected:
                 line_width = 5
@@ -1348,7 +1379,7 @@ class Line(InitSim):
 
     def trajectory(self, points):
         """
-        Crea los puntos intermedios que se muestran en la interfaz
+        Generates segments to display a connection between blocks linked by a line
         """
         if len(points) > 2:
             return points
@@ -1389,7 +1420,9 @@ class Line(InitSim):
         return points
 
     def update_line(self, block_list):
-        # Actualiza el valor de la línea según la ubicación y tamaño del bloque
+        """
+        Updates line from size and location of blocks
+        """
         for block in block_list:
             if block.name == self.srcblock:
                 startline = block.out_coords[self.srcport]
@@ -1402,7 +1435,9 @@ class Line(InitSim):
         self.points = self.trajectory((startline, endline))
 
     def collision(self, m_coords):
-        # Determinar colisión entre línea y posición de un click
+        """
+        Check if there is collision between a point and the line
+        """
         min_dst = 10
         m_coords = np.array(m_coords)
 
@@ -1427,18 +1462,15 @@ class Line(InitSim):
         return False
 
     def change_color(self, ptr):
-        # Puntero que indica qué color se elige de la lista de colores definida arriba
+        """
+        Pointer indicating which color is chosen from the color list defined in InitSim
+        """
         # De forma hardcodeada se salta el último elemento que corresponde al color blanco (para evitar lineas "invisibles")
         self.cptr += ptr
         if self.cptr < 0:
             self.cptr = len(list(self.colors.keys()))-2
         elif self.cptr == len(list(self.colors.keys()))-1:
             self.cptr = 0
-
-    def __str__(self):
-        # Imprime en la consola, el nombre de la línea, su origen y destino
-        return self.name + ": From " + str(self.srcblock) + ", port " + str(self.srcport) + " to " + str(
-            self.dstblock) + ", port " + str(self.dstport)
 
 
 class MenuBlocks(InitSim):
@@ -1467,13 +1499,18 @@ class MenuBlocks(InitSim):
         self.text_display = self.text.render(self.fun_name, True, self.colors['black'])
 
     def draw_menublock(self, zone, pos):
-        # Dibuja el bloque
+        """
+        Draws the menu block
+        """
         self.collision = pygame.rect.Rect(40, 80 + 40*pos, self.side_length[0], self.side_length[1])
         pygame.draw.rect(zone, self.b_color, self.collision)
         zone.blit(self.image, (40, 80 + 40*pos))
         zone.blit(self.text_display, (90, 90 + 40*pos))
 
     def set_color(self, color):
+        """
+        Defines color from a string or value in RGB
+        """
         # Define el color del bloque a partir de un string o directamente de una tupla con los valores RGB
         if type(color) == str:
             return self.colors[color]
@@ -1485,7 +1522,6 @@ class Button(InitSim):
     """
     Class to create and show buttons in the user interface
     """
-    # Produce un boton con texto
     def __init__(self, name, coords, active=True):
         super().__init__()
         self.name = name                                                            # Nombre que se mostrará en el botón
@@ -1498,24 +1534,28 @@ class Button(InitSim):
         self.text_display = self.font_text.render(name, True, self.colors['black']) # Render del botón
 
     def draw_button(self, zone):
-        # Dibuja el boton en la pantalla, con su nombre en el centro
+        """
+        Draws the button
+        """
         if not self.active:
-            text_color = 'gray'
-            bg_color = 'light_gray'
+            text_color = self.colors['gray']
+            text_color2 = (255, 160, 160)
+            bg_color = (240, 240, 240)
         else:
-            text_color = 'black'
+            text_color = self.colors['black']
+            text_color2 = self.colors['red']
             if self.pressed:
-                bg_color = 'gray'
+                bg_color = self.colors['gray']
             else:
-                bg_color = 'light_gray'
+                bg_color = self.colors['light_gray']
 
-        pygame.draw.rect(zone, self.colors[bg_color], self.collision)
+        pygame.draw.rect(zone, bg_color, self.collision)
         if not (self.name[0] == self.name[-1] == '_'):
             zone.blit(self.text_display, (self.collision.left + 0.5 * (self.collision.width - self.text_display.get_width()),
                                  self.collision.top + 0.5 * (self.collision.height - self.text_display.get_height())))
 
         elif self.name == '_new_':
-            pygame.draw.polygon(zone, self.colors[text_color], (
+            pygame.draw.polygon(zone, text_color, (
                 (self.collision.left + 0.3 * self.collision.width, self.collision.top + 0.25 * self.collision.height),
                 (self.collision.left + 0.3 * self.collision.width, self.collision.top + 0.75 * self.collision.height),
                 (self.collision.left + 0.7 * self.collision.width, self.collision.top + 0.75 * self.collision.height),
@@ -1524,7 +1564,7 @@ class Button(InitSim):
             ), 2)
 
         elif self.name == '_load_':
-            pygame.draw.polygon(zone, self.colors[text_color], (
+            pygame.draw.polygon(zone, text_color, (
                 (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height),
                 (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.75 * self.collision.height),
                 (self.collision.left + 0.75 * self.collision.width, self.collision.top + 0.75 * self.collision.height),
@@ -1534,44 +1574,47 @@ class Button(InitSim):
             ), 2)
 
         elif self.name == '_save_':
-            pygame.draw.rect(zone, self.colors[text_color], (
+            pygame.draw.rect(zone, text_color, (
                 self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height,
                 0.5*self.collision.width, 0.5*self.collision.height), 2)
-            pygame.draw.rect(zone, self.colors[text_color], (
+            pygame.draw.rect(zone, text_color, (
                 self.collision.left + 0.375 * self.collision.width, self.collision.top + 0.5 * self.collision.height,
                 0.25 * self.collision.width, 0.25 * self.collision.height), 2)
 
         elif self.name == '_play_':
-            pygame.draw.polygon(zone, self.colors[text_color], (
+            pygame.draw.polygon(zone, text_color, (
             (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height),
             (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.75 * self.collision.height),
             (self.collision.left + 0.75 * self.collision.width, self.collision.top + 0.5 * self.collision.height)))
 
         elif self.name == '_pause_':
-            pygame.draw.rect(zone, self.colors[text_color], (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height, 8, 0.5 * self.collision.height))
-            pygame.draw.rect(zone, self.colors[text_color], (self.collision.left + 0.25 * self.collision.width + 12, self.collision.top + 0.25 * self.collision.height, 8, 0.5 * self.collision.height))
+            pygame.draw.rect(zone, text_color, (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height, 8, 0.5 * self.collision.height))
+            pygame.draw.rect(zone, text_color, (self.collision.left + 0.25 * self.collision.width + 12, self.collision.top + 0.25 * self.collision.height, 8, 0.5 * self.collision.height))
 
         elif self.name == '_stop_':
-            pygame.draw.rect(zone, self.colors[text_color], (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height, 0.5 * self.collision.width, 0.5 * self.collision.height))
+            pygame.draw.rect(zone, text_color, (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height, 0.5 * self.collision.width, 0.5 * self.collision.height))
 
         elif self.name == '_plot_':
-            pygame.draw.line(zone, self.colors['red'],
+            pygame.draw.line(zone, text_color2,
                              [self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.75 * self.collision.height],
                              [self.collision.left + 0.45 * self.collision.width, self.collision.top + 0.4 * self.collision.height], 2)
-            pygame.draw.line(zone, self.colors['red'],
+            pygame.draw.line(zone, text_color2,
                              [self.collision.left + 0.45 * self.collision.width, self.collision.top + 0.4 * self.collision.height],
                              [self.collision.left + 0.55 * self.collision.width, self.collision.top + 0.65 * self.collision.height], 2)
-            pygame.draw.line(zone, self.colors['red'],
+            pygame.draw.line(zone, text_color2,
                              [self.collision.left + 0.55 * self.collision.width, self.collision.top + 0.65 * self.collision.height],
                              [self.collision.left + 0.75 * self.collision.width, self.collision.top + 0.25 * self.collision.height], 2)
-            pygame.draw.line(zone, self.colors[text_color],
+            pygame.draw.line(zone, text_color,
                              [self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height],
                              [self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.75 * self.collision.height], 2)
-            pygame.draw.line(zone, self.colors[text_color],
+            pygame.draw.line(zone, text_color,
                              [self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.75 * self.collision.height],
                              [self.collision.left + 0.75 * self.collision.width, self.collision.top + 0.75 * self.collision.height], 2)
 
     def set_color(self, color):
+        """
+        Defines color from a string or value in RGB
+        """
         # Define el color del bloque a partir de un string o directamente de una tupla con los valores RGB
         if type(color) == str:
             return self.colors[color]
@@ -1583,7 +1626,6 @@ class TkWidget:
     """
     Class used to create popup windows for changing data, like ports and parameters.
     """
-    # Clase para poder producir los pop up windows para modificar datos
     def __init__(self, name, params):
         self.params = params
         self.params_names = list(params.keys())
@@ -1595,7 +1637,9 @@ class TkWidget:
         tk.mainloop()
 
     def create_entry_widget(self, x):
-        # Crea una nueva línea que permite editar datos
+        """
+        Creates a new entry for the widget
+        """
         new_widget = tk.Entry(self.master)
         tk.Label(self.master, text=self.params_names[x]).grid(row=x, column=0)
         new_widget.grid(row=x, column=1)
@@ -1609,7 +1653,9 @@ class TkWidget:
         return new_widget
 
     def get_values(self):
-        # Entrega un diccionario con los datos obtenidos de la ventana
+        """
+        Gets values in a dictionary after the pop-up window is closed
+        """
         try:
             dicty = {}
             for i in range(len(self.entry_widgets)):
@@ -1633,7 +1679,10 @@ class TkWidget:
             return {}
 
     def string_to_vector(self, string):
-        # convierte el dato guardado de un string a un array. Soporta el uso de espacios y corchetes, separa unicamente valores con comas.
+        """
+        Converts the string into an array vector
+        """
+        # Soporta el uso de espacios y corchetes, separa unicamente valores con comas.
         # primero se buscan las dimensiones del array eliminando todos los números
         string_shape = string
         for char in string_shape:
@@ -1668,7 +1717,9 @@ class TkWidget:
             return ""
 
     def destroy(self):
-        # Finaliza la ventana
+        """
+        Finishes the window instance
+        """
         self.master.destroy()
 
 
@@ -1677,7 +1728,6 @@ class DynamicPlot:
     Class that manages the display of dynamic plots through the simulation
     *It uses pyqtgraph as base (MIT license, but interactions with PyQT5 (GPL))
     """
-
     def __init__(self, dt, labels=['default'], xrange=100):
         self.dt = dt
         self.xrange = xrange*self.dt

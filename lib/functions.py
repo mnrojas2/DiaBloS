@@ -9,7 +9,6 @@ class FunctionsCall:
     """
     Class to contain all the default functions available to work with in the simulation interface
     """
-    # Funciones utilizadas durante la ejecución del sistema
 
     def step(self, time, inputs, params):
         """

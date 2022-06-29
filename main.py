@@ -48,7 +48,7 @@ def main_execution():
                 if event.button == 1 and sim_init.holding_CTRL == False:
                     # Press UI button
                     for button in sim_init.buttons_list:
-                        if button.collision.collidepoint(event.pos):
+                        if button.collision.collidepoint(event.pos) and button.active:
                             button.pressed = True
 
                     # Add block
