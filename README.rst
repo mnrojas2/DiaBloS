@@ -124,6 +124,6 @@ FIRST EXPERIENCE
 #) Optional: Change the simulation time.
 #) Optional: Change the sampling rate.
 #) Optional: Change the window size for the dynamic plot.
+#) Optional: Enable/disable the dynamic plot.
 #) Accept your changes.
-#) Save the diagram. (Could be with the same filename or a different one).
 #) The program will start reading and executing the diagram showing a bar in the terminal.
