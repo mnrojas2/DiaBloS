@@ -1050,7 +1050,7 @@ class Block(InitSim):
         self.height_base = self.height  # Variable que conserva valor de altura por defecto
 
         self.b_color = self.set_color(color)  # color del bloque
-        self.image = pygame.image.load('./icons/' + self.b_type + '.png')
+        self.image = pygame.image.load('./lib/icons/' + self.b_type + '.png')
         self.image = pygame.transform.scale(self.image, (self.height_base, self.height_base))
 
         self.fun_name = fun_name                            # Nombre función asociada para ejecución
@@ -1490,7 +1490,7 @@ class MenuBlocks(InitSim):
         self.b_color = self.set_color(b_color)            # Color caracteristico del bloque
         self.size = coords                                # Dimensiones del bloque de simulacion (este no)
         self.side_length = (30, 30)
-        self.image = pygame.image.load('./icons/' + self.b_type + '.png')
+        self.image = pygame.image.load('./lib/icons/' + self.b_type + '.png')
         self.image = pygame.transform.scale(self.image, self.side_length)
         self.external = external
 
