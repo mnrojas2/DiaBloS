@@ -17,7 +17,7 @@ def main_execution():
 
     # Window Initialization
     screen = pygame.display.set_mode((sim_init.SCREEN_WIDTH, sim_init.SCREEN_HEIGHT))
-    pygame.display.set_caption("PySimGraph")
+    pygame.display.set_caption("DiaBloS - Diagram Block Simulator")
 
     # Menu block and UI buttons initialization
     sim_init.menu_blocks_init()
