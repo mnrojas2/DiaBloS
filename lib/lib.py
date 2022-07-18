@@ -15,7 +15,7 @@ from tkinter import filedialog
 
 import sys                              # PSF
 import pyqtgraph as pg                  # MIT
-from functions import *
+from lib.functions import *
 
 sys.path.append('./usermodels/')
 
