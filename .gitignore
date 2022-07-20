@@ -4,5 +4,5 @@ lib/site-packages/
 lib/__pycache__/
 Scripts/
 venv/
-docs/
+docs/build/
 pyvenv.cfg
