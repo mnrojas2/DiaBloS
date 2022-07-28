@@ -38,15 +38,21 @@ Si el bloque permite cambiar el numero de puertos...
 El formato de guardado de estos archivos es .dat...
 Para guardar un archivo...
 Para cargar un archivo...
+Usar basic_example.dat
 
 - How to run simulation
 
 Para correr la simulacion
 
+- How to change the sampling rate
+
+Para cambiar el tiempo de muestreo de la simulacion
+
 - How to plot data
 
 Para graficar las curvas de una simulacion
 Para graficar las curvas de una simulacion mientras está corriendo...
+Cambiar el ancho de la ventana de simulacion (se basa en puntos graficados mas que en tiempo)
 
 - How to export data
 

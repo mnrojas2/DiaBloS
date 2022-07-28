@@ -11,4 +11,5 @@ Developing for DiaBloS
 - How to test a new function
 - How to prevent crashes::
 
-    (out {0: 'E'})
+    except:
+        return {0: 'E'}

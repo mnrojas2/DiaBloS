@@ -47,10 +47,10 @@ Basics
 Blocks
 ------
 
-1) To create a block press LMB over the list in the left and move the new element to the white canvas
-#) To delete a block just move it back to the list in the left
+1) To create a block, hold LMB over the list in the left and move the new element to the white canvas
+#) To delete a block, just move it back to the list in the left or the upper menu
 #) RMB: Parameters/Attributes menu
-#) Ctrl + RMB: Input/Output menu (if applicable)
+#) (Hold) Ctrl + RMB: Input/Output menu (if applicable)
 
 Tips:
 
@@ -114,11 +114,11 @@ This tool allows external loading of functions by using the block "Block".
 FIRST EXPERIENCE
 ================
 
-1) Press 'Load' or 'Ctrl+A' to open a file
+1) Select 'Load' or press 'Ctrl'+'A to open a file
 #) Go to examples/ and open basic-example.dat.
 #) You will see a simple diagram with one Step block and one Scope block
-#) Optional: Press "Dyn Plot" to enable the dynamic plot mode.
-#) Press 'Simulate' or 'Ctrl+E' to execute the graph.
+#) Optional: Select "Dyn Plot" to enable the dynamic plot mode.
+#) Select 'Simulate' or press 'Ctrl'+'E' to execute the graph.
 #) A pop-up will appear letting you change some values before executing.
 #) Optional: Change the simulation time.
 #) Optional: Change the sampling rate.
