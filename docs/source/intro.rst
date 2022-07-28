@@ -24,7 +24,7 @@ control, ecuaciones diferenciales, personas enfocadas en el desarrollo de altern
 System requirements
 -------------------
 
-Requiere python3
+Requiere Python 3.9.7 o superior
 
 Background information and Reference Material
 ---------------------------------------------
