@@ -4,6 +4,9 @@ Using DiaBloS: Basics
 how to use it
 
 Al cargar el programa por primera vez se ve asi (foto)
+Explicar botones y figuras
+Las figuras de la parte superior...
+Mientras tanto las figuras en el costado izquierdo...
 
 - How to add blocks
 
@@ -24,14 +27,19 @@ Remover lineas...
 - How to change line color
 
 Una caracteristica particular de las lineas es que se les puede cambiar el color
+Usar uparrow y downarrow
 
 - How to change parameters
 
 Si el bloque contiene parametros de funcion
+Tener cuidado de utilizar los parametros correctos
+En algunos casos son strings, en otros booleanos, en otros floats (ints permitidos)
+Warning: La casilla no puede quedar en blanco
 
 - How to change port numbers
 
 Si el bloque permite cambiar el numero de puertos...
+Warning: La casilla no puede quedar en blanco
 
 - How to load/save files
 
@@ -43,16 +51,19 @@ Usar basic_example.dat
 - How to run simulation
 
 Para correr la simulacion
+Se puede pausar y detener con...
 
 - How to change the sampling rate
 
-Para cambiar el tiempo de muestreo de la simulacion
+Para cambiar el período de muestreo de la simulacion...
+Importante considerar que el tiempo de simulación puede ser mayor con un período de muestreo más pequeño.
 
 - How to plot data
 
 Para graficar las curvas de una simulacion
 Para graficar las curvas de una simulacion mientras está corriendo...
 Cambiar el ancho de la ventana de simulacion (se basa en puntos graficados mas que en tiempo)
+Para observar de nuevo el gráfico, u observarlo en todo el espacio, presionar el boton
 
 - How to export data
 

@@ -6,6 +6,8 @@
 Welcome to DiaBloS's documentation!
 ===================================
 
+.. note:: This is still a work in progress
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
@@ -23,4 +25,9 @@ Contents
    developer
    api
    future
+
+Acknowledgements
+----------------
+
+Thanks to ...
 
