@@ -16,7 +16,7 @@ Tambien otros que requieren el uso de herramientas externas a python, requiriend
 Target audience for the DiaBloS package
 ---------------------------------------
 
-who's going to use ut?
+who's going to use it?
 
 Usuarios de python
 control, ecuaciones diferenciales, personas enfocadas en el desarrollo de alternativas de programacion visual
@@ -29,10 +29,10 @@ Requiere Python 3.9.7 o superior
 Background information and Reference Material
 ---------------------------------------------
 
-La programacion visual...
+- La programacion visual...
 
-simulab-simulink
+- simulab-simulink
 
-modellica
+- modellica
 
-no hay alternativas para python
+- no hay alternativas para python
