@@ -13,6 +13,26 @@ class FunctionsCall:
     def step(self, time, inputs, params):
         """
         Step source function
+
+        :purpose: Funcion que retorna un valor constante en el tiempo.
+        :description: Esta es una funcion tipo fuente, la cual es piecewise. Se puede utilizar para indicar el inicio o término de una rama de un grafo.
+        :param time: Valor que indica el período actual de simulación.
+        :param inputs: Diccionario que entrega uno o más entradas para la función (si aplica).
+        :param params['value']: El valor que la función retorna. Puede ser un escalar (float) como también un vector ([float, ...]).
+        :param params['delay']: Indica un punto en el tiempo donde sucede el salto del piecewise.
+        :param params['type']: ['up'/'down'] Indica si el salto es hacia arriba ('value') o hacia abajo (0).
+        :type time: float
+        :type inputs: dict
+        :type params['value']: float/numpy.ndarray
+        :type params['delay']: float
+        :type params['type']: str
+        :return: El valor definido en 'value' o 0.
+        :rtype: numpy.ndarray
+        :examples: See example in ...
+        :notes: notes
+        :limitations: limitations
+        :bugs: bugs
+
         """
         if params['type'] == 'up':
             change = True if time < params['delay'] else False
@@ -30,6 +50,24 @@ class FunctionsCall:
     def ramp(self, time, inputs, params):
         """
         Ramp source function
+
+        :purpose: Funcion que retorna un valor que cambia linealmente en el tiempo.
+        :description: Esta es una funcion tipo fuente, la cual es piecewise. El valor cambia en el tiempo de forma lineal, pudiendo este aumentar o disminuir.
+        :param time: Valor que indica el período actual de simulación.
+        :param inputs: Diccionario que entrega uno o más entradas para la función (si aplica).
+        :param params['slope']: El valor de la pendiente que la función utiliza para entregar el resultado.
+        :param params['delay']: Indica un punto en el tiempo donde sucede el inicio de la rampa.
+        :type time: float
+        :type inputs: dict
+        :type params['slope']: float
+        :type params['delay']: float
+        :return: El valor de la pendiente multiplicado por la diferencia entre 'time' y 'delay'.
+        :rtype: numpy.ndarray
+        :examples: See example in ...
+        :notes: notes
+        :limitations: limitations
+        :bugs: bugs
+
         """
         if params['slope'] == 0:
             return {0: 0}
@@ -41,6 +79,26 @@ class FunctionsCall:
     def sine(self, time, inputs, params):
         """
         Sinusoidal source function
+
+        :purpose: Funcion que retorna una sinusoidal en el tiempo.
+        :description: Esta es una funcion tipo fuente. Retorna una sinusoidal con variación en los parámetros de amplitud, frecuencia y ángulo inicial.
+        :param time: Valor que indica el período actual de simulación.
+        :param inputs: Diccionario que entrega uno o más entradas para la función (si aplica).
+        :param params['amplitude']: Valor de amplitud que toma la sinusoidal.
+        :param params['omega']: Valor en rad/s (2*pi*f) de la frecuencia que toma la sinusoidal.
+        :param params['init_angle']: Valor en radianes del ángulo que toma la sinusoidal en tiempo cero.
+        :type time: float
+        :type inputs: dict
+        :type params['amplitude']: float
+        :type params['omega']: float
+        :type params['init_angle']: float
+        :return: Una sinusoidal de amplitud 'amplitude', frecuencia 'omega' y ángulo inicial 'init_angle'.
+        :rtype: numpy.ndarray
+        :examples: See example in ...
+        :notes: notes
+        :limitations: limitations
+        :bugs: bugs
+
         """
         return {0: np.array(params['amplitude']*np.sin(params['omega']*time + params['init_angle']))}
 
