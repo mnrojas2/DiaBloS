@@ -21,11 +21,13 @@ class FunctionsCall:
         :param params['value']: El valor que la función retorna. Puede ser un escalar (float) como también un vector ([float, ...]).
         :param params['delay']: Indica un punto en el tiempo donde sucede el salto del piecewise.
         :param params['type']: ['up'/'down'] Indica si el salto es hacia arriba ('value') o hacia abajo (0).
+        :param params['_name_']: Parámetro auxiliar entregado por el bloque asociado, para identificación de errores.
         :type time: float
         :type inputs: dict
         :type params['value']: float/numpy.ndarray
         :type params['delay']: float
         :type params['type']: str
+        :type params['_name_']: str
         :return: El valor definido en 'value' o 0.
         :rtype: numpy.ndarray
         :examples: See example in ...
@@ -102,21 +104,97 @@ class FunctionsCall:
         """
         return {0: np.array(params['amplitude']*np.sin(params['omega']*time + params['init_angle']))}
 
+    def noise(self, time, inputs, params):
+        """
+        Normal noise function
+
+        :purpose: Funcion retorna un ruido aleatorio normal.
+        :description: Esta es una funcion tipo fuente. Produce un valor aleatorio normal de media mu y varianza sigma**2.
+        :param time: Valor que indica el período actual de simulación.
+        :param inputs: Diccionario que entrega uno o más entradas para la función (si aplica).
+        :param params['mu']: Valor de media del ruido.
+        :param params['sigma']: Valor de desviación estándar del ruido.
+        :type time: float
+        :type inputs: dict
+        :type params['sigma']: float
+        :type params['mu']: float
+        :return: Valor aleatorio normal de media mu y varianza sigma**2.
+        :rtype: numpy.ndarray
+        :examples: See example in ...
+        :notes: notes
+        :limitations: limitations
+        :bugs: bugs
+
+        """
+        return {0: np.array(params['sigma'] ** 2 * np.random.randn() + params['mu'])}
+
     def gain(self, time, inputs, params):
         """
         Gain function
+
+        :purpose: Funcion que escala una entrada por un factor.
+        :description: Esta es una funcion tipo proceso. Retorna la misma entrada, pero escalada por un factor definido por el usuario. Esta entrada puede ser tanto escalar como vectorial, así como el factor de escalamiento.
+        :param time: Valor que indica el período actual de simulación.
+        :param inputs: Diccionario que entrega uno o más entradas para la función (si aplica).
+        :param params['gain']: Valor de escalamiento de la entrada. Puede ser un valor escalar, o una matriz (solo para multiplicación vectorial).
+        :type time: float
+        :type inputs: dict
+        :type params['gain']: float/numpy.ndarray
+        :return: El valor de entrada, escalado por el factor 'gain'.
+        :rtype: numpy.ndarray
+        :examples: See example in ...
+        :notes: notes
+        :limitations: limitations
+        :bugs: bugs
+
         """
         return {0: np.array(np.dot(params['gain'], inputs[0]))}
 
     def exponential(self, time, inputs, params):
         """
         Exponential function
+
+        :purpose: Funcion que retorna el valor de una exponencial a partir de una entrada.
+        :description: Esta es una funcion tipo proceso. Toma el valor de entrada, y le calcula la exponencial de la misma, con factores de escala para la base como al exponente.
+        :param time: Valor que indica el período actual de simulación.
+        :param inputs: Diccionario que entrega uno o más entradas para la función (si aplica).
+        :param params['a']: Factor de escalamiento para la base de la exponencial.
+        :param params['b']: Factor de escalamiento para el exponente de la exponencial.
+        :type time: float
+        :type inputs: dict
+        :type params['a']: float
+        :type params['b']: float
+        :return: La exponencial del valor de la entrada.
+        :rtype: numpy.ndarray
+        :examples: See example in ...
+        :notes: notes
+        :limitations: limitations
+        :bugs: bugs
+
         """
         return {0: np.array(params['a']*np.exp(params['b']*inputs[0]))}
 
     def sumator(self, time, inputs, params):
         """
         Sumator function
+
+        :purpose: Funcion que retorna la suma de dos o más entradas.
+        :description: Esta es una funcion tipo proceso. Toma cada valor de entrada y este lo asocia a un signo (positivo o negativo), para luego irlos sumando o restando en una variable auxiliar. La función soporta tanto operatoria escalar como vectorial.
+        :param time: Valor que indica el período actual de simulación.
+        :param inputs: Diccionario que entrega uno o más entradas para la función (si aplica).
+        :param params['sign']: String que contiene todos los signos asociados a cada valor (o vector) de entrada. Cabe destacar que en caso de tener menos símbolos que vectores, la función asumirá que estos restantes sumarán.
+        :param params['_name_']: Parámetro auxiliar entregado por el bloque asociado, para identificación de errores.
+        :type time: float
+        :type inputs: dict
+        :type params['sign']: str
+        :type params['_name_']: str
+        :return: La suma de todas las entradas.
+        :rtype: numpy.ndarray
+        :examples: See example in ...
+        :notes: Esta función retorna 'Error' si es que las dimensiones de alguna de las entradas no son iguales.
+        :limitations: limitations
+        :bugs: bugs
+
         """
         for i in range(len(inputs)-1):
             if inputs[i].shape != inputs[i+1].shape:
@@ -140,6 +218,20 @@ class FunctionsCall:
     def sigproduct(self, time, inputs, params):
         """
         Element-wise product between signals
+
+        :purpose: Funcion que retorna la multiplicación por elementos de dos o más entradas.
+        :description: Esta es una funcion tipo proceso. Toma cada valor de entrada y los va multiplicando con un valor (o vector) base.
+        :param time: Valor que indica el período actual de simulación.
+        :param inputs: Diccionario que entrega uno o más entradas para la función (si aplica).
+        :type time: float
+        :type inputs: dict
+        :return: La multiplicación de todas las entradas.
+        :rtype: numpy.ndarray
+        :examples: See example in ...
+        :notes: A diferencia de la función sumator, esta no comprueba que las entradas tengan las mismas dimensiones, puesto que se puede dar la ocasión donde el resultado necesitado puede ser algo de más dimensiones.
+        :limitations: La función no comprueba que el resultado tenga las dimensiones deseadas, por lo que es un trabajo que debe realizar el usuario.
+        :bugs: bugs
+
         """
         mult = 1.0
         for i in range(len(inputs)):
@@ -148,21 +240,9 @@ class FunctionsCall:
 
     def block(self, time, inputs, params):
         """
-        Generic block function - no actual use
+        Generic block function for testing purposes
         """
         return {0: np.array(inputs[0])}
-
-    def terminator(self, time, inputs, params):
-        """
-        Signal terminator function
-        """
-        return {0: np.array([0.0])}
-
-    def noise(self, time, inputs, params):
-        """
-        Normal noise function
-        """
-        return {0: np.array(params['sigma']**2*np.random.randn() + params['mu'])}
 
     def mux(self, time, inputs, params):
         """
@@ -295,6 +375,12 @@ class FunctionsCall:
         params['t_old'] = time
         params['i_old'] = inputs[0]
         return {0: np.array(di / dt)}
+
+    def terminator(self, time, inputs, params):
+        """
+        Signal terminator function
+        """
+        return {0: np.array([0.0])}
 
     def export(self, time, inputs, params):
         """
