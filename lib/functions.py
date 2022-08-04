@@ -312,16 +312,16 @@ class FunctionsCall:
         :description: Esta es una funcion tipo proceso.
         :param time: Valor que indica el período actual de simulación.
         :param inputs: Diccionario que entrega uno o más entradas para la función (si aplica).
-        :param params['init_conds']:
-        :param params['method']: ['FWD_RECT/BWD_RECT/TUSTIN/RK45']
-        :param params['dtime']:
-        :param params['mem']:
-        :param params['mem_list']:
-        :param params['mem_len']:
-        :param params['nb_loop']:
-        :param params['RK45_Klist']:
-        :param params['add_in_memory']:
-        :param params['aux']:
+        :param params['init_conds']: Value that contains the initial conditions for the integrator
+        :param params['method']: ['FWD_RECT/BWD_RECT/TUSTIN/RK45'] String that contains the method of integration to use.
+        :param params['dtime']: Variable auxiliar que contiene el tiempo de muestreo que la simulación está utilizando (integración de paso fijo)
+        :param params['mem']: Variable que contiene la suma de todos los datos, desde el inicio hasta el lapso 'time'.
+        :param params['mem_list']: Vector que contiene los últimos valores de 'mem'
+        :param params['mem_len']: Variable que define el número de elementos que contiene 'mem_list'
+        :param params['nb_loop']: Variable auxiliar que indica el paso actual del método RK45
+        :param params['RK45_Klist']: Vector auxiliar que contiene los últimos valores de K1,K2,K3,K4 (método RK45)
+        :param params['add_in_memory']: Variable auxiliar que indica cuando el valor de entrada se suma a 'mem', como también retornar un resultado auxiliar (método RK45)
+        :param params['aux']: Variable auxiliar que contiene la suma de 'mem' anterior, con medio paso de simulación (método RK45)
         :param params['_init_start_']: Parámetro auxiliar utilizado por el sistema para realizar funciones especiales en el primer loop de simulación.
         :param params['_name_']: Parámetro auxiliar entregado por el bloque asociado, para identificación de errores.
         :type time: float

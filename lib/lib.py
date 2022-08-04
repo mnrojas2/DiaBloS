@@ -79,7 +79,7 @@ class InitSim:
 
     def main_buttons_init(self):
         """
-        Creates a button list with all the basic functions available
+        :purpose: Creates a button list with all the basic functions available
         """
         new = Button('_new_', (40, 10, 40, 40))
         load = Button('_load_', (100, 10, 40, 40))
@@ -93,7 +93,7 @@ class InitSim:
 
     def display_buttons(self, zone):
         """
-        Displays all the buttons on the screen
+        :purpose: Displays all the buttons on the screen
         """
         pygame.draw.line(zone, self.colors['black'], [200, 60], [1260, 60], 2)
         for button in self.buttons_list:
@@ -104,14 +104,16 @@ class InitSim:
     def add_block(self, block, m_pos=(0, 0)):
 
         """
-        :proposito: Agrega un bloque a la interfaz, con un ID único.
-        :descripcion: A partir de una lista visible de MenuBlocks, se crea una instancia de Bloque completo, el cual está disponible para editar parámetros como conectar con otros bloques.
+        :purpose: Función que agrega un bloque a la interfaz, con un ID único.
+        :description: A partir de una lista visible de MenuBlocks, se crea una instancia de Bloque completo, el cual está disponible para editar parámetros como conectar con otros bloques.
         :param block: Base-block que contiene los parámetros base para cada tipo de bloque.
         :param m_pos: Coordenadas (x, y) para ubicar la esquina superior izquierda del futuro bloque.
         :type block: BaseBlock class
         :type m_pos: tuple
-        :limitaciones: -
-        :fallas: Puede que bajo un MenuBlock mal configurado, el bloque resultante no tenga las cualidades o parámetros correctos.
+        :examples: See example in ...
+        :notes: notes
+        :limitations: limitations
+        :bugs: Puede que bajo un MenuBlock mal configurado, el bloque resultante no tenga las cualidades o parámetros correctos.
         """
         id_list = []
         sid = 0
@@ -138,7 +140,16 @@ class InitSim:
 
     def add_line(self, srcData, dstData):
         """
-        Adds a line in the screen with a unique ID
+        :purpose: Función que agrega una línea a la interfaz, con un ID único.
+        :description: A partir de la existencia de uno o más bloques, esta función crea una línea entre los últimos puertos seleccionados.
+        :param srcData: Tripleta que contiene 'block name', 'port number', 'port coordenates' de un puerto de salida (partida)
+        :param dstData: Tripleta que contiene 'block name', 'port number', 'port coordenates' de un puerto de entrada (salida)
+        :type srcData: triplet
+        :type dstData: triplet
+        :examples: See example in ...
+        :notes: notes
+        :limitations: limitations
+        :bugs: bugs
         """
         id_list = []
         sid = 0
@@ -160,7 +171,12 @@ class InitSim:
 
     def remove_block_and_lines(self):
         """
-        Removes the block from the list and the lines connected with it
+        :purpose: Función para eliminar bloques o lineas.
+        :description: Remueve un bloque o una línea dependiendo si esta está seleccionada.
+        :examples: See example in ...
+        :notes: Las líneas asociadas a un bloque que se está eliminando también se eliminan.
+        :limitations: limitations
+        :bugs: bugs
         """
         self.line_creation = 0
 
@@ -175,7 +191,7 @@ class InitSim:
 
     def check_line_block(self, line, b_del_list):
         """
-        Checks if there are lines left from a removed BLOCK
+        :purpose: Checks if there are lines left from a removed BLOCK
         """
         if line.dstblock in b_del_list or line.srcblock in b_del_list:
             return True
@@ -183,7 +199,7 @@ class InitSim:
 
     def check_line_port(self, line, block):
         """
-        Checks if there are lines left from a removed PORT (of a block)
+        :purpose: Checks if there are lines left from a removed PORT (of a block)
         """
         if line.srcblock == block.name and line.srcport > block.out_ports - 1:
             return True
@@ -194,21 +210,21 @@ class InitSim:
 
     def display_lines(self, zone):
         """
-        Draws lines connecting blocks in the screen
+        :purpose: Draws lines connecting blocks in the screen
         """
         for line in self.line_list:
             line.draw_line(zone)
 
     def update_lines(self):
         """
-        Updates lines according to the location of blocks if these changed place
+        :purpose: Updates lines according to the location of blocks if these changed place
         """
         for line in self.line_list:
             line.update_line(self.blocks_list)
 
     def display_blocks(self, zone):
         """
-        Draws existing blocks in the screen
+        :purpose: Draws existing blocks in the screen
         """
         for b_elem in self.blocks_list:
             if b_elem.selected:
@@ -217,7 +233,7 @@ class InitSim:
 
     def port_availability(self, dst_line):
         """
-        Checks if an input port is free to get connected with a line to another port
+        :purpose: Checks if an input port is free to get connected with a line to another port
         """
         for line in self.line_list:
             if line.dstblock == dst_line[0] and line.dstport == dst_line[1]:
@@ -228,7 +244,12 @@ class InitSim:
 
     def menu_blocks_init(self):
         """
-        Initializes the list of blocks available to use (menu blocks)
+        :purpose: Función que inicializa todos los tipos de bloques disponibles en el menú.
+        :description: A partir de la clase MenuBlocks, se generan bloques base para las funciones ya definidas en lib.functions.py. Luego se acumulan en una lista de forma que estén disponibles en el menú de la interfaz.
+        :examples: See example in ...
+        :notes: notes
+        :limitations: limitations
+        :bugs: bugs
         """
         # Algunos datos se envían en forma de diccionarios para que se pueda observar qué es cada cosa
         # Los colores pueden definirse como strings (si es que están en self.colors) o directamente con los valores RGB en tupla.
@@ -304,7 +325,7 @@ class InitSim:
 
     def display_menu_blocks(self, zone):
         """
-        Draws menu blocks in the screen
+        :purpose: Draws menu blocks in the screen
         """
         pygame.draw.line(zone, self.colors['black'], [200, 60], [200, 710], 2)
         for i in range(len(self.menu_blocks)):
@@ -314,7 +335,12 @@ class InitSim:
 
     def save(self, autosave=False):
         """
-        Saves blocks, lines and other data in a .dat file
+        :purpose: Saves blocks, lines and other data in a .dat file
+        :description: Obteniendo la ubicación de donde se quiere guardar el archivo, se copian todos los datos importantes de la clase InitSim, cada uno de los bloques y cada una de las líneas, en diccionarios, los cuales luego serán cargados al archivo externo por medio de la librería JSON.
+        :examples: See example in ...
+        :notes: Esta función se ejecuta automáticamente cuando se quiere simular, de forma de no perder información no guardada.
+        :limitations: limitations
+        :bugs: bugs
         """
         if not autosave:
             root = tk.Tk()
@@ -393,7 +419,12 @@ class InitSim:
 
     def open(self):
         """
-        Loads blocks, lines and other data from a .dat
+        :purpose: Loads blocks, lines and other data from a .dat
+        :description: A partir del archivo .dat, se desempacan los datos guardados en los diccionarios, actualizando los datos en InitSim, creando nuevos bloques y líneas, dejando el canvas y las configuraciones tal como se guardaron anteriormente.
+        :examples: See example in ...
+        :notes: El nombre del archivo cargado queda guardado en el sistema, para facilitar el guardado de datos en el mismo (sobreescribiendolo).
+        :limitations: limitations
+        :bugs: bugs
         """
         root = tk.Tk()
         root.withdraw()
@@ -422,7 +453,7 @@ class InitSim:
 
     def update_sim_data(self, data):
         """
-        Updates information related with the main class variables saved in a file to the current simulation
+        :purpose: Updates information related with the main class variables saved in a file to the current simulation
         """
         self.SCREEN_WIDTH = data['wind_width']
         self.SCREEN_HEIGHT = data['wind_height']
@@ -435,7 +466,7 @@ class InitSim:
 
     def update_blocks_data(self, block_data):
         """
-        Updates information related with all the blocks saved in a file to the current simulation
+        :purpose: Updates information related with all the blocks saved in a file to the current simulation
         """
         block = Block(block_data['type'],
                       block_data['sid'],
@@ -455,7 +486,7 @@ class InitSim:
 
     def update_lines_data(self, line_data):
         """
-        Updates information related with all the lines saved in a file to the current simulation
+        :purpose: Updates information related with all the lines saved in a file to the current simulation
         """
         line = Line(line_data['sid'],
                     line_data['srcblock'],
@@ -470,7 +501,7 @@ class InitSim:
 
     def clear_all(self):
         """
-        Cleans the screen from all blocks, lines and some main variables.
+        :purpose: Cleans the screen from all blocks, lines and some main variables.
         """
         self.blocks_list = []
         self.line_list = []
@@ -1033,6 +1064,7 @@ class InitSim:
             self.plotty.loop(self.timeline, vector_list)
 
 
+
 class Block(InitSim):
     """
     Class to initialize, mantain and modify function blocks
@@ -1339,7 +1371,6 @@ class Block(InitSim):
         fun_list, fn_params = self.file_function._init_()
         self.params.update(fn_params)
         return 0
-        # falta caso bloque con memoria (a lo integrador)
 
 
 class Line(InitSim):
@@ -1726,7 +1757,7 @@ class TkWidget:
 class DynamicPlot:
     """
     Class that manages the display of dynamic plots through the simulation
-    *It uses pyqtgraph as base (MIT license, but interactions with PyQT5 (GPL))
+    *It uses pyqtgraph as base (MIT license, but interacts with PyQT5 (GPL))
     """
     def __init__(self, dt, labels=['default'], xrange=100):
         self.dt = dt
@@ -1792,3 +1823,4 @@ class DynamicPlot:
         for i in range(1, len(ny)):
             new_vec = np.column_stack((new_vec, ny[i]))
         return new_vec
+
