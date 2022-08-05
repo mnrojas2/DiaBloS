@@ -99,6 +99,15 @@ class InitSim:
         for button in self.buttons_list:
             button.draw_button(zone)
 
+    def set_color(self, color):
+        """
+        :purpose: Defines color from a string or value in RGB
+        """
+        if type(color) == str:
+            return self.colors[color]
+        elif type(color) == tuple or list:
+            return color
+
     ##### ADD OR REMOVE BLOCKS AND LINES #####
 
     def add_block(self, block, m_pos=(0, 0)):
@@ -514,7 +523,12 @@ class InitSim:
 
     def execution_init_time(self):
         """
-        Creates a pop-up window to ask for graph simulation setup values
+        :purpose: Creates a pop-up window to ask for graph simulation setup values
+        :description: El primer paso para poder realizar una simulación del grafo, es tener los datos de ejecución. Estos son principalmente tiempo de simulación y período de muestreo, pero también se pregunta por variables necesarias para los gráficos.
+        :examples: See example in ...
+        :notes: notes
+        :limitations: limitations
+        :bugs: bugs
         """
         master = tk.Tk()
         master.title('Simulate')
@@ -560,7 +574,12 @@ class InitSim:
 
     def execution_init(self):
         """
-        Initializes the graph execution
+        :purpose: Initializes the graph execution
+        :description: Esta es la primera etapa de la simulación del grafo, donde se inicializan variables, vectores, como también hacer pruebas para verificar que to-do funciona bien. Se hace un autoguardado previo, como también un chequeo de conexión de bloques y posibles loop algebraicos. Si todo sale bien, se continúa con la etapa de loop.
+        :examples: See example in ...
+        :notes: notes
+        :limitations: limitations
+        :bugs: bugs
         """
 
         self.execution_function = FunctionsCall()          # Se llama a la clase que contiene las funciones para la ejecución
@@ -710,7 +729,12 @@ class InitSim:
 
     def execution_loop(self):
         """
-        Continues with the execution sequence in loop until time runs out or an special event stops it.
+        :purpose: Continues with the execution sequence in loop until time runs out or an special event stops it.
+        :description: Esta es la segunda etapa de la simulación del grafo. Aquí la lectura del grafo completo se hará cíclicamente hasta que se termine el tiempo, el usuario indique que se terminó (presionando Stop) o simplemente hasta que uno de los bloques entregue error. Al finalizar, los datos guardados en bloques como 'Scope' y 'External_data', serán exportados a otras librerias para realizar sus funciones.
+        :examples: See example in ...
+        :notes: notes
+        :limitations: limitations
+        :bugs: bugs
         """
         if self.execution_pause:
             return
@@ -845,7 +869,7 @@ class InitSim:
 
     def children_recognition(self, block_name, children_list):
         """
-        For a block, checks all the blocks that are connected to its outputs and sends a list with them.
+        :purpose: For a block, checks all the blocks that are connected to its outputs and sends a list with them.
         """
         child_ports = []
         for child in children_list:
@@ -857,7 +881,7 @@ class InitSim:
 
     def update_global_list(self, block_name, h_value, h_assign=False):
         """
-        Updates the global execution list
+        :purpose: Updates the global execution list
         """
         # h_assign se utiliza para asignar el grado de jerarquía unicamente en la primera iteración
         for elem in self.global_computed_list:
@@ -868,7 +892,7 @@ class InitSim:
 
     def check_global_list(self):
         """
-        Checks if there are no blocks of a graph left unexecuted
+        :purpose: Checks if there are no blocks of a graph left unexecuted
         """
         for elem in self.global_computed_list:
             if not elem['computed_data']:
@@ -877,13 +901,13 @@ class InitSim:
 
     def count_computed_global_list(self):
         """
-        Counts the number of already computed blocks of a graph
+        :purpose: Counts the number of already computed blocks of a graph
         """
         return len([x for x in self.global_computed_list if x['computed_data']])
 
     def reset_execution_data(self):
         """
-        Resets the execution state for all the blocks of a graph
+        :purpose: Resets the execution state for all the blocks of a graph
         """
         for i in range(len(self.blocks_list)):
             self.global_computed_list[i]['computed_data'] = False
@@ -895,7 +919,7 @@ class InitSim:
 
     def get_max_hierarchy(self):
         """
-        Finds in the global execution list the max value in hierarchy
+        :purpose: Finds in the global execution list the max value in hierarchy
         """
         max_val = 0
         for elem in self.global_computed_list:
@@ -905,7 +929,7 @@ class InitSim:
 
     def get_outputs(self, block_name):
         """
-        Finds all the blocks that need a "block_name" result as input
+        :purpose: Finds all the blocks that need a "block_name" result as input
         """
         # retorna una lista de diccionarios con los puertos de salida para block_name, como los bloques y puertos de llegada
         neighs = []
@@ -916,7 +940,7 @@ class InitSim:
 
     def get_neighbors(self, block_name):
         """
-        Finds all the connected blocks to "block_name"
+        :purpose: Finds all the connected blocks to "block_name"
         """
         # retorna una lista de bloques
         n_inputs = []
@@ -930,7 +954,14 @@ class InitSim:
 
     def check_diagram_integrity(self):
         """
-        Checks if the graph diagram doesn't have blocks with ports unconnected before the simulation execution
+        :purpose: Checks if the graph diagram doesn't have blocks with ports unconnected before the simulation execution
+        :description: Esta función es únicamente utilizada para comprobar que el grafo esté bien conectado. Todos los puertos deben estar conectados sin excepción. En caso que haya algo desconectado, se imprime un aviso indicando donde está el problema y retorna a la función principal indicando que no se puede continuar.
+        :return: 0 si no hay errores, 1 si es que hay errores.
+        :rtype: int
+        :examples: See example in ...
+        :notes: notes
+        :limitations: limitations
+        :bugs: bugs
         """
         print("*****Checking diagram integrity*****")
         error_trigger = False
@@ -965,7 +996,7 @@ class InitSim:
 
     def count_rk45_ints(self):
         """
-        Checks all integrators and looks if there's at least one that use 'RK45' as integration method
+        :purpose: Checks all integrators and looks if there's at least one that use 'RK45' as integration method
         """
         for block in self.blocks_list:
             if block.b_type == 'Integr' and block.params['method'] == 'RK45':
@@ -976,7 +1007,7 @@ class InitSim:
 
     def reset_memblocks(self):
         """
-        Resets the "_init_start_" parameter in all blocks
+        :purpose: Resets the "_init_start_" parameter in all blocks
         """
         for block in self.blocks_list:
             if '_init_start_' in block.params.keys():
@@ -984,7 +1015,7 @@ class InitSim:
 
     def plot_again(self):
         """
-        Plots the data saved in Scope blocks without needing to execute the simulation again
+        :purpose: Plots the data saved in Scope blocks without needing to execute the simulation again
         """
         try:
             scope_lengths = [len(x.params['vector']) for x in self.blocks_list if x.b_type == 'Scope']
@@ -1151,7 +1182,7 @@ class Block(InitSim):
 
     def draw_Block(self, zone):
         """
-        Draws block and its ports
+        :purpose: Draws block and its ports
         """
         pygame.draw.rect(zone, self.b_color, (self.left, self.top, self.width, self.height))
 
@@ -1166,7 +1197,7 @@ class Block(InitSim):
 
     def draw_selected(self, zone):
         """
-        Draws the black line indicating that the block is selected.
+        :purpose: Draws the black line indicating that the block is selected.
         """
         # Dibuja linea de selección en torno a un bloque.
         pygame.draw.line(zone, self.colors['black'], (self.left - self.ls_width, self.top - self.ls_width),
@@ -1182,18 +1213,9 @@ class Block(InitSim):
             self.function_display = self.text.render(self.params['filename'], True, self.colors['black'])
             zone.blit(self.function_display, (self.left + 0.5 * (self.width - self.function_display.get_width()), self.top + self.height + 15))
 
-    def set_color(self, color):
-        """
-        Defines color from a string or value in RGB
-        """
-        if type(color) == str:
-            return self.colors[color]
-        elif type(color) == tuple or list:
-            return color
-
     def port_collision(self, m_coords):
         """
-        Checks if a point collides with one of the ports of a block. Returns a tuple with the port type and port id.
+        :purpose: Checks if a point collides with one of the ports of a block. Returns a tuple with the port type and port id.
         """
         for i in range(len(self.in_coords)):
             p_coords = self.in_coords[i]
@@ -1209,7 +1231,7 @@ class Block(InitSim):
 
     def relocate_Block(self, new_coords):
         """
-        Relocates port using its new coordinates (left, top)
+        :purpose: Relocates port using its new coordinates (left, top)
         """
         # new_coords = (left,top)
         self.left = new_coords[0]
@@ -1218,7 +1240,7 @@ class Block(InitSim):
 
     def resize_Block(self, new_coords):
         """
-        Resizes block using its new coordinates (width, height)
+        :purpose: Resizes block using its new coordinates (width, height)
         """
         # new_dims = (width,height)
         self.width = new_coords[0]
@@ -1263,7 +1285,7 @@ class Block(InitSim):
 
     def saving_params(self):
         """
-        Saves parameters only defined at initialization
+        :purpose: Saves parameters only defined at initialization
         """
         # Actualizar funcion para aceptar los arrays como corresponde
         # Guarda únicamente los parámetros definidos inicialmente, no los agregados durante la ejecución
@@ -1279,7 +1301,7 @@ class Block(InitSim):
 
     def loading_params(self, new_params):
         """
-        Loads parameters from a dictionary list, converting lists in array vectors.
+        :purpose: Loads parameters from a dictionary list, converting lists in array vectors.
         """
         try:
             for key in new_params.keys():
@@ -1399,7 +1421,7 @@ class Line(InitSim):
 
     def draw_line(self, zone):
         """
-        Draws line
+        :purpose: Draws line
         """
         for i in range(len(self.points) - 1):
             if self.selected:
@@ -1494,7 +1516,7 @@ class Line(InitSim):
 
     def change_color(self, ptr):
         """
-        Pointer indicating which color is chosen from the color list defined in InitSim
+        :purpose: Pointer indicating which color is chosen from the color list defined in InitSim
         """
         # De forma hardcodeada se salta el último elemento que corresponde al color blanco (para evitar lineas "invisibles")
         self.cptr += ptr
@@ -1531,22 +1553,12 @@ class MenuBlocks(InitSim):
 
     def draw_menublock(self, zone, pos):
         """
-        Draws the menu block
+        :purpose: Draws the menu block
         """
         self.collision = pygame.rect.Rect(40, 80 + 40*pos, self.side_length[0], self.side_length[1])
         pygame.draw.rect(zone, self.b_color, self.collision)
         zone.blit(self.image, (40, 80 + 40*pos))
         zone.blit(self.text_display, (90, 90 + 40*pos))
-
-    def set_color(self, color):
-        """
-        Defines color from a string or value in RGB
-        """
-        # Define el color del bloque a partir de un string o directamente de una tupla con los valores RGB
-        if type(color) == str:
-            return self.colors[color]
-        elif type(color) == tuple:
-            return color
 
 
 class Button(InitSim):
@@ -1566,7 +1578,7 @@ class Button(InitSim):
 
     def draw_button(self, zone):
         """
-        Draws the button
+        :purpose: Draws the button
         """
         if not self.active:
             text_color = self.colors['gray']
@@ -1641,16 +1653,6 @@ class Button(InitSim):
             pygame.draw.line(zone, text_color,
                              [self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.75 * self.collision.height],
                              [self.collision.left + 0.75 * self.collision.width, self.collision.top + 0.75 * self.collision.height], 2)
-
-    def set_color(self, color):
-        """
-        Defines color from a string or value in RGB
-        """
-        # Define el color del bloque a partir de un string o directamente de una tupla con los valores RGB
-        if type(color) == str:
-            return self.colors[color]
-        elif type(color) == tuple:
-            return color
 
 
 class TkWidget:
@@ -1749,7 +1751,7 @@ class TkWidget:
 
     def destroy(self):
         """
-        Finishes the window instance
+        :purpose: Finishes the window instance
         """
         self.master.destroy()
 
