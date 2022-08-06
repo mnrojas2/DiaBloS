@@ -334,9 +334,9 @@ class FunctionsCall:
         :type params['mem_len']: float
         :type params['nb_loop']: int
         :type params['RK45_Klist']: numpy.ndarray
-        :type params['add_in_memory']: boolean
+        :type params['add_in_memory']: bool
         :type params['aux']: numpy.ndarray
-        :type params['_init_start_']: boolean
+        :type params['_init_start_']: bool
         :type params['_name_']: Parámetro auxiliar entregado por el bloque asociado, para identificación de errores.
         :return: A value set in zero.
         :rtype: numpy.ndarray
@@ -448,7 +448,7 @@ class FunctionsCall:
         :type inputs: dict
         :type params['t_old']: float
         :type params['i_old']: float
-        :type params['_init_start_']: boolean
+        :type params['_init_start_']: bool
         :return: La pendiente entre el valor anterior y el actual.
         :rtype: numpy.ndarray
         :examples: See example in ...
@@ -509,8 +509,8 @@ class FunctionsCall:
         :type params['vec_dim']: float
         :type params['vec_labels']: numpy.ndarray
         :type params['vector']: numpy.ndarray
-        :type params['_init_start_']: boolean
-        :type params['_skip_']: boolean
+        :type params['_init_start_']: bool
+        :type params['_skip_']: bool
         :type params['_name_']: str
         :return: A value set in zero.
         :rtype: numpy.ndarray
@@ -572,8 +572,8 @@ class FunctionsCall:
         :type params['vec_dim']: float
         :type params['vec_labels']: numpy.ndarray
         :type params['vector']: numpy.ndarray
-        :type params['_init_start_']: boolean
-        :type params['_skip_']: boolean
+        :type params['_init_start_']: bool
+        :type params['_skip_']: bool
         :type params['_name_']: str
         :return: A value set in zero.
         :rtype: numpy.ndarray

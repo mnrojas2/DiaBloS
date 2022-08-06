@@ -93,7 +93,8 @@ class InitSim:
 
     def display_buttons(self, zone):
         """
-        :purpose: Displays all the buttons on the screen
+        :purpose: Displays all the buttons on the screen.
+        :param zone: Pygame's layer where the figure is drawn.
         """
         pygame.draw.line(zone, self.colors['black'], [200, 60], [1260, 60], 2)
         for button in self.buttons_list:
@@ -101,7 +102,9 @@ class InitSim:
 
     def set_color(self, color):
         """
-        :purpose: Defines color from a string or value in RGB
+        :purpose: Defines color for an element drawn in pygame.
+        :param color: The color in string or rgb to set.
+        :type color: str/(float, float, float)
         """
         if type(color) == str:
             return self.colors[color]
@@ -200,7 +203,9 @@ class InitSim:
 
     def check_line_block(self, line, b_del_list):
         """
-        :purpose: Checks if there are lines left from a removed BLOCK
+        :purpose: Checks if there are lines left from a removed block.
+        :param line: Line object.
+        :param b_del_list: List of recently removed blocks.
         """
         if line.dstblock in b_del_list or line.srcblock in b_del_list:
             return True
@@ -208,7 +213,9 @@ class InitSim:
 
     def check_line_port(self, line, block):
         """
-        :purpose: Checks if there are lines left from a removed PORT (of a block)
+        :purpose: Checks if there are lines left from a removed PORT (of a block).
+        :param line: Line object.
+        :param block: Block object.
         """
         if line.srcblock == block.name and line.srcport > block.out_ports - 1:
             return True
@@ -220,6 +227,7 @@ class InitSim:
     def display_lines(self, zone):
         """
         :purpose: Draws lines connecting blocks in the screen
+        :param zone: Pygame's layer where the figure is drawn.
         """
         for line in self.line_list:
             line.draw_line(zone)
@@ -234,6 +242,7 @@ class InitSim:
     def display_blocks(self, zone):
         """
         :purpose: Draws existing blocks in the screen
+        :param zone: Pygame's layer where the figure is drawn.
         """
         for b_elem in self.blocks_list:
             if b_elem.selected:
@@ -243,6 +252,8 @@ class InitSim:
     def port_availability(self, dst_line):
         """
         :purpose: Checks if an input port is free to get connected with a line to another port
+        :param dst_line: The name of a Line object.
+        :type dst_line: str
         """
         for line in self.line_list:
             if line.dstblock == dst_line[0] and line.dstport == dst_line[1]:
@@ -335,6 +346,7 @@ class InitSim:
     def display_menu_blocks(self, zone):
         """
         :purpose: Draws menu blocks in the screen
+        :param zone: Pygame's layer where the figure is drawn.
         """
         pygame.draw.line(zone, self.colors['black'], [200, 60], [200, 710], 2)
         for i in range(len(self.menu_blocks)):
@@ -346,6 +358,8 @@ class InitSim:
         """
         :purpose: Saves blocks, lines and other data in a .dat file
         :description: Obteniendo la ubicación de donde se quiere guardar el archivo, se copian todos los datos importantes de la clase InitSim, cada uno de los bloques y cada una de las líneas, en diccionarios, los cuales luego serán cargados al archivo externo por medio de la librería JSON.
+        :param autosave: Flag que define si es que el proceso que se realizará es un autoguardado o no.
+        :type autosave: bool
         :examples: See example in ...
         :notes: Esta función se ejecuta automáticamente cuando se quiere simular, de forma de no perder información no guardada.
         :limitations: limitations
@@ -462,7 +476,9 @@ class InitSim:
 
     def update_sim_data(self, data):
         """
-        :purpose: Updates information related with the main class variables saved in a file to the current simulation
+        :purpose: Updates information related with the main class variables saved in a file to the current simulation.
+        :param data: Dictionary with InitSim parameters.
+        :type data: dict
         """
         self.SCREEN_WIDTH = data['wind_width']
         self.SCREEN_HEIGHT = data['wind_height']
@@ -475,7 +491,9 @@ class InitSim:
 
     def update_blocks_data(self, block_data):
         """
-        :purpose: Updates information related with all the blocks saved in a file to the current simulation
+        :purpose: Updates information related with all the blocks saved in a file to the current simulation.
+        :param block_data: Dictionary with Block object id, parameters, variables, etc.
+        :type block_data: dict
         """
         block = Block(block_data['type'],
                       block_data['sid'],
@@ -496,6 +514,8 @@ class InitSim:
     def update_lines_data(self, line_data):
         """
         :purpose: Updates information related with all the lines saved in a file to the current simulation
+        :param line_data: Dictionary with Line object id, parameters, variables, etc.
+        :type line_data: dict
         """
         line = Line(line_data['sid'],
                     line_data['srcblock'],
@@ -866,95 +886,9 @@ class InitSim:
 
         self.rk_counter += 1
 
-
-    def children_recognition(self, block_name, children_list):
-        """
-        :purpose: For a block, checks all the blocks that are connected to its outputs and sends a list with them.
-        """
-        child_ports = []
-        for child in children_list:
-            if block_name in child.values():
-                child_ports.append(child)
-        if child_ports == []:
-            return False, -1
-        return True, child_ports
-
-    def update_global_list(self, block_name, h_value, h_assign=False):
-        """
-        :purpose: Updates the global execution list
-        """
-        # h_assign se utiliza para asignar el grado de jerarquía unicamente en la primera iteración
-        for elem in self.global_computed_list:
-            if elem['name'] == block_name:
-                if h_assign:
-                    elem['hierarchy'] = h_value
-                elem['computed_data'] = True
-
-    def check_global_list(self):
-        """
-        :purpose: Checks if there are no blocks of a graph left unexecuted
-        """
-        for elem in self.global_computed_list:
-            if not elem['computed_data']:
-                return False
-        return True
-
-    def count_computed_global_list(self):
-        """
-        :purpose: Counts the number of already computed blocks of a graph
-        """
-        return len([x for x in self.global_computed_list if x['computed_data']])
-
-    def reset_execution_data(self):
-        """
-        :purpose: Resets the execution state for all the blocks of a graph
-        """
-        for i in range(len(self.blocks_list)):
-            self.global_computed_list[i]['computed_data'] = False
-            self.blocks_list[i].computed_data = False
-            self.blocks_list[i].data_recieved = 0
-            self.blocks_list[i].data_sent = 0
-            self.blocks_list[i].input_queue = {}
-            self.blocks_list[i].hierarchy = self.global_computed_list[i]['hierarchy']
-
-    def get_max_hierarchy(self):
-        """
-        :purpose: Finds in the global execution list the max value in hierarchy
-        """
-        max_val = 0
-        for elem in self.global_computed_list:
-            if elem['hierarchy'] >= max_val:
-                max_val = elem['hierarchy']
-        return max_val
-
-    def get_outputs(self, block_name):
-        """
-        :purpose: Finds all the blocks that need a "block_name" result as input
-        """
-        # retorna una lista de diccionarios con los puertos de salida para block_name, como los bloques y puertos de llegada
-        neighs = []
-        for line in self.line_list:
-            if line.srcblock == block_name:
-                neighs.append({'srcport': line.srcport, 'dstblock': line.dstblock, 'dstport': line.dstport})
-        return neighs
-
-    def get_neighbors(self, block_name):
-        """
-        :purpose: Finds all the connected blocks to "block_name"
-        """
-        # retorna una lista de bloques
-        n_inputs = []
-        n_outputs = []
-        for line in self.line_list:
-            if line.srcblock == block_name:
-                n_outputs.append({'srcport': line.srcport, 'dstblock': line.dstblock, 'dstport': line.dstport})
-            if line.dstblock == block_name:
-                n_inputs.append({'dstport': line.dstport, 'srcblock': line.dstblock, 'srcport': line.srcport})
-        return n_inputs, n_outputs
-
     def check_diagram_integrity(self):
         """
-        :purpose: Checks if the graph diagram doesn't have blocks with ports unconnected before the simulation execution
+        :purpose: Checks if the graph diagram doesn't have blocks with ports unconnected before the simulation execution.
         :description: Esta función es únicamente utilizada para comprobar que el grafo esté bien conectado. Todos los puertos deben estar conectados sin excepción. En caso que haya algo desconectado, se imprime un aviso indicando donde está el problema y retorna a la función principal indicando que no se puede continuar.
         :return: 0 si no hay errores, 1 si es que hay errores.
         :rtype: int
@@ -996,7 +930,7 @@ class InitSim:
 
     def count_rk45_ints(self):
         """
-        :purpose: Checks all integrators and looks if there's at least one that use 'RK45' as integration method
+        :purpose: Checks all integrators and looks if there's at least one that use 'RK45' as integration method.
         """
         for block in self.blocks_list:
             if block.b_type == 'Integr' and block.params['method'] == 'RK45':
@@ -1005,9 +939,108 @@ class InitSim:
                 return True
         return False
 
+    def update_global_list(self, block_name, h_value, h_assign=False):
+        """
+        :purpose: Updates the global execution list.
+        :param block_name: Block object name id.
+        :param h_value: Value in graph hierarchy
+        :param h_assign: Flag that defines if the block gets assigned with h_value or not.
+        :type block_name: str
+        :type h_value: int
+        :type h_assign: bool
+        """
+        # h_assign se utiliza para asignar el grado de jerarquía unicamente en la primera iteración
+        for elem in self.global_computed_list:
+            if elem['name'] == block_name:
+                if h_assign:
+                    elem['hierarchy'] = h_value
+                elem['computed_data'] = True
+
+    def check_global_list(self):
+        """
+        :purpose: Checks if there are no blocks of a graph left unexecuted.
+        """
+        for elem in self.global_computed_list:
+            if not elem['computed_data']:
+                return False
+        return True
+
+    def count_computed_global_list(self):
+        """
+        :purpose: Counts the number of already computed blocks of a graph.
+        """
+        return len([x for x in self.global_computed_list if x['computed_data']])
+
+    def reset_execution_data(self):
+        """
+        :purpose: Resets the execution state for all the blocks of a graph.
+        """
+        for i in range(len(self.blocks_list)):
+            self.global_computed_list[i]['computed_data'] = False
+            self.blocks_list[i].computed_data = False
+            self.blocks_list[i].data_recieved = 0
+            self.blocks_list[i].data_sent = 0
+            self.blocks_list[i].input_queue = {}
+            self.blocks_list[i].hierarchy = self.global_computed_list[i]['hierarchy']
+
+    def get_max_hierarchy(self):
+        """
+        :purpose: Finds in the global execution list the max value in hierarchy.
+        """
+        max_val = 0
+        for elem in self.global_computed_list:
+            if elem['hierarchy'] >= max_val:
+                max_val = elem['hierarchy']
+        return max_val
+
+    def get_outputs(self, block_name):
+        """
+        :purpose: Finds all the blocks that need a "block_name" result as input.
+        :param block_name: Block object name id.
+        :type block_name: str
+        """
+        # retorna una lista de diccionarios con los puertos de salida para block_name, como los bloques y puertos de llegada
+        neighs = []
+        for line in self.line_list:
+            if line.srcblock == block_name:
+                neighs.append({'srcport': line.srcport, 'dstblock': line.dstblock, 'dstport': line.dstport})
+        return neighs
+
+    def get_neighbors(self, block_name):
+        """
+        :purpose: Finds all the connected blocks to "block_name".
+        :param block_name: Block object name id.
+        :type block_name: str
+        """
+        # retorna una lista de bloques
+        n_inputs = []
+        n_outputs = []
+        for line in self.line_list:
+            if line.srcblock == block_name:
+                n_outputs.append({'srcport': line.srcport, 'dstblock': line.dstblock, 'dstport': line.dstport})
+            if line.dstblock == block_name:
+                n_inputs.append({'dstport': line.dstport, 'srcblock': line.dstblock, 'srcport': line.srcport})
+        return n_inputs, n_outputs
+
+    def children_recognition(self, block_name, children_list):
+        """
+        :purpose: For a block, checks all the blocks that are connected to its outputs and sends a list with them.
+        :param block_name: Block object name id.
+        :param children_list: List of dictionaries with blocks data that require the output of block 'block_name'.
+        :type block_name: str
+        :type children_list: list
+        """
+        child_ports = []
+        for child in children_list:
+            if block_name in child.values():
+                child_ports.append(child)
+        if child_ports == []:
+            return False, -1
+        return True, child_ports
+
     def reset_memblocks(self):
         """
-        :purpose: Resets the "_init_start_" parameter in all blocks
+        :purpose: Resets the "_init_start_" parameter in all blocks.
         """
         for block in self.blocks_list:
             if '_init_start_' in block.params.keys():
@@ -1015,7 +1048,7 @@ class InitSim:
 
     def plot_again(self):
         """
-        :purpose: Plots the data saved in Scope blocks without needing to execute the simulation again
+        :purpose: Plots the data saved in Scope blocks without needing to execute the simulation again.
         """
         try:
             scope_lengths = [len(x.params['vector']) for x in self.blocks_list if x.b_type == 'Scope']
@@ -1029,7 +1062,7 @@ class InitSim:
 
     def export_data(self):
         """
-        Exports the data saved in Export blocks in .npz format
+        Exports the data saved in Export blocks in .npz format.
         """
         vec_dict = {}
         export_toggle = False
@@ -1050,7 +1083,9 @@ class InitSim:
     # Pyqtgraph functions
     def dynamic_pyqt_plot_function(self, step):
         """
-        Plots the data saved in Scope blocks dynamically with pyqtgraph
+        Plots the data saved in Scope blocks dynamically with pyqtgraph.
+        **Fix RuntimeWarning: invalid value encountered in double_scalars for derivative
+        **Fix Tk_widget issues when get_value gets nothing
         """
         if not self.dynamic_plot:
             return
@@ -1079,7 +1114,7 @@ class InitSim:
 
     def pyqtPlotScope(self):
         """
-        Plots the data saved in Scope blocks without needing to execute the simulation again using pyqtgraph
+        Plots the data saved in Scope blocks without needing to execute the simulation again using pyqtgraph.
         """
         labels_list = []
         vector_list = []
@@ -1098,7 +1133,7 @@ class InitSim:
 
 class Block(InitSim):
     """
-    Class to initialize, mantain and modify function blocks
+    Class to initialize, mantain and modify function blocks.
     """
     def __init__(self, b_type, sid, coords, color, in_ports=1, out_ports=1, run_ord=2, io_edit=True, fun_name='block', params={}, external=False):
         super().__init__()
@@ -1155,7 +1190,7 @@ class Block(InitSim):
 
     def update_Block(self):
         """
-        Updates location and size of the block, including its ports
+        Updates location and size of the block, including its ports.
         """
         self.in_coords = []
         self.out_coords = []
@@ -1182,7 +1217,8 @@ class Block(InitSim):
 
     def draw_Block(self, zone):
         """
-        :purpose: Draws block and its ports
+        :purpose: Draws block and its ports.
+        :param zone: Pygame's layer where the figure is drawn.
         """
         pygame.draw.rect(zone, self.b_color, (self.left, self.top, self.width, self.height))
 
@@ -1198,6 +1234,7 @@ class Block(InitSim):
     def draw_selected(self, zone):
         """
         :purpose: Draws the black line indicating that the block is selected.
+        :param zone: Pygame's layer where the figure is drawn.
         """
         # Dibuja linea de selección en torno a un bloque.
         pygame.draw.line(zone, self.colors['black'], (self.left - self.ls_width, self.top - self.ls_width),
@@ -1216,6 +1253,8 @@ class Block(InitSim):
     def port_collision(self, m_coords):
         """
         :purpose: Checks if a point collides with one of the ports of a block. Returns a tuple with the port type and port id.
+        :param m_coords: Coordinates of mouse input.
+        :type m_coords: tuple
         """
         for i in range(len(self.in_coords)):
             p_coords = self.in_coords[i]
@@ -1231,7 +1270,9 @@ class Block(InitSim):
 
     def relocate_Block(self, new_coords):
         """
-        :purpose: Relocates port using its new coordinates (left, top)
+        :purpose: Relocates port.
+        :param m_coords: New coordinates for the block (left, top).
+        :type m_coords: tuple
         """
         # new_coords = (left,top)
         self.left = new_coords[0]
@@ -1240,7 +1281,9 @@ class Block(InitSim):
 
     def resize_Block(self, new_coords):
         """
-        :purpose: Resizes block using its new coordinates (width, height)
+        :purpose: Resizes block.
+        :param m_coords: New parameters for block (width, height).
+        :type m_coords: tuple
         """
         # new_dims = (width,height)
         self.width = new_coords[0]
@@ -1302,6 +1345,7 @@ class Block(InitSim):
     def loading_params(self, new_params):
         """
         :purpose: Loads parameters from a dictionary list, converting lists in array vectors.
+        :param new_params: Dictionary with parameters for block.
         """
         try:
             for key in new_params.keys():
@@ -1313,7 +1357,7 @@ class Block(InitSim):
 
     def change_params(self):
         """
-        Generates a pop-up window to change modifiable parameters only
+        Generates a pop-up window to change modifiable parameters only.
         """
         if self.params == {}:
             return
@@ -1340,7 +1384,7 @@ class Block(InitSim):
 
     def load_external_data(self):
         """
-        Loads initialization data of a function located in a external .py file
+        Loads initialization data of a function located in a external python file.
         """
         if not self.external:
             return
@@ -1374,7 +1418,7 @@ class Block(InitSim):
 
     def reload_external_data(self):
         """
-        Reloads the external function parameters
+        Reloads the external function parameters.
         """
         if not self.external:
             return 0
@@ -1397,7 +1441,7 @@ class Block(InitSim):
 
 class Line(InitSim):
     """
-    Class to initialize and maintain lines that connect blocks
+    Class to initialize and maintain lines that connect blocks.
     """
     def __init__(self, sid, srcblock, srcport, dstblock, dstport, points, cptr=0):
         super().__init__()
@@ -1421,7 +1465,8 @@ class Line(InitSim):
 
     def draw_line(self, zone):
         """
-        :purpose: Draws line
+        :purpose: Draws line.
+        :param zone: Pygame's layer where the figure is drawn.
         """
         for i in range(len(self.points) - 1):
             if self.selected:
@@ -1432,7 +1477,8 @@ class Line(InitSim):
 
     def trajectory(self, points):
         """
-        Generates segments to display a connection between blocks linked by a line
+        Generates segments to display a connection between blocks linked by a line.
+        :param points: List with coordinates for each vertex of the line group.
         """
         if len(points) > 2:
             return points
@@ -1474,7 +1520,7 @@ class Line(InitSim):
 
     def update_line(self, block_list):
         """
-        Updates line from size and location of blocks
+        Updates line from size and location of blocks.
         """
         for block in block_list:
             if block.name == self.srcblock:
@@ -1489,7 +1535,7 @@ class Line(InitSim):
 
     def collision(self, m_coords):
         """
-        Check if there is collision between a point and the line
+        Check if there is collision between a point and the line.
         """
         min_dst = 10
         m_coords = np.array(m_coords)
@@ -1517,6 +1563,8 @@ class Line(InitSim):
     def change_color(self, ptr):
         """
         :purpose: Pointer indicating which color is chosen from the color list defined in InitSim
+        :param ptr: Value that adds or subtracts 1 depending of the user's input.
+        :type ptr: int
         """
         # De forma hardcodeada se salta el último elemento que corresponde al color blanco (para evitar lineas "invisibles")
         self.cptr += ptr
