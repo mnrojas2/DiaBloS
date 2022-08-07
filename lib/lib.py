@@ -744,7 +744,7 @@ class InitSim:
                 self.buttons_list[6].active = True
 
         # Se inicializa la función de plot dinámico, en caso de estar activo el booleano
-        self.dynamic_pyqt_plot_function(0)
+        self.dynamic_pyqtPlotScope(0)
 
 
     def execution_loop(self):
@@ -882,7 +882,7 @@ class InitSim:
             print("*****EXECUTION STOPPED*****")
 
         # Se llama a la función del plot dinámico para guardar los nuevos datos, en caso de estar activo
-        self.dynamic_pyqt_plot_function(1)
+        self.dynamic_pyqtPlotScope(1)
 
         self.rk_counter += 1
 
@@ -1062,7 +1062,12 @@ class InitSim:
 
     def export_data(self):
         """
-        Exports the data saved in Export blocks in .npz format.
+        :purpose: Exports the data saved in Export blocks in .npz format.
+        :description: This function is executed after the simulation is finished/has stopped. It looks for export blocks, which have some vectors saved with signal outputs from previous blocks. Then it merge all vectors in one big matrix, which is exported with the time vector to a .npz file, formatted in a way it is ready for graph libraries.
+        :examples: See example in ...
+        :notes: notes
+        :limitations: limitations
+        :bugs: bugs
         """
         vec_dict = {}
         export_toggle = False
@@ -1081,11 +1086,36 @@ class InitSim:
             print("DATA EXPORTED TO", 'saves/' + self.filename[:-4] + '.npz')
 
     # Pyqtgraph functions
-    def dynamic_pyqt_plot_function(self, step):
+    def pyqtPlotScope(self):
         """
-        Plots the data saved in Scope blocks dynamically with pyqtgraph.
-        **Fix RuntimeWarning: invalid value encountered in double_scalars for derivative
-        **Fix Tk_widget issues when get_value gets nothing
+        :purpose: Plots the data saved in Scope blocks using pyqtgraph.
+        :description: This function is executed while the simulation has stopped. It looks for Scope blocks, from which takes their 'vec_labels' parameter to get the labels of each vector and the 'vector' parameter containing the vector (or matrix if the input for the Scope block was a vector) and initializes a SignalPlot class object that uses pyqtgraph to show a graph.
+        :examples: See example in ...
+        :notes: notes
+        :limitations: limitations
+        :bugs: bugs
+        """
+        labels_list = []
+        vector_list = []
+        for block in self.blocks_list:
+            if block.b_type == 'Scope':
+                b_labels = block.params['vec_labels']
+                labels_list.append(b_labels)
+                b_vectors = block.params['vector']
+                vector_list.append(b_vectors)
+
+        if labels_list != [] and len(vector_list) > 0:
+            self.plotty = SignalPlot(self.sim_dt, labels_list, len(self.timeline))
+            self.plotty.loop(self.timeline, vector_list)
+
+    def dynamic_pyqtPlotScope(self, step):
+        """
+        :purpose: Plots the data saved in Scope blocks dynamically with pyqtgraph.
+        :description: This function is executed while the simulation is running, starting after all the blocks were executed in the first loop. It looks for Scope blocks, from which takes their 'labels' parameter and initializes a SignalPlot class object that uses pyqtgraph to show a graph. Then for each loop completed, it calls those Scope blocks again to get their vectors and update the graph with the new information.
+        :examples: See example in ...
+        :notes: notes
+        :limitations: limitations
+        :bugs: bugs
         """
         if not self.dynamic_plot:
             return
@@ -1098,7 +1128,7 @@ class InitSim:
                     labels_list.append(b_labels)
 
             if labels_list != []:
-                self.plotty = DynamicPlot(self.sim_dt, labels_list, self.plot_trange)
+                self.plotty = SignalPlot(self.sim_dt, labels_list, self.plot_trange)
 
         elif step == 1: # loop
             vector_list = []
@@ -1111,24 +1141,6 @@ class InitSim:
             else:
                 self.dynamic_plot = False
                 print("DYNAMIC PLOT: OFF")
-
-    def pyqtPlotScope(self):
-        """
-        Plots the data saved in Scope blocks without needing to execute the simulation again using pyqtgraph.
-        """
-        labels_list = []
-        vector_list = []
-        for block in self.blocks_list:
-            if block.b_type == 'Scope':
-                b_labels = block.params['vec_labels']
-                labels_list.append(b_labels)
-                b_vectors = block.params['vector']
-                vector_list.append(b_vectors)
-
-        if labels_list != [] and len(vector_list) > 0:
-            self.plotty = DynamicPlot(self.sim_dt, labels_list, len(self.timeline))
-            self.plotty.loop(self.timeline, vector_list)
-
 
 
 class Block(InitSim):
@@ -1804,7 +1816,7 @@ class TkWidget:
         self.master.destroy()
 
 
-class DynamicPlot:
+class SignalPlot:
     """
     Class that manages the display of dynamic plots through the simulation
     *It uses pyqtgraph as base (MIT license, but interacts with PyQT5 (GPL))

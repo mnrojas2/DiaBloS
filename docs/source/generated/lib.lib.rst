@@ -19,10 +19,10 @@
    
       Block
       Button
-      DynamicPlot
       InitSim
       Line
       MenuBlocks
+      SignalPlot
       TkWidget
    
    
