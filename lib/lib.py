@@ -1202,7 +1202,8 @@ class Block(InitSim):
 
     def update_Block(self):
         """
-        Updates location and size of the block, including its ports.
+        :purpose: Updates location and size of the block, including its ports.
+        :description: Esta función maneja lo necesario para poder mostrar el bloque en la pantalla. Dibuja el cuadrado del bloque, dibuja los puertos y los ubica dependiendo de su cantidad, e incluso extiende o reduce el tamaño del bloque si el número de puertos no es suficiente o es demasiado. Esta función siempre actúa cuando el bloque se actualiza, siendo mucho más importante cuando cambia de lugar.
         """
         self.in_coords = []
         self.out_coords = []
@@ -1304,7 +1305,8 @@ class Block(InitSim):
 
     def change_port_numbers(self):
         """
-        Generates a pop-up window for the user to change number of input and/or output ports for the block.
+        :purpose: Generates a pop-up window for the user to change number of input and/or output ports for the block.
+        :descripcion: Por medio de la clase TkWidget, se crea una ventana pop-up que contiene 2 parámetros que se pueden cambiar por el usuario: inputs y outputs. Después de cargarlos, se ejecuta la función 'update_Block' para ajustar el tamaño del bloque y la posición de sus puertos. Cabe destacar que el que se puedan modificar el número de inputs u outputs, depende del tipo de bloque, lo que se diferencia dentro de la función.
         """
         # Esta definido por 3 estados en el que se permite editar solo inputs, solo output o ambos
         if self.io_edit == 'both':
@@ -1369,7 +1371,8 @@ class Block(InitSim):
 
     def change_params(self):
         """
-        Generates a pop-up window to change modifiable parameters only.
+        :purpose: Generates a pop-up window to change modifiable parameters only.
+        :description: Por medio de la clase TkWidget, se crea un pop-up para modificar parámetros asociados a los bloques. Cabe destacar que los únicos parámetros posibles de modificar son los definidos al principio, (durante la definición del bloque en 'InitSim.menu_blocks_init'), como también que no partan con '_' underscore. La función separa los parámetros, se muestran al usuario, se devuelven al sistema y todos se vuelven a juntar al final.
         """
         if self.params == {}:
             return
@@ -1396,7 +1399,8 @@ class Block(InitSim):
 
     def load_external_data(self):
         """
-        Loads initialization data of a function located in a external python file.
+        :purpose: Loads initialization data of a function located in a external python file.
+        :description: Por medio de la libreria importlib, se importa un archivo .py de la carpeta 'usermodels', desde donde se extraen los parámetros de función y los parámetros de bloque (input, output, block_type), importándolos al bloque existente, modificando sus cualidades de ser necesario.
         """
         if not self.external:
             return
@@ -1430,7 +1434,7 @@ class Block(InitSim):
 
     def reload_external_data(self):
         """
-        Reloads the external function parameters.
+        :purpose: Reloads the external function parameters.
         """
         if not self.external:
             return 0
@@ -1489,8 +1493,9 @@ class Line(InitSim):
 
     def trajectory(self, points):
         """
-        Generates segments to display a connection between blocks linked by a line.
+        :purpose: Generates segments to display a connection between blocks linked by a line.
         :param points: List with coordinates for each vertex of the line group.
+        :type points: list
         """
         if len(points) > 2:
             return points
@@ -1532,7 +1537,8 @@ class Line(InitSim):
 
     def update_line(self, block_list):
         """
-        Updates line from size and location of blocks.
+        :purpose: Updates line from size and location of blocks.
+        :description: La función busca en el canvas, la ubicación de los puertos de salida y entrada a los que está conectado, para luego producir una nueva trayectoria por medio de la función 'trajectory'.
         """
         for block in block_list:
             if block.name == self.srcblock:
@@ -1547,7 +1553,7 @@ class Line(InitSim):
 
     def collision(self, m_coords):
         """
-        Check if there is collision between a point and the line.
+        :purpose: Checks if there is collision between a point and the line.
         """
         min_dst = 10
         m_coords = np.array(m_coords)
@@ -1731,7 +1737,7 @@ class TkWidget:
 
     def create_entry_widget(self, x):
         """
-        Creates a new entry for the widget
+        :purpose: Creates a new entry for the widget
         """
         new_widget = tk.Entry(self.master)
         tk.Label(self.master, text=self.params_names[x]).grid(row=x, column=0)
@@ -1747,7 +1753,7 @@ class TkWidget:
 
     def get_values(self):
         """
-        Gets values in a dictionary after the pop-up window is closed
+        :purpose: Gets values in a dictionary after the pop-up window is closed
         """
         try:
             dicty = {}
@@ -1773,7 +1779,8 @@ class TkWidget:
 
     def string_to_vector(self, string):
         """
-        Converts the string into an array vector
+        :purpose: Converts the string into an array vector
+        :description: Esta función toma el string resultante y revisa por si corresponde o no a ser un vector. La función soporta recibir hasta una matriz tridimensional.
         """
         # Soporta el uso de espacios y corchetes, separa unicamente valores con comas.
         # primero se buscan las dimensiones del array eliminando todos los números
@@ -1849,7 +1856,7 @@ class SignalPlot:
 
     def loop(self, new_t, new_y):
         """
-        Updates the time and scope vectors and plot them
+        :purpose: Updates the time and scope vectors and plot them
         """
         y = self.sort_vectors(new_y)
 
@@ -1868,7 +1875,7 @@ class SignalPlot:
 
     def sort_labels(self, labels):
         """
-        Rearranges the list if some elements are lists too
+        :purpose: Rearranges the list if some elements are lists too
         """
         self.labels = []
         for elem in labels:
@@ -1879,7 +1886,7 @@ class SignalPlot:
 
     def sort_vectors(self, ny):
         """
-        Rearranges all vectors in one matrix
+        :purpose: Rearranges all vectors in one matrix
         """
         new_vec = ny[0]
         for i in range(1, len(ny)):
