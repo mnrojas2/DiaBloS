@@ -122,9 +122,6 @@ class InitSim:
         :param m_pos: Coordenadas (x, y) para ubicar la esquina superior izquierda del futuro bloque.
         :type block: BaseBlock class
         :type m_pos: tuple
-        :examples: See example in ...
-        :notes: notes
-        :limitations: limitations
         :bugs: Puede que bajo un MenuBlock mal configurado, el bloque resultante no tenga las cualidades o parámetros correctos.
         """
         id_list = []
@@ -158,10 +155,6 @@ class InitSim:
         :param dstData: Tripleta que contiene 'block name', 'port number', 'port coordenates' de un puerto de entrada (salida)
         :type srcData: triplet
         :type dstData: triplet
-        :examples: See example in ...
-        :notes: notes
-        :limitations: limitations
-        :bugs: bugs
         """
         id_list = []
         sid = 0
@@ -185,10 +178,7 @@ class InitSim:
         """
         :purpose: Función para eliminar bloques o lineas.
         :description: Remueve un bloque o una línea dependiendo si esta está seleccionada.
-        :examples: See example in ...
         :notes: Las líneas asociadas a un bloque que se está eliminando también se eliminan.
-        :limitations: limitations
-        :bugs: bugs
         """
         self.line_creation = 0
 
@@ -266,10 +256,6 @@ class InitSim:
         """
         :purpose: Función que inicializa todos los tipos de bloques disponibles en el menú.
         :description: A partir de la clase MenuBlocks, se generan bloques base para las funciones ya definidas en lib.functions.py. Luego se acumulan en una lista de forma que estén disponibles en el menú de la interfaz.
-        :examples: See example in ...
-        :notes: notes
-        :limitations: limitations
-        :bugs: bugs
         """
         # Algunos datos se envían en forma de diccionarios para que se pueda observar qué es cada cosa
         # Los colores pueden definirse como strings (si es que están en self.colors) o directamente con los valores RGB en tupla.
@@ -360,10 +346,7 @@ class InitSim:
         :description: Obteniendo la ubicación de donde se quiere guardar el archivo, se copian todos los datos importantes de la clase InitSim, cada uno de los bloques y cada una de las líneas, en diccionarios, los cuales luego serán cargados al archivo externo por medio de la librería JSON.
         :param autosave: Flag que define si es que el proceso que se realizará es un autoguardado o no.
         :type autosave: bool
-        :examples: See example in ...
         :notes: Esta función se ejecuta automáticamente cuando se quiere simular, de forma de no perder información no guardada.
-        :limitations: limitations
-        :bugs: bugs
         """
         if not autosave:
             root = tk.Tk()
@@ -444,10 +427,7 @@ class InitSim:
         """
         :purpose: Loads blocks, lines and other data from a .dat
         :description: A partir del archivo .dat, se desempacan los datos guardados en los diccionarios, actualizando los datos en InitSim, creando nuevos bloques y líneas, dejando el canvas y las configuraciones tal como se guardaron anteriormente.
-        :examples: See example in ...
         :notes: El nombre del archivo cargado queda guardado en el sistema, para facilitar el guardado de datos en el mismo (sobreescribiendolo).
-        :limitations: limitations
-        :bugs: bugs
         """
         root = tk.Tk()
         root.withdraw()
@@ -545,10 +525,6 @@ class InitSim:
         """
         :purpose: Creates a pop-up window to ask for graph simulation setup values
         :description: El primer paso para poder realizar una simulación del grafo, es tener los datos de ejecución. Estos son principalmente tiempo de simulación y período de muestreo, pero también se pregunta por variables necesarias para los gráficos.
-        :examples: See example in ...
-        :notes: notes
-        :limitations: limitations
-        :bugs: bugs
         """
         master = tk.Tk()
         master.title('Simulate')
@@ -596,10 +572,6 @@ class InitSim:
         """
         :purpose: Initializes the graph execution
         :description: Esta es la primera etapa de la simulación del grafo, donde se inicializan variables, vectores, como también hacer pruebas para verificar que to-do funciona bien. Se hace un autoguardado previo, como también un chequeo de conexión de bloques y posibles loop algebraicos. Si todo sale bien, se continúa con la etapa de loop.
-        :examples: See example in ...
-        :notes: notes
-        :limitations: limitations
-        :bugs: bugs
         """
 
         self.execution_function = FunctionsCall()          # Se llama a la clase que contiene las funciones para la ejecución
@@ -751,10 +723,6 @@ class InitSim:
         """
         :purpose: Continues with the execution sequence in loop until time runs out or an special event stops it.
         :description: Esta es la segunda etapa de la simulación del grafo. Aquí la lectura del grafo completo se hará cíclicamente hasta que se termine el tiempo, el usuario indique que se terminó (presionando Stop) o simplemente hasta que uno de los bloques entregue error. Al finalizar, los datos guardados en bloques como 'Scope' y 'External_data', serán exportados a otras librerias para realizar sus funciones.
-        :examples: See example in ...
-        :notes: notes
-        :limitations: limitations
-        :bugs: bugs
         """
         if self.execution_pause:
             return
@@ -892,10 +860,6 @@ class InitSim:
         :description: Esta función es únicamente utilizada para comprobar que el grafo esté bien conectado. Todos los puertos deben estar conectados sin excepción. En caso que haya algo desconectado, se imprime un aviso indicando donde está el problema y retorna a la función principal indicando que no se puede continuar.
         :return: 0 si no hay errores, 1 si es que hay errores.
         :rtype: int
-        :examples: See example in ...
-        :notes: notes
-        :limitations: limitations
-        :bugs: bugs
         """
         print("*****Checking diagram integrity*****")
         error_trigger = False
@@ -1064,10 +1028,6 @@ class InitSim:
         """
         :purpose: Exports the data saved in Export blocks in .npz format.
         :description: This function is executed after the simulation is finished/has stopped. It looks for export blocks, which have some vectors saved with signal outputs from previous blocks. Then it merge all vectors in one big matrix, which is exported with the time vector to a .npz file, formatted in a way it is ready for graph libraries.
-        :examples: See example in ...
-        :notes: notes
-        :limitations: limitations
-        :bugs: bugs
         """
         vec_dict = {}
         export_toggle = False
@@ -1090,10 +1050,6 @@ class InitSim:
         """
         :purpose: Plots the data saved in Scope blocks using pyqtgraph.
         :description: This function is executed while the simulation has stopped. It looks for Scope blocks, from which takes their 'vec_labels' parameter to get the labels of each vector and the 'vector' parameter containing the vector (or matrix if the input for the Scope block was a vector) and initializes a SignalPlot class object that uses pyqtgraph to show a graph.
-        :examples: See example in ...
-        :notes: notes
-        :limitations: limitations
-        :bugs: bugs
         """
         labels_list = []
         vector_list = []
@@ -1112,10 +1068,6 @@ class InitSim:
         """
         :purpose: Plots the data saved in Scope blocks dynamically with pyqtgraph.
         :description: This function is executed while the simulation is running, starting after all the blocks were executed in the first loop. It looks for Scope blocks, from which takes their 'labels' parameter and initializes a SignalPlot class object that uses pyqtgraph to show a graph. Then for each loop completed, it calls those Scope blocks again to get their vectors and update the graph with the new information.
-        :examples: See example in ...
-        :notes: notes
-        :limitations: limitations
-        :bugs: bugs
         """
         if not self.dynamic_plot:
             return
