@@ -466,7 +466,7 @@ class FunctionsCall:
         di = inputs[0] - params['i_old']
         params['t_old'] = time
         params['i_old'] = inputs[0]
-        return {0: np.array(di / dt)}
+        return {0: np.array(di/dt)}
 
     def terminator(self, time, inputs, params):
         """

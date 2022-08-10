@@ -1712,8 +1712,11 @@ class TkWidget:
             for i in range(len(self.entry_widgets)):
                 dato = str(self.entry_widgets[i].get())
 
+                # Si el string no tiene nada, se carga el dato anterior existente
+                if dato == '':
+                    dato = self.params[self.params_names[i]]
                 # convertir a np.ndarray
-                if dato[0] == '[' and dato[-1] == ']':
+                elif dato[0] == '[' and dato[-1] == ']':
                     dato = self.string_to_vector(dato)
                 # convertir a float
                 elif dato.replace('.', '', 1).replace('-', '', 1).isdigit():
