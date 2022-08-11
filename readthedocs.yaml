@@ -18,7 +18,7 @@ python:
 
 # Add warning block to prevent outputs with issues
 sphinx:
-  fail_on_warning: true
+  fail_on_warning: false
 
 formats:
   - pdf
