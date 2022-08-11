@@ -3,7 +3,7 @@ Introduction
 
 Diablos es una herramienta de programacion de bloques. (Señales)
 
-Esta herramienta se presenta como una altenativa open source dependiente completamente de librerias disponibles en pip
+Esta herramienta se presenta como una alternativa open source dependiente completamente de librerias disponibles en pip
 
 Este manual está enfocado en mostrar y explicar el uso de la interfaz, como también las bases para poder desarrollar nuevas funciones.
 

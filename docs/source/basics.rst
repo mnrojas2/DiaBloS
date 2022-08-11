@@ -83,7 +83,7 @@ Al cargar el programa por primera vez se ve asi::
 #. How to export data.
     Para exportar data, el proceso es similar al de graficar las curvas...
 
-#. How to load usermodel functions.
+#. How to load user-made functions.
     DiaBloS permite la carga de funciones externas, creadas por el usuario.
     Una explicacion en detalle se puede ver en la seccion xxxx
     Para cargar este tipo de funciones...
@@ -95,5 +95,3 @@ Al cargar el programa por primera vez se ve asi::
         Ctrl + S: Save
         Ctrl + A: Load
         Ctrl + N: New
-
-

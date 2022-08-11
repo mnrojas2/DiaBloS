@@ -29,5 +29,5 @@ Contents
 Acknowledgements
 ----------------
 
-Thanks to ...
+Thanks to my family, friends and supervisors to support me in the realization of this project.
 

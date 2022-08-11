@@ -30,7 +30,7 @@ Installing DiaBloS
 ------------------
 
 Download from repository
-Unpack wherever you want
+Unpack the .zip wherever you want
 
 Loading DiaBloS
 ---------------

@@ -1,0 +1,12 @@
+# File: docs/requirements.txt
+
+sphinx_bootstrap_theme
+myst-parser
+furo
+
+numpy
+importlib
+tqdm
+pygame
+pyqtgraph
+pyqt5

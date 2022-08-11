@@ -9,7 +9,7 @@ from lib.lib import *
 
 def main_execution():
     """
-    Function that manages keyboard and mouse inputs, block positions and line connections. It's focused on the user-interface.
+    Function that manages keyboard and mouse inputs, block positions and line connections. It's user-interface.
     """
 
     pygame.init()
