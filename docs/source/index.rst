@@ -6,7 +6,7 @@
 Welcome to DiaBloS's documentation!
 ===================================
 
-.. note:: This is still a work in progress
+.. note:: This is a work in progress
 
 .. toctree::
    :maxdepth: 2
@@ -29,5 +29,5 @@ Contents
 Acknowledgements
 ----------------
 
-Thanks to my family, friends and supervisors to support me in the realization of this project.
+Thanks to my family, friends and supervisors for the support they gave me in the realization of this project.
 
