@@ -1780,8 +1780,8 @@ class TkWidget:
 
 class SignalPlot:
     """
-    Class that manages the display of dynamic plots through the simulation
-    *It uses pyqtgraph as base (MIT license, but interacts with PyQT5 (GPL))
+    Class that manages the display of dynamic plots through the simulation.
+    *WARNING: It uses pyqtgraph as base (MIT license, but interacts with PyQT5 (GPL)).*
     """
     def __init__(self, dt, labels=['default'], xrange=100):
         self.dt = dt

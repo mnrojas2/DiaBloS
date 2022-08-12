@@ -25,10 +25,24 @@ Developing for DiaBloS
 #. How to add new functions
     Como desarrollar nuevas funciones de usuario (ver templates)::
 
-        my_function(time, inputs, params):
-            return ...
-        _init_()
+        # filename: my_function.py
+        """import libraries"""
 
+        def my_function(time, inputs, params):
+            """function code, either source, process or drain"""
+            return {0: variable_output, 1: variable_output, ..., 'E': True/False}
+
+    Funcion inicialización::
+
+        def _init_():
+            io_data = { # parameters for the block containing the function
+                'inputs': input_number,
+                'outputs': output_number,
+                'run_ord': block_order_number,
+                'color': color_string_or_rgb_triplet
+            }
+            params = {} # parameters defined before use them in the function
+            return io_data, params
 
 #. How to test a new function
     Usar bloque "block" para probar la funcion externa
@@ -38,4 +52,4 @@ Developing for DiaBloS
     repentinamente::
 
         except:
-            return {0: 'E'}
+            return {'E': True}
