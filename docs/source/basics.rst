@@ -30,12 +30,12 @@ Al cargar el programa por primera vez se ve asi::
 +-----+-------------------------+
 | (2) | Function list           |
 +-----+-------------------------+
-| (3) | Canva                   |
+| (3) | Canvas                  |
 +-----+-------------------------+
 
 
 #. How to add blocks.
-    Para agregar bloques basta con drag and drop it en el canvas.
+    Para agregar bloques basta con drag and drop them in the canvas.
     <image>
 
 #. How to remove blocks.
@@ -98,3 +98,26 @@ Al cargar el programa por primera vez se ve asi::
         Ctrl + S: Save
         Ctrl + A: Load
         Ctrl + N: New
+
+
+First Experience
+----------------
+
+#. Load the interface.
+#. Press OPEN icon or press Ctrl + A.
+#. Go to examples/ and open basic_example.dat.
+#. You will see something like the following picture::
+
+    .. image:: images/screenshot.png
+
+#. Select the blue block (Step)
+#. Press RMB over the block
+#. Change the ... to ...
+#. Add a delay of ...
+#. Select the red block (Scope)
+#. Press RMB over the block
+#. Change the ... to ...
+#. Press PLAY to open the simulation popup
+#. Change Simulation time to ...
+#. Set Dynamic Plot as ON
+#. Press OK.

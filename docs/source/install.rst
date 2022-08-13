@@ -4,12 +4,14 @@ Installing and loading the DiaBloS package
 Python requirements
 --------------------
 
-You will need the following packages::
+This library has been tested in Python 3.9.7.
 
-    - pygame (>=2.1.2)
-    - numpy (>=1.22.3)
-    - tqdm (>=4.64.0)
-    - pyqtgraph (>=0.12.3)
+Before downloading and/or installing this library, make sure you have the following packages::
+
+    - pygame (2.1.2 or later)
+    - numpy (1.22.3 or later)
+    - tqdm (4.64.0 or later)
+    - pyqtgraph (0.12.3 or later)
 
 To install the packages you can use pip (recommended)::
 
@@ -35,4 +37,4 @@ Unpack the .zip wherever you want
 Loading DiaBloS
 ---------------
 
-Run 'main.py' (change that name)
+Run 'main.py'

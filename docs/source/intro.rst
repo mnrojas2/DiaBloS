@@ -16,15 +16,13 @@ Tambien otros que requieren el uso de herramientas externas a python, requiriend
 Target audience for the DiaBloS package
 ---------------------------------------
 
-who's going to use it?
-
 Usuarios de python
 control, ecuaciones diferenciales, personas enfocadas en el desarrollo de alternativas de programacion visual
 
 System requirements
 -------------------
 
-Requiere Python 3.9.7 o superior
+This library requires Python 3.9.7 or later
 
 Background information and Reference Material
 ---------------------------------------------
