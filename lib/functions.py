@@ -14,26 +14,23 @@ class FunctionsCall:
         """
         Step source function
 
-        :purpose: Funcion que retorna un valor constante en el tiempo.
-        :description: Esta es una funcion tipo fuente, la cual es piecewise. Se puede utilizar para indicar el inicio o término de una rama de un grafo.
-        :param time: Valor que indica el período actual de simulación.
-        :param inputs: Diccionario que entrega uno o más entradas para la función (si aplica).
-        :param params['value']: El valor que la función retorna. Puede ser un escalar (float) como también un vector ([float, ...]).
-        :param params['delay']: Indica un punto en el tiempo donde sucede el salto del piecewise.
-        :param params['type']: ['up'/'down'] Indica si el salto es hacia arriba ('value') o hacia abajo (0).
-        :param params['_name_']: Parámetro auxiliar entregado por el bloque asociado, para identificación de errores.
+        :purpose: Function that returns a constant value over time.
+        :description: This is a source type function, which is piecewise. It can be used to indicate the beginning or end of a branch of a network.
+        :param time: Value indicating the current period in the simulation.
+        :param inputs: Dictionary that provides one or more entries for the function (if applicable).
+        :param params['value']: The value that the function returns. It can be a scalar (float) as well as a vector ([float, ...]).
+        :param params['delay']: Indicates a point in time where the piecewise jump occurs.
+        :param params['type']: ['up'/'down'] Indicates whether the jump is upward ('value') or downward (0).
+        :param params['_name_']: Auxiliary parameter delivered by the associated block, for error identification.
         :type time: float
         :type inputs: dict
         :type params['value']: float/numpy.ndarray
         :type params['delay']: float
         :type params['type']: str
         :type params['_name_']: str
-        :return: El valor definido en 'value' o 0.
+        :return: The value defined in 'value' or 0.
         :rtype: numpy.ndarray
         :examples: See example in ...
-        :notes: notes
-        :limitations: limitations
-        :bugs: bugs
 
         """
         if params['type'] == 'up':
@@ -53,22 +50,19 @@ class FunctionsCall:
         """
         Ramp source function
 
-        :purpose: Funcion que retorna un valor que cambia linealmente en el tiempo.
-        :description: Esta es una funcion tipo fuente, la cual es piecewise. El valor cambia en el tiempo de forma lineal, pudiendo este aumentar o disminuir.
-        :param time: Valor que indica el período actual de simulación.
-        :param inputs: Diccionario que entrega uno o más entradas para la función (si aplica).
-        :param params['slope']: El valor de la pendiente que la función utiliza para entregar el resultado.
-        :param params['delay']: Indica un punto en el tiempo donde sucede el inicio de la rampa.
+        :purpose: Function that returns a value that changes linearly over time.
+        :description: This is a source type function, which is piecewise. The value changes linearly over time, and can increase or decrease.
+        :param time: Value indicating the current period in the simulation.
+        :param inputs: Dictionary that provides one or more entries for the function (if applicable).
+        :param params['slope']: The value of the slope that the ramp has.
+        :param params['delay']: Indicates a point in time where the start of the ramp happens.
         :type time: float
         :type inputs: dict
         :type params['slope']: float
         :type params['delay']: float
-        :return: El valor de la pendiente multiplicado por la diferencia entre 'time' y 'delay'.
+        :return: The value of the slope multiplied by the difference between 'time' and 'delay'.
         :rtype: numpy.ndarray
         :examples: See example in ...
-        :notes: notes
-        :limitations: limitations
-        :bugs: bugs
 
         """
         if params['slope'] == 0:
@@ -82,24 +76,21 @@ class FunctionsCall:
         """
         Sinusoidal source function
 
-        :purpose: Funcion que retorna una sinusoidal en el tiempo.
-        :description: Esta es una funcion tipo fuente. Retorna una sinusoidal con variación en los parámetros de amplitud, frecuencia y ángulo inicial.
-        :param time: Valor que indica el período actual de simulación.
-        :param inputs: Diccionario que entrega uno o más entradas para la función (si aplica).
-        :param params['amplitude']: Valor de amplitud que toma la sinusoidal.
-        :param params['omega']: Valor en rad/s (2*pi*f) de la frecuencia que toma la sinusoidal.
-        :param params['init_angle']: Valor en radianes del ángulo que toma la sinusoidal en tiempo cero.
+        :purpose: Function that returns a sinusoidal in time.
+        :description: This is a source type function. It returns a sinusoidal with variation in the parameters of amplitude, frequency and initial angle.
+        :param time: Value indicating the current period in the simulation.
+        :param inputs: Dictionary that provides one or more entries for the function (if applicable).
+        :param params['amplitude']: Amplitude value taken by the sinusoidal.
+        :param params['omega']: Value in rad/s (2*pi*f) of the frequency taken by the sinusoidal.
+        :param params['init_angle']: Value in radians of the angle taken by the sinusoidal at time zero.
         :type time: float
         :type inputs: dict
         :type params['amplitude']: float
         :type params['omega']: float
         :type params['init_angle']: float
-        :return: Una sinusoidal de amplitud 'amplitude', frecuencia 'omega' y ángulo inicial 'init_angle'.
+        :return: A sinusoidal of amplitude 'amplitude', frequency 'omega' and initial angle 'init_angle'.
         :rtype: numpy.ndarray
         :examples: See example in ...
-        :notes: notes
-        :limitations: limitations
-        :bugs: bugs
 
         """
         return {0: np.array(params['amplitude']*np.sin(params['omega']*time + params['init_angle']))}
@@ -108,22 +99,19 @@ class FunctionsCall:
         """
         Normal noise function
 
-        :purpose: Funcion retorna un ruido aleatorio normal.
-        :description: Esta es una funcion tipo fuente. Produce un valor aleatorio normal de media mu y varianza sigma**2.
-        :param time: Valor que indica el período actual de simulación.
-        :param inputs: Diccionario que entrega uno o más entradas para la función (si aplica).
-        :param params['mu']: Valor de media del ruido.
-        :param params['sigma']: Valor de desviación estándar del ruido.
+        :purpose: Function returns a normal random noise.
+        :description: This is a source type function. It produces a normal random value of mean mu and variance sigma**2.
+        :param time: Value indicating the current period in the simulation.
+        :param inputs: Dictionary that provides one or more entries for the function (if applicable).
+        :param params['mu']: Mean value of the noise.
+        :param params['sigma']: Standard deviation value of the noise.
         :type time: float
         :type inputs: dict
         :type params['sigma']: float
         :type params['mu']: float
-        :return: Valor aleatorio normal de media mu y varianza sigma**2.
+        :return: Normal random value of mean mu and variance sigma**2.
         :rtype: numpy.ndarray
         :examples: See example in ...
-        :notes: notes
-        :limitations: limitations
-        :bugs: bugs
 
         """
         return {0: np.array(params['sigma'] ** 2 * np.random.randn() + params['mu'])}
@@ -134,8 +122,8 @@ class FunctionsCall:
 
         :purpose: Funcion que escala una entrada por un factor.
         :description: Esta es una funcion tipo proceso. Retorna la misma entrada, pero escalada por un factor definido por el usuario. Esta entrada puede ser tanto escalar como vectorial, así como el factor de escalamiento.
-        :param time: Valor que indica el período actual de simulación.
-        :param inputs: Diccionario que entrega uno o más entradas para la función (si aplica).
+        :param time: Value indicating the current period in the simulation.
+        :param inputs: Dictionary that provides one or more entries for the function (if applicable).
         :param params['gain']: Valor de escalamiento de la entrada. Puede ser un valor escalar, o una matriz (solo para multiplicación vectorial).
         :type time: float
         :type inputs: dict
@@ -143,9 +131,6 @@ class FunctionsCall:
         :return: El valor de entrada, escalado por el factor 'gain'.
         :rtype: numpy.ndarray
         :examples: See example in ...
-        :notes: notes
-        :limitations: limitations
-        :bugs: bugs
 
         """
         return {0: np.array(np.dot(params['gain'], inputs[0]))}
@@ -156,8 +141,8 @@ class FunctionsCall:
 
         :purpose: Funcion que retorna el valor de una exponencial a partir de una entrada.
         :description: Esta es una funcion tipo proceso. Toma el valor de entrada, y le calcula la exponencial de la misma, con factores de escala para la base como al exponente.
-        :param time: Valor que indica el período actual de simulación.
-        :param inputs: Diccionario que entrega uno o más entradas para la función (si aplica).
+        :param time: Value indicating the current period in the simulation.
+        :param inputs: Dictionary that provides one or more entries for the function (if applicable).
         :param params['a']: Factor de escalamiento para la base de la exponencial.
         :param params['b']: Factor de escalamiento para el exponente de la exponencial.
         :type time: float
@@ -167,9 +152,6 @@ class FunctionsCall:
         :return: La exponencial del valor de la entrada.
         :rtype: numpy.ndarray
         :examples: See example in ...
-        :notes: notes
-        :limitations: limitations
-        :bugs: bugs
 
         """
         return {0: np.array(params['a']*np.exp(params['b']*inputs[0]))}
@@ -180,10 +162,10 @@ class FunctionsCall:
 
         :purpose: Funcion que retorna la suma de dos o más entradas.
         :description: Esta es una funcion tipo proceso. Toma cada valor de entrada y este lo asocia a un signo (positivo o negativo), para luego irlos sumando o restando en una variable auxiliar. La función soporta tanto operatoria escalar como vectorial.
-        :param time: Valor que indica el período actual de simulación.
-        :param inputs: Diccionario que entrega uno o más entradas para la función (si aplica).
+        :param time: Value indicating the current period in the simulation.
+        :param inputs: Dictionary that provides one or more entries for the function (if applicable).
         :param params['sign']: String que contiene todos los signos asociados a cada valor (o vector) de entrada. Cabe destacar que en caso de tener menos símbolos que vectores, la función asumirá que estos restantes sumarán.
-        :param params['_name_']: Parámetro auxiliar entregado por el bloque asociado, para identificación de errores.
+        :param params['_name_']: Auxiliary parameter delivered by the associated block, for error identification.
         :type time: float
         :type inputs: dict
         :type params['sign']: str
@@ -192,8 +174,6 @@ class FunctionsCall:
         :rtype: numpy.ndarray
         :examples: See example in ...
         :notes: Esta función retorna 'Error' si es que las dimensiones de alguna de las entradas no son iguales.
-        :limitations: limitations
-        :bugs: bugs
 
         """
         for i in range(len(inputs)-1):
@@ -221,8 +201,8 @@ class FunctionsCall:
 
         :purpose: Funcion que retorna la multiplicación por elementos de dos o más entradas.
         :description: Esta es una funcion tipo proceso. Toma cada valor de entrada y los va multiplicando con un valor (o vector) base.
-        :param time: Valor que indica el período actual de simulación.
-        :param inputs: Diccionario que entrega uno o más entradas para la función (si aplica).
+        :param time: Value indicating the current period in the simulation.
+        :param inputs: Dictionary that provides one or more entries for the function (if applicable).
         :type time: float
         :type inputs: dict
         :return: La multiplicación de todas las entradas.
@@ -230,7 +210,6 @@ class FunctionsCall:
         :examples: See example in ...
         :notes: A diferencia de la función sumator, esta no comprueba que las entradas tengan las mismas dimensiones, puesto que se puede dar la ocasión donde el resultado necesitado puede ser algo de más dimensiones.
         :limitations: La función no comprueba que el resultado tenga las dimensiones deseadas, por lo que es un trabajo que debe realizar el usuario.
-        :bugs: bugs
 
         """
         mult = 1.0
@@ -250,16 +229,13 @@ class FunctionsCall:
 
         :purpose: Funcion que la concatenación de varios valores o vectores.
         :description: Esta es una funcion tipo proceso. Concatena cada una de sus entradas de forma que se obtiene un vector igual a la suma producto del número de entradas por el número de dimensiones de cada una. El orden de los valores está dado por el orden de las entradas al bloque.
-        :param time: Valor que indica el período actual de simulación.
-        :param inputs: Diccionario que entrega uno o más entradas para la función (si aplica).
+        :param time: Value indicating the current period in the simulation.
+        :param inputs: Dictionary that provides one or more entries for the function (if applicable).
         :type time: float
         :type inputs: dict
         :return: El vector con todos los valores ordenados en una sola dimensión ((a,1) con a>=1).
         :rtype: numpy.ndarray
         :examples: See example in ...
-        :notes: notes
-        :limitations: limitations
-        :bugs: bugs
 
         """
         array = np.array(inputs[0])
@@ -273,10 +249,10 @@ class FunctionsCall:
 
         :purpose: Funcion que retorna la suma de dos o más entradas.
         :description: Esta es una funcion tipo proceso. Toma cada valor de entrada y este lo asocia a un signo (positivo o negativo), para luego irlos sumando o restando en una variable auxiliar. La función soporta tanto operatoria escalar como vectorial.
-        :param time: Valor que indica el período actual de simulación.
-        :param inputs: Diccionario que entrega uno o más entradas para la función (si aplica).
+        :param time: Value indicating the current period in the simulation.
+        :param inputs: Dictionary that provides one or more entries for the function (if applicable).
         :param params['output_shape']: Valor que define el número de dimensiones con el cual cada salida tendrá.
-        :param params['_name_']: Parámetro auxiliar entregado por el bloque asociado, para identificación de errores.
+        :param params['_name_']: Auxiliary parameter delivered by the associated block, for error identification.
         :param params['_outputs_']: Parámetro auxiliar entregado por el bloque asociado, para identificación de salidas disponibles.
         :type time: float
         :type inputs: dict
@@ -287,7 +263,6 @@ class FunctionsCall:
         :rtype: numpy.ndarray
         :examples: See example in ...
         :notes: Esta función retorna 'Error' si es que el número de valores en el vector de entrada no es suficiente para obtener todas las salidas a las dimensiones requeridas. También retorna un 'Warning' en caso que el vector sea más grande que lo requerido, truncando los valores que no se alcanzan a tomar.
-        :limitations: limitations
         :bugs: bugs
 
         """
@@ -308,10 +283,10 @@ class FunctionsCall:
         """
         Integrator function
 
-        :purpose: Función que
-        :description: Esta es una funcion tipo proceso.
-        :param time: Valor que indica el período actual de simulación.
-        :param inputs: Diccionario que entrega uno o más entradas para la función (si aplica).
+        :purpose: Función que integra la señal de entrada.
+        :description: Esta es una funcion tipo proceso. Toma la señal de entrada y la va sumando a una variable interna, ponderando por el tiempo de muestreo. Permite 4 formas de integración, siendo la más compleja el método Runge Kutta 45.
+        :param time: Value indicating the current period in the simulation.
+        :param inputs: Dictionary that provides one or more entries for the function (if applicable).
         :param params['init_conds']: Value that contains the initial conditions for the integrator
         :param params['method']: ['FWD_RECT/BWD_RECT/TUSTIN/RK45'] String that contains the method of integration to use.
         :param params['dtime']: Variable auxiliar que contiene el tiempo de muestreo que la simulación está utilizando (integración de paso fijo)
@@ -323,7 +298,7 @@ class FunctionsCall:
         :param params['add_in_memory']: Variable auxiliar que indica cuando el valor de entrada se suma a 'mem', como también retornar un resultado auxiliar (método RK45)
         :param params['aux']: Variable auxiliar que contiene la suma de 'mem' anterior, con medio paso de simulación (método RK45)
         :param params['_init_start_']: Parámetro auxiliar utilizado por el sistema para realizar funciones especiales en el primer loop de simulación.
-        :param params['_name_']: Parámetro auxiliar entregado por el bloque asociado, para identificación de errores.
+        :param params['_name_']: Auxiliary parameter delivered by the associated block, for error identification.
         :type time: float
         :type inputs: dict
         :type params['init_conds']: numpy.ndarray
@@ -342,8 +317,6 @@ class FunctionsCall:
         :rtype: numpy.ndarray
         :examples: See example in ...
         :notes: El parámetro 'init_conds' debe ser ajustado por el usuario si la entrada tiene más de una dimensión. Se puede definir un valor vectorial como [a,b,...], con a y b valores escalares.
-        :limitations: limitations
-        :bugs: bugs
 
         """
         # Initialization (this step happens only in the first iteration)
@@ -439,8 +412,8 @@ class FunctionsCall:
 
         :purpose: Función que obtiene la derivada de una señal.
         :description: Esta es una funcion tipo proceso. Toma el valor de entrada y el valor del tiempo actual, para luego tomar la diferencia de estos con sus valores anteriores y obtener la pendiente.
-        :param time: Valor que indica el período actual de simulación.
-        :param inputs: Diccionario que entrega uno o más entradas para la función (si aplica).
+        :param time: Value indicating the current period in the simulation.
+        :param inputs: Dictionary that provides one or more entries for the function (if applicable).
         :param params['t_old']: Valor anterior de la variable time.
         :param params['i_old']: Valor anterior de la entrada.
         :param params['_init_start_']: Parámetro auxiliar utilizado por el sistema para realizar funciones especiales en el primer loop de simulación.
@@ -474,8 +447,8 @@ class FunctionsCall:
 
         :purpose: Función que termina con la señal.
         :description: Esta es una funcion tipo fuga. Toma cualquier valor de entrada y no hace nada con este. Esta función es útil para darle término a señales que no se graficarán.
-        :param time: Valor que indica el período actual de simulación.
-        :param inputs: Diccionario que entrega uno o más entradas para la función (si aplica).
+        :param time: Value indicating the current period in the simulation.
+        :param inputs: Dictionary that provides one or more entries for the function (if applicable).
         :type time: float
         :type inputs: dict
         :return: A value set in zero.
@@ -494,15 +467,15 @@ class FunctionsCall:
 
         :purpose: Función que acumula valores en el tiempo para su posterior exportación a .npz.
         :description: Esta es una funcion tipo fuga. Toma el valor de entrada y lo concatena a un vector. Si la entrada tiene más de una dimensión, la función concatena de forma que el vector de guardado tenga las dimensiones correspondientes en función del tiempo.
-        :param time: Valor que indica el período actual de simulación.
-        :param inputs: Diccionario que entrega uno o más entradas para la función (si aplica).
+        :param time: Value indicating the current period in the simulation.
+        :param inputs: Dictionary that provides one or more entries for the function (if applicable).
         :param params['str_name']: String entregado por el usuario con los nombres de los valores de entrada separados por coma: ("value1,value2,value3,...")
         :param params['vec_dim']: Valor definido por la función que obtiene el número de dimensiones de la entrada.
         :param params['vec_labels']: Vector producido por la función que obtiene el nombre para cada elemento del vector de guardado.
         :param params['vector']: Vector que acumula los valores de entrada del bloque.
         :param params['_init_start_']: Parámetro auxiliar utilizado por el sistema para realizar funciones especiales en el primer loop de simulación.
         :param params['_skip_']: Parámetro auxiliar utilizado por el sistema para indicar cuando no se debe guardar el valor de entrada (pasos medios de RK45).
-        :param params['_name_']: Parámetro auxiliar entregado por el bloque asociado, para identificación de errores.
+        :param params['_name_']: Auxiliary parameter delivered by the associated block, for error identification.
         :type time: float
         :type inputs: dict
         :type params['str_name']: str
@@ -557,15 +530,15 @@ class FunctionsCall:
 
         :purpose: Función que acumula valores en el tiempo para graficarlos con pyqtgraph tanto posteriormente como durante la simulación.
         :description: Esta es una funcion tipo fuga. Toma el valor de entrada y lo concatena a un vector. Si la entrada tiene más de una dimensión, la función concatena de forma que el vector de guardado tenga las dimensiones correspondientes en función del tiempo.
-        :param time: Valor que indica el período actual de simulación.
-        :param inputs: Diccionario que entrega uno o más entradas para la función (si aplica).
+        :param time: Value indicating the current period in the simulation.
+        :param inputs: Dictionary that provides one or more entries for the function (if applicable).
         :param params['labels']: String entregado por el usuario con los nombres de los valores de entrada separados por coma: ("value1,value2,value3,...")
         :param params['vec_dim']: Valor definido por la función que obtiene el número de dimensiones de la entrada.
         :param params['vec_labels']: Vector producido por la función que obtiene el nombre para cada elemento del vector de guardado.
         :param params['vector']: Vector que acumula los valores de entrada del bloque.
         :param params['_init_start_']: Parámetro auxiliar utilizado por el sistema para realizar funciones especiales en el primer loop de simulación.
         :param params['_skip_']: Parámetro auxiliar utilizado por el sistema para indicar cuando no se debe guardar el valor de entrada (pasos medios de RK45).
-        :param params['_name_']: Parámetro auxiliar entregado por el bloque asociado, para identificación de errores.
+        :param params['_name_']: Auxiliary parameter delivered by the associated block, for error identification.
         :type time: float
         :type inputs: dict
         :type params['labels']: str
