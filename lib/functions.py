@@ -120,15 +120,15 @@ class FunctionsCall:
         """
         Gain function
 
-        :purpose: Funcion que escala una entrada por un factor.
-        :description: Esta es una funcion tipo proceso. Retorna la misma entrada, pero escalada por un factor definido por el usuario. Esta entrada puede ser tanto escalar como vectorial, así como el factor de escalamiento.
+        :purpose: Function that scales an input by a factor.
+        :description: This is a process type function. It returns the same input, but scaled by a user-defined factor. This input can be either scalar or vector, as well as the scaling factor.
         :param time: Value indicating the current period in the simulation.
         :param inputs: Dictionary that provides one or more entries for the function (if applicable).
-        :param params['gain']: Valor de escalamiento de la entrada. Puede ser un valor escalar, o una matriz (solo para multiplicación vectorial).
+        :param params['gain']: Scaling value of the input. Can be a scalar value, or a matrix (only for vector multiplication).
         :type time: float
         :type inputs: dict
         :type params['gain']: float/numpy.ndarray
-        :return: El valor de entrada, escalado por el factor 'gain'.
+        :return: The input value, scaled by the 'gain' factor.
         :rtype: numpy.ndarray
         :examples: See example in ...
 
@@ -139,17 +139,17 @@ class FunctionsCall:
         """
         Exponential function
 
-        :purpose: Funcion que retorna el valor de una exponencial a partir de una entrada.
-        :description: Esta es una funcion tipo proceso. Toma el valor de entrada, y le calcula la exponencial de la misma, con factores de escala para la base como al exponente.
+        :purpose: Function that returns the value of an exponential from an input.
+        :description: This is a process type function. It takes the input value, and calculates the exponential of it, with scaling factors for the base as well as the exponent.
         :param time: Value indicating the current period in the simulation.
         :param inputs: Dictionary that provides one or more entries for the function (if applicable).
-        :param params['a']: Factor de escalamiento para la base de la exponencial.
-        :param params['b']: Factor de escalamiento para el exponente de la exponencial.
+        :param params['a']: Scaling factor for the base of the exponential.
+        :param params['b']: Scaling factor for the exponent of the exponential.
         :type time: float
         :type inputs: dict
         :type params['a']: float
         :type params['b']: float
-        :return: La exponencial del valor de la entrada.
+        :return: The exponential of the input value.
         :rtype: numpy.ndarray
         :examples: See example in ...
 
@@ -160,20 +160,20 @@ class FunctionsCall:
         """
         Sumator function
 
-        :purpose: Funcion que retorna la suma de dos o más entradas.
-        :description: Esta es una funcion tipo proceso. Toma cada valor de entrada y este lo asocia a un signo (positivo o negativo), para luego irlos sumando o restando en una variable auxiliar. La función soporta tanto operatoria escalar como vectorial.
+        :purpose: Function that returns the sum of two or more inputs.
+        :description: This is a process type function. It takes each input value and associates it with a sign (positive or negative), and then adds or subtracts them in an auxiliary variable. The function supports both scalar and vector operations.
         :param time: Value indicating the current period in the simulation.
         :param inputs: Dictionary that provides one or more entries for the function (if applicable).
-        :param params['sign']: String que contiene todos los signos asociados a cada valor (o vector) de entrada. Cabe destacar que en caso de tener menos símbolos que vectores, la función asumirá que estos restantes sumarán.
+        :param params['sign']: String that contains all the signs associated to each input value (or vector). It should be noted that in case of having less symbols than vectors, the function will assume that the remaining symbols will add up.
         :param params['_name_']: Auxiliary parameter delivered by the associated block, for error identification.
         :type time: float
         :type inputs: dict
         :type params['sign']: str
         :type params['_name_']: str
-        :return: La suma de todas las entradas.
+        :return: The sum of all inputs.
         :rtype: numpy.ndarray
         :examples: See example in ...
-        :notes: Esta función retorna 'Error' si es que las dimensiones de alguna de las entradas no son iguales.
+        :notes: This function returns 'Error' if the dimensions of any of the entries are not equal.
 
         """
         for i in range(len(inputs)-1):
@@ -199,17 +199,17 @@ class FunctionsCall:
         """
         Element-wise product between signals
 
-        :purpose: Funcion que retorna la multiplicación por elementos de dos o más entradas.
-        :description: Esta es una funcion tipo proceso. Toma cada valor de entrada y los va multiplicando con un valor (o vector) base.
+        :purpose: Function that returns the multiplication by elements of two or more inputs.
+        :description: This is a process type function. It takes each input value and multiplies it with a base value (or vector).
         :param time: Value indicating the current period in the simulation.
         :param inputs: Dictionary that provides one or more entries for the function (if applicable).
         :type time: float
         :type inputs: dict
-        :return: La multiplicación de todas las entradas.
+        :return: The multiplication of all inputs.
         :rtype: numpy.ndarray
         :examples: See example in ...
-        :notes: A diferencia de la función sumator, esta no comprueba que las entradas tengan las mismas dimensiones, puesto que se puede dar la ocasión donde el resultado necesitado puede ser algo de más dimensiones.
-        :limitations: La función no comprueba que el resultado tenga las dimensiones deseadas, por lo que es un trabajo que debe realizar el usuario.
+        :notes: Unlike the sumator function, this one does not check if the inputs have the same dimensions, since there may be occasions where the result needed may be something larger.
+        :limitations: The function does not check that the result has the desired dimensions, so it is a job to be done by the user.
 
         """
         mult = 1.0
@@ -227,14 +227,13 @@ class FunctionsCall:
         """
         Multiplexer function
 
-        :purpose: Funcion que la concatenación de varios valores o vectores.
-        :description: Esta es una funcion tipo proceso. Concatena cada una de sus entradas de forma que se obtiene un vector igual a la suma producto del número de entradas por el número de dimensiones de cada una. El orden de los valores está dado por el orden de las entradas al bloque.
+        :purpose: Function that concatenates several values or vectors.
+        :description: This is a process type function. It concatenates each of its entries in such a way as to obtain a vector equal to the sum product of the number of entries by the number of dimensions of each one. The order of the values is given by the order of the block entries.
         :param time: Value indicating the current period in the simulation.
         :param inputs: Dictionary that provides one or more entries for the function (if applicable).
         :type time: float
         :type inputs: dict
-        :return: El vector con todos los valores ordenados en una sola dimensión ((a,1) con a>=1).
-        :rtype: numpy.ndarray
+        :return: The vector with all values sorted in a single dimension ((a,1) with a>=1).:rtype: numpy.ndarray
         :examples: See example in ...
 
         """
@@ -247,23 +246,22 @@ class FunctionsCall:
         """
         Demultiplexer function
 
-        :purpose: Funcion que retorna la suma de dos o más entradas.
-        :description: Esta es una funcion tipo proceso. Toma cada valor de entrada y este lo asocia a un signo (positivo o negativo), para luego irlos sumando o restando en una variable auxiliar. La función soporta tanto operatoria escalar como vectorial.
+        :purpose: Function that splits an input vector into two or more.
+        :description: This is a process type function. It takes the input vector and splits it into several smaller equal vectors, depending on the number of outputs.
         :param time: Value indicating the current period in the simulation.
         :param inputs: Dictionary that provides one or more entries for the function (if applicable).
-        :param params['output_shape']: Valor que define el número de dimensiones con el cual cada salida tendrá.
+        :param params['output_shape']: Value defining the number of dimensions with which each output will have.
         :param params['_name_']: Auxiliary parameter delivered by the associated block, for error identification.
-        :param params['_outputs_']: Parámetro auxiliar entregado por el bloque asociado, para identificación de salidas disponibles.
+        :param params['_outputs_']: Auxiliary parameter delivered by the associated block, for identification of available outputs.
         :type time: float
         :type inputs: dict
         :type params['output_shape']: float
         :type params['_name_']: str
         :type params['_outputs_']: float
-        :return: Un número determinado de salidas, con cada una de ellas con dimensiones iguales.
+        :return: A given number of outputs, with each output having equal dimensions.
         :rtype: numpy.ndarray
         :examples: See example in ...
-        :notes: Esta función retorna 'Error' si es que el número de valores en el vector de entrada no es suficiente para obtener todas las salidas a las dimensiones requeridas. También retorna un 'Warning' en caso que el vector sea más grande que lo requerido, truncando los valores que no se alcanzan a tomar.
-        :bugs: bugs
+        :notes: This function returns 'Error' if the number of values in the input vector is not enough to get all the outputs at the required dimensions. It also returns a 'Warning' if the vector is larger than required, truncating the values that are not taken.
 
         """
         # Check input dimensions first
@@ -283,21 +281,21 @@ class FunctionsCall:
         """
         Integrator function
 
-        :purpose: Función que integra la señal de entrada.
-        :description: Esta es una funcion tipo proceso. Toma la señal de entrada y la va sumando a una variable interna, ponderando por el tiempo de muestreo. Permite 4 formas de integración, siendo la más compleja el método Runge Kutta 45.
+        :purpose: Function that integrates the input signal.
+        :description: This is a process type function. It takes the input signal and adds it to an internal variable, weighted by the sampling time. It allows 4 forms of integration, the most complex being the Runge Kutta 45 method.
         :param time: Value indicating the current period in the simulation.
         :param inputs: Dictionary that provides one or more entries for the function (if applicable).
-        :param params['init_conds']: Value that contains the initial conditions for the integrator
+        :param params['init_conds']: Value that contains the initial conditions for the integrator.
         :param params['method']: ['FWD_RECT/BWD_RECT/TUSTIN/RK45'] String that contains the method of integration to use.
-        :param params['dtime']: Variable auxiliar que contiene el tiempo de muestreo que la simulación está utilizando (integración de paso fijo)
-        :param params['mem']: Variable que contiene la suma de todos los datos, desde el inicio hasta el lapso 'time'.
-        :param params['mem_list']: Vector que contiene los últimos valores de 'mem'
-        :param params['mem_len']: Variable que define el número de elementos que contiene 'mem_list'
-        :param params['nb_loop']: Variable auxiliar que indica el paso actual del método RK45
-        :param params['RK45_Klist']: Vector auxiliar que contiene los últimos valores de K1,K2,K3,K4 (método RK45)
-        :param params['add_in_memory']: Variable auxiliar que indica cuando el valor de entrada se suma a 'mem', como también retornar un resultado auxiliar (método RK45)
-        :param params['aux']: Variable auxiliar que contiene la suma de 'mem' anterior, con medio paso de simulación (método RK45)
-        :param params['_init_start_']: Parámetro auxiliar utilizado por el sistema para realizar funciones especiales en el primer loop de simulación.
+        :param params['dtime']: Auxiliary variable that contains the sampling time that the simulation is using (fixed step integration).
+        :param params['mem']: Variable containing the sum of all data, from start to lapse 'time'.
+        :param params['mem_list']: Vector containing the last values of 'mem'.
+        :param params['mem_len']: Variable defining the number of elements contained in 'mem_list'.
+        :param params['nb_loop']: Auxiliary variable indicating the current step of the RK45 method.
+        :param params['RK45_Klist']: Auxiliary vector containing the last values of K1,K2,K3,K4 (RK45 method).
+        :param params['add_in_memory']: Auxiliary variable indicating when the input value is added to 'mem', as well as returning an auxiliary result (method RK45).
+        :param params['aux']: Auxiliary variable containing the sum of 'mem' above, with half a simulation step (method RK45)
+        :param params['_init_start_']: Auxiliary parameter used by the system to perform special functions in the first simulation loop.
         :param params['_name_']: Auxiliary parameter delivered by the associated block, for error identification.
         :type time: float
         :type inputs: dict
@@ -312,11 +310,11 @@ class FunctionsCall:
         :type params['add_in_memory']: bool
         :type params['aux']: numpy.ndarray
         :type params['_init_start_']: bool
-        :type params['_name_']: Parámetro auxiliar entregado por el bloque asociado, para identificación de errores.
-        :return: A value set in zero.
+        :type params['_name_']: str
+        :return: The accumulated value of all inputs since step zero weighted by the sampling time.
         :rtype: numpy.ndarray
         :examples: See example in ...
-        :notes: El parámetro 'init_conds' debe ser ajustado por el usuario si la entrada tiene más de una dimensión. Se puede definir un valor vectorial como [a,b,...], con a y b valores escalares.
+        :notes: The 'init_conds' parameter must be set by the user if the input has more than one dimension. You can define a vector value as [a,b,...], with a and b scalar values.
 
         """
         # Initialization (this step happens only in the first iteration)
@@ -410,24 +408,20 @@ class FunctionsCall:
         """
         Derivative function
 
-        :purpose: Función que obtiene la derivada de una señal.
-        :description: Esta es una funcion tipo proceso. Toma el valor de entrada y el valor del tiempo actual, para luego tomar la diferencia de estos con sus valores anteriores y obtener la pendiente.
+        :purpose: Function that obtains the derivative of a signal.
+        :description: This is a process type function. It takes the input value and the value of the current time, then takes the difference of these with their previous and obtains the slope.
         :param time: Value indicating the current period in the simulation.
         :param inputs: Dictionary that provides one or more entries for the function (if applicable).
-        :param params['t_old']: Valor anterior de la variable time.
-        :param params['i_old']: Valor anterior de la entrada.
-        :param params['_init_start_']: Parámetro auxiliar utilizado por el sistema para realizar funciones especiales en el primer loop de simulación.
-        :type time: float
+        :param params['t_old']: Previous value of the variable time.
+        :param params['i_old']: Previous value of the entry.
+        :param params['_init_start_']: Auxiliary parameter used by the system to perform special functions in the first simulation loop.:type time: float
         :type inputs: dict
         :type params['t_old']: float
         :type params['i_old']: float
         :type params['_init_start_']: bool
-        :return: La pendiente entre el valor anterior y el actual.
+        :return: The slope between the previous value and the current value.
         :rtype: numpy.ndarray
         :examples: See example in ...
-        :notes: notes
-        :limitations: limitations
-        :bugs: bugs
 
         """
         if params['_init_start_']:
@@ -445,8 +439,8 @@ class FunctionsCall:
         """
         Signal terminator function
 
-        :purpose: Función que termina con la señal.
-        :description: Esta es una funcion tipo fuga. Toma cualquier valor de entrada y no hace nada con este. Esta función es útil para darle término a señales que no se graficarán.
+        :purpose: Function that terminates with the signal.
+        :description: This is a drain type function. It takes any input value and does nothing with it. This function is useful for terminating signals that will not be plotted.
         :param time: Value indicating the current period in the simulation.
         :param inputs: Dictionary that provides one or more entries for the function (if applicable).
         :type time: float
@@ -454,9 +448,6 @@ class FunctionsCall:
         :return: A value set in zero.
         :rtype: numpy.ndarray
         :examples: See example in ...
-        :notes: notes
-        :limitations: limitations
-        :bugs: bugs
 
         """
         return {0: np.array([0.0])}
@@ -465,18 +456,17 @@ class FunctionsCall:
         """
         Block to save and export block signals
 
-        :purpose: Función que acumula valores en el tiempo para su posterior exportación a .npz.
-        :description: Esta es una funcion tipo fuga. Toma el valor de entrada y lo concatena a un vector. Si la entrada tiene más de una dimensión, la función concatena de forma que el vector de guardado tenga las dimensiones correspondientes en función del tiempo.
+        :purpose: Function that accumulates values over time for later export to .npz.
+        :description: This is a drain type function. It takes the input value and concatenates it to a vector. If the input has more than one dimension, the function concatenates so that the saving vector has the corresponding dimensions as a function of time.
         :param time: Value indicating the current period in the simulation.
         :param inputs: Dictionary that provides one or more entries for the function (if applicable).
-        :param params['str_name']: String entregado por el usuario con los nombres de los valores de entrada separados por coma: ("value1,value2,value3,...")
-        :param params['vec_dim']: Valor definido por la función que obtiene el número de dimensiones de la entrada.
-        :param params['vec_labels']: Vector producido por la función que obtiene el nombre para cada elemento del vector de guardado.
-        :param params['vector']: Vector que acumula los valores de entrada del bloque.
-        :param params['_init_start_']: Parámetro auxiliar utilizado por el sistema para realizar funciones especiales en el primer loop de simulación.
-        :param params['_skip_']: Parámetro auxiliar utilizado por el sistema para indicar cuando no se debe guardar el valor de entrada (pasos medios de RK45).
-        :param params['_name_']: Auxiliary parameter delivered by the associated block, for error identification.
-        :type time: float
+        :param params['str_name']: String supplied by the user with the names of the input values separated by comma: ("value1,value2,value3,...")
+        :param params['vec_dim']: Value defined by the function that gets the number of dimensions of the input.
+        :param params['vec_labels']: Vector produced by the function that gets the name for each element of the saving vector.
+        :param params['vector']: Vector that accumulates the input values of the block.
+        :param params['_init_start_']: Auxiliary parameter used by the system to perform special functions in the first simulation loop.
+        :param params['_skip_']: Auxiliary parameter used by the system to indicate when not to save the input value (RK45 half steps).
+        :param params['_name_']: Auxiliary parameter delivered by the associated block, for error identification.:type time: float
         :type inputs: dict
         :type params['str_name']: str
         :type params['vec_dim']: float
@@ -488,9 +478,7 @@ class FunctionsCall:
         :return: A value set in zero.
         :rtype: numpy.ndarray
         :examples: See example in ...
-        :notes: Si es que no se detectan suficientes labels para 'vec_labels', la función agrega los restantes utilizando '_name_' y un número dependiendo del de nombres faltantes.
-        :limitations: limitations
-        :bugs: bugs
+        :notes: If not enough labels are detected for 'vec_labels', the function adds the remaining labels using '_name_' and a number depending on the number of missing names.
 
         """
         # To prevent saving data in the wrong iterations (integration method RK45 in use)
@@ -528,16 +516,16 @@ class FunctionsCall:
         """
         Function to plot block signals
 
-        :purpose: Función que acumula valores en el tiempo para graficarlos con pyqtgraph tanto posteriormente como durante la simulación.
-        :description: Esta es una funcion tipo fuga. Toma el valor de entrada y lo concatena a un vector. Si la entrada tiene más de una dimensión, la función concatena de forma que el vector de guardado tenga las dimensiones correspondientes en función del tiempo.
+        :purpose: Function that accumulates values over time to plot them with pyqtgraph both later and during the simulation.
+        :description: This is a drain type function. It takes the input value and concatenates it to a vector. If the input has more than one dimension, the function concatenates in such a way that the saving vector has the corresponding dimensions as a function of time.
         :param time: Value indicating the current period in the simulation.
         :param inputs: Dictionary that provides one or more entries for the function (if applicable).
-        :param params['labels']: String entregado por el usuario con los nombres de los valores de entrada separados por coma: ("value1,value2,value3,...")
-        :param params['vec_dim']: Valor definido por la función que obtiene el número de dimensiones de la entrada.
-        :param params['vec_labels']: Vector producido por la función que obtiene el nombre para cada elemento del vector de guardado.
-        :param params['vector']: Vector que acumula los valores de entrada del bloque.
-        :param params['_init_start_']: Parámetro auxiliar utilizado por el sistema para realizar funciones especiales en el primer loop de simulación.
-        :param params['_skip_']: Parámetro auxiliar utilizado por el sistema para indicar cuando no se debe guardar el valor de entrada (pasos medios de RK45).
+        :param params['labels']: String supplied by the user with the names of the input values separated by comma: ("value1,value2,value3,...")
+        :param params['vec_dim']: Value defined by the function that gets the number of dimensions of the input.
+        :param params['vec_labels']: Vector produced by the function that gets the name for each element of the saving vector.
+        :param params['vector']: Vector that accumulates the input values of the block.
+        :param params['_init_start_']: Auxiliary parameter used by the system to perform special functions in the first simulation loop.
+        :param params['_skip_']: Auxiliary parameter used by the system to indicate when not to save the input value (RK45 half steps).
         :param params['_name_']: Auxiliary parameter delivered by the associated block, for error identification.
         :type time: float
         :type inputs: dict
@@ -551,9 +539,7 @@ class FunctionsCall:
         :return: A value set in zero.
         :rtype: numpy.ndarray
         :examples: See example in ...
-        :notes: Si es que no se detectan suficientes labels para 'vec_labels', la función agrega los restantes utilizando '_name_' y un número dependiendo del de nombres faltantes.
-        :limitations: limitations
-        :bugs: bugs
+        :notes: If not enough labels are detected for 'vec_labels', the function adds the remaining ones using '_name_' and a number depending on the number of missing names.
 
         """
         # To prevent saving data in the wrong iterations (integration method RK45 in use)

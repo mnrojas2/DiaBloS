@@ -13,4 +13,4 @@ Topics for Further Improvement
     -right now the package works acceptable with pygame only, but to make this a better option for the user, it is necessary to remade to remade the interface using PyQT5 or another similar alternative. It's important to consider this as changing the license from MIT to GPL, due to the requirements of some UI libraries.
 
 #. More support for special functions
-    -Add support to functions that require different clocks, or elements not implemented yet.
+    -Add support to functions that require different clocks, or elements not implemented yet, like an option to set parameters through inputs with data from other blocks.
