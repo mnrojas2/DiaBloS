@@ -1,5 +1,5 @@
 """
-lib.py - Contains all the core functions and classes for the simulation and execution of the graphs
+lib.py - Contains all the core functions and classes for the simulation and execution of the graphs.
 """
 
 import pygame                           # LGPL
@@ -22,7 +22,7 @@ sys.path.append('./usermodels/')
 
 class InitSim:
     """
-    Class that manages the simulation interface and main functions
+    Class that manages the simulation interface and main functions.
     """
 
     def __init__(self):
@@ -116,13 +116,13 @@ class InitSim:
     def add_block(self, block, m_pos=(0, 0)):
 
         """
-        :purpose: Función que agrega un bloque a la interfaz, con un ID único.
-        :description: A partir de una lista visible de MenuBlocks, se crea una instancia de Bloque completo, el cual está disponible para editar parámetros como conectar con otros bloques.
-        :param block: Base-block que contiene los parámetros base para cada tipo de bloque.
-        :param m_pos: Coordenadas (x, y) para ubicar la esquina superior izquierda del futuro bloque.
+        :purpose: Function that adds a block to the interface, with a unique ID.
+        :description: From a visible list of MenuBlocks objects, a complete Block instance is created, which is available for editing its parameters or connecting to other blocks.
+        :param block: Base-block containing the base parameters for each type of block.
+        :param m_pos: Coordinates (x, y) to locate the upper left corner of the future block.
         :type block: BaseBlock class
         :type m_pos: tuple
-        :bugs: Puede que bajo un MenuBlock mal configurado, el bloque resultante no tenga las cualidades o parámetros correctos.
+        :bugs: Under a wrongly configured MenuBlock, the resulting block may not have the correct qualities or parameters.
         """
         id_list = []
         sid = 0
@@ -149,10 +149,10 @@ class InitSim:
 
     def add_line(self, srcData, dstData):
         """
-        :purpose: Función que agrega una línea a la interfaz, con un ID único.
-        :description: A partir de la existencia de uno o más bloques, esta función crea una línea entre los últimos puertos seleccionados.
-        :param srcData: Tripleta que contiene 'block name', 'port number', 'port coordenates' de un puerto de salida (partida)
-        :param dstData: Tripleta que contiene 'block name', 'port number', 'port coordenates' de un puerto de entrada (salida)
+        :purpose: Function that adds a line to the interface, with a unique ID.
+        :description: Based on the existence of one or more blocks, this function creates a line between the last selected ports.
+        :param srcData: Triplet containing 'block name', 'port number', 'port coordinates' of an output port (starting point for the line).
+        :param dstData: Triplet containing 'block name', 'port number', 'port coordinates' of an input port (finish point for the line).
         :type srcData: triplet
         :type dstData: triplet
         """
@@ -176,9 +176,9 @@ class InitSim:
 
     def remove_block_and_lines(self):
         """
-        :purpose: Función para eliminar bloques o lineas.
-        :description: Remueve un bloque o una línea dependiendo si esta está seleccionada.
-        :notes: Las líneas asociadas a un bloque que se está eliminando también se eliminan.
+        :purpose: Function to remove blocks or lines.
+        :description: Removes a block or a line depending on whether it is selected or not.
+        :notes: Lines associated to a block being removed are also removed.
         """
         self.line_creation = 0
 
@@ -203,7 +203,7 @@ class InitSim:
 
     def check_line_port(self, line, block):
         """
-        :purpose: Checks if there are lines left from a removed PORT (of a block).
+        :purpose: Checks if there are lines left from a removed port (associated to a block).
         :param line: Line object.
         :param block: Block object.
         """
@@ -216,7 +216,7 @@ class InitSim:
 
     def display_lines(self, zone):
         """
-        :purpose: Draws lines connecting blocks in the screen
+        :purpose: Draws lines connecting blocks in the screen.
         :param zone: Pygame's layer where the figure is drawn.
         """
         for line in self.line_list:
@@ -224,14 +224,14 @@ class InitSim:
 
     def update_lines(self):
         """
-        :purpose: Updates lines according to the location of blocks if these changed place
+        :purpose: Updates lines according to the location of blocks if these changed place.
         """
         for line in self.line_list:
             line.update_line(self.blocks_list)
 
     def display_blocks(self, zone):
         """
-        :purpose: Draws existing blocks in the screen
+        :purpose: Draws blocks defined in the main list on the screen.
         :param zone: Pygame's layer where the figure is drawn.
         """
         for b_elem in self.blocks_list:
@@ -241,7 +241,7 @@ class InitSim:
 
     def port_availability(self, dst_line):
         """
-        :purpose: Checks if an input port is free to get connected with a line to another port
+        :purpose: Checks if an input port is free to get connected with a line to another port.
         :param dst_line: The name of a Line object.
         :type dst_line: str
         """
@@ -254,8 +254,8 @@ class InitSim:
 
     def menu_blocks_init(self):
         """
-        :purpose: Función que inicializa todos los tipos de bloques disponibles en el menú.
-        :description: A partir de la clase MenuBlocks, se generan bloques base para las funciones ya definidas en lib.functions.py. Luego se acumulan en una lista de forma que estén disponibles en el menú de la interfaz.
+        :purpose: Function that initializes all types of blocks available in the menu.
+        :description: From the MenuBlocks class, base blocks are generated for the functions already defined in lib.functions.py. Then they are accumulated in a list so that they are available in the interface menu.
         """
         # Algunos datos se envían en forma de diccionarios para que se pueda observar qué es cada cosa
         # Los colores pueden definirse como strings (si es que están en self.colors) o directamente con los valores RGB en tupla.
@@ -331,7 +331,7 @@ class InitSim:
 
     def display_menu_blocks(self, zone):
         """
-        :purpose: Draws menu blocks in the screen
+        :purpose: Draws MenuBlocks objects in the screen.
         :param zone: Pygame's layer where the figure is drawn.
         """
         pygame.draw.line(zone, self.colors['black'], [200, 60], [200, 710], 2)
@@ -342,11 +342,11 @@ class InitSim:
 
     def save(self, autosave=False):
         """
-        :purpose: Saves blocks, lines and other data in a .dat file
-        :description: Obteniendo la ubicación de donde se quiere guardar el archivo, se copian todos los datos importantes de la clase InitSim, cada uno de los bloques y cada una de las líneas, en diccionarios, los cuales luego serán cargados al archivo externo por medio de la librería JSON.
-        :param autosave: Flag que define si es que el proceso que se realizará es un autoguardado o no.
+        :purpose: Saves blocks, lines and other data in a .dat file.
+        :description: Obtaining the location where the file is to be saved, all the important data of the InitSim class, each one of the blocks and each one of the lines, are copied into dictionaries, which will then be loaded to the external file by means of the JSON library.
+        :param autosave: Flag that defines whether the process to be performed is an autosave or not.
         :type autosave: bool
-        :notes: Esta función se ejecuta automáticamente cuando se quiere simular, de forma de no perder información no guardada.
+        :notes: This function is executed automatically when you want to simulate, so as not to lose unsaved information.
         """
         if not autosave:
             root = tk.Tk()
@@ -425,9 +425,9 @@ class InitSim:
 
     def open(self):
         """
-        :purpose: Loads blocks, lines and other data from a .dat
-        :description: A partir del archivo .dat, se desempacan los datos guardados en los diccionarios, actualizando los datos en InitSim, creando nuevos bloques y líneas, dejando el canvas y las configuraciones tal como se guardaron anteriormente.
-        :notes: El nombre del archivo cargado queda guardado en el sistema, para facilitar el guardado de datos en el mismo (sobreescribiendolo).
+        :purpose: Loads blocks, lines and other data from a .dat.
+        :description: Starting from the .dat file, the data saved in the dictionaries are unpacked, updating the data in InitSim, creating new blocks and lines, leaving the canvas and the configurations as they were saved before.
+        :notes: The name of the loaded file is saved in the system, in order to facilitate the saving of data in it (overwriting it).
         """
         root = tk.Tk()
         root.withdraw()
@@ -493,7 +493,7 @@ class InitSim:
 
     def update_lines_data(self, line_data):
         """
-        :purpose: Updates information related with all the lines saved in a file to the current simulation
+        :purpose: Updates information related with all the lines saved in a file to the current simulation.
         :param line_data: Dictionary with Line object id, parameters, variables, etc.
         :type line_data: dict
         """
@@ -523,8 +523,8 @@ class InitSim:
 
     def execution_init_time(self):
         """
-        :purpose: Creates a pop-up window to ask for graph simulation setup values
-        :description: El primer paso para poder realizar una simulación del grafo, es tener los datos de ejecución. Estos son principalmente tiempo de simulación y período de muestreo, pero también se pregunta por variables necesarias para los gráficos.
+        :purpose: Creates a pop-up window to ask for graph simulation setup values.
+        :description: The first step in order to be able to perform a network simulation, is to have the execution data. These are mainly simulation time and sampling period, but we also ask for variables needed for the graphs.
         """
         master = tk.Tk()
         master.title('Simulate')
@@ -570,8 +570,8 @@ class InitSim:
 
     def execution_init(self):
         """
-        :purpose: Initializes the graph execution
-        :description: Esta es la primera etapa de la simulación del grafo, donde se inicializan variables, vectores, como también hacer pruebas para verificar que to-do funciona bien. Se hace un autoguardado previo, como también un chequeo de conexión de bloques y posibles loop algebraicos. Si todo sale bien, se continúa con la etapa de loop.
+        :purpose: Initializes the graph execution.
+        :description: This is the first stage of the graph simulation, where variables and vectors are initialized, as well as testing to verify that everything is working properly. A previous autosave is done, as well as a block connection check and possible algebraic loops. If everything goes well, we continue with the loop stage.
         """
 
         self.execution_function = FunctionsCall()          # Se llama a la clase que contiene las funciones para la ejecución
@@ -722,7 +722,7 @@ class InitSim:
     def execution_loop(self):
         """
         :purpose: Continues with the execution sequence in loop until time runs out or an special event stops it.
-        :description: Esta es la segunda etapa de la simulación del grafo. Aquí la lectura del grafo completo se hará cíclicamente hasta que se termine el tiempo, el usuario indique que se terminó (presionando Stop) o simplemente hasta que uno de los bloques entregue error. Al finalizar, los datos guardados en bloques como 'Scope' y 'External_data', serán exportados a otras librerias para realizar sus funciones.
+        :description: This is the second stage of the network simulation. Here the reading of the complete graph will be done cyclically until the time is up, the user indicates that it is finished (by pressing Stop) or simply until one of the blocks gives error. At the end, the data saved in blocks like 'Scope' and 'External_data', will be exported to other libraries to perform their functions.
         """
         if self.execution_pause:
             return
@@ -857,8 +857,8 @@ class InitSim:
     def check_diagram_integrity(self):
         """
         :purpose: Checks if the graph diagram doesn't have blocks with ports unconnected before the simulation execution.
-        :description: Esta función es únicamente utilizada para comprobar que el grafo esté bien conectado. Todos los puertos deben estar conectados sin excepción. En caso que haya algo desconectado, se imprime un aviso indicando donde está el problema y retorna a la función principal indicando que no se puede continuar.
-        :return: 0 si no hay errores, 1 si es que hay errores.
+        :description: This function is only used to check that the network is properly connected. All ports must be connected without exception. In case something is disconnected, a warning is printed indicating where the problem is and returns to the main function indicating that it cannot continue.
+        :return: 0 if there are no errors, 1 if there are errors.
         :rtype: int
         """
         print("*****Checking diagram integrity*****")
@@ -907,7 +907,7 @@ class InitSim:
         """
         :purpose: Updates the global execution list.
         :param block_name: Block object name id.
-        :param h_value: Value in graph hierarchy
+        :param h_value: Value in graph hierarchy.
         :param h_assign: Flag that defines if the block gets assigned with h_value or not.
         :type block_name: str
         :type h_value: int
@@ -1155,7 +1155,7 @@ class Block(InitSim):
     def update_Block(self):
         """
         :purpose: Updates location and size of the block, including its ports.
-        :description: Esta función maneja lo necesario para poder mostrar el bloque en la pantalla. Dibuja el cuadrado del bloque, dibuja los puertos y los ubica dependiendo de su cantidad, e incluso extiende o reduce el tamaño del bloque si el número de puertos no es suficiente o es demasiado. Esta función siempre actúa cuando el bloque se actualiza, siendo mucho más importante cuando cambia de lugar.
+        :description: This function handles what is necessary to display the block on the screen. It draws the square of the block, draws the ports and places them depending on their quantity, and even extends or reduces the size of the block if the number of ports is not enough or too many. This function always acts when the block is updated, being much more important when it changes location.
         """
         self.in_coords = []
         self.out_coords = []
@@ -1258,7 +1258,7 @@ class Block(InitSim):
     def change_port_numbers(self):
         """
         :purpose: Generates a pop-up window for the user to change number of input and/or output ports for the block.
-        :descripcion: Por medio de la clase TkWidget, se crea una ventana pop-up que contiene 2 parámetros que se pueden cambiar por el usuario: inputs y outputs. Después de cargarlos, se ejecuta la función 'update_Block' para ajustar el tamaño del bloque y la posición de sus puertos. Cabe destacar que el que se puedan modificar el número de inputs u outputs, depende del tipo de bloque, lo que se diferencia dentro de la función.
+        :description: Through the use of the TkWidget class, a pop-up window is created containing 2 parameters that can be changed by the user: inputs and outputs. After loading them, the 'update_Block' function is executed to adjust the size of the block and the position of its ports. It should be noted that whether the number of inputs or outputs can be changed depends on the type of block, which is differentiated within the function.
         """
         # Esta definido por 3 estados en el que se permite editar solo inputs, solo output o ambos
         if self.io_edit == 'both':
@@ -1294,7 +1294,7 @@ class Block(InitSim):
 
     def saving_params(self):
         """
-        :purpose: Saves parameters only defined at initialization
+        :purpose: Saves parameters only defined at initialization.
         """
         # Actualizar funcion para aceptar los arrays como corresponde
         # Guarda únicamente los parámetros definidos inicialmente, no los agregados durante la ejecución
@@ -1324,7 +1324,7 @@ class Block(InitSim):
     def change_params(self):
         """
         :purpose: Generates a pop-up window to change modifiable parameters only.
-        :description: Por medio de la clase TkWidget, se crea un pop-up para modificar parámetros asociados a los bloques. Cabe destacar que los únicos parámetros posibles de modificar son los definidos al principio, (durante la definición del bloque en 'InitSim.menu_blocks_init'), como también que no partan con '_' underscore. La función separa los parámetros, se muestran al usuario, se devuelven al sistema y todos se vuelven a juntar al final.
+        :description: Through the use of the TkWidget class, a pop-up is created to modify parameters associated to the blocks. It should be noted that the only parameters that can be modified are those defined at the beginning (during the definition of the block in 'InitSim.menu_blocks_init'), as well as those that do not start with '_' underscore. The function separates the parameters, they are shown to the user, returned to the system and all are put back together at the end.
         """
         if self.params == {}:
             return
@@ -1352,7 +1352,7 @@ class Block(InitSim):
     def load_external_data(self):
         """
         :purpose: Loads initialization data of a function located in a external python file.
-        :description: Por medio de la libreria importlib, se importa un archivo .py de la carpeta 'usermodels', desde donde se extraen los parámetros de función y los parámetros de bloque (input, output, block_type), importándolos al bloque existente, modificando sus cualidades de ser necesario.
+        :description: Through the use of the importlib library, a .py file is imported from the 'usermodels' folder, from where the function parameters and the block parameters (input, output, block_type) are extracted, importing them to the existing block, modifying its qualities if necessary.
         """
         if not self.external:
             return
@@ -1490,7 +1490,7 @@ class Line(InitSim):
     def update_line(self, block_list):
         """
         :purpose: Updates line from size and location of blocks.
-        :description: La función busca en el canvas, la ubicación de los puertos de salida y entrada a los que está conectado, para luego producir una nueva trayectoria por medio de la función 'trajectory'.
+        :description: The function searches in the canvas for the location of the input and output ports to which it is connected, then produces a new trajectory using the 'trajectory' function.
         """
         for block in block_list:
             if block.name == self.srcblock:
@@ -1532,7 +1532,7 @@ class Line(InitSim):
 
     def change_color(self, ptr):
         """
-        :purpose: Pointer indicating which color is chosen from the color list defined in InitSim
+        :purpose: Pointer indicating which color is chosen from the color list defined in InitSim.
         :param ptr: Value that adds or subtracts 1 depending of the user's input.
         :type ptr: int
         """
@@ -1546,7 +1546,7 @@ class Line(InitSim):
 
 class MenuBlocks(InitSim):
     """
-    Class to create and show basic blocks used as a mark to generate functional blocks in the user interface
+    Class to create and show basic blocks used as a mark to generate functional blocks in the user interface.
     """
     # Produce un "boton" para generar bloques con las caracteristicas indicadas
     def __init__(self, b_type, fun_name, io_params, ex_params, b_color, coords, external=False):
@@ -1571,7 +1571,7 @@ class MenuBlocks(InitSim):
 
     def draw_menublock(self, zone, pos):
         """
-        :purpose: Draws the menu block
+        :purpose: Draws the menu block.
         """
         self.collision = pygame.rect.Rect(40, 80 + 40*pos, self.side_length[0], self.side_length[1])
         pygame.draw.rect(zone, self.b_color, self.collision)
@@ -1581,7 +1581,7 @@ class MenuBlocks(InitSim):
 
 class Button(InitSim):
     """
-    Class to create and show buttons in the user interface
+    Class to create and show buttons in the user interface.
     """
     def __init__(self, name, coords, active=True):
         super().__init__()
@@ -1596,7 +1596,7 @@ class Button(InitSim):
 
     def draw_button(self, zone):
         """
-        :purpose: Draws the button
+        :purpose: Draws the button.
         """
         if not self.active:
             text_color = self.colors['gray']
@@ -1689,7 +1689,7 @@ class TkWidget:
 
     def create_entry_widget(self, x):
         """
-        :purpose: Creates a new entry for the widget
+        :purpose: Creates a new entry for the widget.
         """
         new_widget = tk.Entry(self.master)
         tk.Label(self.master, text=self.params_names[x]).grid(row=x, column=0)
@@ -1705,7 +1705,7 @@ class TkWidget:
 
     def get_values(self):
         """
-        :purpose: Gets values in a dictionary after the pop-up window is closed
+        :purpose: Gets values in a dictionary after the pop-up window is closed.
         """
         try:
             dicty = {}
@@ -1734,8 +1734,8 @@ class TkWidget:
 
     def string_to_vector(self, string):
         """
-        :purpose: Converts the string into an array vector
-        :description: Esta función toma el string resultante y revisa por si corresponde o no a ser un vector. La función soporta recibir hasta una matriz tridimensional.
+        :purpose: Converts the string into an array vector.
+        :description: This function takes the resulting string and checks whether or not it corresponds to a vector. The function supports receiving up to a three-dimensional array.
         """
         # Soporta el uso de espacios y corchetes, separa unicamente valores con comas.
         # primero se buscan las dimensiones del array eliminando todos los números
@@ -1773,7 +1773,7 @@ class TkWidget:
 
     def destroy(self):
         """
-        :purpose: Finishes the window instance
+        :purpose: Finishes the window instance.
         """
         self.master.destroy()
 
@@ -1811,7 +1811,7 @@ class SignalPlot:
 
     def loop(self, new_t, new_y):
         """
-        :purpose: Updates the time and scope vectors and plot them
+        :purpose: Updates the time and scope vectors and plot them.
         """
         y = self.sort_vectors(new_y)
 
@@ -1830,7 +1830,7 @@ class SignalPlot:
 
     def sort_labels(self, labels):
         """
-        :purpose: Rearranges the list if some elements are lists too
+        :purpose: Rearranges the list if some elements are lists too.
         """
         self.labels = []
         for elem in labels:
@@ -1841,7 +1841,7 @@ class SignalPlot:
 
     def sort_vectors(self, ny):
         """
-        :purpose: Rearranges all vectors in one matrix
+        :purpose: Rearranges all vectors in one matrix.
         """
         new_vec = ny[0]
         for i in range(1, len(ny)):
