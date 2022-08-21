@@ -49,6 +49,7 @@ Al cargar el programa por primera vez se ve asi::
 
 #. How to remove lines.
     Para remover líneas, se debe seleccionar la línea y presionar DEL.
+    <image>
 
 #. How to change line color.
     Una característica particular de las líneas es que se les puede cambiar el color. Para ello se debe seleccionar la línea y luego presionar UP_ARROW o DOWN_ARROW contínuamente hasta encontrar el color a escoger.
@@ -94,7 +95,7 @@ Al cargar el programa por primera vez se ve asi::
 #. Some shortcuts
     ::
 
-        Ctrl + E: Run
+        Ctrl + E: Run (Simulate)
         Ctrl + S: Save
         Ctrl + A: Load
         Ctrl + N: New
