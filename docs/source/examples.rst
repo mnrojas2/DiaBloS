@@ -9,21 +9,19 @@ Sine integration
 :Description: Este ejemplo muestra el proceso para integrar una señal sinusoidal, utilizando dos métodos de integración distintos (Forward Euler y Runge Kutta 45) para luego comparar los resultados con la curva matemáticamente correcta.
 :Math explanation: The math expression for the process is the following
 
-    .. ver como hacer ecuaciones con reStructuredText
-
-    .. math:: y(t) = \int_0^t A*sin(\omega*t + \phi_0) dt
+    .. math:: y(t) = \int_0^t A\,\sin(\omega\,t + \phi_0) dt
 
     calculando la integral de forma rigurosa, se llega a la siguiente expresión:
 
-    .. math:: y(t) = 1 + A*cos(\omega*t + \phi_0)
+    .. math:: y(t) = 1 + A\,\cos(\omega\,t + \phi_0)
 
-    reescribiendo :math:`cos(\alpha)` como :math:`sin(\alpha + \pi/2)`:
+    reescribiendo :math:`\cos(\theta)` como :math:`\sin(\theta + \pi/2)`:
 
-    .. math:: y(t) = 1 + A*sin(\omega*t + \phi_0 + \pi/2)
+    .. math:: y(t) = 1 + A\,\sin(\omega\,t + \phi_0 + \pi/2)
 
     si :math:`A = 1`, :math:`\omega = 1` y :math:`\phi_0 = 0`, el resultado de :math:`y(t)` queda como:
 
-    .. math:: y(t) = 1 + sin(t + pi/2)
+    .. math:: y(t) = 1 + \sin(t + pi/2)
 
     Lo cual se ejemplifica como la suma de un step de amplitud 1 y una sinusoidal que parte en :math:`\pi/2` en tiempo 0.
 

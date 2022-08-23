@@ -574,12 +574,14 @@ class InitSim:
         :description: This is the first stage of the graph simulation, where variables and vectors are initialized, as well as testing to verify that everything is working properly. A previous autosave is done, as well as a block connection check and possible algebraic loops. If everything goes well, we continue with the loop stage.
         """
 
-        self.execution_function = FunctionsCall()          # Se llama a la clase que contiene las funciones para la ejecución
+        # Se llama a la clase que contiene las funciones para la ejecución
+        self.execution_function = FunctionsCall()
         self.execution_stop = False                         # Evitar que la ejecución se detenga antes de ejecutarse por error
         self.time_step = 0                                  # Primera iteración que irá aumentando self.sim_dt segundos
         self.timeline = np.array([self.time_step])          # Lista que contiene el valor de todas las iteraciones pasadas
 
-        self.execution_time = self.execution_init_time()    # Se inicializan algunos parametros entre ellos el tiempo máximo de simulación
+        # Se inicializan algunos parametros entre ellos el tiempo máximo de simulación
+        self.execution_time = self.execution_init_time()
 
         # Para cancelar la simulación antes de correrla (habiendo presionado X en el pop up)
         if self.execution_time == -1 or len(self.blocks_list) == 0:
