@@ -39,22 +39,26 @@ Al cargar el programa por primera vez se ve asi::
 
 #. How to add blocks.
     Para agregar bloques basta con drag and drop them in the canvas.
+
     <image>
 
 #. How to remove blocks.
     Para remover bloques basta con drag and drop it fuera del canvas.
     También se puede seleccionar el bloque con LMB y presionar DEL.
+
     <image>
 
 #. How to add lines.
     Para agregar lineas, se debe hacer click a los 2 puertos (entrada y salida) para generar una conexión entre los
     dos bloques.
+
     <image>
 
 #. How to remove lines.
     Para remover líneas, se debe seleccionar la línea y presionar DEL.
     Cuando se remueven bloques, también se remueven las líneas asociadas a este, de forma de liberar las conexiones
     que ya no tienen sentido lógico (puerto de entrada o salida no existe).
+
     <image>
 
 #. How to change line color.
@@ -71,13 +75,15 @@ Al cargar el programa por primera vez se ve asi::
     Si el bloque permite cambiar el numero de puertos, se puede abrir una ventana con CTRL + RMB...
 
 #. How to load/save files.
-    El formato de guardado de estos archivos es .dat...
-    Para guardar un archivo, basta con presionar en el ícono SAVE o la combinación de teclas Ctrl + S, donde se abrirá una ventana dando las opciones de
-    ubicación y nombre de archivo.
+    El formato de guardado de estos archivos es .dat.
+
+    Para guardar un archivo, basta con presionar en el ícono SAVE o la combinación de teclas Ctrl + S, donde se abrirá
+    una ventana dando las opciones de ubicación y nombre de archivo.
+
     <image>
 
-    Para cargar un archivo, bsta con presionar en el ícono LOAD o la combinación de teclas Ctrl + A, donde se abrirá una ventana dando las opciones de
-    ubicar el archivo por carpeta y nombre.
+    Para cargar un archivo, bsta con presionar en el ícono LOAD o la combinación de teclas Ctrl + A, donde se abrirá
+    una ventana dando las opciones de ubicar el archivo por carpeta y nombre.
     <image>
 
 #. How to run simulation.
@@ -88,6 +94,7 @@ Al cargar el programa por primera vez se ve asi::
     el botón STOP.
 
     Se puede pausar presionando el botón PAUSE. Para reiniciar, basta con presionar el mismo botón una segunda vez.
+
     <image>
 
 #. How to plot data.
@@ -98,13 +105,19 @@ Al cargar el programa por primera vez se ve asi::
 
 #. How to export data.
     Para exportar data, el proceso es similar al de graficar las curvas.
-    Primero se debe agregar un bloque EXPORT_DATA, el cual debe ser conectado a la salida del bloque del cual se quiere la señal a guardar.
-    Se pueden renombrar los 'labels' para poder identificar cada uno de los vectores. Si no se llamarán de forma predefinida como 'ExportData-<numero>', donde 'n' corresponde a la ubicación de la variable a lo largo del vector inicial.
+
+    Primero se debe agregar un bloque EXPORT_DATA, el cual debe ser conectado a la salida del bloque del cual se quiere
+    la señal a guardar.
+
+    Se pueden renombrar los 'labels' para poder identificar cada uno de los vectores. Si no se llamarán de forma
+    predefinida como 'ExportData-<numero>', donde 'n' corresponde a la ubicación de la variable a lo largo del vector
+    inicial.
 
 #. How to load user-made functions.
     DiaBloS permite la carga de funciones externas, creadas por el usuario.
-    Una explicacion en detalle se puede ver en la seccion xxxx
-    Para cargar este tipo de funciones, se debe agregar un bloque Block, donde el único parámetro que tiene para modificar es el de agregar el nombre del archivo (y función) ubicado en la carpeta 'usermodels/'.
+    Una explicacion en detalle se puede ver en la seccion xxxx CITE
+    Para cargar este tipo de funciones, se debe agregar un bloque Block, donde el único parámetro que tiene para
+    modificar es el de agregar el nombre del archivo (y función) ubicado en la carpeta 'usermodels/'.
 
 #. Some shortcuts
     ::

@@ -20,11 +20,13 @@ How does it work the run simulation function
 --------------------------------------------
 
 Explicar el loop de ejecucion del grafo, inicial y loop, con tambien los casos para detenerlo de golpe (diagrama)
+poner la explicacion vista con el profe
 
 How does RK45 integration works
 -------------------------------
 
 Explicar las cosas que hacen que funcione el RK45
+poner la explicacion vista con el profe
 
 Explain how the data is sent from one block to another (filetype)
 -----------------------------------------------------------------
@@ -66,7 +68,8 @@ Usar bloque "block" para probar la funcion externa
 How to prevent crashes
 ----------------------
 
-Agregar casos de excepcion retornando una 'E'. De ese modo, la simulacion podrá detener la ejecucion sin terminar el programa repentinamente::
+Agregar casos de excepcion retornando una 'E'. De ese modo, la simulacion podrá detener la ejecucion sin terminar el
+programa repentinamente::
 
     except:
         return {'E': True}

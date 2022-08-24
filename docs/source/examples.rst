@@ -6,7 +6,8 @@ Algunos ejemplos de la herramienta en funcionamiento:
 Sine integration
 ----------------
 
-:Description: Este ejemplo muestra el proceso para integrar una señal sinusoidal, utilizando dos métodos de integración distintos (Forward Euler y Runge Kutta 45) para luego comparar los resultados con la curva matemáticamente correcta.
+:Description: Este ejemplo muestra el proceso para integrar una señal sinusoidal, utilizando dos métodos de integración
+    distintos (Forward Euler y Runge Kutta 45) para luego comparar los resultados con la curva matemáticamente correcta.
 :Math explanation: The math expression for the process is the following
 
     .. math:: y(t) = \int_0^t A\,\sin(\omega\,t + \phi_0) dt
