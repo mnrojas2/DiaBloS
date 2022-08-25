@@ -3,14 +3,26 @@ Introduction
 
 Diablos es una herramienta de programacion de bloques. (Señales)
 
-Esta herramienta se presenta como una alternativa open source dependiente completamente de librerias disponibles en
-Python y pip.
+Esta herramienta se presenta como una alternativa open source independiente de software o librerias externas a Python,
+todos los paquetes necesarios ya los provee Python o pip.
 
-Este manual está enfocado en mostrar y explicar el uso de la interfaz, como también las bases para poder desarrollar
-nuevas funciones.
+Este manual está dedicado a explicar las aplicaciones básicas al usuario, como también explicar el proceso algoritmico
+del mismo, de forma que sirva como base para la mantención de este paquete, como la creación de nuevas funciones.
 
 Capabilities of the DiaBloS package
 -----------------------------------
+
+DiaBloS es capaz de:
+
+-relacionar funciones y obtener resultados
+-integrar y derivar señales
+-Producir respuestas al escalon como a la rampa para sistemas de ecuaciones de diferencia (diferenciales) ordinarias
+-Ejemplificar con sistemas de control realimnetado
+-graficar señales, tanto de forma tradicional como de forma dinámica
+-exportar datos en formato .npz
+-cargar y guardar archivos de datos con las conexiones
+-trabajar vectorialmente los valores
+-asociar y disasociar señales en forma de vectores
 
 Existen librerias de python que se enfocan en esto, pero solo se basan en las conexiones y no la interfaz, como tampoco
 el poder ejecutarlos. Tambien otros que requieren el uso de herramientas externas a python, requiriendo compilacion

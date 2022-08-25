@@ -31,7 +31,14 @@ Sine integration
     Forward euler consiste en simplemente tomar el valor anterior y extender un rectángulo...
     Runge Kutta consiste en un método más complejo... pero más exacto
 
-:Important details: no se
+:How to execute it:
+    Despues de abirr el programa
+
+    editar parametros
+
+    presionar Play
+
+:Important details: no c
 
 .. Nombre
 .. Descripcion
