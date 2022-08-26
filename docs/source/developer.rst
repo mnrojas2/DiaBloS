@@ -63,6 +63,16 @@ Funcion inicialización::
 How to test a new function
 --------------------------
 
+-Se recomienda utilizar el bloque "Block" y el template para definir funciones y sus parámetros iniciales con "__init__()"
+
+-Definir entradas, salidas, parametros
+
+-Crear un sistema simple donde la salida de esta nueva funcion fuese a un scope o exportdata
+
+-Agregar la entrada que se deba recibir por medio de los bloques (puertos)
+
+Analizar los resultados y comprobar externamente si funciona como se espera
+
 Usar bloque "block" para probar la funcion externa
 
 How to prevent crashes
