@@ -47,21 +47,16 @@ Sine integration
 .. Que se puede modificar, o para que se puede usar el ejemplo.
 .. bugs
 
-
-Scalar integration
-------------------
-
-Integracion escalar (ejemplo de integracion entre RK45 y ForwardEuler con valores escalares)
-
 Vectorial integration
 ---------------------
 
-Integracion vectorial (mismo ejemplo anterior, pero mostrando la capacidad de usar vectores)
+Integracion vectorial, comparando métodos de integracion runge-kutta y forward euler.
 
-External delay
---------------
 
-Ejemplo de funcion tipo memoria, implementada con una funcion externa
+Export data
+-----------
+
+Exportar datos proveniente de un vector muxxeado (step y cos(x))
 
 External source
 ---------------
@@ -73,10 +68,10 @@ External process
 
 Ejemplo de funcion tipo proceso, implementada con una funcion externa
 
-Feedback three methods
-----------------------
+External delay
+--------------
 
-Ejemplo de sistema con feedback, implementado de 3 maneras distintas (funcion externa, funcion vectorial, funcion escalar)
+Ejemplo de funcion tipo memoria, implementada con una funcion externa
 
 External integrator
 -------------------
@@ -87,6 +82,11 @@ External derivator
 ------------------
 
 Ejemplo de derivacion de paso variable (paso constante no sirve)
+
+Feedback system three ways
+----------------------
+
+Ejemplo de sistema con feedback, implementado de 3 maneras distintas (funcion externa, funcion vectorial, funcion escalar)
 
 .. Nombre
 .. Descripcion
