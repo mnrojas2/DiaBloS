@@ -98,20 +98,35 @@ Al cargar el programa por primera vez se ve asi::
     <image>
 
 #. How to plot data.
-    Para graficar las curvas de una simulacion
-    Para graficar las curvas de una simulacion mientras está corriendo...
-    Cambiar el ancho de la ventana de simulacion (se basa en puntos graficados mas que en tiempo)
-    Para observar de nuevo el gráfico, u observarlo en todo el espacio, presionar el boton
+    Para graficar las curvas de una simulacion es necesario agregar bloques Scope y conectarlos a las señales de salida
+    que se quieren observar.
+
+    El bloque Scope contiene un solo parámetro llamado 'labels' el cual es utilizado para darle nombre a la (o las)
+    señal(es) que se quieren graficar. Si este parámetro no se cambia, las señales observadas se llamarán de forma
+    predefinida como 'Scope-<numero>', donde 'n' corresponde a la ubicación de la variable a lo largo del vector inicial.
+
+    Además se puede activar o desactivar el graficado dinámico, es decir, graficar los datos mientras la simulación está
+    corriendo. Para ello, al iniciar una simulación (presionando PLAY o haciendo la combinación de teclas Ctrl+E),
+    se puede cambiar tanto el uso o no de esta herramienta durante la ejecución de la simulación como también el tamaño
+    de la ventana móvil que mostrará los valores graficados en el tiempo (basado en puntos graficados mas que en tiempo).
+
+    En caso de haber finalizado la simulación, se puede observar el gráfico presionando el botón PLOT. En caso que se
+    haya realizado un graficado dinámico, primero cerrar la primera ventana con el gráfico resultante, para luego
+    reabrirlo presionando con el botón PLOT.
+
+    <image>
 
 #. How to export data.
     Para exportar data, el proceso es similar al de graficar las curvas.
 
-    Primero se debe agregar un bloque EXPORT_DATA, el cual debe ser conectado a la salida del bloque del cual se quiere
+    Primero se debe agregar un bloque EXPORT, el cual debe ser conectado a la salida del bloque del cual se quiere
     la señal a guardar.
 
     Se pueden renombrar los 'labels' para poder identificar cada uno de los vectores. Si no se llamarán de forma
     predefinida como 'ExportData-<numero>', donde 'n' corresponde a la ubicación de la variable a lo largo del vector
     inicial.
+
+    <image>
 
 #. How to load user-made functions.
     DiaBloS permite la carga de funciones externas, creadas por el usuario.
