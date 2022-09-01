@@ -6,6 +6,8 @@ Explain main functions and classes
 
 Explicar con diagramas la relacion entre funciones principales
 
+aqui va un diagrama de maquina de estados o jerarquia
+
 How does the software work (UI level)
 -------------------------------------
 
@@ -20,13 +22,15 @@ How does it work the run simulation function
 --------------------------------------------
 
 Explicar el loop de ejecucion del grafo, inicial y loop, con tambien los casos para detenerlo de golpe (diagrama)
+
 poner la explicacion vista con el profe
 
 How does RK45 integration works
 -------------------------------
 
 Explicar las cosas que hacen que funcione el RK45
-poner la explicacion vista con el profe
+
+poner la explicacion vista con el profe (todavia no vista)
 
 Explain how the data is sent from one block to another (filetype)
 -----------------------------------------------------------------
