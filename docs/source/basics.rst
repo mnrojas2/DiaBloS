@@ -52,10 +52,16 @@ Al cargar el programa por primera vez se ve asi::
     Para agregar lineas, se debe hacer click a los 2 puertos (entrada y salida) para generar una conexión entre los
     dos bloques.
 
+    Cabe destacar que presionar 2 puertos del mismo tipo no creará una línea entre ellas.
+
+    Cabe destacar también que si un puerto de entrada ya tiene una línea conectada, no conectará más líneas a ese puerto.
+    Para el caso del puerto de salida, esta restricción no aplica.
+
     <image>
 
 #. How to remove lines.
     Para remover líneas, se debe seleccionar la línea y presionar DEL.
+
     Cuando se remueven bloques, también se remueven las líneas asociadas a este, de forma de liberar las conexiones
     que ya no tienen sentido lógico (puerto de entrada o salida no existe).
 
@@ -66,13 +72,15 @@ Al cargar el programa por primera vez se ve asi::
     la línea y luego presionar UP_ARROW o DOWN_ARROW contínuamente hasta encontrar el color a escoger.
 
 #. How to change parameters.
-    Si el bloque contiene parametros de funcion editables, se puede abrir una ventana para modificarlos como RMB.
-    Tener cuidado de utilizar los parametros correctos.
-    En algunos casos son strings, en otros booleanos, en otros floats (ints se convierten a float al momento de leer
-    y guardar los datos).
+    Si el bloque contiene parametros de funcion editables, se puede abrir una ventana para modificarlos presionando RMB
+    sobre el bloque.
+
+    Es importante tener cuidado de ingresar los parámetros en los formatos correctos. Estos pueden ser strings,
+    booleanos (como texto), o floats (ints se convierten a floats).
 
 #. How to change port numbers.
-    Si el bloque permite cambiar el numero de puertos, se puede abrir una ventana con CTRL + RMB...
+    Si el bloque permite cambiar el numero de puertos, se puede abrir una ventana con CTRL + RMB, con una o más entradas
+    para cambiar el número de inputs y outputs, escritos como ints.
 
 #. How to load/save files.
     El formato de guardado de estos archivos es .dat.
@@ -84,16 +92,17 @@ Al cargar el programa por primera vez se ve asi::
 
     Para cargar un archivo, bsta con presionar en el ícono LOAD o la combinación de teclas Ctrl + A, donde se abrirá
     una ventana dando las opciones de ubicar el archivo por carpeta y nombre.
+
     <image>
 
 #. How to run simulation.
-    Para correr la simulacion, primero presionar el botón PLAY o la combinación de teclas Ctrl + E. Aparecerá una
-    ventana, para ajustar el tiempo de simulación, el tiempo de muestreo, como también configuraciones para el ploteo
+    Para ejecutar la simulacion, primero presionar el botón PLAY o la combinación de teclas Ctrl + E. Aparecerá una
+    ventana, para ajustar el tiempo de simulación, el tiempo de muestreo, como también configuraciones para el graficado
     de las señales: el tamaño de la ventana en modo dinámico y activar o desactivar el modo dinámico. Luego se presiona
     aceptar y la simulación iniciará y continuará corriendo hasta que se alcance el tiempo de muestro o se detenga con
     el botón STOP.
 
-    Se puede pausar presionando el botón PAUSE. Para reiniciar, basta con presionar el mismo botón una segunda vez.
+    Se puede pausar presionando el botón PAUSE. Para reiniciar, basta con presionar el mismo botón PAUSE una segunda vez.
 
     <image>
 
@@ -129,10 +138,15 @@ Al cargar el programa por primera vez se ve asi::
     <image>
 
 #. How to load user-made functions.
-    DiaBloS permite la carga de funciones externas, creadas por el usuario.
-    Una explicacion en detalle se puede ver en la seccion xxxx CITE
+    DiaBloS permite la carga de funciones externas, creadas por el usuario. Una explicacion en detalle se puede ver en
+    la seccion xxxx CITE
+
     Para cargar este tipo de funciones, se debe agregar un bloque Block, donde el único parámetro que tiene para
     modificar es el de agregar el nombre del archivo (y función) ubicado en la carpeta 'usermodels/'.
+
+    Si la carga es correcta, el bloque actualizará su nombre en la parte inferior, los puertos y el color en el canvas.
+    Si hay algo que salió mal, el programa indicará que el nombre de la función no existe o se encontró algo erróneo
+    durante el proceso.
 
 #. Some shortcuts
     ::
