@@ -8,15 +8,45 @@ Explicar con diagramas la relacion entre funciones principales
 
 aqui va un diagrama de maquina de estados o jerarquia
 
+main_execution()
+    initsim
+        add_block
+        remove_block
+        add_line
+        remove_lines
+        save
+        open
+        execution_init
+        execution_loop
+    blocks
+        inputs
+        outputs
+        color
+        parameters
+        functions
+    lines
+        color
+    menublocks
+    signal_plot
+
+
 How does the software work (UI level)
 -------------------------------------
 
 Explicar el loop de simulacion con las funciones para crear/destruir bloques
 
+init canvas
+initsim
+main_execution
+    event -> do something
+        k&m input -> init_sim.functions
+    update canvas
+
 How to change some settings (resolution, fps, canvas color)
 -----------------------------------------------------------
 
 Cambiar en InitSim/archivo de guardado
+initsim.getparams ->
 
 How does it work the run simulation function
 --------------------------------------------
@@ -31,6 +61,23 @@ How does RK45 integration works
 Explicar las cosas que hacen que funcione el RK45
 
 poner la explicacion vista con el profe (todavia no vista)
+
+definir dT
+
+T -> T0, T0, T0.5, T0.5, T1, T1, T1.5, T1.5, T2, ...
+
+init
+T0 -> init conds
+in loop
+T0 -> k1
+T0.5 -> k2
+T0.5 -> k3
+T1 -> k4 = k
+T1 -> k1
+T1.5 -> k2
+T1.5 -> k3
+T2 -> k4 = k
+
 
 Explain how the data is sent from one block to another (filetype)
 -----------------------------------------------------------------
