@@ -9,23 +9,45 @@ Explicar con diagramas la relacion entre funciones principales
 aqui va un diagrama de maquina de estados o jerarquia
 
 main_execution()
+    --main classes--
     initsim
+        --UI--
         add_block
         remove_block
         add_line
         remove_lines
+
+        --settings--
         save
         open
+        other settings
+        canvas resolution
+        canvas fps
+
+        --execution--
         execution_init
         execution_loop
+        other auxiliar functions
+
     blocks
+        --internal--
         inputs
         outputs
-        color
         parameters
-        functions
-    lines
+        function (internal/external)
+        --ui--
         color
+
+    lines
+        --internal--
+        start
+        end
+        --ui--
+        color
+        trajectory
+
+    --auxiliar classes--
+    tkWidget
     menublocks
     signal_plot
 
@@ -37,8 +59,8 @@ Explicar el loop de simulacion con las funciones para crear/destruir bloques
 
 init canvas
 initsim
-main_execution
-    event -> do something
+loop
+    event -> check inputs
         k&m input -> init_sim.functions
     update canvas
 
@@ -46,7 +68,8 @@ How to change some settings (resolution, fps, canvas color)
 -----------------------------------------------------------
 
 Cambiar en InitSim/archivo de guardado
-initsim.getparams ->
+
+initsim.__init__()
 
 How does it work the run simulation function
 --------------------------------------------
