@@ -6,7 +6,7 @@ Explain main functions and classes
 
 Explicar con diagramas la relacion entre funciones principales
 
-aqui va un diagrama de maquina de estados o jerarquia
+aqui va un diagrama de jerarquia
 
 main_execution()
     --main classes--
@@ -46,6 +46,10 @@ main_execution()
         color
         trajectory
 
+    functions
+        --execution--
+        input/output functions
+
     --auxiliar classes--
     tkWidget
     menublocks
@@ -77,6 +81,25 @@ How does it work the run simulation function
 Explicar el loop de ejecucion del grafo, inicial y loop, con tambien los casos para detenerlo de golpe (diagrama)
 
 poner la explicacion vista con el profe
+
+Based on paper
+
+2 steps, init and loop
+
+init:
+    -sort blocks according to computability.
+    -start with source blocks.
+    -spread initial conditions for blocks that use it (integrator).
+    -check what blocks can be computed, compute them and spread its outputs to other uncomputed blocks.
+    Then assign the order position to that block for the next step.
+
+loop:
+    -spread output from blocks with initial conditions.
+    -execute every block in the other already defined in the previous part, then spread outputs to other uncomputed blocks.
+
+stop:
+    -wait until the time variable reaches the limit.
+    -press STOP button in the interface.
 
 How does RK45 integration works
 -------------------------------

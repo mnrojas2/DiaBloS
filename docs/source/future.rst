@@ -3,12 +3,12 @@ Topics for Further Improvement
 
 .. What can be done in the future?
 
-#. Support for other similar processes (closer to Modellica).
+#. Support for other similar processes.
     Right now this algorithm only works with input-output signals, but no other types of systems that can be described
     with graphs, like mass balance systems or electric grids or even distributed systems. So one thing that could be
     worked in the future are support for other graph represented systems.
 
-#. Use of Threading, improve and  simplify some processes.
+#. Use of Threading, improve and simplify some processes.
     Right now this library works with everything under the same while loop. So anything that can affect the execution
     loop also affects the interface fps, so it's necessary for the future that both loops can be happening in parallel,
     essentially split the UI process from the graph executing process).
