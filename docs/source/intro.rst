@@ -54,16 +54,15 @@ This library requires Python 3.9.7 or later
 Background information and Reference Material
 ---------------------------------------------
 
-Hoy en día se utilizan cada vez más herramientas de software basadas en la programación diagramática visual [citas].
-Estas herramientas tienen la ventaja de facilitar al usuario la implementación de modelos de sistemas complejos,
-permitiendo visualizar las interacciones entre subcomponentes del sistema.  Ejemplos de estas herramientas pueden
-encontrar desde sistemas adoptados por la industria como LabView de National Instruments [],  Simulink de Mathworks [].
-Incluso existen herramientas para el desarrollo del pensamiento computacional y habilidades STEM que emplean programas
-de programación basados en diagramas de bloques como Lego EV3 [...].  Sin embargo, no existen librerías abiertas para
-el desarrollo de este tipo de herramientas.  Tampoco existe una exposición detallada de las metodologías para procesar
-diagramas de bloques y ejecutar los modelos que representan, ya que en general los software existentes utilizan
-metodologías propietarias.  Por esta razón, la contribución del presente trabajo es el planteamiento de los algoritmos
-principales para el procesamiento de diagramas de bloques y el desarrollo de una librería de software abierta para
-Python que se pone a disposición de la comunidad para ser empleada tanto como herramienta de cómputo, como base para
-el desarrollo de otros sistemas de modelación gráfica basada en diagramas de bloques, así como una herramienta educativa
-que puede ser útil en cursos de modelación y simulación de sistemas dinámicos.
+Nowadays, more and more software tools based on visual diagrammatic programming are being used. These tools have the
+advantage of facilitating the user the implementation of complex system models, allowing to visualize the interactions
+between subcomponents of the system. Examples of these tools can be found from industry-adopted systems such as LabView
+from National Instruments or Simulink from Mathworks. There are also tools for the development of computational thinking
+and STEM skills that employ programming programs based on block diagrams such as Lego EV3. However, there are no open
+libraries for the development of this type of tools, nor is there a detailed exposition of the methodologies for
+processing block diagrams and executing the models they represent, since in general the existing software uses
+proprietary methodologies. For this reason, the contribution of the present work is the approach of the main algorithms
+for the processing of block diagrams and the development of an open software library for Python that is made available
+to the community to be used both as a computational tool and as a basis for the development of other graphical modeling
+systems based on block diagrams, as well as an educational tool that can be useful in courses of modeling and simulation
+of dynamic systems.

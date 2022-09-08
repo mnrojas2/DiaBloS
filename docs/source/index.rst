@@ -6,8 +6,6 @@
 Welcome to DiaBloS's documentation!
 ===================================
 
-.. note:: Work in progress
-
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
@@ -26,8 +24,10 @@ Contents
    api
    future
 
-Acknowledgements
-----------------
+.. only:: html
 
-Thanks to my family, friends and supervisors for the support they gave me in the realization of this project.
+   Acknowledgements
+   ----------------
+
+   Special thanks to my family, friends and supervisors for the support they gave me in the realization of this project.
 
