@@ -1,8 +1,8 @@
-Using DiaBloS: Basics
-=====================
+Using DiaBloS: Begginer's Guide
+===============================
 
-Interfaz
---------
+Interface
+---------
 
 Al cargar el programa por primera vez se ve asi::
 
@@ -161,20 +161,33 @@ First Experience
 ----------------
 
 #. Load the interface.
+
 #. Press OPEN icon or press Ctrl + A.
+
 #. Go to examples/ and open basic_example.dat.
+
 #. You will see something like the following picture::
 
     .. image:: images/screenshot.png
 
 #. Select the blue block (Step)
+
 #. Press RMB over the block
+
 #. Change the ... to ...
+
 #. Add a delay of 5 seconds
+
 #. Select the red block (Scope)
+
 #. Press RMB over the block
+
 #. Change the ... to ...
+
 #. Press PLAY to open the simulation popup
+
 #. Change Simulation time to 10 seconds
+
 #. Set Dynamic Plot as ON
+
 #. Press OK.

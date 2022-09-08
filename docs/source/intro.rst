@@ -1,28 +1,40 @@
 Introduction
 ============
 
-Diablos es una herramienta de programacion de bloques. (Señales)
+DiaBloS (Diagram Block Simulator) is a block programming tool, focused on the simulation of systems represented as
+ordinary differential equations.
 
-Esta herramienta se presenta como una alternativa open source independiente de software o librerias externas a Python,
-todos los paquetes necesarios ya los provee Python o pip.
+This tool is presented as an open source alternative independent of software or libraries external to Python, since it
+only relies on packages already provided by Python, or available through pip.
 
-Este manual está dedicado a explicar las aplicaciones básicas al usuario, como también explicar el proceso algoritmico
-del mismo, de forma que sirva como base para la mantención de este paquete, como la creación de nuevas funciones.
+This manual is separated into two parts: A novice's guide, which explains how to use the library, mainly focused on the
+interface, and a programmer's guide, focused on explaining the hierarchy of functions and the most important algorithms,
+with the idea of making it easier for other people to contribute to the project.
 
 Capabilities of the DiaBloS package
 -----------------------------------
 
 DiaBloS es capaz de:
 
--relacionar funciones y obtener resultados
--integrar y derivar señales
--Producir respuestas al escalon como a la rampa para sistemas de ecuaciones de diferencia (diferenciales) ordinarias
--Ejemplificar con sistemas de control realimnetado
--graficar señales, tanto de forma tradicional como de forma dinámica
--exportar datos en formato .npz
--cargar y guardar archivos de datos con las conexiones
--trabajar vectorialmente los valores
--asociar y disasociar señales en forma de vectores
+-Relate independent functions and obtaining results as a whole.
+
+-Integrate and derivate signals.
+
+-Produce step responses, such as ramp responses, for systems of ordinary difference (differential) equations.
+
+-Generate signals with Gaussian distribution noise.
+
+-Create feedback systems.
+
+-Plot signals, both traditionally and dynamically (in active simulation time).
+
+-Export signal data in .npz format.
+
+-Saving and loading block systems created in .dat format.
+
+-Vector data handling.
+
+-Routing multiple signals into a single output vector and vice versa.
 
 Existen librerias de python que se enfocan en esto, pero solo se basan en las conexiones y no la interfaz, como tampoco
 el poder ejecutarlos. Tambien otros que requieren el uso de herramientas externas a python, requiriendo compilacion

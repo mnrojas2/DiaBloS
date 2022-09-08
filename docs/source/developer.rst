@@ -1,129 +1,127 @@
-Developing for DiaBloS
-======================
+Using DiaBloS: Developer's Guide
+================================
 
-Explain main functions and classes
-----------------------------------
+Class and function hierarchy
+----------------------------
 
 Explicar con diagramas la relacion entre funciones principales
 
-aqui va un diagrama de jerarquia
+aqui va un diagrama de jerarquia::
 
-main_execution()
-    --main classes--
-    initsim
-        --UI--
-        add_block
-        remove_block
-        add_line
-        remove_lines
+    main_execution()
+        --main classes--
+        initsim
+            --UI--
+            add_block
+            remove_block
+            add_line
+            remove_lines
 
-        --settings--
-        save
-        open
-        other settings
-        canvas resolution
-        canvas fps
+            --settings--
+            save
+            open
+            other settings
+            canvas resolution
+            canvas fps
 
-        --execution--
-        execution_init
-        execution_loop
-        other auxiliar functions
+            --execution--
+            execution_init
+            execution_loop
+            other auxiliar functions
 
-    blocks
-        --internal--
-        inputs
-        outputs
-        parameters
-        function (internal/external)
-        --ui--
-        color
+        blocks
+            --internal--
+            inputs
+            outputs
+            parameters
+            function (internal/external)
+            --ui--
+            color
 
-    lines
-        --internal--
-        start
-        end
-        --ui--
-        color
-        trajectory
+        lines
+            --internal--
+            start
+            end
+            --ui--
+            color
+            trajectory
 
-    functions
-        --execution--
-        input/output functions
+        functions
+            --execution--
+            input/output functions
 
-    --auxiliar classes--
-    tkWidget
-    menublocks
-    signal_plot
-
+        --auxiliar classes--
+        tkWidget
+        menublocks
+        signal_plot
 
 How does the software work (UI level)
 -------------------------------------
 
-Explicar el loop de simulacion con las funciones para crear/destruir bloques
+Explicar el loop de simulacion con las funciones para crear/destruir bloques::
 
-init canvas
-initsim
-loop
-    event -> check inputs
-        k&m input -> init_sim.functions
-    update canvas
+    init canvas
+    initsim
+    loop
+        event -> check inputs
+            k&m input -> init_sim.functions
+        update canvas
 
 How to change some settings (resolution, fps, canvas color)
 -----------------------------------------------------------
 
-Cambiar en InitSim/archivo de guardado
+-Cambiar en InitSim/archivo de guardado
 
-initsim.__init__()
+-initsim.__init__()
 
 How does it work the run simulation function
 --------------------------------------------
 
 Explicar el loop de ejecucion del grafo, inicial y loop, con tambien los casos para detenerlo de golpe (diagrama)
 
-poner la explicacion vista con el profe
+poner la explicacion vista con el profe::
 
-Based on paper
+    Based on paper
 
-2 steps, init and loop
+    2 steps, init and loop
 
-init:
-    -sort blocks according to computability.
-    -start with source blocks.
-    -spread initial conditions for blocks that use it (integrator).
-    -check what blocks can be computed, compute them and spread its outputs to other uncomputed blocks.
-    Then assign the order position to that block for the next step.
+    init:
+        -sort blocks according to computability.
+        -start with source blocks.
+        -spread initial conditions for blocks that use it (integrator).
+        -check what blocks can be computed, compute them and spread its outputs to other uncomputed blocks.
+        Then assign the order position to that block for the next step.
 
-loop:
-    -spread output from blocks with initial conditions.
-    -execute every block in the other already defined in the previous part, then spread outputs to other uncomputed blocks.
+    loop:
+        -spread output from blocks with initial conditions.
+        -execute every block in the other already defined in the previous part, then spread outputs to other uncomputed blocks.
 
-stop:
-    -wait until the time variable reaches the limit.
-    -press STOP button in the interface.
+    stop:
+        -wait until the time variable reaches the limit.
+        -press STOP button in the interface.
 
 How does RK45 integration works
 -------------------------------
 
 Explicar las cosas que hacen que funcione el RK45
 
-poner la explicacion vista con el profe (todavia no vista)
+poner la explicacion vista con el profe (todavia no vista)::
 
-definir dT
+    definir dT
 
-T -> T0, T0, T0.5, T0.5, T1, T1, T1.5, T1.5, T2, ...
+    T -> T0, T0, T0.5, T0.5, T1, T1, T1.5, T1.5, T2, ...
 
-init
-T0 -> init conds
-in loop
-T0 -> k1
-T0.5 -> k2
-T0.5 -> k3
-T1 -> k4 = k
-T1 -> k1
-T1.5 -> k2
-T1.5 -> k3
-T2 -> k4 = k
-
+    init
+    T0 -> init conds
+    in loop
+    T0 -> k1
+    T0.5 -> k2
+    T0.5 -> k3
+    T1 -> k4 = k
+    T1 -> k1
+    T1.5 -> k2
+    T1.5 -> k3
+    T2 -> k4 = k
 
 Explain how the data is sent from one block to another (filetype)
 -----------------------------------------------------------------
@@ -168,9 +166,9 @@ How to test a new function
 
 -Agregar la entrada que se deba recibir por medio de los bloques (puertos)
 
-Analizar los resultados y comprobar externamente si funciona como se espera
+-Analizar los resultados y comprobar externamente si funciona como se espera
 
-Usar bloque "block" para probar la funcion externa
+-Usar bloque "block" para probar la funcion externa
 
 How to prevent crashes
 ----------------------

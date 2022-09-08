@@ -31,8 +31,8 @@ You will also need these packages, but they should come with Python 3.9.7 by def
 Installing DiaBloS
 ------------------
 
-Download from repository
-Unpack the .zip wherever you want
+#. Download from repository
+#. Unpack the .zip wherever you want
 
 Loading DiaBloS
 ---------------

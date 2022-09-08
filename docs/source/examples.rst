@@ -140,7 +140,7 @@ Ejemplo de derivacion de paso variable (paso constante no sirve)
     presionar Play
 
 Feedback system three ways
-----------------------
+--------------------------
 
 Ejemplo de sistema con feedback, implementado de 3 maneras distintas (funcion externa, funcion vectorial, funcion escalar)
 

@@ -13,9 +13,9 @@ Topics for Further Improvement
     loop also affects the interface fps, so it's necessary for the future that both loops can be happening in parallel,
     essentially split the UI process from the graph executing process).
 
-    Also, improve the versatility of some functions by using better methods to write code in python. e.g.: Use of *args
-    and **kwargs to allow more specific parameters to some functions without affecting the readability and stability of
-    others.
+    Also, improve the versatility of some functions by using better methods to write code in python. e.g.: Use of \*args
+    and \*\*kwargs to allow more specific parameters to some functions without affecting the readability and stability
+    of others.
 
 #. Use PyQT -> Change license according to rules.
     Right now the package works with pygame only, in an acceptable way, but to make this a better option for the user,
