@@ -4,158 +4,154 @@ Using DiaBloS: Begginer's Guide
 Interface
 ---------
 
-Al cargar el programa por primera vez se ve asi::
+After loading the package, a window similar like the following figure will show::
 
 .. image:: images/screenshot.png
 
 
 +-----+-------------------------+
-| Nro | Que es                  |
+| Nro | What is it              |
 +=====+=========================+
 | (1) | Barra de funciones      |
 +-----+-------------------------+
-| (a) | New                     |
+| (a) | NEW                     |
 +-----+-------------------------+
-| (b) | Load                    |
+| (b) | LOAD                    |
 +-----+-------------------------+
-| (c) | Save                    |
+| (c) | SAVE                    |
 +-----+-------------------------+
-| (d) | Play simulation         |
+| (d) | PLAY Simulation         |
 +-----+-------------------------+
-| (e) | Pause simulation        |
+| (e) | PAUSE Simulation        |
 +-----+-------------------------+
-| (f) | Stop simulation         |
+| (f) | STOP Simulation         |
 +-----+-------------------------+
-| (g) | Plot graph              |
+| (g) | PLOT Graph              |
 +-----+-------------------------+
-| (2) | Function list           |
+| (2) | Block Menu              |
 +-----+-------------------------+
 | (3) | Canvas                  |
 +-----+-------------------------+
 
 
-#. How to clean the canvas.
-    Para eliminar todos los bloques y líneas del canvas, presionar el botón NEW o la combinación de teclas Ctrl + N.
+#. How to remove all elements in the canvas.
+    To remove all elements, press the NEW icon (1a).
 
 #. How to add blocks.
-    Para agregar bloques basta con drag and drop them in the canvas.
+    To add a block, drag and drop any block from the Block Menu (2) to the canvas (3).
 
     <image>
 
 #. How to remove blocks.
-    Para remover bloques basta con drag and drop it fuera del canvas.
-    También se puede seleccionar el bloque con LMB y presionar DEL.
+    To remove a block, drag and drop it outside the canvas. Also you can select it with LMB, then press the DELETE key.
 
     <image>
 
 #. How to add lines.
-    Para agregar lineas, se debe hacer click a los 2 puertos (entrada y salida) para generar una conexión entre los
-    dos bloques.
+    To add a line, click on two block ports to generate a link between both.
 
-    Cabe destacar que presionar 2 puertos del mismo tipo no creará una línea entre ellas.
+    It's important to note that a link between ports only can be created if one port is labeled as input (ports located
+    at the left side of a block) and the other is labeled as output (ports located at the left side of a block).
 
-    Cabe destacar también que si un puerto de entrada ya tiene una línea conectada, no conectará más líneas a ese puerto.
-    Para el caso del puerto de salida, esta restricción no aplica.
+    Also, if an input port has already a link with another port you cannot create another link. However this restriction
+    does not apply to output ports.
 
     <image>
 
 #. How to remove lines.
-    Para remover líneas, se debe seleccionar la línea y presionar DEL.
+    To remove a line select it with LMB, then press the DELETE key.
 
-    Cuando se remueven bloques, también se remueven las líneas asociadas a este, de forma de liberar las conexiones
-    que ya no tienen sentido lógico (puerto de entrada o salida no existe).
+    When blocks are removed, the associated lines are also removed, in order to free connections that no longer make
+    logical sense (input or output port does not exist).
 
     <image>
 
 #. How to change line color.
-    Una característica particular de las líneas es que se les puede cambiar el color. Para ello se debe seleccionar
-    la línea y luego presionar UP_ARROW o DOWN_ARROW contínuamente hasta encontrar el color a escoger.
+    A particular feature of the lines is that you can change their color. To do this, select the line and then press
+    the UP_ARROW or DOWN_ARROW keys continuously until you find the color to choose.
 
 #. How to change parameters.
-    Si el bloque contiene parametros de funcion editables, se puede abrir una ventana para modificarlos presionando RMB
-    sobre el bloque.
+    If the block contains editable function parameters, you can open a window to modify them by pressing RMB on the block.
 
-    Es importante tener cuidado de ingresar los parámetros en los formatos correctos. Estos pueden ser strings,
-    booleanos (como texto), o floats (ints se convierten a floats).
+    It is important to be careful to enter the parameters in the correct formats. These can be strings, boolean (as
+    text), or floats (ints are converted to floats).
 
 #. How to change port numbers.
-    Si el bloque permite cambiar el numero de puertos, se puede abrir una ventana con CTRL + RMB, con una o más entradas
-    para cambiar el número de inputs y outputs, escritos como ints.
+    If a block allows changing the number of ports, a window can be opened with CTRL + RMB, with one or more entries to
+    change the number of inputs and outputs, written as ints.
 
 #. How to load/save files.
-    El formato de guardado de estos archivos es .dat.
+    The saving format of these files is .dat. It can be opened with any text editor to look and edit its data as wanted.
 
-    Para guardar un archivo, basta con presionar en el ícono SAVE o la combinación de teclas Ctrl + S, donde se abrirá
-    una ventana dando las opciones de ubicación y nombre de archivo.
+    To save a file, just click on the SAVE icon (1c), where a window will open giving the options of saving location
+    and file name.
 
     <image>
 
-    Para cargar un archivo, bsta con presionar en el ícono LOAD o la combinación de teclas Ctrl + A, donde se abrirá
-    una ventana dando las opciones de ubicar el archivo por carpeta y nombre.
+    To load a file, just click on the LOAD icon (1b), which will open a window giving the options to locate the file by
+    folder and file name.
 
     <image>
 
 #. How to run simulation.
-    Para ejecutar la simulacion, primero presionar el botón PLAY o la combinación de teclas Ctrl + E. Aparecerá una
-    ventana, para ajustar el tiempo de simulación, el tiempo de muestreo, como también configuraciones para el graficado
-    de las señales: el tamaño de la ventana en modo dinámico y activar o desactivar el modo dinámico. Luego se presiona
-    aceptar y la simulación iniciará y continuará corriendo hasta que se alcance el tiempo de muestro o se detenga con
-    el botón STOP.
+    To run the simulation, first press the PLAY icon (1d). A window will appear, to set the simulation time, the
+    sampling time, as well as settings for the signal plotting: the size of the window in dynamic mode, and activate or
+    deactivate the dynamic mode. Then press OK and the simulation will start and continue running until the sampling
+    time is reached or stopped by pressing the STOP icon (1f).
 
-    Se puede pausar presionando el botón PAUSE. Para reiniciar, basta con presionar el mismo botón PAUSE una segunda vez.
+    The process can be paused by pressing the PAUSE icon (1e). To restart it back, just press the PAUSE icon a second time.
 
     <image>
 
 #. How to plot data.
-    Para graficar las curvas de una simulacion es necesario agregar bloques Scope y conectarlos a las señales de salida
-    que se quieren observar.
+    To plot the curves of a simulation it is necessary to add Scope blocks and connect them to the output signals to be
+observed.
 
-    El bloque Scope contiene un solo parámetro llamado 'labels' el cual es utilizado para darle nombre a la (o las)
-    señal(es) que se quieren graficar. Si este parámetro no se cambia, las señales observadas se llamarán de forma
-    predefinida como 'Scope-<numero>', donde 'n' corresponde a la ubicación de la variable a lo largo del vector inicial.
+    The Scope block contains a single parameter called 'labels' which is used to name the signal(s) to be plotted. If
+    this parameter is not changed, the observed signals will be named by default as 'Scope-<n>', where 'n' corresponds
+    to the location of the variable within the input vector to the Scope block.
 
-    Además se puede activar o desactivar el graficado dinámico, es decir, graficar los datos mientras la simulación está
-    corriendo. Para ello, al iniciar una simulación (presionando PLAY o haciendo la combinación de teclas Ctrl+E),
-    se puede cambiar tanto el uso o no de esta herramienta durante la ejecución de la simulación como también el tamaño
-    de la ventana móvil que mostrará los valores graficados en el tiempo (basado en puntos graficados mas que en tiempo).
+    In addition, dynamic plotting (plotting the data while the simulation is running), can be enabled or disabled.
+    To do this, when starting a simulation (by pressing the PLAY icon (1d)), there is an option that allows enabling
+    this feature as another that allows changing the size of the moving window that will show the plotted values over
+    time.
 
-    En caso de haber finalizado la simulación, se puede observar el gráfico presionando el botón PLOT. En caso que se
-    haya realizado un graficado dinámico, primero cerrar la primera ventana con el gráfico resultante, para luego
-    reabrirlo presionando con el botón PLOT.
+    If the simulation is finished, the graph with all the data can be seen by pressing the PLOT icon (1g). If dynamic
+    plotting has been performed, first close the first window with the resulting graph and then reopen it by pressing
+    the PLOT button.
 
     <image>
 
 #. How to export data.
-    Para exportar data, el proceso es similar al de graficar las curvas.
+    To export data, the process is similar to plotting.
 
-    Primero se debe agregar un bloque EXPORT, el cual debe ser conectado a la salida del bloque del cual se quiere
-    la señal a guardar.
+    First an EXPORT block must be added, which must be connected to the output of the block from which the signal is
+    wanted to be saved.
 
-    Se pueden renombrar los 'labels' para poder identificar cada uno de los vectores. Si no se llamarán de forma
-    predefinida como 'ExportData-<numero>', donde 'n' corresponde a la ubicación de la variable a lo largo del vector
-    inicial.
+    The labels can be renamed to identify each of the vectors. Otherwise they will be called by default as
+    'ExportData-<n>', where 'n' corresponds to the location of the variable within the input vector to the Export block.
 
     <image>
 
 #. How to load user-made functions.
-    DiaBloS permite la carga de funciones externas, creadas por el usuario. Una explicacion en detalle se puede ver en
-    la seccion xxxx CITE
+    DiaBloS allows the loading of external functions, created by the user.
 
-    Para cargar este tipo de funciones, se debe agregar un bloque Block, donde el único parámetro que tiene para
-    modificar es el de agregar el nombre del archivo (y función) ubicado en la carpeta 'usermodels/'.
+    To load this type of functions, a Block block must be added, where the only parameter to modify is the name of the
+    file (and function) located in the 'usermodels/' folder.
 
-    Si la carga es correcta, el bloque actualizará su nombre en la parte inferior, los puertos y el color en el canvas.
-    Si hay algo que salió mal, el programa indicará que el nombre de la función no existe o se encontró algo erróneo
-    durante el proceso.
+    If the upload is correct, the block will update its name at the bottom, the ports and the color in the canvas. If
+    something went wrong, the program will indicate that the function name does not exist or something wrong was found
+    during the process.
+
+    Una explicacion en detalle de cómo crear estas funciones se puede ver en la seccion xxxx CITE
 
 #. Some shortcuts
     ::
 
-        Ctrl + E: Run (Simulate)
-        Ctrl + S: Save
-        Ctrl + A: Load
         Ctrl + N: New
-
+        Ctrl + A: Load
+        Ctrl + S: Save
+        Ctrl + E: Play Simulation
 
 First Experience
 ----------------

@@ -14,7 +14,7 @@ with the idea of making it easier for other people to contribute to the project.
 Capabilities of the DiaBloS package
 -----------------------------------
 
-DiaBloS es capaz de:
+DiaBloS is capable of:
 
 -Relate independent functions and obtaining results as a whole.
 
