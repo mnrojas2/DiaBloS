@@ -12,7 +12,7 @@ After loading the package, a window similar like the following figure will show:
 +-----+-------------------------+
 | Nro | What is it              |
 +=====+=========================+
-| (1) | Barra de funciones      |
+| (1) | Bar function            |
 +-----+-------------------------+
 | (a) | NEW                     |
 +-----+-------------------------+
@@ -28,7 +28,7 @@ After loading the package, a window similar like the following figure will show:
 +-----+-------------------------+
 | (g) | PLOT Graph              |
 +-----+-------------------------+
-| (2) | Block Menu              |
+| (2) | Blocks Menu             |
 +-----+-------------------------+
 | (3) | Canvas                  |
 +-----+-------------------------+
@@ -105,7 +105,7 @@ After loading the package, a window similar like the following figure will show:
 
 #. How to plot data.
     To plot the curves of a simulation it is necessary to add Scope blocks and connect them to the output signals to be
-observed.
+    observed.
 
     The Scope block contains a single parameter called 'labels' which is used to name the signal(s) to be plotted. If
     this parameter is not changed, the observed signals will be named by default as 'Scope-<n>', where 'n' corresponds
@@ -136,14 +136,17 @@ observed.
 #. How to load user-made functions.
     DiaBloS allows the loading of external functions, created by the user.
 
-    To load this type of functions, a Block block must be added, where the only parameter to modify is the name of the
-    file (and function) located in the 'usermodels/' folder.
+    To load these type of functions, a Block block must be added, where the only parameter to modify is the name of the
+    file, that contains the user-made function, located in the 'usermodels/' folder.
 
     If the upload is correct, the block will update its name at the bottom, the ports and the color in the canvas. If
     something went wrong, the program will indicate that the function name does not exist or something wrong was found
     during the process.
 
-    Una explicacion en detalle de cómo crear estas funciones se puede ver en la seccion xxxx CITE
+    More details about how to create these types of functions are available in
+    :ref:`"Creating new functions"<developer:creating new functions>` section from developer's guide.
+
+
 
 #. Some shortcuts
     ::
@@ -158,7 +161,7 @@ First Experience
 
 #. Load the interface.
 
-#. Press OPEN icon or press Ctrl + A.
+#. Press the OPEN icon.
 
 #. Go to examples/ and open basic_example.dat.
 
@@ -166,24 +169,26 @@ First Experience
 
     .. image:: images/screenshot.png
 
-#. Select the blue block (Step)
+#. Select the blue block (Step) and open the parameters' menu pressing RMB over the block.
 
-#. Press RMB over the block
+#. Change the "value" parameter from "1.0" to "2.5" and change the "delay" parameter to "5.0" seconds, then press OK.
 
-#. Change the ... to ...
+#. Select the red block (Scope) and open the parameters' menu pressing RMB over the block.
 
-#. Add a delay of 5 seconds
+#. Change the "labels" parameter from "default" to "step", then press OK.
 
-#. Select the red block (Scope)
+#. Press the PLAY icon to open the simulation pop-up window.
 
-#. Press RMB over the block
+#. Change the "Simulation time" parameter to "10.0" (seconds).
 
-#. Change the ... to ...
+#. Set "Dynamic Plot" as ON, then press OK.
 
-#. Press PLAY to open the simulation popup
+#. Wait until the simulation is done.
 
-#. Change Simulation time to 10 seconds
+#. Close the plot window.
 
-#. Set Dynamic Plot as ON
+#. Press the PLOT icon to open the plot window to observe the complete graph.
 
-#. Press OK.
+#. You will see something like the following picture::
+
+    .. image:: images/screenshot.png

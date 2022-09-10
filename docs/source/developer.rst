@@ -131,8 +131,10 @@ Mencionar el como funciona lo de los diccionarios::
     return {0: np.array(dato), 1: np.array([dato1,dato2])}
 
 
-How to add new functions
-------------------------
+.. _usermodel-function:
+
+Creating new functions
+----------------------
 
 Como desarrollar nuevas funciones de usuario (ver templates)::
 
@@ -155,8 +157,8 @@ Funcion inicialización::
         params = {} # parameters defined before use them in the function
         return io_data, params
 
-How to test a new function
---------------------------
+Testing a new function
+----------------------
 
 -Se recomienda utilizar el bloque "Block" y el template para definir funciones y sus parámetros iniciales con "__init__()"
 
@@ -170,8 +172,8 @@ How to test a new function
 
 -Usar bloque "block" para probar la funcion externa
 
-How to prevent crashes
-----------------------
+Preventing crashes
+------------------
 
 Agregar casos de excepcion retornando una 'E'. De ese modo, la simulacion podrá detener la ejecucion sin terminar el
 programa repentinamente::
