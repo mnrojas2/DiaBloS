@@ -69,6 +69,7 @@ class InitSim:
         self.execution_initialized = False  # Booleano para indicar si el grafo se ejecutó al menos una vez
 
         self.filename = 'data.dat'          # Nombre del archivo cargado o por defecto
+        self.ss_count = 0                   # Contador de capturas de pantalla
         self.sim_time = 1.0                 # Tiempo de simulación por defecto
         self.sim_dt = 0.01                  # Tiempo de muestreo base para simulación (Por defecto: 10ms)
         self.plot_trange = 100              # Ancho de la ventana para el plot dinámico (Por defecto: 100 muestras)
@@ -88,8 +89,9 @@ class InitSim:
         pause = Button('_pause_', (280, 10, 40, 40))
         stop = Button('_stop_', (340, 10, 40, 40))
         rplt = Button('_plot_', (400, 10, 40, 40), False)
+        capt = Button('_capture_', (460, 10, 40, 40))
 
-        self.buttons_list = [new, load, save, sim, pause, stop, rplt]
+        self.buttons_list = [new, load, save, sim, pause, stop, rplt, capt]
 
     def display_buttons(self, zone):
         """
@@ -110,6 +112,11 @@ class InitSim:
             return self.colors[color]
         elif type(color) == tuple or list:
             return color
+
+    def screenshot(self, zone):
+        filename = self.filename[:-4]
+        pygame.image.save(zone, "captures/"+filename+str(self.ss_count)+".jpg")
+        self.ss_count += 1
 
     ##### ADD OR REMOVE BLOCKS AND LINES #####
 
@@ -447,6 +454,7 @@ class InitSim:
 
         self.clear_all()
         self.update_sim_data(sim_data)
+        self.ss_count = 0
         for block in blocks_data:
             self.update_blocks_data(block)
         for line in lines_data:
@@ -1674,6 +1682,18 @@ class Button(InitSim):
                              [self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.75 * self.collision.height],
                              [self.collision.left + 0.75 * self.collision.width, self.collision.top + 0.75 * self.collision.height], 2)
 
+        elif self.name == '_capture_':
+            pygame.draw.rect(zone, text_color, (
+                self.collision.left + 0.2 * self.collision.width, self.collision.top + 0.25 * self.collision.height,
+                0.6 * self.collision.width, 0.5 * self.collision.height), 2)
+            pygame.draw.rect(zone, text_color, (
+                self.collision.left + 0.3 * self.collision.width, self.collision.top + 0.15 * self.collision.height,
+                0.15 * self.collision.width, 0.15 * self.collision.height), 2)
+            pygame.draw.rect(zone, text_color, (
+                self.collision.left + 0.375 * self.collision.width, self.collision.top + 0.25 * self.collision.height,
+                0.25 * self.collision.width, 0.15 * self.collision.height), 2)
+            pygame.draw.circle(zone, text_color, (
+                self.collision.left + 0.5 * self.collision.width, self.collision.top + 0.55 * self.collision.height), 5, 2)
 
 class TkWidget:
     """

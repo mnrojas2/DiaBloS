@@ -28,6 +28,8 @@ After loading the package, a window similar like the following figure will show:
 +-----+-------------------------+
 | (g) | PLOT Graph              |
 +-----+-------------------------+
+| (h) | Screen CAPTURE          |
++-----+-------------------------+
 | (2) | Blocks Menu             |
 +-----+-------------------------+
 | (3) | Canvas                  |
@@ -146,7 +148,8 @@ After loading the package, a window similar like the following figure will show:
     More details about how to create these types of functions are available in
     :ref:`"Creating new functions"<developer:creating new functions>` section from developer's guide.
 
-
+#. How to take a capture of the canvas.
+    Press the CAPTURE icon (1h) to take a capture of the screen. These get saved in the 'captures/' folder.
 
 #. Some shortcuts
     ::
@@ -155,6 +158,7 @@ After loading the package, a window similar like the following figure will show:
         Ctrl + A: Load
         Ctrl + S: Save
         Ctrl + E: Play Simulation
+        Ctrl + P: Take Capture
 
 First Experience
 ----------------
