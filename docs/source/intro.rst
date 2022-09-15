@@ -14,42 +14,56 @@ with the idea of making it easier for other people to contribute to the project.
 Capabilities of the DiaBloS package
 -----------------------------------
 
-DiaBloS is capable of:
+Python by itself does not provide a library to visually simulate dynamic system models, nor does it offer a visual
+programming alternative to paid software, such as Simulink from Mathworks.
 
--Relate independent functions and obtaining results as a whole.
+There are Python libraries created by the open source community that allow modeling interconnected dynamic systems,
+such as SimuPy, as well as others that provide an interface to analyze models created and used by external programs,
+such as PySimulator. However, none of these can produce these dynamic models visually, requiring direct
+programming, or the use of external software to create these systems (like OpenModellica Simulator), and then
+simulate in a Python environment.
 
--Integrate and derivate signals.
+DiaBloS provides a library that does not depend on external software for the simulation of dynamic systems, and provides
+the necessary tools to be able to create dynamic systems, simulate and obtain graphs of their behavior over time,
+without requiring major programming.
 
--Produce step responses, such as ramp responses, for systems of ordinary difference (differential) equations.
+The package currently offers the following functionalities:
 
--Generate signals with Gaussian distribution noise.
+#. Interconnect functions to create more complex systems.
 
--Create feedback systems.
+#. Integrate and derivate signals.
 
--Plot signals, both traditionally and dynamically (in active simulation time).
+#. Produce step responses, such as ramp responses, for systems of ordinary difference (differential) equations.
 
--Export signal data in .npz format.
+#. Generate signals with Gaussian distribution noise.
 
--Saving and loading block systems created in .dat format.
+#. Create feedback systems.
 
--Vector data handling.
+#. Plot signals, both traditionally and dynamically (in active simulation time).
 
--Routing multiple signals into a single output vector and vice versa.
+#. Export signal data in .npz format.
 
-Existen librerias de python que se enfocan en esto, pero solo se basan en las conexiones y no la interfaz, como tampoco
-el poder ejecutarlos. Tambien otros que requieren el uso de herramientas externas a python, requiriendo compilacion
-extra, generando un sin fin de archivos sólo para poder ejecutar un sistema realimentado básico.
+#. Save and load created block systems in files formated as .dat.
+
+#. Vector data handling.
+
+#. Route multiple signals into a single output vector and vice versa (multiplexing).
+
 
 Target audience for the DiaBloS package
 ---------------------------------------
 
-Usuarios de python
-control, ecuaciones diferenciales, personas enfocadas en el desarrollo de alternativas de programacion visual
+DiaBloS is intended for mathematicians, physicists and practicing engineers. It is a tool designed to help students
+understand processes associated with modeling dynamic systems, observe their physical behavior over time, as well as
+develop solutions for control systems, visually, without the need to have a full understanding of how to code these
+systems first.
+
 
 System requirements
 -------------------
 
 This library requires Python 3.9.7 or later
+
 
 Background information and Reference Material
 ---------------------------------------------

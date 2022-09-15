@@ -1,7 +1,8 @@
 Function Reference
 ==================
 
-A continuación una lista de las funciones disponibles en la libreria. Cabe destacar que varias de estas son únicamente auxiliares, enfocadas en manejar una problemática en particular del proceso.
+Below is a list of the functions available in the library. It should be noted that several of these are only auxiliary,
+focused on handling a particular problem in the process.
 
 .. autosummary::
    :toctree: generated
