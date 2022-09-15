@@ -115,7 +115,7 @@ class InitSim:
 
     def screenshot(self, zone):
         filename = self.filename[:-4]
-        pygame.image.save(zone, "captures/"+filename+str(self.ss_count)+".jpg")
+        pygame.image.save(zone, "captures/"+filename+'-'+str(self.ss_count)+".jpg")
         self.ss_count += 1
 
     ##### ADD OR REMOVE BLOCKS AND LINES #####
