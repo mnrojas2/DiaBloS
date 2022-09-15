@@ -54,9 +54,9 @@ class InitSim:
 
         self.FPS = 60
 
-        self.menu_blocks = []  # Lista de bloques base (lista)
-        self.blocks_list = []  # Lista de bloques existente
-        self.line_list = []    # Lista de lineas existente
+        self.menu_blocks = []               # Lista de bloques base (lista)
+        self.blocks_list = []               # Lista de bloques existente
+        self.line_list = []                 # Lista de lineas existente
 
         self.line_creation = 0              # Booleano (3 estados) para creación de una línea
         self.only_one = False               # Booleano para impedir que más de un bloque puede efectuar una operación
@@ -125,7 +125,6 @@ class InitSim:
     ##### ADD OR REMOVE BLOCKS AND LINES #####
 
     def add_block(self, block, m_pos=(0, 0)):
-
         """
         :purpose: Function that adds a block to the interface, with a unique ID.
         :description: From a visible list of MenuBlocks objects, a complete Block instance is created, which is available for editing its parameters or connecting to other blocks.
