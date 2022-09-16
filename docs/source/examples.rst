@@ -6,25 +6,25 @@ Algunos ejemplos de la herramienta en funcionamiento:
 Sine integration
 ----------------
 
-:Description: Este ejemplo muestra el proceso para integrar una señal sinusoidal, utilizando dos métodos de integración
-    distintos (Forward Euler y Runge Kutta 45) para luego comparar los resultados con la curva matemáticamente correcta.
+:Description: This example shows the process for integrating a sinusoidal signal, using two different integration
+    methods (Forward Euler and Runge Kutta 45) and then comparing the results with the mathematically correct curve.
 :Explanation: The math expression for the process is the following
 
     .. math:: y(t) = \int_0^t A\,\sin(\omega\,t + \phi_0) dt
 
-    calculando la integral de forma rigurosa, se llega a la siguiente expresión:
+    calculating the integral rigorously, we arrive at the following expression:
 
     .. math:: y(t) = 1 + A\,\cos(\omega\,t + \phi_0)
 
-    reescribiendo :math:`\cos(\theta)` como :math:`\sin(\theta + \pi/2)`:
+    rewriting :math:`\cos(\theta)` as :math:`\sin(\theta + \pi/2)`:
 
     .. math:: y(t) = 1 + A\,\sin(\omega\,t + \phi_0 + \pi/2)
 
-    si :math:`A = 1`, :math:`\omega = 1` y :math:`\phi_0 = 0`, el resultado de :math:`y(t)` queda como:
+    if :math:`A = 1`, :math:`\omega = 1` y :math:`\phi_0 = 0`, the resulting expression for :math:`y(t)` is:
 
     .. math:: y(t) = 1 + \sin(t + pi/2)
 
-    Lo cual se ejemplifica como la suma de un step de amplitud 1 y una sinusoidal que parte en :math:`\pi/2` en tiempo 0.
+    This is exemplified as the sum of a step of amplitude 1 and a sinusoidal starting at :math:`\phi_0 = \pi/2` at time :math:`t_0 = 0`.
 
     El problema, muestra dos de los 4 métodos de integración disponibles...
 
