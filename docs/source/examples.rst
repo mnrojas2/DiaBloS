@@ -26,10 +26,20 @@ Sine integration
 
     This is exemplified as the sum of a step of amplitude 1 and a sinusoidal starting at :math:`\phi_0 = \pi/2` at time :math:`t_0 = 0`.
 
-    El problema, muestra dos de los 4 métodos de integración disponibles...
+    El problema, también compara dos métodos de integración disponibles a utilizar...
 
-    Forward euler consiste en simplemente tomar el valor anterior y extender un rectángulo...
-    Runge Kutta consiste en un método más complejo... pero más exacto
+    #. Metodo Forward: El más simple, consiste en ir sumando un valor equivalente a la multiplicación del valor nuevo por el tiempo de muestreo
+
+    .. math:: y(t) \approx \sum_{k=0}^K sin(\omega \,k + \phi_0) \cdot \Delta T
+
+    #. Metodo Runge Kutta 45: Este metodo es más complejo, pero más exacto...
+
+    .. math:: y(t) \approx (k_1 + 2k_2 + 2k_3 +k_4) \Delta T
+
+    donde
+
+    .. math:: k_1 = \\ k_2 = \\ k_3 = \\ k_4 = \\
+
 
 :How to execute it:
     Despues de abirr el programa
