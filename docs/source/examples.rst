@@ -30,7 +30,7 @@ Sine integration
 
     #. Metodo Forward: El más simple, consiste en ir sumando un valor equivalente a la multiplicación del valor nuevo por el tiempo de muestreo
 
-    .. math:: y(t) \approx \sum_{k=0}^K sin(\omega \,k + \phi_0) \cdot \Delta T
+    .. math:: y(t) \approx y(k) = \sum_{k=0}^K f(k,x) \cdot \Delta T
 
     #. Metodo Runge Kutta 45: Este metodo es más complejo, pero más exacto...
 
@@ -38,7 +38,10 @@ Sine integration
 
     donde
 
-    .. math:: k_1 = \\ k_2 = \\ k_3 = \\ k_4 = \\
+    .. math:: k_1 &= \Delta T \cdot f\left(t,x\right) \\
+        k_2 &= \Delta T \cdot f\left(t + \frac{\Delta T}{2}, x + \frac{k_1}{2}\right) \\
+        k_3 &= \Delta T \cdot f\left(t + \frac{\Delta T}{2}, x + \frac{k_2}{2}\right) \\
+        k_4 &= \Delta T \cdot f\left(t + \Delta T, x + k_3\right)
 
 
 :How to execute it:
