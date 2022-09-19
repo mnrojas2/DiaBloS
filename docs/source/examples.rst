@@ -60,6 +60,15 @@ Integracion vectorial, comparando métodos de integracion runge-kutta y forward 
 
 :description: Este ejemplo muestra un ejemplo de integración RK45, donde los valores utilizados por el sistema son vectores.
 
+:explanation:
+
+    El sistema funciona a partir de considerar ciertos elementos del string como vectores
+    El modelo busca corchetes []
+    vector de una dimension seria v1D = [a,b]
+    vector de dos dimensiones seria v2D = [[a,b],[c,d]] o [a,b;c,d]
+    vector de 3 dimensiones v3D = [[[a,b],[c,d]],[[e,f],[g,h]]]
+    el uso de espacios no importa v = [3.9     ,   343] -> v = [3.9, 343]
+
 :How to execute it:
     Despues de abirr el programa
 
@@ -73,10 +82,19 @@ Export data
 
 Exportar datos proveniente de un vector muxxeado (step y cos(x))
 
-:description: Este ejemplo muestra el cómo se pueden exportar datos, a partir de una entrada vectorial. Cabe destacar que una segunda parte del proceso requeriría tomar los datos exportados y desempacarlos utilizando otro código de python con apoyo de la librería numpy
+:description: Este ejemplo muestra el cómo se pueden exportar datos, a partir de una entrada vectorial. Cabe destacar
+    que una segunda parte del proceso requeriría tomar los datos exportados y desempacarlos utilizando otro código de
+    python con apoyo de la librería numpy
+
+:explanation:
+
+    Se requiere agregar el bloque Export
+    El sistema se define en dos partes,
+    parte 1 se dedica a juntar los valores recibidos en una matriz
+    parte 2 se dedica a juntar todos los vectores de los distintos scope para exportar
 
 :How to execute it:
-    Despues de abirr el programa
+    Despues de abrir el programa
 
     editar parametros
 
@@ -88,6 +106,13 @@ External source
 Ejemplo de funcion tipo fuente, implementada con una funcion externa
 
 :description: Ejemplo de cómo crear una función source básica con código externo.
+
+:explanation:
+
+    Bloque solo requiere las salidas
+    Necesario definir bien el parametro que dice que es source
+    En la simulacion es necesario cargar el bloque "Bloque" para cargar externos
+    La funcion de carga, se dedica de ajustar los puertos y parametros del bloque para que corra
 
 :How to execute it:
     Despues de abirr el programa
@@ -103,6 +128,12 @@ Ejemplo de funcion tipo proceso, implementada con una funcion externa
 
 :description: Ejemplo de cómo crear una función proceso simple, de forma de demostrar las capacidades del programa de trabajar con implementaciones externas.
 
+:explanation:
+
+    Necesario definir bien el parametro que dice que es process
+    En la simulacion es necesario cargar el bloque "Bloque" para cargar externos
+    La funcion de carga, se dedica de ajustar los puertos y parametros del bloque para que corra
+
 :How to execute it:
     Despues de abirr el programa
 
@@ -116,6 +147,12 @@ External delay
 Ejemplo de funcion tipo memoria, implementada con una funcion externa
 
 :description: Ejemplo de cómo trabajar con datos guardados, de forma externa como un plus.
+
+:explanation:
+
+    Necesario definir bien el parametro que dice que es progress en este caso
+    En la simulacion es necesario cargar el bloque "Bloque" para cargar externos
+    La funcion de carga, se dedica de ajustar los puertos y parametros del bloque para que corra
 
 :How to execute it:
     Despues de abirr el programa
@@ -131,6 +168,12 @@ Ejemplo de integracion runge-kutta45
 
 :description: Ejemplo de cómo implementar la parte interna del proceso de integración rungekutta, como función externa
 
+:explanation:
+
+    Necesario definir bien el parametro que dice que es integrador
+    En la simulacion es necesario cargar el bloque "Bloque" para cargar externos
+    La funcion de carga, se dedica de ajustar los puertos y parametros del bloque para que corra
+
 :How to execute it:
     Despues de abirr el programa
 
@@ -145,6 +188,12 @@ Ejemplo de derivacion de paso variable (paso constante no sirve)
 
 :description: ejemplo de derivación como funcion externa
 
+:explanation:
+
+    Necesario definir bien el parametro que dice que es progress
+    En la simulacion es necesario cargar el bloque "Bloque" para cargar externos
+    La funcion de carga, se dedica de ajustar los puertos y parametros del bloque para que corra
+
 :How to execute it:
     Despues de abirr el programa
 
@@ -158,6 +207,13 @@ Feedback system three ways
 Ejemplo de sistema con feedback, implementado de 3 maneras distintas (funcion externa, funcion vectorial, funcion escalar)
 
 :description: Ejemplo integral que asocia varias funciones para poder comparar 3 métodos distintos para implementar un sistema de ecuaciones diferenciales, incluyendo el exportar tales datos a .npz
+
+:explanation:
+
+    Este ejemplo en forma de resumen la mayoria de los ejemplos vistos anteriormente, pero en conjunto para un sistema realimentado
+    modo 1 funcion externa x' = Ax + Bu
+    modo 2 funcion vectorial con uso de gains para hacer el Ax + Bu
+    modo 3 funcion escalar con uso de más de un integrador (explicar parte matematica)
 
 :How to execute it:
     Despues de abirr el programa

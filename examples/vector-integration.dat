@@ -100,8 +100,8 @@
         {
             "type": "Sum",
             "sid": 1,
-            "coords_left": 555,
-            "coords_top": 135,
+            "coords_left": 551,
+            "coords_top": 355,
             "coords_width": 70,
             "coords_height": 50,
             "coords_height_base": 50,
@@ -128,8 +128,8 @@
         {
             "type": "Integr",
             "sid": 0,
-            "coords_left": 705,
-            "coords_top": 130,
+            "coords_left": 693,
+            "coords_top": 350,
             "coords_width": 80,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -156,91 +156,10 @@
             "external": false
         },
         {
-            "type": "Sum",
-            "sid": 2,
-            "coords_left": 555,
-            "coords_top": 491,
-            "coords_width": 70,
-            "coords_height": 50,
-            "coords_height_base": 50,
-            "in_ports": 2,
-            "out_ports": 1,
-            "dragging": false,
-            "selected": false,
-            "b_color": [
-                0,
-                255,
-                255
-            ],
-            "run_ord": 2,
-            "io_edit": "input",
-            "fun_name": "sumator",
-            "params": {
-                "sign": "+-"
-            },
-            "external": false
-        },
-        {
-            "type": "Integr",
-            "sid": 1,
-            "coords_left": 710,
-            "coords_top": 486,
-            "coords_width": 80,
-            "coords_height": 60,
-            "coords_height_base": 60,
-            "in_ports": 1,
-            "out_ports": 1,
-            "dragging": false,
-            "selected": false,
-            "b_color": [
-                255,
-                0,
-                255
-            ],
-            "run_ord": 1,
-            "io_edit": false,
-            "fun_name": "integrator",
-            "params": {
-                "init_conds": [
-                    0.0,
-                    0.0
-                ],
-                "method": "RK45",
-                "_init_start_": true
-            },
-            "external": false
-        },
-        {
-            "type": "Scope",
-            "sid": 1,
-            "coords_left": 936,
-            "coords_top": 486,
-            "coords_width": 60,
-            "coords_height": 60,
-            "coords_height_base": 60,
-            "in_ports": 1,
-            "out_ports": 0,
-            "dragging": false,
-            "selected": false,
-            "b_color": [
-                220,
-                20,
-                60
-            ],
-            "run_ord": 3,
-            "io_edit": false,
-            "fun_name": "scope",
-            "params": {
-                "labels": "RK45",
-                "_init_start_": true
-            },
-            "external": false
-        },
-        {
             "type": "Scope",
             "sid": 0,
-            "coords_left": 937,
-            "coords_top": 130,
+            "coords_left": 916,
+            "coords_top": 350,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -333,16 +252,16 @@
                     371.0
                 ],
                 [
-                    515,
+                    511,
                     371.0
                 ],
                 [
-                    515,
-                    151.66666666666666
+                    511,
+                    371.6666666666667
                 ],
                 [
-                    555,
-                    151.66666666666666
+                    551,
+                    371.6666666666667
                 ]
             ],
             "cptr": 0,
@@ -357,80 +276,12 @@
             "dstport": 0,
             "points": [
                 [
-                    625,
-                    160.0
+                    621,
+                    380.0
                 ],
                 [
-                    705,
-                    160.0
-                ]
-            ],
-            "cptr": 0,
-            "selected": false
-        },
-        {
-            "name": "Line8",
-            "sid": 8,
-            "srcblock": "Sum2",
-            "srcport": 0,
-            "dstblock": "Integr1",
-            "dstport": 0,
-            "points": [
-                [
-                    625,
-                    516.0
-                ],
-                [
-                    710,
-                    516.0
-                ]
-            ],
-            "cptr": 0,
-            "selected": false
-        },
-        {
-            "name": "Line11",
-            "sid": 11,
-            "srcblock": "Sum0",
-            "srcport": 0,
-            "dstblock": "Sum2",
-            "dstport": 0,
-            "points": [
-                [
-                    454,
-                    371.0
-                ],
-                [
-                    515,
-                    371.0
-                ],
-                [
-                    515,
-                    507.6666666666667
-                ],
-                [
-                    555,
-                    507.6666666666667
-                ]
-            ],
-            "cptr": 0,
-            "selected": false
-        },
-        {
-            "name": "Line12",
-            "sid": 12,
-            "srcblock": "Integr1",
-            "srcport": 0,
-            "dstblock": "Scope1",
-            "dstport": 0,
-            "points": [
-                [
-                    790,
-                    516.0
-                ],
-                [
-                    936,
-                    516.0
+                    693,
+                    380.0
                 ]
             ],
             "cptr": 0,
@@ -445,12 +296,12 @@
             "dstport": 0,
             "points": [
                 [
-                    785,
-                    160.0
+                    773,
+                    380.0
                 ],
                 [
-                    937,
-                    160.0
+                    916,
+                    380.0
                 ]
             ],
             "cptr": 0,
@@ -465,64 +316,28 @@
             "dstport": 1,
             "points": [
                 [
-                    785,
-                    160.0
+                    773,
+                    380.0
                 ],
                 [
-                    805,
-                    160.0
+                    793,
+                    380.0
                 ],
                 [
-                    805,
-                    210
+                    793,
+                    430
                 ],
                 [
-                    535,
-                    210
+                    531,
+                    430
                 ],
                 [
-                    535,
-                    168.33333333333334
+                    531,
+                    388.3333333333333
                 ],
                 [
-                    555,
-                    168.33333333333334
-                ]
-            ],
-            "cptr": 0,
-            "selected": false
-        },
-        {
-            "name": "Line5",
-            "sid": 5,
-            "srcblock": "Integr1",
-            "srcport": 0,
-            "dstblock": "Sum2",
-            "dstport": 1,
-            "points": [
-                [
-                    790,
-                    516.0
-                ],
-                [
-                    810,
-                    516.0
-                ],
-                [
-                    810,
-                    566
-                ],
-                [
-                    535,
-                    566
-                ],
-                [
-                    535,
-                    524.3333333333334
-                ],
-                [
-                    555,
-                    524.3333333333334
+                    551,
+                    388.3333333333333
                 ]
             ],
             "cptr": 0,
