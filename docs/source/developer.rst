@@ -111,23 +111,44 @@ poner la explicacion vista con el profe (todavia no vista)::
 
     T -> T0, T0, T0.5, T0.5, T1, T1, T1.5, T1.5, T2, ...
 
-
     -Definir periodo Delta T como el intervalo entre loops. O sea, después de inicializar, se debe esperar un tiempo DT, ejecutar el loop, otro DT, el loop, otro DT y así.
     -Definir caso integrador normal (caso con condiciones iniciales) generalizado
     -Definir caso para un sistema con un único integrador con realimentación, donde el integrador forma parte del circuito cerrado
     -Definir que el sistema visto desde el integrador se puede entender como que la salida del integrador es un 'x', y la entrada
     -Definir reglas del runge kutta k1, k2, k3, k4
 
+    k1 = DT * f(t,x)
+    k2 = DT * f(t + DT/2, x + k1/2)
+    k3 = DT * f(t + DT/2, x + k2/2)
+    k4 = DT * f(t + DT, x + k3)
+    k = 1/6 * (k1 + 2*k2 + 2*k3 + k4)
+
+    y = y(-1) + k
+    t = t(-1) + h
+
     -init
+    count_ki = 0
     T0.0 -> init conds (calcula k1)
+    move DT/2
     -in loop
+    count_ki = 1
     T0.5 -> k1 (calcula k2)
+    count_ki = 2
     T0.5 -> k2 (calcula k3)
+    move DT/2
+    count_ki = 3
     T1.0 -> k3 (calcula k4 y k)
+    count_ki = 0
     T1.0 -> k4 = k (calcula k1)
+    move DT/2
+    count_ki = 1
     T1.5 -> k1 (calcula k2)
+    count_ki = 2
     T1.5 -> k2 (calcula k3)
+    move DT/2
+    count_ki = 3
     T2.0 -> k3 (calcula k4 y k)
+    count_ki = 0
     T2.0 -> k4 = k (calcula k1)
 
 Explain how the data is sent from one block to another (filetype)
