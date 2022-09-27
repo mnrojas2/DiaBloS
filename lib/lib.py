@@ -23,6 +23,20 @@ sys.path.append('./usermodels/')
 class InitSim:
     """
     Class that manages the simulation interface and main functions.
+
+    :param SCREEN_WIDTH:
+    :param SCREEN_HEIGHT:
+    :param canvas_top_limit:
+    :param canvas_left_limit:
+    :param colors:
+    :param fps:
+    :param l_width:
+    :param ls_width:
+    :param filename:
+    :param sim_time:
+    :param sim_dt:
+    :param plot_trange:
+
     """
 
     def __init__(self):
@@ -54,6 +68,14 @@ class InitSim:
 
         self.FPS = 60
 
+        self.l_width = 5                    # Ancho de linea en modo seleccionado
+        self.ls_width = 5                   # Ancho separacion entre linea-bloque en modo seleccionado
+
+        self.filename = 'data.dat'  # Nombre del archivo cargado o por defecto
+        self.sim_time = 1.0  # Tiempo de simulación por defecto
+        self.sim_dt = 0.01  # Tiempo de muestreo base para simulación (Por defecto: 10ms)
+        self.plot_trange = 100  # Ancho de la ventana para el plot dinámico (Por defecto: 100 muestras)
+
         self.menu_blocks = []               # Lista de bloques base (lista)
         self.blocks_list = []               # Lista de bloques existente
         self.line_list = []                 # Lista de lineas existente
@@ -62,17 +84,8 @@ class InitSim:
         self.only_one = False               # Booleano para impedir que más de un bloque puede efectuar una operación
         self.enable_line_selection = False  # Booleano para indicar si es posible seleccionar una línea o no
         self.holding_CTRL = False           # Booleano para controlar el estado de la tecla CTRL
-
-        self.l_width = 5                    # Ancho de linea en modo seleccionado
-        self.ls_width = 5                   # Ancho separacion entre linea-bloque en modo seleccionado
-
         self.execution_initialized = False  # Booleano para indicar si el grafo se ejecutó al menos una vez
-
-        self.filename = 'data.dat'          # Nombre del archivo cargado o por defecto
         self.ss_count = 0                   # Contador de capturas de pantalla
-        self.sim_time = 1.0                 # Tiempo de simulación por defecto
-        self.sim_dt = 0.01                  # Tiempo de muestreo base para simulación (Por defecto: 10ms)
-        self.plot_trange = 100              # Ancho de la ventana para el plot dinámico (Por defecto: 100 muestras)
 
         self.execution_pause = False        # Booleano que indica si la ejecución se pausó en algún momento
         self.execution_stop = False         # Booleano que indica si la ejecución se detuvo completamente
@@ -1111,6 +1124,30 @@ class InitSim:
 class Block(InitSim):
     """
     Class to initialize, mantain and modify function blocks.
+
+    :param b_type:
+    :param sid:
+    :param coords:
+    :param color:
+    :param in_ports:
+    :param out_ports:
+    :param run_ord:
+    :param io_edit:
+    :param fun_name:
+    :param params:
+    :param external:
+    :param b_type:
+    :type sid: int
+    :type coords: list
+    :type color: str/triplet
+    :type in_ports: int
+    :type out_ports: int
+    :type run_ord: int
+    :type io_edit: bool
+    :type fun_name: str
+    :type params: dict
+    :type external: bool
+
     """
     def __init__(self, b_type, sid, coords, color, in_ports=1, out_ports=1, run_ord=2, io_edit=True, fun_name='block', params={}, external=False):
         super().__init__()
@@ -1423,6 +1460,22 @@ class Block(InitSim):
 class Line(InitSim):
     """
     Class to initialize and maintain lines that connect blocks.
+
+    :param sid:
+    :param srcblock:
+    :param srcport:
+    :param dstblock:
+    :param dstport:
+    :param points:
+    :param cptr:
+    :type sid: int
+    :type srcblock: int
+    :type srcport: int
+    :type dstblock: int
+    :type dstport: int
+    :type points: list
+    :type cptr: int
+
     """
     def __init__(self, sid, srcblock, srcport, dstblock, dstport, points, cptr=0):
         super().__init__()
@@ -1560,6 +1613,22 @@ class Line(InitSim):
 class MenuBlocks(InitSim):
     """
     Class to create and show basic blocks used as a mark to generate functional blocks in the user interface.
+
+    :param b_type:
+    :param fun_name:
+    :param io_params:
+    :param ex_params:
+    :param b_color:
+    :param coords:
+    :param external:
+    :type b_type: str
+    :type fun_name: str
+    :type io_params: dict
+    :type ex_params: dict
+    :type b_color: str/triplet
+    :type coords: list
+    :type external: bool
+
     """
     # Produce un "boton" para generar bloques con las caracteristicas indicadas
     def __init__(self, b_type, fun_name, io_params, ex_params, b_color, coords, external=False):
@@ -1595,6 +1664,14 @@ class MenuBlocks(InitSim):
 class Button(InitSim):
     """
     Class to create and show buttons in the user interface.
+
+    :param name: Name of the variable associated to the button.
+    :param coords: Coordinates of the button in the canvas.
+    :param active: Boolean that indicates the state of the function associated to the button.
+    :type name: str
+    :type coords: list
+    :type active: bool
+
     """
     def __init__(self, name, coords, active=True):
         super().__init__()
@@ -1701,6 +1778,12 @@ class Button(InitSim):
 class TkWidget:
     """
     Class used to create popup windows for changing data, like ports and parameters.
+
+    :param name: Name of the source (class, block, line, element that calls this class function).
+    :param params: Parameters of the source to display in the popup window.
+    :type name: str
+    :type params: dict
+
     """
     def __init__(self, name, params):
         self.params = params
@@ -1807,6 +1890,14 @@ class SignalPlot:
     """
     Class that manages the display of dynamic plots through the simulation.
     *WARNING: It uses pyqtgraph as base (MIT license, but interacts with PyQT5 (GPL)).*
+
+    :param dt: Sampling time of the system.
+    :param labels: List of names of the vectors.
+    :param xrange: Maximum number of elements to plot in axis x.
+    :type dt: float
+    :type labels: list
+    :type xrange: int
+
     """
     def __init__(self, dt, labels=['default'], xrange=100):
         self.dt = dt
