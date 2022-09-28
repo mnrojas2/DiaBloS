@@ -24,18 +24,30 @@ class InitSim:
     """
     Class that manages the simulation interface and main functions.
 
-    :param SCREEN_WIDTH:
-    :param SCREEN_HEIGHT:
-    :param canvas_top_limit:
-    :param canvas_left_limit:
-    :param colors:
-    :param fps:
-    :param l_width:
-    :param ls_width:
-    :param filename:
-    :param sim_time:
-    :param sim_dt:
-    :param plot_trange:
+    :param SCREEN_WIDTH: The width of the window
+    :param SCREEN_HEIGHT: The height of the window
+    :param canvas_top_limit: Top limit where blocks and lines must be drawn.
+    :param canvas_left_limit: Left limit where blocks and lines must be drawn.
+    :param colors: List of predefined colors for elements that show in the canvas.
+    :param fps: Base frames per seconds for pygame's loop.
+    :param l_width: Width of the line when a block or a line is selected.
+    :param ls_width: Space between the line and block when the latter is selected.
+    :param filename: Name of the file that was recently loaded. By default is 'data.dat'.
+    :param sim_time: Simulation time for graph execution.
+    :param sim_dt: Simulation sampling time for graph execution.
+    :param plot_trange: Width in number of elements that must be shown when a graph is getting executed with dynamic plot enabled.
+    :type SCREEN_WIDTH: int
+    :type SCREEN_HEIGHT: int
+    :type canvas_top_limit: int
+    :type canvas_left_limit: int
+    :type colors: dict
+    :type fps: int
+    :type l_width: int
+    :type ls_width: int
+    :type filename: str
+    :type sim_time: float
+    :type sim_dt: float
+    :type plot_trange: int
 
     """
 
@@ -1125,25 +1137,25 @@ class Block(InitSim):
     """
     Class to initialize, mantain and modify function blocks.
 
-    :param b_type:
-    :param sid:
-    :param coords:
-    :param color:
-    :param in_ports:
-    :param out_ports:
-    :param run_ord:
-    :param io_edit:
-    :param fun_name:
-    :param params:
-    :param external:
-    :param b_type:
+    :param b_type: Block type, defined according to the available blocks created in InitSim.
+    :param sid: Unique identification for the created line.
+    :param coords: List with tuples that contain the location and size of the block in the canvas.
+    :param color: String or triplet that defines the color of the block in the canvas.
+    :param in_ports: Number of inputs for the block.
+    :param out_ports: Number of outputs for the block.
+    :param run_ord: Variable for block type identification (0: source, 1: process with I.C, 2: process, 3: drain).
+    :param io_edit: Variable that defines if a block can change the number of its input ports and/or output ports.
+    :param fun_name: Function name, function associated to the block type. That function defined in the Functions class.
+    :param params: Dictionary with function-related parameters.
+    :param external: Parameter that set a block with an external function (not defined in Functions class).
+    :type b_type:
     :type sid: int
     :type coords: list
     :type color: str/triplet
     :type in_ports: int
     :type out_ports: int
     :type run_ord: int
-    :type io_edit: bool
+    :type io_edit: str
     :type fun_name: str
     :type params: dict
     :type external: bool
@@ -1461,13 +1473,13 @@ class Line(InitSim):
     """
     Class to initialize and maintain lines that connect blocks.
 
-    :param sid:
-    :param srcblock:
-    :param srcport:
-    :param dstblock:
-    :param dstport:
-    :param points:
-    :param cptr:
+    :param sid: Unique identification for the created line.
+    :param srcblock: Block from where the line starts.
+    :param srcport: Port of the block where the line starts.
+    :param dstblock: Block to where the line ends.
+    :param dstport: Port of the block where the line ends.
+    :param points: List of tuples that defines the vertex of the trajectory of the line (if it's not a straight line).
+    :param cptr: Variable used as a pointer to assign a color to the line. It depends on the 'colors' list defined in InitSim.
     :type sid: int
     :type srcblock: int
     :type srcport: int
@@ -1614,13 +1626,13 @@ class MenuBlocks(InitSim):
     """
     Class to create and show basic blocks used as a mark to generate functional blocks in the user interface.
 
-    :param b_type:
-    :param fun_name:
-    :param io_params:
-    :param ex_params:
-    :param b_color:
-    :param coords:
-    :param external:
+    :param b_type: Block type, defined according to the available blocks created in InitSim
+    :param fun_name: Function name, function associated to the block type. That function defined in the Functions class.
+    :param io_params: Dictionary with block-related parameters (input ports, output ports, run_ord, edit inputs/outputs).
+    :param ex_params: Dictionary with function-related parameters.
+    :param b_color: String or triplet that defines the color of the block in the canvas.
+    :param coords: List with tuples that contain the location and size of the block in the canvas.
+    :param external: Parameter that set a block with an external function (not defined in Functions class).
     :type b_type: str
     :type fun_name: str
     :type io_params: dict
