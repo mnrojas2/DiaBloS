@@ -70,7 +70,7 @@ Explicar el loop de simulacion con las funciones para crear/destruir bloques::
 How to change some settings (resolution, fps, canvas color)
 -----------------------------------------------------------
 
--Cambiar en InitSim/archivo de guardado
+-Cambiar en InitSim
 
 -initsim.__init__()
 
@@ -185,20 +185,23 @@ Funcion inicialización::
         params = {} # parameters defined before use them in the function
         return io_data, params
 
+
 Testing a new function
 ----------------------
 
--Se recomienda utilizar el bloque "Block" y el template para definir funciones y sus parámetros iniciales con "__init__()"
+It is recommended to implement this function as an external-function type first, then add it to the Functions class.
 
--Definir entradas, salidas, parametros
 
--Crear un sistema simple donde la salida de esta nueva funcion fuese a un scope o exportdata
+#. First define inputs, outputs, running order and block color in the external function file "_init_" and implement the most simplified version of the function to add.
 
--Agregar la entrada que se deba recibir por medio de los bloques (puertos)
+#. After that, create a simple graph diagram to test the new block. i.e: A Step block, connected to the external block (where the new function is implemented), connected to a Scope block.
 
--Analizar los resultados y comprobar externamente si funciona como se espera
+#. If the system doesn't fail execution, add new elements to the external function being aware of not breaking the graph execution stability.
 
--Usar bloque "block" para probar la funcion externa
+#. When everything is ok, add the new finished function to the Functions class and create a new MenuBlock in InitSim.menu_blocks_init(), using the parameters already defined in the external function "_init_" and defining block size and if the function allows change of inputs and/or outputs.
+
+#. Test again the function in the simulation, this time replacing the External Block with the corresponding to the new implemented function.
+
 
 Preventing crashes
 ------------------
