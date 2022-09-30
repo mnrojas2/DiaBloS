@@ -150,7 +150,7 @@
                     0.0,
                     0.0
                 ],
-                "method": "FWD_RECT",
+                "method": "RK45",
                 "_init_start_": true
             },
             "external": false
@@ -176,7 +176,7 @@
             "io_edit": false,
             "fun_name": "scope",
             "params": {
-                "labels": "Line0",
+                "labels": "Line0,Line1",
                 "_init_start_": true
             },
             "external": false

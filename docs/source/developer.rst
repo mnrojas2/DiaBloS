@@ -159,6 +159,20 @@ Mencionar el como funciona lo de los diccionarios::
     return {0: np.array(dato), 1: np.array([dato1,dato2])}
 
 
+Vector management
+-----------------
+
+Explicación de cómo se conservan los vectores.
+
+Vector 1d
+Vector 2d (matriz)
+Vector 3d (matriz 3DOF)
+
+TkWidget class
+    get_values()
+    string_to_vector()
+
+
 .. _usermodel-function:
 
 Creating new functions

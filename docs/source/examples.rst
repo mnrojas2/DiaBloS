@@ -1,7 +1,8 @@
 Using DiaBloS: Some Practical Examples
 ======================================
 
-Algunos ejemplos de la herramienta en funcionamiento:
+This package provides some examples, as a way to demonstrate some of the capabilities that this program has. These
+examples are contained in '.dat' files, located in the 'Examples' folder, and are executed as any file saved by the user.
 
 Sine integration
 ----------------
@@ -44,19 +45,10 @@ Sine integration
         k_4 &= \Delta T \cdot f\left(t + \Delta T, x + k_3\right)
 
 
-:How to execute it:
-    Despues de abirr el programa
-
-    editar parametros
-
-    presionar Play
-
-:Important details: no c
-
 Vectorial integration
 ---------------------
 
-Integracion vectorial, comparando métodos de integracion runge-kutta y forward euler.
+Integracion vectorial, utilizando el método de integracion runge-kutta.
 
 :description: Este ejemplo muestra un ejemplo de integración RK45, donde los valores utilizados por el sistema son vectores.
 
@@ -68,13 +60,6 @@ Integracion vectorial, comparando métodos de integracion runge-kutta y forward 
     vector de dos dimensiones seria v2D = [[a,b],[c,d]] o [a,b;c,d]
     vector de 3 dimensiones v3D = [[[a,b],[c,d]],[[e,f],[g,h]]]
     el uso de espacios no importa v = [3.9     ,   343] -> v = [3.9, 343]
-
-:How to execute it:
-    Despues de abirr el programa
-
-    editar parametros
-
-    presionar Play
 
 
 Export data
@@ -93,13 +78,6 @@ Exportar datos proveniente de un vector muxxeado (step y cos(x))
     parte 1 se dedica a juntar los valores recibidos en una matriz
     parte 2 se dedica a juntar todos los vectores de los distintos scope para exportar
 
-:How to execute it:
-    Despues de abrir el programa
-
-    editar parametros
-
-    presionar Play
-
 External source
 ---------------
 
@@ -114,12 +92,6 @@ Ejemplo de funcion tipo fuente, implementada con una funcion externa
     En la simulacion es necesario cargar el bloque "Bloque" para cargar externos
     La funcion de carga, se dedica de ajustar los puertos y parametros del bloque para que corra
 
-:How to execute it:
-    Despues de abirr el programa
-
-    editar parametros
-
-    presionar Play
 
 External process
 ----------------
@@ -134,12 +106,6 @@ Ejemplo de funcion tipo proceso, implementada con una funcion externa
     En la simulacion es necesario cargar el bloque "Bloque" para cargar externos
     La funcion de carga, se dedica de ajustar los puertos y parametros del bloque para que corra
 
-:How to execute it:
-    Despues de abirr el programa
-
-    editar parametros
-
-    presionar Play
 
 External delay
 --------------
@@ -154,12 +120,6 @@ Ejemplo de funcion tipo memoria, implementada con una funcion externa
     En la simulacion es necesario cargar el bloque "Bloque" para cargar externos
     La funcion de carga, se dedica de ajustar los puertos y parametros del bloque para que corra
 
-:How to execute it:
-    Despues de abirr el programa
-
-    editar parametros
-
-    presionar Play
 
 External integrator
 -------------------
@@ -174,12 +134,6 @@ Ejemplo de integracion runge-kutta45
     En la simulacion es necesario cargar el bloque "Bloque" para cargar externos
     La funcion de carga, se dedica de ajustar los puertos y parametros del bloque para que corra
 
-:How to execute it:
-    Despues de abirr el programa
-
-    editar parametros
-
-    presionar Play
 
 External derivator
 ------------------
@@ -194,12 +148,6 @@ Ejemplo de derivacion de paso variable (paso constante no sirve)
     En la simulacion es necesario cargar el bloque "Bloque" para cargar externos
     La funcion de carga, se dedica de ajustar los puertos y parametros del bloque para que corra
 
-:How to execute it:
-    Despues de abirr el programa
-
-    editar parametros
-
-    presionar Play
 
 Feedback system three ways
 --------------------------
@@ -215,16 +163,3 @@ Ejemplo de sistema con feedback, implementado de 3 maneras distintas (funcion ex
     modo 2 funcion vectorial con uso de gains para hacer el Ax + Bu
     modo 3 funcion escalar con uso de más de un integrador (explicar parte matematica)
 
-:How to execute it:
-    Despues de abirr el programa
-
-    editar parametros
-
-    presionar Play
-
-.. Nombre
-.. Descripcion
-.. Explicacion del proceso (o de las razones de pq se hizo asi)
-.. Detalles importantes del ejemplo en particular
-.. Que se puede modificar, o para que se puede usar el ejemplo.
-.. bugs
