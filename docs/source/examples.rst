@@ -85,7 +85,7 @@ Ejemplo de funcion tipo fuente, implementada con una funcion externa
 
 :description: Ejemplo de cómo crear una función source básica con código externo.
 
-:explanation:
+:explanation:x
 
     Bloque solo requiere las salidas
     Necesario definir bien el parametro que dice que es source
@@ -110,7 +110,7 @@ Ejemplo de funcion tipo proceso, implementada con una funcion externa
 External delay
 --------------
 
-Ejemplo de funcion tipo memoria, implementada con una funcion externa
+Ejemplo de funcion tipo memoria, implementada con una funcion externa, Direct-through
 
 :description: Ejemplo de cómo trabajar con datos guardados, de forma externa como un plus.
 
