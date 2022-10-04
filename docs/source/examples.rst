@@ -107,20 +107,6 @@ Ejemplo de funcion tipo proceso, implementada con una funcion externa
     La funcion de carga, se dedica de ajustar los puertos y parametros del bloque para que corra
 
 
-External delay
---------------
-
-Ejemplo de funcion tipo memoria, implementada con una funcion externa, Direct-through
-
-:description: Ejemplo de cómo trabajar con datos guardados, de forma externa como un plus.
-
-:explanation:
-
-    Necesario definir bien el parametro que dice que es progress en este caso
-    En la simulacion es necesario cargar el bloque "Bloque" para cargar externos
-    La funcion de carga, se dedica de ajustar los puertos y parametros del bloque para que corra
-
-
 External integrator
 -------------------
 
