@@ -179,7 +179,7 @@ class InitSim:
         mouse_y = m_pos[1]
         block_collision = (mouse_x, mouse_y, block.size[0], block.size[1])
 
-        new_block = Block(block.b_type, sid, block_collision, block.b_color, block.ins, block.outs, block.run_ord, block.io_edit, block.fun_name, copy.deepcopy(block.params), block.external)
+        new_block = Block(block.b_type, sid, block_collision, block.b_color, block.ins, block.outs, block.b_class, block.io_edit, block.fun_name, copy.deepcopy(block.params), block.external)
         self.blocks_list.append(new_block)
 
     def add_line(self, srcData, dstData):
@@ -298,68 +298,68 @@ class InitSim:
         # blockname, function_name, {# inputs, # output, execution hierarchy}, {<specific argument/parameters>}, color, (width, height), allows_io_change
 
         block = MenuBlocks("Block", 'block',
-                           {'inputs': 1, 'outputs': 1, 'run_ord': 2, 'io_edit': False}, {"filename": '<no filename>'},
+                           {'inputs': 1, 'outputs': 1, 'b_class': 2, 'io_edit': False}, {"filename": '<no filename>'},
                            'green', (120, 60), True)
 
         step = MenuBlocks("Step", 'step',
-                        {'inputs': 0, 'outputs': 1, 'run_ord': 0, 'io_edit': False}, {'value': 1.0, 'delay': 0.0, 'type': 'up'},
+                        {'inputs': 0, 'outputs': 1, 'b_class': 0, 'io_edit': False}, {'value': 1.0, 'delay': 0.0, 'type': 'up'},
                         'blue', (60, 60))
 
         gain = MenuBlocks("Gain", 'gain',
-                        {'inputs': 1, 'outputs': 1, 'run_ord': 2, 'io_edit': False}, {'gain': 1.0},
+                        {'inputs': 1, 'outputs': 1, 'b_class': 2, 'io_edit': False}, {'gain': 1.0},
                         'yellow', (60, 60))
 
         integrator = MenuBlocks("Integr", 'integrator',
-                        {'inputs': 1, 'outputs': 1, 'run_ord': 1, 'io_edit': False}, {'init_conds': 0.0, 'method': 'FWD_RECT', '_init_start_': True},
+                        {'inputs': 1, 'outputs': 1, 'b_class': 1, 'io_edit': False}, {'init_conds': 0.0, 'method': 'FWD_RECT', '_init_start_': True},
                         'magenta', (80, 60))
 
         derivative = MenuBlocks("Deriv", 'derivative',
-                                {'inputs': 1, 'outputs': 1, 'run_ord': 2, 'io_edit': False},
+                                {'inputs': 1, 'outputs': 1, 'b_class': 2, 'io_edit': False},
                                 {'_init_start_': True},
                                 'aqua', (80, 60))
 
         sumator = MenuBlocks("Sum", 'sumator',
-                        {'inputs': 2, 'outputs': 1, 'run_ord': 2, 'io_edit': 'input'}, {'sign': "++"},
+                        {'inputs': 2, 'outputs': 1, 'b_class': 2, 'io_edit': 'input'}, {'sign': "++"},
                         'cyan', (70, 50))
 
         sigproduct = MenuBlocks("SgProd", 'sigproduct',
-                        {'inputs': 2, 'outputs': 1, 'run_ord': 2, 'io_edit': 'input'}, {},
+                        {'inputs': 2, 'outputs': 1, 'b_class': 2, 'io_edit': 'input'}, {},
                         'green', (70, 50))
 
         sine = MenuBlocks("Sine", 'sine',
-                        {'inputs': 0, 'outputs': 1, 'run_ord': 0, 'io_edit': False}, {'amplitude': 1.0, 'omega': 1.0, 'init_angle': 0},
+                        {'inputs': 0, 'outputs': 1, 'b_class': 0, 'io_edit': False}, {'amplitude': 1.0, 'omega': 1.0, 'init_angle': 0},
                         'purple', (60, 60))
 
         exponential = MenuBlocks("Exp", 'exponential',
-                        {'inputs': 1, 'outputs': 1, 'run_ord': 2, 'io_edit': False}, {'a': 1.0, 'b': 1.0},
+                        {'inputs': 1, 'outputs': 1, 'b_class': 2, 'io_edit': False}, {'a': 1.0, 'b': 1.0},
                         (255, 0, 128), (60, 60))  # a*e^bx
 
         ramp = MenuBlocks("Ramp", 'ramp',
-                        {'inputs': 0, 'outputs': 1, 'run_ord': 0, 'io_edit': False}, {'slope': 1.0, 'delay': 0.0},
+                        {'inputs': 0, 'outputs': 1, 'b_class': 0, 'io_edit': False}, {'slope': 1.0, 'delay': 0.0},
                         (255, 127, 0), (60, 60))
 
         noise = MenuBlocks("Noise", 'noise',
-                        {'inputs': 0, 'outputs': 1, 'run_ord': 0, 'io_edit': False}, {'sigma': 1, 'mu': 0},
+                        {'inputs': 0, 'outputs': 1, 'b_class': 0, 'io_edit': False}, {'sigma': 1, 'mu': 0},
                         (100, 175, 50), (60, 60))
 
         mux = MenuBlocks("Mux", "mux",
-                        {'inputs': 2, 'outputs': 1, 'run_ord': 2, 'io_edit': 'input'}, {},
+                        {'inputs': 2, 'outputs': 1, 'b_class': 2, 'io_edit': 'input'}, {},
                         (102, 51, 153), (60, 60))
 
         demux = MenuBlocks("Demux", "demux",
-                        {'inputs': 1, 'outputs': 2, 'run_ord': 2, 'io_edit': 'output'}, {'output_shape': 1},
+                        {'inputs': 1, 'outputs': 2, 'b_class': 2, 'io_edit': 'output'}, {'output_shape': 1},
                         (102, 30, 153), (60, 60))
 
         terminator = MenuBlocks("Term", 'terminator',
-                        {'inputs': 1, 'outputs': 0, 'run_ord': 3, 'io_edit': False}, {},
+                        {'inputs': 1, 'outputs': 0, 'b_class': 3, 'io_edit': False}, {},
                         'red', (60, 60))
 
         scope = MenuBlocks("Scope", 'scope',
-                        {'inputs': 1, 'outputs': 0, 'run_ord': 3, 'io_edit': False}, {'labels': 'default', '_init_start_': True},
+                        {'inputs': 1, 'outputs': 0, 'b_class': 3, 'io_edit': False}, {'labels': 'default', '_init_start_': True},
                         (220, 20, 60), (60, 60))
 
         export = MenuBlocks("Export", "export",
-                        {'inputs': 1, 'outputs': 0, 'run_ord': 3, 'io_edit': False}, {'str_name': 'default', '_init_start_': True},
+                        {'inputs': 1, 'outputs': 0, 'b_class': 3, 'io_edit': False}, {'str_name': 'default', '_init_start_': True},
                         (255, 160, 0), (70, 60))
 
         self.menu_blocks = [step, sine, ramp, noise, integrator, derivative, gain, exponential, block, sumator, sigproduct, mux, demux, terminator, scope, export]
@@ -423,7 +423,7 @@ class InitSim:
                 "dragging": block.dragging,
                 "selected": block.selected,
                 "b_color": block.b_color,
-                "run_ord": block.run_ord,
+                "b_class": block.b_class,
                 "io_edit": block.io_edit,
                 "fun_name": block.fun_name,
                 "params": block.saving_params(),
@@ -472,8 +472,6 @@ class InitSim:
             return
         root.destroy()
 
-        self.filename = file.split('/')[-1] # Para conservar el nombre del archivo si es que se quiere guardar
-
         with open(file) as json_file:
             data = json.load(json_file)
         sim_data = data['sim_data']
@@ -487,6 +485,8 @@ class InitSim:
             self.update_blocks_data(block)
         for line in lines_data:
             self.update_lines_data(line)
+
+        self.filename = file.split('/')[-1]  # Para conservar el nombre del archivo si es que se quiere guardar
 
         print("LOADED FROM", file)
 
@@ -517,7 +517,7 @@ class InitSim:
                       block_data['b_color'],
                       block_data['in_ports'],
                       block_data['out_ports'],
-                      block_data['run_ord'],
+                      block_data['b_class'],
                       block_data['io_edit'],
                       block_data['fun_name'],
                       block_data['params'],
@@ -554,6 +554,8 @@ class InitSim:
         self.only_one = False
         self.enable_line_selection = False
         self.buttons_list[6].active = False  # Disable plot button
+        self.ss_count = 0
+        self.filename = 'data.dat'
 
     ##### DIAGRAM EXECUTION #####
 
@@ -662,7 +664,7 @@ class InitSim:
         for block in self.blocks_list:
             children = {}
             out_value = {}
-            if block.run_ord == 0:
+            if block.b_class == 0:
                 # Se ejecuta la función (se diferencia entre función interna y externa primero)
                 if block.external:
                     out_value = getattr(block.file_function, block.fun_name)(self.time_step, block.input_queue, block.params)
@@ -673,7 +675,7 @@ class InitSim:
                 self.update_global_list(block.name, 0, True)
                 children = self.get_outputs(block.name)
 
-            elif block.run_ord == 1:
+            elif block.b_class == 1:
                 # Se ejecuta la función para únicamente entregar el resultado en memoria (se diferencia entre función interna y externa primero)
                 if block.external:
                     out_value = getattr(block.file_function, block.fun_name)(self.time_step, block.input_queue, block.params, True, False, self.sim_dt)
@@ -723,7 +725,7 @@ class InitSim:
 
                     # Se buscan los bloques que requieren los datos procesados de este bloque
                     children = self.get_outputs(block.name)
-                    if block.run_ord not in [1, 3]:  # elementos que no entregan resultado a children (1 es cond. inicial)
+                    if block.b_class not in [1, 3]:  # elementos que no entregan resultado a children (1 es cond. inicial)
                         for mblock in self.blocks_list:
                             is_child, tuple_list = self.children_recognition(mblock.name, children)
                             if is_child:
@@ -788,7 +790,7 @@ class InitSim:
 
         # Se ejecutan primero los bloques con memoria para obtener sólo el valor producido en la etapa anterior (no ejecutar la función primaria de estas)
         for block in self.blocks_list:
-            if block.run_ord == 1:
+            if block.b_class == 1:
                 # Se define si el resultado debe acumularse en la memoria o no
                 add_in_memory = True
                 if self.rk45_len and self.rk_counter != 3:
@@ -820,7 +822,7 @@ class InitSim:
                             block.data_sent += 1
 
             # Para los bloques terminales que guardan datos, se les indica si se está en un instante de tiempo normal o intermedio
-            elif block.run_ord == 3:
+            elif block.b_class == 3:
                 if self.rk45_len and self.rk_counter != 0:
                     block.params['_skip_'] = True
 
@@ -849,7 +851,7 @@ class InitSim:
 
                     # Se buscan los bloques que requieren los datos procesados de este bloque
                     children = self.get_outputs(block.name)
-                    if block.run_ord not in [1, 3]:  # elementos que no entregan resultado a children (1 es cond. inicial)
+                    if block.b_class not in [1, 3]:  # elementos que no entregan resultado a children (1 es cond. inicial)
                         for mblock in self.blocks_list:
                             is_child, tuple_list = self.children_recognition(mblock.name, children)
                             if is_child:
@@ -1143,7 +1145,7 @@ class Block(InitSim):
     :param color: String or triplet that defines the color of the block in the canvas.
     :param in_ports: Number of inputs for the block.
     :param out_ports: Number of outputs for the block.
-    :param run_ord: Variable for block type identification (0: source, 1: process with I.C, 2: process, 3: drain).
+    :param b_class: Variable for block class identification (0: source, 1: process with I.C, 2: process, 3: drain).
     :param io_edit: Variable that defines if a block can change the number of its input ports and/or output ports.
     :param fun_name: Function name, function associated to the block type. That function defined in the Functions class.
     :param params: Dictionary with function-related parameters.
@@ -1154,14 +1156,14 @@ class Block(InitSim):
     :type color: str/triplet
     :type in_ports: int
     :type out_ports: int
-    :type run_ord: int
+    :type b_class: int
     :type io_edit: str
     :type fun_name: str
     :type params: dict
     :type external: bool
 
     """
-    def __init__(self, b_type, sid, coords, color, in_ports=1, out_ports=1, run_ord=2, io_edit=True, fun_name='block', params={}, external=False):
+    def __init__(self, b_type, sid, coords, color, in_ports=1, out_ports=1, b_class=2, io_edit=True, fun_name='block', params={}, external=False):
         super().__init__()
         self.name = b_type + str(sid)   # Nombre del bloque
         self.b_type = b_type            # Tipo de bloque
@@ -1198,7 +1200,7 @@ class Block(InitSim):
         self.io_edit = io_edit          # Variable que determina si el número de inputs y outputs puede cambiarse.
         self.update_Block()             # Ubica las coordenadas de los puertos actualizando también el tamaño del bloque
 
-        self.run_ord = run_ord          # Posición de prioridad al correr la simulación
+        self.b_class = b_class          # Clase de bloque/Posición de prioridad al correr la simulación
         self.dragging = False           # Booleano para determinar si el bloque se está moviendo
         self.selected = False           # Booleano para determinar si el bloque está seleccionado en el plano
 
@@ -1438,7 +1440,7 @@ class Block(InitSim):
             return
 
         self.params.update(fn_params)
-        self.run_ord = fun_list['run_ord']
+        self.b_class = fun_list['b_class']
         self.in_ports = fun_list['inputs']
         self.out_ports = fun_list['outputs']
         self.b_color = self.set_color(fun_list['color'])
@@ -1628,7 +1630,7 @@ class MenuBlocks(InitSim):
 
     :param b_type: Block type, defined according to the available blocks created in InitSim
     :param fun_name: Function name, function associated to the block type. That function defined in the Functions class.
-    :param io_params: Dictionary with block-related parameters (input ports, output ports, run_ord, edit inputs/outputs).
+    :param io_params: Dictionary with block-related parameters (input ports, output ports, b_class, edit inputs/outputs).
     :param ex_params: Dictionary with function-related parameters.
     :param b_color: String or triplet that defines the color of the block in the canvas.
     :param coords: List with tuples that contain the location and size of the block in the canvas.
@@ -1649,7 +1651,7 @@ class MenuBlocks(InitSim):
         self.fun_name = fun_name
         self.ins = io_params['inputs']
         self.outs = io_params['outputs']
-        self.run_ord = io_params['run_ord']
+        self.b_class = io_params['b_class']
         self.io_edit = io_params['io_edit']
         self.params = ex_params                           # parametros de ejecución en simulación
         self.b_color = self.set_color(b_color)            # Color caracteristico del bloque

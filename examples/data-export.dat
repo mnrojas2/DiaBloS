@@ -26,7 +26,7 @@
                 255,
                 255
             ],
-            "run_ord": 2,
+            "b_class": 2,
             "io_edit": "input",
             "fun_name": "sumator",
             "params": {
@@ -54,7 +54,7 @@
                 0,
                 255
             ],
-            "run_ord": 0,
+            "b_class": 0,
             "io_edit": false,
             "fun_name": "step",
             "params": {
@@ -84,7 +84,7 @@
                 0,
                 255
             ],
-            "run_ord": 0,
+            "b_class": 0,
             "io_edit": false,
             "fun_name": "sine",
             "params": {
@@ -114,7 +114,7 @@
                 160,
                 0
             ],
-            "run_ord": 3,
+            "b_class": 3,
             "io_edit": false,
             "fun_name": "export",
             "params": {
@@ -140,7 +140,7 @@
                 51,
                 153
             ],
-            "run_ord": 2,
+            "b_class": 2,
             "io_edit": "input",
             "fun_name": "mux",
             "params": {},

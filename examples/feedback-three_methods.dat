@@ -26,7 +26,7 @@
                 0,
                 255
             ],
-            "run_ord": 0,
+            "b_class": 0,
             "io_edit": false,
             "fun_name": "step",
             "params": {
@@ -53,7 +53,7 @@
                 0,
                 255
             ],
-            "run_ord": 1,
+            "b_class": 1,
             "io_edit": false,
             "fun_name": "integrator",
             "params": {
@@ -83,7 +83,7 @@
                 160,
                 0
             ],
-            "run_ord": 3,
+            "b_class": 3,
             "io_edit": false,
             "fun_name": "export",
             "params": {
@@ -109,7 +109,7 @@
                 20,
                 60
             ],
-            "run_ord": 3,
+            "b_class": 3,
             "io_edit": false,
             "fun_name": "scope",
             "params": {
@@ -135,7 +135,7 @@
                 0,
                 255
             ],
-            "run_ord": 0,
+            "b_class": 0,
             "io_edit": false,
             "fun_name": "step",
             "params": {
@@ -162,7 +162,7 @@
                 255,
                 0
             ],
-            "run_ord": 2,
+            "b_class": 2,
             "io_edit": false,
             "fun_name": "gain",
             "params": {
@@ -190,7 +190,7 @@
                 255,
                 0
             ],
-            "run_ord": 2,
+            "b_class": 2,
             "io_edit": false,
             "fun_name": "gain",
             "params": {
@@ -224,7 +224,7 @@
                 255,
                 255
             ],
-            "run_ord": 2,
+            "b_class": 2,
             "io_edit": "input",
             "fun_name": "sumator",
             "params": {
@@ -249,7 +249,7 @@
                 0,
                 255
             ],
-            "run_ord": 1,
+            "b_class": 1,
             "io_edit": false,
             "fun_name": "integrator",
             "params": {
@@ -279,7 +279,7 @@
                 160,
                 0
             ],
-            "run_ord": 3,
+            "b_class": 3,
             "io_edit": false,
             "fun_name": "export",
             "params": {
@@ -305,7 +305,7 @@
                 20,
                 60
             ],
-            "run_ord": 3,
+            "b_class": 3,
             "io_edit": false,
             "fun_name": "scope",
             "params": {
@@ -331,7 +331,7 @@
                 255,
                 0
             ],
-            "run_ord": 2,
+            "b_class": 2,
             "io_edit": false,
             "fun_name": "axbu",
             "params": {
@@ -356,7 +356,7 @@
                 0,
                 255
             ],
-            "run_ord": 0,
+            "b_class": 0,
             "io_edit": false,
             "fun_name": "step",
             "params": {
@@ -383,7 +383,7 @@
                 255,
                 255
             ],
-            "run_ord": 2,
+            "b_class": 2,
             "io_edit": "input",
             "fun_name": "sumator",
             "params": {
@@ -408,7 +408,7 @@
                 0,
                 255
             ],
-            "run_ord": 1,
+            "b_class": 1,
             "io_edit": false,
             "fun_name": "integrator",
             "params": {
@@ -435,7 +435,7 @@
                 0,
                 255
             ],
-            "run_ord": 1,
+            "b_class": 1,
             "io_edit": false,
             "fun_name": "integrator",
             "params": {
@@ -462,7 +462,7 @@
                 51,
                 153
             ],
-            "run_ord": 2,
+            "b_class": 2,
             "io_edit": "input",
             "fun_name": "mux",
             "params": {},
@@ -485,7 +485,7 @@
                 160,
                 0
             ],
-            "run_ord": 3,
+            "b_class": 3,
             "io_edit": false,
             "fun_name": "export",
             "params": {
@@ -511,7 +511,7 @@
                 20,
                 60
             ],
-            "run_ord": 3,
+            "b_class": 3,
             "io_edit": false,
             "fun_name": "scope",
             "params": {
@@ -537,7 +537,7 @@
                 255,
                 0
             ],
-            "run_ord": 2,
+            "b_class": 2,
             "io_edit": false,
             "fun_name": "gain",
             "params": {
@@ -562,7 +562,7 @@
                 255,
                 0
             ],
-            "run_ord": 2,
+            "b_class": 2,
             "io_edit": false,
             "fun_name": "gain",
             "params": {
