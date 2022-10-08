@@ -1140,15 +1140,15 @@ class Block(InitSim):
     """
     Class to initialize, mantain and modify function blocks.
 
-    :param block_fn: Block type, defined according to the available blocks created in InitSim.
-    :param sid: Unique identification for the created line.
+    :param block_fn: Block name, defined according to the available blocks created in InitSim.
+    :param sid: Unique identification for the created block.
     :param coords: List with tuples that contain the location and size of the block in the canvas.
     :param color: String or triplet that defines the color of the block in the canvas.
     :param in_ports: Number of inputs for the block.
     :param out_ports: Number of outputs for the block.
-    :param b_type: Variable for block class identification (0: source, 1: process with I.C, 2: process, 3: drain).
+    :param b_type: Variable for block type identification (0: source, 1: N_process, 2: Z_process, 3: drain).
     :param io_edit: Variable that defines if a block can change the number of its input ports and/or output ports.
-    :param fn_name: Function name, function associated to the block type. That function defined in the Functions class.
+    :param fn_name: Function name, function associated to the block. That function defined in the Functions class.
     :param params: Dictionary with function-related parameters.
     :param external: Parameter that set a block with an external function (not defined in Functions class).
     :type block_fn: str

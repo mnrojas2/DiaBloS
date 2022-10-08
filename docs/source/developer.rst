@@ -187,7 +187,7 @@ Como desarrollar nuevas funciones de usuario (ver templates)::
     """import libraries"""
 
     def my_function(time, inputs, params):
-        """function code, either source, process or drain"""
+        """function code, either source, N_process, Z_process or drain"""
         return {0: variable_output, 1: variable_output, ..., 'E': True/False}
 
 Funcion inicialización::
@@ -196,7 +196,7 @@ Funcion inicialización::
         io_data = { # parameters for the block containing the function
             'inputs': input_number,
             'outputs': output_number,
-            'run_ord': block_order_number,
+            'b_type': block_type_number, #0: source, #1: N_process, #2: Z_process, #3: drain
             'color': color_string_or_rgb_triplet
         }
         params = {} # parameters defined before use them in the function
@@ -209,7 +209,7 @@ Testing a new function
 It is recommended to implement this function as an external-function type first, then add it to the Functions class.
 
 
-#. First define inputs, outputs, running order and block color in the external function file "_init_" and implement the most simplified version of the function to add.
+#. First define inputs, outputs, block type and block color in the external function file "_init_" and implement the most simplified version of the function to add.
 
 #. After that, create a simple graph diagram to test the new block. i.e: A Step block, connected to the external block (where the new function is implemented), connected to a Scope block.
 
@@ -228,3 +228,4 @@ programa repentinamente::
 
     except:
         return {'E': True}
+
