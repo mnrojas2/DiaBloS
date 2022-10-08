@@ -10,7 +10,7 @@
     },
     "blocks_data": [
         {
-            "type": "Block",
+            "block_fn": "Block",
             "sid": 0,
             "coords_left": 465,
             "coords_top": 209,
@@ -26,16 +26,16 @@
                 0,
                 255
             ],
-            "b_class": 0,
+            "b_type": 0,
             "io_edit": false,
-            "fun_name": "my_function_src",
+            "fn_name": "my_function_src",
             "params": {
                 "filename": "my_function_src"
             },
             "external": true
         },
         {
-            "type": "Scope",
+            "block_fn": "Scope",
             "sid": 0,
             "coords_left": 673,
             "coords_top": 165,
@@ -51,9 +51,9 @@
                 20,
                 60
             ],
-            "b_class": 3,
+            "b_type": 3,
             "io_edit": false,
-            "fun_name": "scope",
+            "fn_name": "scope",
             "params": {
                 "labels": "output_0",
                 "_init_start_": true
@@ -61,7 +61,7 @@
             "external": false
         },
         {
-            "type": "Scope",
+            "block_fn": "Scope",
             "sid": 1,
             "coords_left": 674,
             "coords_top": 251,
@@ -77,9 +77,9 @@
                 20,
                 60
             ],
-            "b_class": 3,
+            "b_type": 3,
             "io_edit": false,
-            "fun_name": "scope",
+            "fn_name": "scope",
             "params": {
                 "labels": "output_1",
                 "_init_start_": true

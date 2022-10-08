@@ -10,7 +10,7 @@
     },
     "blocks_data": [
         {
-            "type": "Block",
+            "block_fn": "Block",
             "sid": 0,
             "coords_left": 480,
             "coords_top": 211,
@@ -26,16 +26,16 @@
                 0,
                 255
             ],
-            "b_class": 1,
+            "b_type": 1,
             "io_edit": false,
-            "fun_name": "external_rk45",
+            "fn_name": "external_rk45",
             "params": {
                 "filename": "external_rk45"
             },
             "external": true
         },
         {
-            "type": "Scope",
+            "block_fn": "Scope",
             "sid": 0,
             "coords_left": 684,
             "coords_top": 181,
@@ -51,9 +51,9 @@
                 20,
                 60
             ],
-            "b_class": 3,
+            "b_type": 3,
             "io_edit": false,
-            "fun_name": "scope",
+            "fn_name": "scope",
             "params": {
                 "labels": "output",
                 "_init_start_": true
@@ -61,7 +61,7 @@
             "external": false
         },
         {
-            "type": "Step",
+            "block_fn": "Step",
             "sid": 0,
             "coords_left": 345,
             "coords_top": 233,
@@ -77,9 +77,9 @@
                 0,
                 255
             ],
-            "b_class": 0,
+            "b_type": 0,
             "io_edit": false,
-            "fun_name": "step",
+            "fn_name": "step",
             "params": {
                 "value": 1.0,
                 "delay": 0.0,

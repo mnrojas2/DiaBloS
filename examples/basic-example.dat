@@ -10,7 +10,7 @@
     },
     "blocks_data": [
         {
-            "type": "Scope",
+            "block_fn": "Scope",
             "sid": 0,
             "coords_left": 490,
             "coords_top": 252,
@@ -26,9 +26,9 @@
                 20,
                 60
             ],
-            "b_class": 3,
+            "b_type": 3,
             "io_edit": false,
-            "fun_name": "scope",
+            "fn_name": "scope",
             "params": {
                 "labels": "default",
                 "_init_start_": true
@@ -36,7 +36,7 @@
             "external": false
         },
         {
-            "type": "Step",
+            "block_fn": "Step",
             "sid": 0,
             "coords_left": 318,
             "coords_top": 252,
@@ -52,9 +52,9 @@
                 0,
                 255
             ],
-            "b_class": 0,
+            "b_type": 0,
             "io_edit": false,
-            "fun_name": "step",
+            "fn_name": "step",
             "params": {
                 "value": 1.0,
                 "delay": 0.0,

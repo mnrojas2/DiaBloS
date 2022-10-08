@@ -10,7 +10,7 @@
     },
     "blocks_data": [
         {
-            "type": "Block",
+            "block_fn": "Block",
             "sid": 0,
             "coords_left": 480,
             "coords_top": 211,
@@ -26,16 +26,16 @@
                 255,
                 128
             ],
-            "b_class": 2,
+            "b_type": 2,
             "io_edit": false,
-            "fun_name": "external_derivative",
+            "fn_name": "external_derivative",
             "params": {
                 "filename": "external_derivative"
             },
             "external": true
         },
         {
-            "type": "Scope",
+            "block_fn": "Scope",
             "sid": 0,
             "coords_left": 684,
             "coords_top": 181,
@@ -51,9 +51,9 @@
                 20,
                 60
             ],
-            "b_class": 3,
+            "b_type": 3,
             "io_edit": false,
-            "fun_name": "scope",
+            "fn_name": "scope",
             "params": {
                 "labels": "output",
                 "_init_start_": true
@@ -61,7 +61,7 @@
             "external": false
         },
         {
-            "type": "Ramp",
+            "block_fn": "Ramp",
             "sid": 0,
             "coords_left": 336,
             "coords_top": 239,
@@ -77,9 +77,9 @@
                 127,
                 0
             ],
-            "b_class": 0,
+            "b_type": 0,
             "io_edit": false,
-            "fun_name": "ramp",
+            "fn_name": "ramp",
             "params": {
                 "slope": 1.0,
                 "delay": 0.0

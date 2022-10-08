@@ -10,7 +10,7 @@
     },
     "blocks_data": [
         {
-            "type": "Step",
+            "block_fn": "Step",
             "sid": 0,
             "coords_left": 251,
             "coords_top": 303,
@@ -26,9 +26,9 @@
                 0,
                 255
             ],
-            "b_class": 0,
+            "b_type": 0,
             "io_edit": false,
-            "fun_name": "step",
+            "fn_name": "step",
             "params": {
                 "value": [
                     1.5,
@@ -40,7 +40,7 @@
             "external": false
         },
         {
-            "type": "Sum",
+            "block_fn": "Sum",
             "sid": 0,
             "coords_left": 384,
             "coords_top": 346,
@@ -56,16 +56,16 @@
                 255,
                 255
             ],
-            "b_class": 2,
+            "b_type": 2,
             "io_edit": "input",
-            "fun_name": "sumator",
+            "fn_name": "sumator",
             "params": {
                 "sign": "++"
             },
             "external": false
         },
         {
-            "type": "Step",
+            "block_fn": "Step",
             "sid": 1,
             "coords_left": 252,
             "coords_top": 397,
@@ -81,9 +81,9 @@
                 0,
                 255
             ],
-            "b_class": 0,
+            "b_type": 0,
             "io_edit": false,
-            "fun_name": "step",
+            "fn_name": "step",
             "params": {
                 "value": [
                     1.0,
@@ -98,7 +98,7 @@
             "external": false
         },
         {
-            "type": "Sum",
+            "block_fn": "Sum",
             "sid": 1,
             "coords_left": 551,
             "coords_top": 355,
@@ -114,9 +114,9 @@
                 255,
                 255
             ],
-            "b_class": 2,
+            "b_type": 2,
             "io_edit": "input",
-            "fun_name": "sumator",
+            "fn_name": "sumator",
             "params": {
                 "sign": "+-",
                 "_name_": "Sum1",
@@ -126,7 +126,7 @@
             "external": false
         },
         {
-            "type": "Integr",
+            "block_fn": "Integr",
             "sid": 0,
             "coords_left": 693,
             "coords_top": 350,
@@ -142,9 +142,9 @@
                 0,
                 255
             ],
-            "b_class": 1,
+            "b_type": 1,
             "io_edit": false,
-            "fun_name": "integrator",
+            "fn_name": "integrator",
             "params": {
                 "init_conds": [
                     0.0,
@@ -156,7 +156,7 @@
             "external": false
         },
         {
-            "type": "Scope",
+            "block_fn": "Scope",
             "sid": 0,
             "coords_left": 916,
             "coords_top": 350,
@@ -172,9 +172,9 @@
                 20,
                 60
             ],
-            "b_class": 3,
+            "b_type": 3,
             "io_edit": false,
-            "fun_name": "scope",
+            "fn_name": "scope",
             "params": {
                 "labels": "Line0,Line1",
                 "_init_start_": true

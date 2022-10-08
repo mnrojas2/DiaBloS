@@ -7,8 +7,8 @@ examples are contained in '.dat' files, located in the 'Examples' folder, and ar
 Sine integration
 ----------------
 
-:Description: This example shows the process for integrating a sinusoidal signal, using two different integration
-    methods (Forward Euler and Runge Kutta 45) and then comparing the results with the mathematically correct curve.
+:Description: This example shows the process for integrating a sinusoidal signal, using the RK45 method and then
+    comparing the result with the mathematically correct curve.
 :Explanation: The math expression for the process is the following
 
     .. math:: y(t) = \int_0^t A\,\sin(\omega\,t + \phi_0) dt
@@ -27,13 +27,7 @@ Sine integration
 
     This is exemplified as the sum of a step of amplitude 1 and a sinusoidal starting at :math:`\phi_0 = \pi/2` at time :math:`t_0 = 0`.
 
-    El problema, también compara dos métodos de integración disponibles a utilizar...
-
-    #. Metodo Forward: El más simple, consiste en ir sumando un valor equivalente a la multiplicación del valor nuevo por el tiempo de muestreo
-
-    .. math:: y(t) \approx y(k) = \sum_{k=0}^K f(k,x) \cdot \Delta T
-
-    #. Metodo Runge Kutta 45: Este metodo es más complejo, pero más exacto...
+    Metodo Runge Kutta 45: Este metodo es más complejo, pero más exacto.
 
     .. math:: y(t) \approx (k_1 + 2k_2 + 2k_3 +k_4) \Delta T
 

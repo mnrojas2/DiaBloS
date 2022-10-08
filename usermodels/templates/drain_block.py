@@ -24,7 +24,7 @@ def _init_():
     External function initialization data
     """
     io_data = {
-        'run_ord': 3,
+        'b_type': 3,
         'inputs': 1,
         'outputs': 0,
         'color': 'blue'

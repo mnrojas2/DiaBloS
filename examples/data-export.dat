@@ -10,7 +10,7 @@
     },
     "blocks_data": [
         {
-            "type": "Sum",
+            "block_fn": "Sum",
             "sid": 0,
             "coords_left": 516,
             "coords_top": 257,
@@ -26,9 +26,9 @@
                 255,
                 255
             ],
-            "b_class": 2,
+            "b_type": 2,
             "io_edit": "input",
-            "fun_name": "sumator",
+            "fn_name": "sumator",
             "params": {
                 "sign": "+-",
                 "_name_": "Sum0",
@@ -38,7 +38,7 @@
             "external": false
         },
         {
-            "type": "Step",
+            "block_fn": "Step",
             "sid": 0,
             "coords_left": 289,
             "coords_top": 196,
@@ -54,9 +54,9 @@
                 0,
                 255
             ],
-            "b_class": 0,
+            "b_type": 0,
             "io_edit": false,
-            "fun_name": "step",
+            "fn_name": "step",
             "params": {
                 "value": 1.0,
                 "delay": 0.0,
@@ -68,7 +68,7 @@
             "external": false
         },
         {
-            "type": "Sine",
+            "block_fn": "Sine",
             "sid": 1,
             "coords_left": 290,
             "coords_top": 307,
@@ -84,9 +84,9 @@
                 0,
                 255
             ],
-            "b_class": 0,
+            "b_type": 0,
             "io_edit": false,
-            "fun_name": "sine",
+            "fn_name": "sine",
             "params": {
                 "amplitude": 1.0,
                 "omega": 1.0,
@@ -98,7 +98,7 @@
             "external": false
         },
         {
-            "type": "Export",
+            "block_fn": "Export",
             "sid": 0,
             "coords_left": 793,
             "coords_top": 230,
@@ -114,9 +114,9 @@
                 160,
                 0
             ],
-            "b_class": 3,
+            "b_type": 3,
             "io_edit": false,
-            "fun_name": "export",
+            "fn_name": "export",
             "params": {
                 "str_name": "step,cos",
                 "_init_start_": true
@@ -124,7 +124,7 @@
             "external": false
         },
         {
-            "type": "Mux",
+            "block_fn": "Mux",
             "sid": 0,
             "coords_left": 651,
             "coords_top": 230,
@@ -140,9 +140,9 @@
                 51,
                 153
             ],
-            "b_class": 2,
+            "b_type": 2,
             "io_edit": "input",
-            "fun_name": "mux",
+            "fn_name": "mux",
             "params": {},
             "external": false
         }

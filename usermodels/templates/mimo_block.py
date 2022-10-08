@@ -21,9 +21,9 @@ def _init_():
     External function initialization data
     """
     io_data = {
-        'run_ord': 2,
-        'inputs': 1,
-        'outputs': 1,
+        'b_type': 2,
+        'inputs': 2,
+        'outputs': 2,
         'color': 'orange'
     }                       #. Dictionary with the block type, number of inputs and outputs and color block.
     params = {}             #. Dictionary with the necessary parameters for the function.

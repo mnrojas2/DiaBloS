@@ -24,7 +24,7 @@ def _init_():
     io_data = {
         'inputs': 2,
         'outputs': 1,
-        'run_ord': 2,
+        'b_type': 2,
         'color': 'green'
     }
     params = {}
