@@ -217,11 +217,6 @@ class FunctionsCall:
             mult *= inputs[i]
         return {0: mult}
 
-    def block(self, time, inputs, params):
-        """
-        Generic block function for testing purposes
-        """
-        return {0: np.array(inputs[0])}
 
     def mux(self, time, inputs, params):
         """

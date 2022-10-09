@@ -13,14 +13,14 @@ Topics for Further Improvement
     loop also affects the interface fps, so it's necessary for the future that both loops can be happening in parallel,
     essentially split the UI process from the graph executing process).
 
-    Also, improve the versatility of some functions by using better methods to write code in python. e.g.: Use of \*args
+    Also, improve the versatility of some functions by using better methods to programming in python. e.g.: Use of \*args
     and \*\*kwargs to allow more specific parameters to some functions without affecting the readability and stability
     of others.
 
-#. Use PyQT -> Change license according to rules.
+#. Use of PyQT5.
     Right now the package works with pygame only, in an acceptable way, but to make this a better option for the user,
     it is necessary to rework interface using PyQT5 or another similar alternative. It's important to consider
-    this as changing the license from MIT to GPL, due to the requirements of some UI libraries.
+    this as changing the license from MIT to GPL, due to the requirements of some of these libraries.
 
 #. More support for special functions.
     Add support to functions that require different clocks, or elements not implemented yet, like an option to set

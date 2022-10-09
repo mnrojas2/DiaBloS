@@ -1,7 +1,7 @@
 Function Reference
 ==================
 
-Below is a list of the functions available in the library. It should be noted that several of these are only auxiliary,
+Below is a list of the functions of this package. It should be noted that several of these functions are only auxiliary,
 focused on handling a particular problem in the process.
 
 .. autosummary::

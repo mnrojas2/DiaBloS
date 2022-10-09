@@ -31,7 +31,7 @@ class InitSim:
     :param colors: List of predefined colors for elements that show in the canvas.
     :param fps: Base frames per seconds for pygame's loop.
     :param l_width: Width of the line when a block or a line is selected.
-    :param ls_width: Space between the line and block when the latter is selected.
+    :param ls_width: Space between a selected block and the line that indicates the former is selected.
     :param filename: Name of the file that was recently loaded. By default is 'data.dat'.
     :param sim_time: Simulation time for graph execution.
     :param sim_dt: Simulation sampling time for graph execution.
@@ -83,10 +83,10 @@ class InitSim:
         self.l_width = 5                    # Ancho de linea en modo seleccionado
         self.ls_width = 5                   # Ancho separacion entre linea-bloque en modo seleccionado
 
-        self.filename = 'data.dat'  # Nombre del archivo cargado o por defecto
-        self.sim_time = 1.0  # Tiempo de simulación por defecto
-        self.sim_dt = 0.01  # Tiempo de muestreo base para simulación (Por defecto: 10ms)
-        self.plot_trange = 100  # Ancho de la ventana para el plot dinámico (Por defecto: 100 muestras)
+        self.filename = 'data.dat'          # Nombre del archivo cargado o por defecto
+        self.sim_time = 1.0                 # Tiempo de simulación por defecto
+        self.sim_dt = 0.01                  # Tiempo de muestreo base para simulación (Por defecto: 10ms)
+        self.plot_trange = 100              # Ancho de la ventana para el plot dinámico (Por defecto: 100 muestras)
 
         self.menu_blocks = []               # Lista de bloques base (lista)
         self.blocks_list = []               # Lista de bloques existente
@@ -107,13 +107,13 @@ class InitSim:
         """
         :purpose: Creates a button list with all the basic functions available
         """
-        new = Button('_new_', (40, 10, 40, 40))
-        load = Button('_load_', (100, 10, 40, 40))
-        save = Button('_save_', (160, 10, 40, 40))
-        sim = Button('_play_', (220, 10, 40, 40))
-        pause = Button('_pause_', (280, 10, 40, 40))
-        stop = Button('_stop_', (340, 10, 40, 40))
-        rplt = Button('_plot_', (400, 10, 40, 40), False)
+        new =  Button('_new_',     ( 40, 10, 40, 40))
+        load = Button('_load_',    (100, 10, 40, 40))
+        save = Button('_save_',    (160, 10, 40, 40))
+        sim =  Button('_play_',    (220, 10, 40, 40))
+        pause = Button('_pause_',  (280, 10, 40, 40))
+        stop = Button('_stop_',    (340, 10, 40, 40))
+        rplt = Button('_plot_',    (400, 10, 40, 40), False)
         capt = Button('_capture_', (460, 10, 40, 40))
 
         self.buttons_list = [new, load, save, sim, pause, stop, rplt, capt]
@@ -206,7 +206,7 @@ class InitSim:
                 sid = len(id_list)
 
         # creación de la línea a partir del id, y data de origen y destino para la misma
-        line = Line(sid, srcData[0], srcData[1], dstData[0], dstData[1], (srcData[2], dstData[2]))  # zorder sin utilizar todavia
+        line = Line(sid, srcData[0], srcData[1], dstData[0], dstData[1], (srcData[2], dstData[2]))
         self.line_list.append(line)
 
     def remove_block_and_lines(self):
@@ -228,7 +228,7 @@ class InitSim:
 
     def check_line_block(self, line, b_del_list):
         """
-        :purpose: Checks if there are lines left from a removed block.
+        :purpose: Checks if a line is connected to one or more removed blocks.
         :param line: Line object.
         :param b_del_list: List of recently removed blocks.
         """
@@ -267,7 +267,7 @@ class InitSim:
     def display_blocks(self, zone):
         """
         :purpose: Draws blocks defined in the main list on the screen.
-        :param zone: Pygame's layer where the figure is drawn.
+        :param zone: A layer in a pygame canvas where the figure is drawn.
         """
         for b_elem in self.blocks_list:
             if b_elem.selected:
@@ -297,7 +297,7 @@ class InitSim:
 
         # block_fn, fn_name, {# inputs, # output, execution hierarchy}, {<specific argument/parameters>}, color, (width, height), allows_io_change
 
-        block = MenuBlocks("Block", 'block',
+        block = MenuBlocks("Block", 'external',
                            {'inputs': 1, 'outputs': 1, 'b_type': 2, 'io_edit': False}, {"filename": '<no filename>'},
                            'green', (120, 60), True)
 
@@ -1428,6 +1428,7 @@ class Block(InitSim):
             importlib.reload(self.file_function)
         except:
             print(self.name, "ERROR: NO MODULE FUNCTION", full_module_name, "WAS FOUND")
+            self.params['filename'] = '<no filename>'
             return
 
         fun_list, fn_params = self.file_function._init_()
@@ -1509,7 +1510,7 @@ class Line(InitSim):
         self.dstbottom = points[0][1]
 
         self.points = self.trajectory(points)   # puntos de vertice para la línea(?) ((a,b),(c,d),(e,f),...)
-        self.cptr = cptr                      # ID de prioridad al momento de dibujar el bloque
+        self.cptr = cptr                        # ID de prioridad al momento de dibujar el bloque
 
         self.selected = False                   # Indica estado de selección en pantalla
 
