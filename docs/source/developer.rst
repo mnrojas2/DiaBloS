@@ -171,8 +171,11 @@ matrix: [[a, b], [c, d]]
 TkWidget.string_to_vector(): proceso de conversion de vectores en string.
 
 * En ambos procesos se eliminan los espacios, solo importan los valores numéricos, como los corchetes y espacios ('[', ']', ' ')
+
 1) Se eliminan los valores numéricos y se observa el número de corchetes para determinar las dimensiones del potencial vector/matriz.
+
 2) Se eliminan los corchetes, creando un único vector que se redimensiona con los valores resultantes del proceso anterior.
+
 * Si el número de elementos en el vector no corresponde a las dimensiones del vector/matriz, se indica un error y se entrega un "''".
 
 

@@ -11,6 +11,7 @@ This manual is separated into two parts: A novice's guide, which explains how to
 interface, and a programmer's guide, focused on explaining the hierarchy of functions and the most important algorithms,
 with the idea of making it easier for other people to contribute to the project.
 
+
 Capabilities of the DiaBloS package
 -----------------------------------
 

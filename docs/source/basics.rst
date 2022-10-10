@@ -68,7 +68,7 @@ After loading the package, a window similar like the following figure will show:
 
     <image>
 
-#. How to change line color.
+#. How to change color of the line.
     A particular feature of the lines is that you can change their color. To do this, select the line and then press
     the UP_ARROW or DOWN_ARROW keys continuously until you find the color to choose.
 

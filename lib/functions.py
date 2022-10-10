@@ -30,7 +30,7 @@ class FunctionsCall:
         :type params['_name_']: str
         :return: The value defined in 'value' or 0.
         :rtype: numpy.ndarray
-        :examples: See example in ...
+        :examples: See example in :ref:`examples:vectorial integration` and :ref:`examples:feedback system three ways`.
 
         """
         if params['type'] == 'up':
@@ -62,7 +62,7 @@ class FunctionsCall:
         :type params['delay']: float
         :return: The value of the slope multiplied by the difference between 'time' and 'delay'.
         :rtype: numpy.ndarray
-        :examples: See example in ...
+        :examples: See example in :ref:`examples:external derivator`.
 
         """
         if params['slope'] == 0:
@@ -90,7 +90,7 @@ class FunctionsCall:
         :type params['init_angle']: float
         :return: A sinusoidal of amplitude 'amplitude', frequency 'omega' and initial angle 'init_angle'.
         :rtype: numpy.ndarray
-        :examples: See example in ...
+        :examples: See example in :ref:`examples:sine integration`.
 
         """
         return {0: np.array(params['amplitude']*np.sin(params['omega']*time + params['init_angle']))}
@@ -130,7 +130,7 @@ class FunctionsCall:
         :type params['gain']: float/numpy.ndarray
         :return: The input value, scaled by the 'gain' factor.
         :rtype: numpy.ndarray
-        :examples: See example in ...
+        :examples: See example in :ref:`examples:feedback system three ways`.
 
         """
         return {0: np.array(np.dot(params['gain'], inputs[0]))}
@@ -172,7 +172,7 @@ class FunctionsCall:
         :type params['_name_']: str
         :return: The sum of all inputs.
         :rtype: numpy.ndarray
-        :examples: See example in ...
+        :examples: See example in :ref:`examples:export data` and :ref:`examples:feedback system three ways`.
         :notes: This function returns 'Error' if the dimensions of any of the entries are not equal.
 
         """
@@ -229,7 +229,7 @@ class FunctionsCall:
         :type time: float
         :type inputs: dict
         :return: The vector with all values sorted in a single dimension ((a,1) with a>=1).:rtype: numpy.ndarray
-        :examples: See example in ...
+        :examples: See example in :ref:`examples:export data` and :ref:`examples:feedback system three ways`.
 
         """
         array = np.array(inputs[0])
@@ -308,7 +308,7 @@ class FunctionsCall:
         :type params['_name_']: str
         :return: The accumulated value of all inputs since step zero weighted by the sampling time.
         :rtype: numpy.ndarray
-        :examples: See example in ...
+        :examples: See example in :ref:`examples:sine integration` and :ref:`examples:feedback system three ways`.
         :notes: The 'init_conds' parameter must be set by the user if the input has more than one dimension. You can define a vector value as [a,b,...], with a and b scalar values.
 
         """
@@ -472,7 +472,7 @@ class FunctionsCall:
         :type params['_name_']: str
         :return: A value set in zero.
         :rtype: numpy.ndarray
-        :examples: See example in ...
+        :examples: See example in :ref:`examples:export data` and :ref:`examples:feedback system three ways`.
         :notes: If not enough labels are detected for 'vec_labels', the function adds the remaining labels using '_name_' and a number depending on the number of missing names.
 
         """
@@ -533,7 +533,7 @@ class FunctionsCall:
         :type params['_name_']: str
         :return: A value set in zero.
         :rtype: numpy.ndarray
-        :examples: See example in ...
+        :examples: See example in :ref:`examples:sine integration` and :ref:`examples:feedback system three ways`.
         :notes: If not enough labels are detected for 'vec_labels', the function adds the remaining ones using '_name_' and a number depending on the number of missing names.
 
         """
