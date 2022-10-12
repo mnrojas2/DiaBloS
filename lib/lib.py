@@ -404,7 +404,8 @@ class InitSim:
             "only_one": self.only_one,
             "enable_line_sel": self.enable_line_selection,
             "sim_time": self.sim_time,
-            "sim_dt": self.sim_dt
+            "sim_dt": self.sim_dt,
+            "sim_trange": self.plot_trange
             }
 
         # Datos de Block
@@ -504,6 +505,7 @@ class InitSim:
         self.enable_line_selection = data['enable_line_sel']
         self.sim_time = data['sim_time']
         self.sim_dt = data['sim_dt']
+        self.plot_trange = data['sim_trange']
 
     def update_blocks_data(self, block_data):
         """
@@ -556,7 +558,11 @@ class InitSim:
         self.buttons_list[6].active = False  # Disable plot button
         self.ss_count = 0
         self.filename = 'data.dat'
+        self.sim_time = 1.0
+        self.sim_dt = 0.01
+        self.plot_trange = 100
         self.dynamic_plot = False
+
 
     ##### DIAGRAM EXECUTION #####
 

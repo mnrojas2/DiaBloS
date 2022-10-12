@@ -269,7 +269,10 @@ class FunctionsCall:
 
         outputs = {}
         for i in range(params['_outputs_']):
-            outputs[i] = inputs[0][int(params['output_shape'])*i: int(params['output_shape'])*(i+1)]
+            if int(params['output_shape']) == 1:
+                outputs[i] = inputs[0][i]
+            else:
+                outputs[i] = inputs[0][int(params['output_shape'])*i: int(params['output_shape'])*(i+1)]
         return outputs
 
     def integrator(self, time, inputs, params, output_only=False, next_add_in_memory=True, dtime=0.01):

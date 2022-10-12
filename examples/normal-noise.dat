@@ -1,0 +1,405 @@
+{
+    "sim_data": {
+        "wind_width": 1280,
+        "wind_height": 720,
+        "fps": 60,
+        "only_one": false,
+        "enable_line_sel": true,
+        "sim_time": 5.0,
+        "sim_dt": 0.01,
+        "sim_trange": 500.0
+    },
+    "blocks_data": [
+        {
+            "block_fn": "Step",
+            "sid": 0,
+            "coords_left": 329,
+            "coords_top": 225,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 0,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                0,
+                0,
+                255
+            ],
+            "b_type": 0,
+            "io_edit": false,
+            "fn_name": "step",
+            "params": {
+                "value": [
+                    1.0,
+                    -1.0
+                ],
+                "delay": 2.5,
+                "type": "up"
+            },
+            "external": false
+        },
+        {
+            "block_fn": "Noise",
+            "sid": 0,
+            "coords_left": 330,
+            "coords_top": 139,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 0,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                100,
+                175,
+                50
+            ],
+            "b_type": 0,
+            "io_edit": false,
+            "fn_name": "noise",
+            "params": {
+                "sigma": 0.5,
+                "mu": 0.0
+            },
+            "external": false
+        },
+        {
+            "block_fn": "Noise",
+            "sid": 1,
+            "coords_left": 328,
+            "coords_top": 318,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 0,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                100,
+                175,
+                50
+            ],
+            "b_type": 0,
+            "io_edit": false,
+            "fn_name": "noise",
+            "params": {
+                "sigma": 0.5,
+                "mu": 0.0
+            },
+            "external": false
+        },
+        {
+            "block_fn": "Demux",
+            "sid": 0,
+            "coords_left": 469,
+            "coords_top": 225,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 2,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                102,
+                30,
+                153
+            ],
+            "b_type": 2,
+            "io_edit": "output",
+            "fn_name": "demux",
+            "params": {
+                "output_shape": 1.0
+            },
+            "external": false
+        },
+        {
+            "block_fn": "Scope",
+            "sid": 0,
+            "coords_left": 720,
+            "coords_top": 158,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 0,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                220,
+                20,
+                60
+            ],
+            "b_type": 3,
+            "io_edit": false,
+            "fn_name": "scope",
+            "params": {
+                "labels": "Line0",
+                "_init_start_": true
+            },
+            "external": false
+        },
+        {
+            "block_fn": "Scope",
+            "sid": 1,
+            "coords_left": 723,
+            "coords_top": 280,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 0,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                220,
+                20,
+                60
+            ],
+            "b_type": 3,
+            "io_edit": false,
+            "fn_name": "scope",
+            "params": {
+                "labels": "Line1",
+                "_init_start_": true
+            },
+            "external": false
+        },
+        {
+            "block_fn": "Sum",
+            "sid": 0,
+            "coords_left": 575,
+            "coords_top": 177,
+            "coords_width": 70,
+            "coords_height": 50,
+            "coords_height_base": 50,
+            "in_ports": 2,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                0,
+                255,
+                255
+            ],
+            "b_type": 2,
+            "io_edit": "input",
+            "fn_name": "sumator",
+            "params": {
+                "sign": "++"
+            },
+            "external": false
+        },
+        {
+            "block_fn": "Sum",
+            "sid": 1,
+            "coords_left": 573,
+            "coords_top": 285,
+            "coords_width": 70,
+            "coords_height": 50,
+            "coords_height_base": 50,
+            "in_ports": 2,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                0,
+                255,
+                255
+            ],
+            "b_type": 2,
+            "io_edit": "input",
+            "fn_name": "sumator",
+            "params": {
+                "sign": "++"
+            },
+            "external": false
+        }
+    ],
+    "lines_data": [
+        {
+            "name": "Line6",
+            "sid": 6,
+            "srcblock": "Step0",
+            "srcport": 0,
+            "dstblock": "Demux0",
+            "dstport": 0,
+            "points": [
+                [
+                    389,
+                    255.0
+                ],
+                [
+                    469,
+                    255.0
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line0",
+            "sid": 0,
+            "srcblock": "Noise0",
+            "srcport": 0,
+            "dstblock": "Sum0",
+            "dstport": 0,
+            "points": [
+                [
+                    390,
+                    169.0
+                ],
+                [
+                    535,
+                    169.0
+                ],
+                [
+                    535,
+                    193.66666666666666
+                ],
+                [
+                    575,
+                    193.66666666666666
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line3",
+            "sid": 3,
+            "srcblock": "Demux0",
+            "srcport": 0,
+            "dstblock": "Sum0",
+            "dstport": 1,
+            "points": [
+                [
+                    529,
+                    245.0
+                ],
+                [
+                    555,
+                    245.0
+                ],
+                [
+                    555,
+                    210.33333333333334
+                ],
+                [
+                    575,
+                    210.33333333333334
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line4",
+            "sid": 4,
+            "srcblock": "Sum0",
+            "srcport": 0,
+            "dstblock": "Scope0",
+            "dstport": 0,
+            "points": [
+                [
+                    645,
+                    202.0
+                ],
+                [
+                    700,
+                    202.0
+                ],
+                [
+                    700,
+                    188.0
+                ],
+                [
+                    720,
+                    188.0
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line1",
+            "sid": 1,
+            "srcblock": "Demux0",
+            "srcport": 1,
+            "dstblock": "Sum1",
+            "dstport": 0,
+            "points": [
+                [
+                    529,
+                    265.0
+                ],
+                [
+                    539,
+                    265.0
+                ],
+                [
+                    539,
+                    301.6666666666667
+                ],
+                [
+                    573,
+                    301.6666666666667
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line2",
+            "sid": 2,
+            "srcblock": "Noise1",
+            "srcport": 0,
+            "dstblock": "Sum1",
+            "dstport": 1,
+            "points": [
+                [
+                    388,
+                    348.0
+                ],
+                [
+                    553,
+                    348.0
+                ],
+                [
+                    553,
+                    318.3333333333333
+                ],
+                [
+                    573,
+                    318.3333333333333
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line5",
+            "sid": 5,
+            "srcblock": "Sum1",
+            "srcport": 0,
+            "dstblock": "Scope1",
+            "dstport": 0,
+            "points": [
+                [
+                    643,
+                    310.0
+                ],
+                [
+                    723,
+                    310.0
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        }
+    ]
+}
