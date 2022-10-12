@@ -30,7 +30,7 @@ class FunctionsCall:
         :type params['_name_']: str
         :return: The value defined in 'value' or 0.
         :rtype: numpy.ndarray
-        :examples: See example in :ref:`examples:vectorial integration` and :ref:`examples:feedback system three ways`.
+        :examples: See example in :ref:`examples:vectorial integration`, :ref:`examples:gaussian noise` and :ref:`examples:feedback system three ways`.
 
         """
         if params['type'] == 'up':
@@ -45,6 +45,7 @@ class FunctionsCall:
             return {0: 0*abs(np.array(params['value']))}
         else:
             return {0: np.array(params['value'])}
+
 
     def ramp(self, time, inputs, params):
         """
@@ -72,6 +73,7 @@ class FunctionsCall:
         elif params['slope'] < 0:
             return {0: np.array(np.minimum(0, params['slope'] * (time - params['delay'])))}
 
+
     def sine(self, time, inputs, params):
         """
         Sinusoidal source function
@@ -95,12 +97,13 @@ class FunctionsCall:
         """
         return {0: np.array(params['amplitude']*np.sin(params['omega']*time + params['init_angle']))}
 
+
     def noise(self, time, inputs, params):
         """
-        Normal noise function
+        Gaussian noise function
 
         :purpose: Function returns a normal random noise.
-        :description: This is a source type function. It produces a normal random value of mean mu and variance sigma**2.
+        :description: This is a source type function. It produces a gaussian random value of mean mu and variance sigma**2.
         :param time: Value indicating the current period in the simulation.
         :param inputs: Dictionary that provides one or more entries for the function (if applicable).
         :param params['mu']: Mean value of the noise.
@@ -109,12 +112,13 @@ class FunctionsCall:
         :type inputs: dict
         :type params['sigma']: float
         :type params['mu']: float
-        :return: Normal random value of mean mu and variance sigma**2.
+        :return: Gaussian random value of mean mu and variance sigma**2.
         :rtype: numpy.ndarray
-        :examples: See example in ...
+        :examples: See example in :ref:`examples:gaussian noise`
 
         """
         return {0: np.array(params['sigma'] ** 2 * np.random.randn() + params['mu'])}
+
 
     def gain(self, time, inputs, params):
         """
@@ -134,6 +138,7 @@ class FunctionsCall:
 
         """
         return {0: np.array(np.dot(params['gain'], inputs[0]))}
+
 
     def exponential(self, time, inputs, params):
         """
@@ -156,6 +161,7 @@ class FunctionsCall:
         """
         return {0: np.array(params['a']*np.exp(params['b']*inputs[0]))}
 
+
     def sumator(self, time, inputs, params):
         """
         Sumator function
@@ -172,7 +178,7 @@ class FunctionsCall:
         :type params['_name_']: str
         :return: The sum of all inputs.
         :rtype: numpy.ndarray
-        :examples: See example in :ref:`examples:export data` and :ref:`examples:feedback system three ways`.
+        :examples: See example in :ref:`examples:gaussian noise`, :ref:`examples:export data` and :ref:`examples:feedback system three ways`.
         :notes: This function returns 'Error' if the dimensions of any of the entries are not equal.
 
         """
@@ -194,6 +200,7 @@ class FunctionsCall:
                 print("ERROR: Symbols not defined in", params['_name_'])
                 return {'E': True}
         return {0: suma}
+
 
     def sigproduct(self, time, inputs, params):
         """
@@ -237,6 +244,7 @@ class FunctionsCall:
             array = np.append(array, inputs[i])
         return {0: array}
 
+
     def demux(self, time, inputs, params):
         """
         Demultiplexer function
@@ -255,7 +263,7 @@ class FunctionsCall:
         :type params['_outputs_']: float
         :return: A given number of outputs, with each output having equal dimensions.
         :rtype: numpy.ndarray
-        :examples: See example in ...
+        :examples: See example in :ref:`examples:gaussian noise`.
         :notes: This function returns 'Error' if the number of values in the input vector is not enough to get all the outputs at the required dimensions. It also returns a 'Warning' if the vector is larger than required, truncating the values that are not taken.
 
         """
@@ -274,6 +282,7 @@ class FunctionsCall:
             else:
                 outputs[i] = inputs[0][int(params['output_shape'])*i: int(params['output_shape'])*(i+1)]
         return outputs
+
 
     def integrator(self, time, inputs, params, output_only=False, next_add_in_memory=True, dtime=0.01):
         """
@@ -402,6 +411,7 @@ class FunctionsCall:
 
             return {0: mem_old}
 
+
     def derivative(self, time, inputs, params):
         """
         Derivative function
@@ -433,6 +443,7 @@ class FunctionsCall:
         params['i_old'] = inputs[0]
         return {0: np.array(di/dt)}
 
+
     def terminator(self, time, inputs, params):
         """
         Signal terminator function
@@ -449,6 +460,7 @@ class FunctionsCall:
 
         """
         return {0: np.array([0.0])}
+
 
     def export(self, time, inputs, params):
         """
@@ -510,6 +522,7 @@ class FunctionsCall:
         params['vector'] = aux_vector
         return {0: np.array([0.0])}
 
+
     def scope(self, time, inputs, params):
         """
         Function to plot block signals
@@ -536,7 +549,7 @@ class FunctionsCall:
         :type params['_name_']: str
         :return: A value set in zero.
         :rtype: numpy.ndarray
-        :examples: See example in :ref:`examples:sine integration` and :ref:`examples:feedback system three ways`.
+        :examples: See example in :ref:`examples:sine integration`, :ref:`examples:gaussian noise` and :ref:`examples:feedback system three ways`.
         :notes: If not enough labels are detected for 'vec_labels', the function adds the remaining ones using '_name_' and a number depending on the number of missing names.
 
         """

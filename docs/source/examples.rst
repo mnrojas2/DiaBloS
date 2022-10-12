@@ -56,6 +56,22 @@ Integracion vectorial, utilizando el método de integracion runge-kutta.
     el uso de espacios no importa v = [3.9     ,   343] -> v = [3.9, 343]
 
 
+Gaussian Noise
+--------------
+
+Un ejemplo que muestra la modelación de ruido en un sistema step.
+
+:description: Este ejemplo muestra el cómo se puede agregar ruido a las señales, simplemente sumando un bloque ruido a
+    la señal original. Además se aprovecha de mostrar el cómo separar las señales un vector por medio del bloque demux.
+
+:explanation:
+
+    Block step output is a vector of 2 dimensions to the rest of the system
+    Demux splits that 2d signal into 2 signals
+    Each signal gets added gaussian noise (mu = 0, sigma = 1)
+    Both sum outputs are scoped.
+
+
 Export data
 -----------
 

@@ -13,7 +13,7 @@
         {
             "block_fn": "Step",
             "sid": 0,
-            "coords_left": 329,
+            "coords_left": 328,
             "coords_top": 225,
             "coords_width": 60,
             "coords_height": 60,
@@ -32,8 +32,8 @@
             "fn_name": "step",
             "params": {
                 "value": [
-                    1.0,
-                    -1.0
+                    5.0,
+                    -2.5
                 ],
                 "delay": 2.5,
                 "type": "up"
@@ -61,7 +61,7 @@
             "io_edit": false,
             "fn_name": "noise",
             "params": {
-                "sigma": 0.5,
+                "sigma": 1.0,
                 "mu": 0.0
             },
             "external": false
@@ -87,7 +87,7 @@
             "io_edit": false,
             "fn_name": "noise",
             "params": {
-                "sigma": 0.5,
+                "sigma": 1.0,
                 "mu": 0.0
             },
             "external": false
@@ -230,7 +230,7 @@
             "dstport": 0,
             "points": [
                 [
-                    389,
+                    388,
                     255.0
                 ],
                 [
