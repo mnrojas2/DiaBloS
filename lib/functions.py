@@ -134,7 +134,7 @@ class FunctionsCall:
         :type params['gain']: float/numpy.ndarray
         :return: The input value, scaled by the 'gain' factor.
         :rtype: numpy.ndarray
-        :examples: See example in :ref:`examples:gaussian noise` and :ref:`examples:feedback system implementations`.
+        :examples: See example in :ref:`examples:gaussian noise` and :ref:`examples:ode system`.
 
         """
         return {0: np.array(np.dot(params['gain'], inputs[0]))}
@@ -177,7 +177,7 @@ class FunctionsCall:
         :type params['_name_']: str
         :return: The sum of all inputs.
         :rtype: numpy.ndarray
-        :examples: See example in :ref:`examples:gaussian noise`, :ref:`examples:export data` and :ref:`examples:feedback system implementations`.
+        :examples: See example in :ref:`examples:gaussian noise`, :ref:`examples:export data` and :ref:`examples:ode system`.
         :notes: This function returns 'Error' if the dimensions of any of the entries are not equal.
 
         """
@@ -235,7 +235,7 @@ class FunctionsCall:
         :type time: float
         :type inputs: dict
         :return: The vector with all values sorted in a single dimension ((a,1) with a>=1).:rtype: numpy.ndarray
-        :examples: See example in :ref:`examples:signal products`, :ref:`examples:export data` and :ref:`examples:feedback system implementations`.
+        :examples: See example in :ref:`examples:signal products`, :ref:`examples:export data` and :ref:`examples:ode system`.
 
         """
         array = np.array(inputs[0])
@@ -319,7 +319,7 @@ class FunctionsCall:
         :type params['_name_']: str
         :return: The accumulated value of all inputs since step zero weighted by the sampling time.
         :rtype: numpy.ndarray
-        :examples: See example in :ref:`examples:sine integration` and :ref:`examples:feedback system implementations`.
+        :examples: See example in :ref:`examples:sine integration` and :ref:`examples:ode system`.
         :notes: The 'init_conds' parameter must be set by the user if the input has more than one dimension. You can define a vector value as [a,b,...], with a and b scalar values.
 
         """
@@ -486,7 +486,7 @@ class FunctionsCall:
         :type params['_name_']: str
         :return: A value set in zero.
         :rtype: numpy.ndarray
-        :examples: See example in :ref:`examples:export data` and :ref:`examples:feedback system implementations`.
+        :examples: See example in :ref:`examples:export data` and :ref:`examples:ode system`.
         :notes: If not enough labels are detected for 'vec_labels', the function adds the remaining labels using '_name_' and a number depending on the number of missing names.
 
         """

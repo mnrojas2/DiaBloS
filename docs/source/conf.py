@@ -22,7 +22,7 @@ copyright = '2022, mnrojas2'
 author = 'mnrojas2'
 
 # The full version, including alpha/beta/rc tags
-release = '0.9.7b'
+release = '0.9.9b'
 
 
 # -- General configuration ---------------------------------------------------
