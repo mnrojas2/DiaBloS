@@ -13,8 +13,8 @@
         {
             "block_fn": "Step",
             "sid": 0,
-            "coords_left": 328,
-            "coords_top": 225,
+            "coords_left": 327,
+            "coords_top": 238,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -43,8 +43,8 @@
         {
             "block_fn": "Noise",
             "sid": 0,
-            "coords_left": 330,
-            "coords_top": 139,
+            "coords_left": 326,
+            "coords_top": 141,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -69,8 +69,8 @@
         {
             "block_fn": "Noise",
             "sid": 1,
-            "coords_left": 328,
-            "coords_top": 318,
+            "coords_left": 325,
+            "coords_top": 344,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -95,8 +95,8 @@
         {
             "block_fn": "Demux",
             "sid": 0,
-            "coords_left": 469,
-            "coords_top": 225,
+            "coords_left": 466,
+            "coords_top": 238,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -218,6 +218,56 @@
                 "sign": "++"
             },
             "external": false
+        },
+        {
+            "block_fn": "Gain",
+            "sid": 0,
+            "coords_left": 470,
+            "coords_top": 141,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                255,
+                255,
+                0
+            ],
+            "b_type": 2,
+            "io_edit": false,
+            "fn_name": "gain",
+            "params": {
+                "gain": 0.5
+            },
+            "external": false
+        },
+        {
+            "block_fn": "Gain",
+            "sid": 1,
+            "coords_left": 467,
+            "coords_top": 344,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                255,
+                255,
+                0
+            ],
+            "b_type": 2,
+            "io_edit": false,
+            "fn_name": "gain",
+            "params": {
+                "gain": 0.5
+            },
+            "external": false
         }
     ],
     "lines_data": [
@@ -230,40 +280,12 @@
             "dstport": 0,
             "points": [
                 [
-                    388,
-                    255.0
+                    387,
+                    268.0
                 ],
                 [
-                    469,
-                    255.0
-                ]
-            ],
-            "cptr": 0,
-            "selected": false
-        },
-        {
-            "name": "Line0",
-            "sid": 0,
-            "srcblock": "Noise0",
-            "srcport": 0,
-            "dstblock": "Sum0",
-            "dstport": 0,
-            "points": [
-                [
-                    390,
-                    169.0
-                ],
-                [
-                    535,
-                    169.0
-                ],
-                [
-                    535,
-                    193.66666666666666
-                ],
-                [
-                    575,
-                    193.66666666666666
+                    466,
+                    268.0
                 ]
             ],
             "cptr": 0,
@@ -278,12 +300,12 @@
             "dstport": 1,
             "points": [
                 [
-                    529,
-                    245.0
+                    526,
+                    258.0
                 ],
                 [
                     555,
-                    245.0
+                    258.0
                 ],
                 [
                     555,
@@ -334,48 +356,20 @@
             "dstport": 0,
             "points": [
                 [
-                    529,
-                    265.0
+                    526,
+                    278.0
                 ],
                 [
-                    539,
-                    265.0
+                    536,
+                    278.0
                 ],
                 [
-                    539,
+                    536,
                     301.6666666666667
                 ],
                 [
                     573,
                     301.6666666666667
-                ]
-            ],
-            "cptr": 0,
-            "selected": false
-        },
-        {
-            "name": "Line2",
-            "sid": 2,
-            "srcblock": "Noise1",
-            "srcport": 0,
-            "dstblock": "Sum1",
-            "dstport": 1,
-            "points": [
-                [
-                    388,
-                    348.0
-                ],
-                [
-                    553,
-                    348.0
-                ],
-                [
-                    553,
-                    318.3333333333333
-                ],
-                [
-                    573,
-                    318.3333333333333
                 ]
             ],
             "cptr": 0,
@@ -396,6 +390,102 @@
                 [
                     723,
                     310.0
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line0",
+            "sid": 0,
+            "srcblock": "Gain1",
+            "srcport": 0,
+            "dstblock": "Sum1",
+            "dstport": 1,
+            "points": [
+                [
+                    527,
+                    374.0
+                ],
+                [
+                    553,
+                    374.0
+                ],
+                [
+                    553,
+                    318.3333333333333
+                ],
+                [
+                    573,
+                    318.3333333333333
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line2",
+            "sid": 2,
+            "srcblock": "Gain0",
+            "srcport": 0,
+            "dstblock": "Sum0",
+            "dstport": 0,
+            "points": [
+                [
+                    530,
+                    171.0
+                ],
+                [
+                    540,
+                    171.0
+                ],
+                [
+                    540,
+                    193.66666666666666
+                ],
+                [
+                    575,
+                    193.66666666666666
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line7",
+            "sid": 7,
+            "srcblock": "Noise0",
+            "srcport": 0,
+            "dstblock": "Gain0",
+            "dstport": 0,
+            "points": [
+                [
+                    386,
+                    171.0
+                ],
+                [
+                    470,
+                    171.0
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line8",
+            "sid": 8,
+            "srcblock": "Noise1",
+            "srcport": 0,
+            "dstblock": "Gain1",
+            "dstport": 0,
+            "points": [
+                [
+                    385,
+                    374.0
+                ],
+                [
+                    467,
+                    374.0
                 ]
             ],
             "cptr": 0,

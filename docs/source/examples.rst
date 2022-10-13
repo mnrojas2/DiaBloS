@@ -66,11 +66,25 @@ Un ejemplo que muestra la modelación de ruido en un sistema step.
 
 :explanation:
 
-    Block step output is a vector of 2 dimensions to the rest of the system
-    Demux splits that 2d signal into 2 signals
-    Each signal gets added gaussian noise (mu = 0, sigma = 1)
+    Block step output is a vector of 2 dimensions to the rest of the system.
+    Demux splits that 2d signal into 2 signals.
+    Each signal gets added gaussian noise (mu = 0, sigma = 1), then get downscaled by 0.5x with a gain block.
     Both sum outputs are scoped.
 
+
+Signal products
+---------------
+
+Multiplicación de datos con el bloque sigprod. Tanto escalar por vector, como vector por vector (multiplicación por elementos).
+
+:descripcion: Este ejemplo muestra el cómo se pueden multiplicar señales provenientes de distintas fuentes, sean estas escalares o vectoriales.
+
+:explanation:
+
+    3 bloques step, uno escalar 2 vectorial
+    1-2 se multiplican, 2-3 se multiplican
+    Luego se muestran los resultados con los bloques scope
+    Si se quiere ver las salidas de los bloques step, se puede reemplazar el terminator con el bloque scope
 
 Export data
 -----------
@@ -95,7 +109,7 @@ Ejemplo de funcion tipo fuente, implementada con una funcion externa
 
 :description: Ejemplo de cómo crear una función source básica con código externo.
 
-:explanation:x
+:explanation:
 
     Bloque solo requiere las salidas
     Necesario definir bien el parametro que dice que es source
@@ -145,8 +159,8 @@ Ejemplo de derivacion de paso variable (paso constante no sirve)
     La funcion de carga, se dedica de ajustar los puertos y parametros del bloque para que corra
 
 
-Feedback system three ways
---------------------------
+Feedback system implementations
+-------------------------------
 
 Ejemplo de sistema con feedback, implementado de 3 maneras distintas (funcion externa, funcion vectorial, funcion escalar)
 

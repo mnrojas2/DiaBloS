@@ -30,7 +30,7 @@ class FunctionsCall:
         :type params['_name_']: str
         :return: The value defined in 'value' or 0.
         :rtype: numpy.ndarray
-        :examples: See example in :ref:`examples:vectorial integration`, :ref:`examples:gaussian noise` and :ref:`examples:feedback system three ways`.
+        :examples: See example in :ref:`examples:vectorial integration`, :ref:`examples:gaussian noise` and :ref:`examples:signal products`.
 
         """
         if params['type'] == 'up':
@@ -134,7 +134,7 @@ class FunctionsCall:
         :type params['gain']: float/numpy.ndarray
         :return: The input value, scaled by the 'gain' factor.
         :rtype: numpy.ndarray
-        :examples: See example in :ref:`examples:feedback system three ways`.
+        :examples: See example in :ref:`examples:gaussian noise` and :ref:`examples:feedback system implementations`.
 
         """
         return {0: np.array(np.dot(params['gain'], inputs[0]))}
@@ -156,7 +156,6 @@ class FunctionsCall:
         :type params['b']: float
         :return: The exponential of the input value.
         :rtype: numpy.ndarray
-        :examples: See example in ...
 
         """
         return {0: np.array(params['a']*np.exp(params['b']*inputs[0]))}
@@ -178,7 +177,7 @@ class FunctionsCall:
         :type params['_name_']: str
         :return: The sum of all inputs.
         :rtype: numpy.ndarray
-        :examples: See example in :ref:`examples:gaussian noise`, :ref:`examples:export data` and :ref:`examples:feedback system three ways`.
+        :examples: See example in :ref:`examples:gaussian noise`, :ref:`examples:export data` and :ref:`examples:feedback system implementations`.
         :notes: This function returns 'Error' if the dimensions of any of the entries are not equal.
 
         """
@@ -214,7 +213,7 @@ class FunctionsCall:
         :type inputs: dict
         :return: The multiplication of all inputs.
         :rtype: numpy.ndarray
-        :examples: See example in ...
+        :examples: See example in :ref:`examples:signal products`.
         :notes: Unlike the sumator function, this one does not check if the inputs have the same dimensions, since there may be occasions where the result needed may be something larger.
         :limitations: The function does not check that the result has the desired dimensions, so it is a job to be done by the user.
 
@@ -236,7 +235,7 @@ class FunctionsCall:
         :type time: float
         :type inputs: dict
         :return: The vector with all values sorted in a single dimension ((a,1) with a>=1).:rtype: numpy.ndarray
-        :examples: See example in :ref:`examples:export data` and :ref:`examples:feedback system three ways`.
+        :examples: See example in :ref:`examples:signal products`, :ref:`examples:export data` and :ref:`examples:feedback system implementations`.
 
         """
         array = np.array(inputs[0])
@@ -320,7 +319,7 @@ class FunctionsCall:
         :type params['_name_']: str
         :return: The accumulated value of all inputs since step zero weighted by the sampling time.
         :rtype: numpy.ndarray
-        :examples: See example in :ref:`examples:sine integration` and :ref:`examples:feedback system three ways`.
+        :examples: See example in :ref:`examples:sine integration` and :ref:`examples:feedback system implementations`.
         :notes: The 'init_conds' parameter must be set by the user if the input has more than one dimension. You can define a vector value as [a,b,...], with a and b scalar values.
 
         """
@@ -429,7 +428,7 @@ class FunctionsCall:
         :type params['_init_start_']: bool
         :return: The slope between the previous value and the current value.
         :rtype: numpy.ndarray
-        :examples: See example in ...
+        :notes: ...
 
         """
         if params['_init_start_']:
@@ -456,7 +455,7 @@ class FunctionsCall:
         :type inputs: dict
         :return: A value set in zero.
         :rtype: numpy.ndarray
-        :examples: See example in ...
+        :examples: See example in :ref:`examples:signal products`.
 
         """
         return {0: np.array([0.0])}
@@ -487,7 +486,7 @@ class FunctionsCall:
         :type params['_name_']: str
         :return: A value set in zero.
         :rtype: numpy.ndarray
-        :examples: See example in :ref:`examples:export data` and :ref:`examples:feedback system three ways`.
+        :examples: See example in :ref:`examples:export data` and :ref:`examples:feedback system implementations`.
         :notes: If not enough labels are detected for 'vec_labels', the function adds the remaining labels using '_name_' and a number depending on the number of missing names.
 
         """
@@ -549,7 +548,7 @@ class FunctionsCall:
         :type params['_name_']: str
         :return: A value set in zero.
         :rtype: numpy.ndarray
-        :examples: See example in :ref:`examples:sine integration`, :ref:`examples:gaussian noise` and :ref:`examples:feedback system three ways`.
+        :examples: See example in :ref:`examples:sine integration`, :ref:`examples:signal products`, :ref:`examples:gaussian noise`.
         :notes: If not enough labels are detected for 'vec_labels', the function adds the remaining ones using '_name_' and a number depending on the number of missing names.
 
         """
