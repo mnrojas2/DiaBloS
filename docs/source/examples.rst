@@ -28,17 +28,6 @@ Sine integration
 
     This is exemplified as the sum of a step of amplitude 1 and a sinusoidal starting at :math:`\phi_0 = \pi/2` at time :math:`t_0 = 0`.
 
-    Metodo Runge Kutta 45: Este metodo es más complejo, pero más exacto.
-
-    .. math:: y(t) \approx (k_1 + 2k_2 + 2k_3 +k_4) \Delta T
-
-    donde
-
-    .. math:: k_1 &= \Delta T \cdot f\left(t,x\right) \\
-        k_2 &= \Delta T \cdot f\left(t + \frac{\Delta T}{2}, x + \frac{k_1}{2}\right) \\
-        k_3 &= \Delta T \cdot f\left(t + \frac{\Delta T}{2}, x + \frac{k_2}{2}\right) \\
-        k_4 &= \Delta T \cdot f\left(t + \Delta T, x + k_3\right)
-
 
 Vectorial integration
 ---------------------
@@ -155,3 +144,6 @@ ODE system
     modo 2 funcion vectorial con uso de gains para hacer el Ax + Bu
     modo 3 funcion escalar con uso de más de un integrador (explicar parte matematica)
 
+.. raw:: latex
+
+    \newpage

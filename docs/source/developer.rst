@@ -55,6 +55,7 @@ aqui va un diagrama de jerarquia::
         menublocks
         signal_plot
 
+
 How does the software work (UI level)
 -------------------------------------
 
@@ -67,12 +68,14 @@ Explicar el loop de simulacion con las funciones para crear/destruir bloques::
             k&m input -> init_sim.functions
         update canvas
 
+
 How to change some settings (resolution, fps, canvas color)
 -----------------------------------------------------------
 
 -Cambiar en InitSim
 
 -initsim.__init__()
+
 
 How does it work the run simulation function
 --------------------------------------------
@@ -100,56 +103,25 @@ poner la explicacion vista con el profe::
         -wait until the time variable reaches the limit.
         -press STOP button in the interface.
 
+
 How does RK45 integration works
 -------------------------------
 
 Explicar las cosas que hacen que funcione el RK45
 
-poner la explicacion vista con el profe (todavia no vista)::
+The RungeKutta 45 integration method can be defined as the following:
 
-    definir dT
+    .. math:: y(t) \approx (k_1 + 2k_2 + 2k_3 +k_4) \Delta T
 
-    T -> T0, T0, T0.5, T0.5, T1, T1, T1.5, T1.5, T2, ...
+    where T is the ..., y(t), and ... f(x)...
 
-    -Definir periodo Delta T como el intervalo entre loops. O sea, después de inicializar, se debe esperar un tiempo DT, ejecutar el loop, otro DT, el loop, otro DT y así.
-    -Definir caso integrador normal (caso con condiciones iniciales) generalizado
-    -Definir caso para un sistema con un único integrador con realimentación, donde el integrador forma parte del circuito cerrado
-    -Definir que el sistema visto desde el integrador se puede entender como que la salida del integrador es un 'x', y la entrada
-    -Definir reglas del runge kutta k1, k2, k3, k4
+    .. math:: k_1 &= \Delta T \cdot f\left(t,x\right) \\
+        k_2 &= \Delta T \cdot f\left(t + \frac{\Delta T}{2}, x + \frac{k_1}{2}\right) \\
+        k_3 &= \Delta T \cdot f\left(t + \frac{\Delta T}{2}, x + \frac{k_2}{2}\right) \\
+        k_4 &= \Delta T \cdot f\left(t + \Delta T, x + k_3\right)
 
-    k1 = DT * f(t,x)
-    k2 = DT * f(t + DT/2, x + k1/2)
-    k3 = DT * f(t + DT/2, x + k2/2)
-    k4 = DT * f(t + DT, x + k3)
-    k = 1/6 * (k1 + 2*k2 + 2*k3 + k4)
+    where f...
 
-    y = y(-1) + k
-    t = t(-1) + h
-
-    -init
-    count_ki = 0
-    T0.0 -> init conds (calcula k1)
-    move DT/2
-    -in loop
-    count_ki = 1
-    T0.5 -> k1 (calcula k2)
-    count_ki = 2
-    T0.5 -> k2 (calcula k3)
-    move DT/2
-    count_ki = 3
-    T1.0 -> k3 (calcula k4 y k)
-    count_ki = 0
-    T1.0 -> k4 = k (calcula k1)
-    move DT/2
-    count_ki = 1
-    T1.5 -> k1 (calcula k2)
-    count_ki = 2
-    T1.5 -> k2 (calcula k3)
-    move DT/2
-    count_ki = 3
-    T2.0 -> k3 (calcula k4 y k)
-    count_ki = 0
-    T2.0 -> k4 = k (calcula k1)
 
 Explain how the data is sent from one block to another (filetype)
 -----------------------------------------------------------------
@@ -232,3 +204,6 @@ programa repentinamente::
     except:
         return {'E': True}
 
+.. raw:: latex
+
+    \newpage

@@ -38,3 +38,8 @@ Loading DiaBloS
 ---------------
 
 Run 'main.py'
+
+
+.. raw:: latex
+
+    \newpage

@@ -196,3 +196,8 @@ First Experience
 #. You will see something like the following picture::
 
     .. image:: images/screenshot.png
+
+
+.. raw:: latex
+
+    \newpage
