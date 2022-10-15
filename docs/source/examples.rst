@@ -141,8 +141,12 @@ ODE system
 
     Este ejemplo en forma de resumen la mayoria de los ejemplos vistos anteriormente, pero en conjunto para un sistema realimentado
     modo 1 funcion externa x' = Ax + Bu
+        Implementar funcion que hace el x' = ax + bu vectorialmente por medio de una función externa.
+        Agregar un integrador a la salida para hacer la realimentación.
     modo 2 funcion vectorial con uso de gains para hacer el Ax + Bu
+        Implementar un x' = Ax + Bu, utilizando gain Blocks para A y B, Step blocks para definir U, sumar utilizando el bloque sumador y utilizar el bloque integrador igualmente.
     modo 3 funcion escalar con uso de más de un integrador (explicar parte matematica)
+        Implementar la relación de forma escalar, definiendo x2' = x2 - 0.4*x1 + u, integrarlo para conseguir x2 y eso entenderlo como -x1' para volver a integrarlo y así producir x1, realimentando el sistema.
 
 .. raw:: latex
 
