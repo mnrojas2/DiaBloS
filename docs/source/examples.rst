@@ -44,6 +44,11 @@ Vectorial integration
     vector de 3 dimensiones v3D = [[[a,b],[c,d]],[[e,f],[g,h]]]
     el uso de espacios no importa v = [3.9     ,   343] -> v = [3.9, 343]
 
+    Ejemplo consta de dos bloques Step que contiene un vector de 2 elementos en vez de un solo valor, sumados.
+    Este valor se utiliza para un sistema en realimentación representado por la ODE:
+
+    .. math:: \dot{y} = u
+
 
 Gaussian noise
 --------------
@@ -81,7 +86,11 @@ Export data
     El sistema se define en dos partes,
     parte 1 se dedica a juntar los valores recibidos en una matriz
     parte 2 se dedica a juntar todos los vectores de los distintos scope para exportar
-    Cabe destacar que una segunda parte del proceso requeriría tomar los datos exportados y desempacarlos utilizando otro código de python con apoyo de la librería numpy
+
+    El modelo de grafos consta de un Step block y un Sin block como cos(x)
+    Lo que recibe el bloque Export es un vector (mux) del step en el primer elemento y un 1+cos(x) en el segundo
+
+    Cabe destacar que este ejemplo solo exporta los archivos. El poder leerlos se puede hacer con python mismo o excel.
 
 External source
 ---------------
@@ -172,6 +181,16 @@ ODE system
         0 \\ 1
         \end{bmatrix}
         u
+
+    Entonces se crean 3 instancias de este problema para simular:
+
+    #) Utilizando una función externa, se recibe u y el vector x, para entregar x'.
+
+    #) Utilizando bloques gain y sum para conseguir un x'.
+
+    #) Utilizando la definción del sistema no vectorial, calcular primero ddot{y}, para luego integrarlo, definir dot{y} y volver a integrarlo para encontrar {y}.
+
+    Los tres se conectan al Scope para comparar sus resultados, con los labels correspondientes y así demostrar que sus resultados son iguales.
 
     Este ejemplo en forma de resumen la mayoria de los ejemplos vistos anteriormente, pero en conjunto para un sistema realimentado
 
