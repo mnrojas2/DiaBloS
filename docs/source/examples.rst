@@ -26,7 +26,7 @@ Sine integration
 
     .. math:: y(t) = 1 + \sin(t + pi/2)
 
-    This is exemplified as the addition of a step of amplitude 1 and a sinusoidal starting at :math:`\phi_0 = \pi/2` at time :math:`t_0 = 0`.
+    This is exemplified as the addition of a step of amplitude 1 and a sinusoidal starting at :math:`\phi_0 = \pi/2` at time :math:`t_0 = 0`. Then an example comparing the integration process and the exact curve can be done.
 
 :Graph composition:
 
@@ -79,9 +79,7 @@ Gaussian noise
 
 :Demonstration:
 
-    Block step output is a vector of 2 dimensions to the rest of the system.
-    Demux splits that 2d signal into 2 signals.
-    Each signal gets added gaussian noise (mu = 0, sigma = 1), then get downscaled by 0.5x with a gain block.
+    Para una fuente vectorial 2D, se le suma ruido a cada elemento por separado.
     Both sum outputs are scoped.
 
 :Graph Composition:
@@ -101,10 +99,11 @@ Signal products
 
 :Demonstration:
 
-    3 bloques step, uno escalar 2 vectorial
-    1-2 se multiplican, 2-3 se multiplican
-    Luego se muestran los resultados con los bloques scope
-    Si se quiere ver las salidas de los bloques step, se puede reemplazar el terminator con el bloque scope
+    Tres bloques fuente, uno de ellos escalar, los otros dos son vectores
+
+    Se muestra la posibilidad de multiplicar escalar por vector y vector por vector (por elemento).
+
+    Además, si se quiere observar las salidas originales, se deja un mux de las fuentes, donde el usuario debe agregar un scope y eliminar el terminator.
 
 :Graph Composition:
 
@@ -125,12 +124,12 @@ Export data
 :Demonstration:
 
     Se requiere agregar el bloque Export
-    El sistema se define en dos partes,
-    parte 1 se dedica a juntar los valores recibidos en una matriz
-    parte 2 se dedica a juntar todos los vectores de los distintos scope para exportar
 
-    El modelo de grafos consta de un Step block y un Sin block como cos(x)
-    Lo que recibe el bloque Export es un vector (mux) del step en el primer elemento y un 1+cos(x) en el segundo
+    La función para exportar datos consta de dos partes:
+
+        #) Adquisición de datos: Durante la simulación, el bloque irá acumulando los datos en vectores ordenados.
+
+        #) Conversión de datos: Al finalizar la simulación, se toman todos los vectores de los bloques Export (de haber más de uno), y se arma una matriz más grande, que será exportada como .npz por medio de la libreria numpy.
 
     Cabe destacar que este ejemplo solo exporta los archivos. El poder leerlos se puede hacer con python mismo o excel.
 
@@ -221,11 +220,11 @@ ODE system
 
 :Demonstration:
 
-    Se utiliza un sistema en particular de ecuaciones diferenciales ordinarias como ejemplo:
+    A particular ordinary differential equation is used as an example:
 
     .. math:: \ddot{y} + 0.4\,\dot{y} + y = u
 
-    si :math:`x_1 = y` y :math:`x_2 = \dot{y}` el sistema se puede representar de forma vectorial como:
+    if :math:`x_1 = y` and :math:`x_2 = \dot{y}` this ODE can be represented in vector form as:
 
     .. math:: X' &= f(X,U)\\
         \begin{bmatrix}
@@ -236,7 +235,7 @@ ODE system
         x_2 \\ -x_1 -0.4\, x_2 + u
         \end{bmatrix}
 
-    y a su vez, se puede convertir a un sistema matricial del tipo :math:`X'= A\,X + B\,U`
+    and in the same time, it can be converted to a matrix system of the type :math:`X'= A\,X + B\,U`.
 
     .. math::
         \begin{bmatrix}
@@ -255,13 +254,13 @@ ODE system
         \end{bmatrix}
         u
 
-    Entonces se crean 3 instancias de este problema para simular:
+    So three instances of this problem are created to simulate:
 
-    #) Utilizando una función externa, se recibe u y el vector x, para entregar x'.
+    #) Using an external function, where value :math:`U` and vector :math:`X=[x_1, x_2]` are received, to deliver :math:`\dot{X}`.
 
-    #) Utilizando bloques gain y sum para conseguir un x'.
+    #) Using gain and sum blocks to form :math:`X'= A,X + B,U` before integrating it.
 
-    #) Utilizando la definción del sistema no vectorial, calcular primero ddot{y}, para luego integrarlo, definir dot{y} y volver a integrarlo para encontrar {y}.
+    #) Using the non-vector system definition, first by calculating :math:`ddot{y}`, then integrate it to find :math:`dot{y}` and then integrate once again to find :math:`y`.
 
 :Graph Composition:
 
