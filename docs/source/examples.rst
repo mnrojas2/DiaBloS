@@ -50,17 +50,21 @@ Vectorial integration
 
 :Demonstration:
 
-    El sistema funciona a partir de considerar ciertos elementos del string como vectores
-    El modelo busca corchetes []
-    vector de una dimension seria v1D = [a,b]
-    vector de dos dimensiones seria v2D = [[a,b],[c,d]] o [a,b;c,d]
-    vector de 3 dimensiones v3D = [[[a,b],[c,d]],[[e,f],[g,h]]]
-    el uso de espacios no importa v = [3.9     ,   343] -> v = [3.9, 343]
+    The Step block has support for vector outputs of the type:
 
-    Ejemplo consta de dos bloques Step que contiene un vector de 2 elementos en vez de un solo valor, sumados.
-    Este valor se utiliza para un sistema en realimentación representado por la función de transferencia:
+        #) Vectorial = [a, b, c, d].
+        #) Matrix = [[a, b], [c, d]]
+        #) 3DoF matrix = [[[a, b], [c, d]], [[e, f], [g, h]]]
+
+    A graph is formed representing a simple feedback system, consisting of an integrator connected in feedback. The input
+    values are defined by two vector sources which are added together. This value is used for a feedback system represented
+    by the following transfer function:
 
     .. math:: y(t) = e^{-t} \ast u(t) \leftrightarrow \frac{Y(s)}{U(s)} = \frac{1}{s+1}
+
+    It should be noted that for this case, the initial conditions of the Integrator block must be of the same dimensions
+    as its input. Since for this case it will be a vector of two elements, the initial conditions must be defined as
+    :math:`[0.0, 0.0]`, if you want to start at zero for both.
 
 :Graph Composition:
 
@@ -68,7 +72,7 @@ Vectorial integration
     #) Another Step up block with amplitude :math:`[1.0, 0.5]` and no delay.
     #) A Sumator block to add the outputs of both blocks.
     #) Another Sumator block to subtract the output of the previous block with the output of the Integrator block.
-    #) An Integrator block using the RK45 method to obtain the integration of the previous operation's result.
+    #) An Integrator block using the RK45 method to obtain the integration of the Sumator's output with initial conditions set in :math:`[0.0, 0.0]`.
     #) A Scope block to observe the result of the operation.
 
 
@@ -79,8 +83,11 @@ Gaussian noise
 
 :Demonstration:
 
-    Para una fuente vectorial 2D, se le suma ruido a cada elemento por separado.
-    Both sum outputs are scoped.
+    The Noise block allows the creation of Gaussian noise for simulation effects. It only requires defining :math:`mu`
+    and :math:`sigma` and then adding the result to the target signal.
+
+    The graph to be shown is a system where the Step block's amplitude is :math:`[5.0, -2.5]`, separates the vector into
+    two independent signals, adding a Gaussian noise to each.
 
 :Graph Composition:
 
@@ -99,11 +106,17 @@ Signal products
 
 :Demonstration:
 
-    Tres bloques fuente, uno de ellos escalar, los otros dos son vectores
+    The Sigproduct block is used to multiply the values of each iteration between different signals. Defining :math:`y_1`
+    and :math:`y_2`, as two output signals from two different blocks, the following signal multiplications can be observed:
 
-    Se muestra la posibilidad de multiplicar escalar por vector y vector por vector (por elemento).
+        #) Scalar with scalar: If :math:`y_1 = a` and :math:`y_2 = b` then :math:`y_3 = a\, b`.
 
-    Además, si se quiere observar las salidas originales, se deja un mux de las fuentes, donde el usuario debe agregar un scope y eliminar el terminator.
+        #) Scalar with vector: If :math:`y_1 = a` and :math:`y_2 = [b, c]` then :math:`y_3 = [a\, b, a\, c]`.
+
+        #) Vector with vector: If :math:`y_1 = [a, b]` and :math:`y_2 = [c, d]` then :math:`y_3 = [a, c, b, b, d]`.
+
+    An example graph is shown where the multiplication between three different sources is observed, based on the three
+    types of multiplication described above.
 
 :Graph Composition:
 
@@ -123,15 +136,18 @@ Export data
 
 :Demonstration:
 
-    Se requiere agregar el bloque Export
+    The Export block is used to save data of signals created during the simulation. It is enough to add this block and
+    define the labels within the settings of this block.
 
-    La función para exportar datos consta de dos partes:
+    In particular, the function for exporting data consists of two parts:
 
-        #) Adquisición de datos: Durante la simulación, el bloque irá acumulando los datos en vectores ordenados.
+        #) Data acquisition: During the simulation, the block will accumulate data in ordered vectors, each associated with a label. associated to a label. If labels have not been previously defined, or if they are not enough to cover all the vectors to be created, the block will vectors to be created, the system adds default names to complete the list. A matrix is then created a matrix is then created that will append the values added by each simulation loop.
 
-        #) Conversión de datos: Al finalizar la simulación, se toman todos los vectores de los bloques Export (de haber más de uno), y se arma una matriz más grande, que será exportada como .npz por medio de la libreria numpy.
+        #) Data conversion: At the end of the simulation, all the vectors of the Export blocks are taken (if there are more than one), and all the data is assembled. more than one), and a larger matrix is assembled, which will be exported as .npz by means of the numpy library.
 
-    Cabe destacar que este ejemplo solo exporta los archivos. El poder leerlos se puede hacer con python mismo o excel.
+    After completing a simulation process, a .npz file will be created and found inside the 'saves' folder, with the same
+    name as the savefile (by default 'data.npz'). Note that this example only exports the files. Being able to read them
+    can be done with Python, Excel or similar.
 
 :Graph Composition:
 
@@ -149,10 +165,17 @@ External source
 
 :Demonstration:
 
-    Bloque solo requiere las salidas
-    Necesario definir bien el parametro que dice que es source
-    En la simulacion es necesario cargar el bloque "Bloque" para cargar externos
-    La funcion de carga, se dedica de ajustar los puertos y parametros del bloque para que corra
+    The Block block associates user-defined functions to give more options for graph simulation.
+
+    The only parameter needed to modify is the function name (and .py file) located in the 'usermodels' folder. After
+    loading this, the block acquires the data defined in the file to change, number of inputs, outputs, block type and
+    color.
+
+    For this case, it is important to define the block inputs as :math:`0` and the block type as :math:`0` (source).
+
+    Details on how to create such functions can be found in :ref:`usermodel-function`.
+
+Translated with www.DeepL.com/Translator (free version)
 
 :Graph Composition:
 
@@ -166,9 +189,15 @@ External Z-process
 
 :Demonstration:
 
-    Necesario definir bien el parametro que dice que es process
-    En la simulacion es necesario cargar el bloque "Bloque" para cargar externos
-    La funcion de carga, se dedica de ajustar los puertos y parametros del bloque para que corra
+    The Block block associates user-defined functions to give more options for graph simulation.
+
+    The only parameter needed to modify is the function name (and .py file) located in the 'usermodels' folder. After
+    loading this, the block acquires the data defined in the file to change, number of inputs, outputs, block type and
+    color.
+
+    For this case, it is important to define the block type as :math:`2` (z-process).
+
+    Details on how to create such functions can be found in :ref:`usermodel-function`.
 
 :Graph Composition:
 
@@ -183,9 +212,15 @@ External integrator (N-process)
 :Description: This example shows an external function implemented as a N-process block. In this case, an integrator
     using the same RK45 method already implemented in the Integrator block.
 
-    Necesario definir bien el parametro que dice que es integrador
-    En la simulacion es necesario cargar el bloque "Bloque" para cargar externos
-    La funcion de carga, se dedica de ajustar los puertos y parametros del bloque para que corra
+    The Block block associates user-defined functions to give more options for graph simulation.
+
+    The only parameter needed to modify is the function name (and .py file) located in the 'usermodels' folder. After
+    loading this, the block acquires the data defined in the file to change, number of inputs, outputs, block type and
+    color.
+
+    For this case, it is important to define the block type as :math:`1` (n-process).
+
+    Details on how to create such functions can be found in :ref:`usermodel-function`, details on how the RK45 integration method works, see :ref:`rk45-method`.
 
 :Graph Composition:
 
@@ -202,9 +237,15 @@ External derivator
 
 :Demonstration:
 
-    Necesario definir bien el parametro que dice que es progress
-    En la simulacion es necesario cargar el bloque "Bloque" para cargar externos
-    La funcion de carga, se dedica de ajustar los puertos y parametros del bloque para que corra
+    The Block block associates user-defined functions to give more options for graph simulation.
+
+    The only parameter needed to modify is the function name (and .py file) located in the 'usermodels' folder. After
+    loading this, the block acquires the data defined in the file to change, number of inputs, outputs, block type and
+    color.
+
+    For this case, it is important to define the block type as :math:`2` (z-process).
+
+    Details on how to create such functions can be found in :ref:`usermodel-function`.
 
 :Graph Composition:
 
@@ -256,9 +297,9 @@ ODE system
 
     So three instances of this problem are created to simulate:
 
-    #) Using an external function, where value :math:`U` and vector :math:`X=[x_1, x_2]` are received, to deliver :math:`\dot{X}`.
+    #) Using an external function, where value :math:`U` and vector :math:`X=[x_1, x_2]` are received, to deliver :math:`\dot{X} = f(X,U)`.
 
-    #) Using gain and sum blocks to form :math:`X'= A,X + B,U` before integrating it.
+    #) Using gain and sumator blocks to form the matrix notation (:math:`X'= A,X + B,U`) before integrating it.
 
     #) Using the non-vector system definition, first by calculating :math:`ddot{y}`, then integrate it to find :math:`dot{y}` and then integrate once again to find :math:`y`.
 
@@ -266,7 +307,7 @@ ODE system
 
     Graph 1:
         #) A Step up block with amplitude :math:`1` and no delay.
-        #) An External block linked to the external usermodel function 'axbu.py'.
+        #) An External block linked to the external user model function 'axbu.py'.
         #) An Integrator block using the RK45 method to obtain the integration of the previous operation's result.
         #) A Scope block to observe the output of the Integrator block.
         #) An Export block to save the data from the Integrator block and then export it as a file in .npz format.
