@@ -4,6 +4,7 @@ Using DiaBloS: Some Practical Examples
 This package provides some examples, as a way to demonstrate some of the capabilities that this program has. These
 examples are contained in '.dat' files, located in the 'Examples' folder, and are executed as any file saved by the user.
 
+----------------
 Sine integration
 ----------------
 
@@ -42,6 +43,7 @@ Sine integration
         #) A Scope block to observe the result of the operation.
 
 
+---------------------
 Vectorial integration
 ---------------------
 
@@ -76,6 +78,7 @@ Vectorial integration
     #) A Scope block to observe the result of the operation.
 
 
+--------------
 Gaussian noise
 --------------
 
@@ -129,6 +132,7 @@ Signal products
     #) Two Scope blocks to observe the results of the operations.
 
 
+-----------
 Export data
 -----------
 
@@ -182,6 +186,8 @@ Translated with www.DeepL.com/Translator (free version)
     #) An External block linked to the external usermodel function 'my_function_src.py'.
     #) Two Scope blocks to observe the outputs of the External block.
 
+
+------------------
 External Z-process
 ------------------
 
@@ -206,6 +212,7 @@ External Z-process
     #) A Scope block to observe the result of the operation.
 
 
+-------------------------------
 External integrator (N-process)
 -------------------------------
 
@@ -229,8 +236,9 @@ External integrator (N-process)
     #) A Scope block to observe the result of the operation.
 
 
-External derivator
-------------------
+------------------------------
+External derivator (Z-process)
+------------------------------
 
 :Description: This example shows an external function implemented as a Z-process block. In this case a variable
     step-size derivator (direct feedthrough function).
@@ -254,6 +262,7 @@ External derivator
     #) A Scope block to observe the result of the operation.
 
 
+----------
 ODE system
 ----------
 

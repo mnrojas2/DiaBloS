@@ -63,7 +63,7 @@ class FunctionsCall:
         :type params['delay']: float
         :return: The value of the slope multiplied by the difference between 'time' and 'delay'.
         :rtype: numpy.ndarray
-        :examples: See example in :ref:`examples:external derivator`.
+        :examples: See example in :ref:`examples:external derivator (z-process)`.
 
         """
         if params['slope'] == 0:
@@ -114,7 +114,7 @@ class FunctionsCall:
         :type params['mu']: float
         :return: Gaussian random value of mean mu and variance sigma**2.
         :rtype: numpy.ndarray
-        :examples: See example in :ref:`examples:gaussian noise`
+        :examples: See example in :ref:`examples:gaussian noise`.
 
         """
         return {0: np.array(params['sigma'] ** 2 * np.random.randn() + params['mu'])}

@@ -1,14 +1,17 @@
 Using DiaBloS: Developer's Guide
 ================================
 
-Class and function hierarchy
-----------------------------
+
+Software hierarchy
+------------------
 
 Explicar con diagramas la relacion entre funciones principales
 
-aqui va un diagrama de jerarquia::
+.. image:: images/software-chart.png
 
-    main_execution()
+Explicar cada cuadrado grande y bajo este los cuadrados chicos
+
+..  main_execution()
         --main classes--
         initsim
             --UI--
@@ -16,20 +19,18 @@ aqui va un diagrama de jerarquia::
             remove_block
             add_line
             remove_lines
-
-            --settings--
+        --settings--
             save
             open
             other settings
             canvas resolution
             canvas fps
-
-            --execution--
+        --execution--
             execution_init
             execution_loop
             other auxiliar functions
 
-        blocks
+..      blocks
             --internal--
             inputs
             outputs
@@ -38,7 +39,7 @@ aqui va un diagrama de jerarquia::
             --ui--
             color
 
-        lines
+..      lines
             --internal--
             start
             end
@@ -46,39 +47,26 @@ aqui va un diagrama de jerarquia::
             color
             trajectory
 
-        functions
+..      functions
             --execution--
             input/output functions
 
-        --auxiliar classes--
-        tkWidget
-        menublocks
-        signal_plot
+..      --auxiliar classes--
+            tkWidget
+            menublocks
+            signal_plot
 
 
-How does the software work (UI level)
--------------------------------------
+Graph simulation
+----------------
 
-Explicar el loop de simulacion con las funciones para crear/destruir bloques::
+Explicar de forma resumida el como se ejecutan los datos, tal vez un hipervinculo al paper?
 
-    init canvas
-    initsim
-    loop
-        event -> check inputs
-            k&m input -> init_sim.functions
-        update canvas
+.. _simrun:
 
-
-How to change some settings (resolution, fps, canvas color)
------------------------------------------------------------
-
--Cambiar en InitSim
-
--initsim.__init__()
-
-
-How does it work the run simulation function
---------------------------------------------
+-------------------------------
+Graph simulation main algorithm
+-------------------------------
 
 Explicar el loop de ejecucion del grafo, inicial y loop, con tambien los casos para detenerlo de golpe (diagrama)
 
@@ -106,8 +94,9 @@ poner la explicacion vista con el profe::
 
 .. _rk45-method:
 
-How does RK45 integration works
--------------------------------
+---------------------------------
+RK45 integration method algorithm
+---------------------------------
 
 Explicar las cosas que hacen que funcione el RK45
 
@@ -125,14 +114,23 @@ The RungeKutta 45 integration method can be defined as the following:
     where f...
 
 
-Explain how the data is sent from one block to another (filetype)
------------------------------------------------------------------
+Data management
+---------------
+
+Explicar como los datos se empaquetan para la comunicacion entre bloques.
+Hacer un diagrama de al menos 4 bloques para explicar el como se van agregando y saliendo
+Explicar la forma en que los vectores se van creando
+
+----------------------------
+Communication between blocks
+----------------------------
 
 Mencionar el como funciona lo de los diccionarios::
 
     return {0: np.array(dato), 1: np.array([dato1,dato2])}
 
 
+-----------------
 Vector management
 -----------------
 
@@ -155,6 +153,15 @@ TkWidget.string_to_vector(): proceso de conversion de vectores en string.
 
 .. _usermodel-function:
 
+Usermodel functions
+-------------------
+
+Explicar el proceso de crear estas funciones.
+Requieren saber el cómo se comunican los datos y su formato.
+Como testear
+Como evitar crashes
+
+----------------------
 Creating new functions
 ----------------------
 
@@ -180,8 +187,9 @@ Funcion inicialización::
         return io_data, params
 
 
-Testing a new function
-----------------------
+---------------------
+Testing new functions
+---------------------
 
 It is recommended to implement this function as an external-function type first, then add it to the Functions class.
 
@@ -196,7 +204,7 @@ It is recommended to implement this function as an external-function type first,
 
 #. Test again the function in the simulation, this time replacing the External Block with the corresponding to the new implemented function.
 
-
+------------------
 Preventing crashes
 ------------------
 
