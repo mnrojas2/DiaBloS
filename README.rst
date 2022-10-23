@@ -16,7 +16,7 @@ You will need the following packages::
     - pygame (>=2.1.2)
     - numpy (>=1.22.3)
     - tqdm (>=4.64.0)
-    - pyqtgraph (>=0.12.3)
+    - pyqtgraph (==0.12.3)
 
 To install the packages you can use pip (recommended)::
 
