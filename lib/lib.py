@@ -20,7 +20,7 @@ from lib.functions import *
 sys.path.append('./usermodels/')
 
 
-class InitSim:
+class DSim:
     """
     Class that manages the simulation interface and main functions.
 
@@ -179,7 +179,7 @@ class InitSim:
         mouse_y = m_pos[1]
         block_collision = (mouse_x, mouse_y, block.size[0], block.size[1])
 
-        new_block = Block(block.block_fn, sid, block_collision, block.b_color, block.ins, block.outs, block.b_type, block.io_edit, block.fn_name, copy.deepcopy(block.params), block.external)
+        new_block = DBlock(block.block_fn, sid, block_collision, block.b_color, block.ins, block.outs, block.b_type, block.io_edit, block.fn_name, copy.deepcopy(block.params), block.external)
         self.blocks_list.append(new_block)
 
     def add_line(self, srcData, dstData):
@@ -206,7 +206,7 @@ class InitSim:
                 sid = len(id_list)
 
         # creación de la línea a partir del id, y data de origen y destino para la misma
-        line = Line(sid, srcData[0], srcData[1], dstData[0], dstData[1], (srcData[2], dstData[2]))
+        line = DLine(sid, srcData[0], srcData[1], dstData[0], dstData[1], (srcData[2], dstData[2]))
         self.line_list.append(line)
 
     def remove_block_and_lines(self):
@@ -297,50 +297,52 @@ class InitSim:
 
         # block_fn, fn_name, {# inputs, # output, execution hierarchy}, {<specific argument/parameters>}, color, (width, height), allows_io_change
 
-        block = MenuBlocks("Block", 'external',
-                           {'inputs': 1, 'outputs': 1, 'b_type': 2, 'io_edit': False}, {"filename": '<no filename>'},
-                           'green', (120, 60), True)
-
+        # source-type blocks
         step = MenuBlocks("Step", 'step',
                         {'inputs': 0, 'outputs': 1, 'b_type': 0, 'io_edit': False}, {'value': 1.0, 'delay': 0.0, 'type': 'up'},
                         'blue', (60, 60))
 
-        gain = MenuBlocks("Gain", 'gain',
-                        {'inputs': 1, 'outputs': 1, 'b_type': 2, 'io_edit': False}, {'gain': 1.0},
-                        'yellow', (60, 60))
+        ramp = MenuBlocks("Ramp", 'ramp',
+                          {'inputs': 0, 'outputs': 1, 'b_type': 0, 'io_edit': False}, {'slope': 1.0, 'delay': 0.0},
+                          'light_blue', (60, 60))
 
+        sine = MenuBlocks("Sine", 'sine',
+                          {'inputs': 0, 'outputs': 1, 'b_type': 0, 'io_edit': False},
+                          {'amplitude': 1.0, 'omega': 1.0, 'init_angle': 0},
+                          'purple', (60, 60))
+
+        noise = MenuBlocks("Noise", 'noise',
+                           {'inputs': 0, 'outputs': 1, 'b_type': 0, 'io_edit': False}, {'sigma': 1, 'mu': 0},
+                           'cyan', (60, 60))
+
+
+        # N-process-type blocks
         integrator = MenuBlocks("Integr", 'integrator',
                         {'inputs': 1, 'outputs': 1, 'b_type': 1, 'io_edit': False}, {'init_conds': 0.0, 'method': 'FWD_RECT', '_init_start_': True},
                         'magenta', (80, 60))
 
+
+        # Z-process-type blocks
         derivative = MenuBlocks("Deriv", 'derivative',
                                 {'inputs': 1, 'outputs': 1, 'b_type': 2, 'io_edit': False},
                                 {'_init_start_': True},
                                 'aqua', (80, 60))
 
+        gain = MenuBlocks("Gain", 'gain',
+                          {'inputs': 1, 'outputs': 1, 'b_type': 2, 'io_edit': False}, {'gain': 1.0},
+                          'yellow', (60, 60))
+
         sumator = MenuBlocks("Sum", 'sumator',
                         {'inputs': 2, 'outputs': 1, 'b_type': 2, 'io_edit': 'input'}, {'sign': "++"},
-                        'cyan', (70, 50))
+                        'lime_green', (70, 50))
 
         sigproduct = MenuBlocks("SgProd", 'sigproduct',
                         {'inputs': 2, 'outputs': 1, 'b_type': 2, 'io_edit': 'input'}, {},
                         'green', (70, 50))
 
-        sine = MenuBlocks("Sine", 'sine',
-                        {'inputs': 0, 'outputs': 1, 'b_type': 0, 'io_edit': False}, {'amplitude': 1.0, 'omega': 1.0, 'init_angle': 0},
-                        'purple', (60, 60))
-
         exponential = MenuBlocks("Exp", 'exponential',
                         {'inputs': 1, 'outputs': 1, 'b_type': 2, 'io_edit': False}, {'a': 1.0, 'b': 1.0},
                         (255, 0, 128), (60, 60))  # a*e^bx
-
-        ramp = MenuBlocks("Ramp", 'ramp',
-                        {'inputs': 0, 'outputs': 1, 'b_type': 0, 'io_edit': False}, {'slope': 1.0, 'delay': 0.0},
-                        (255, 127, 0), (60, 60))
-
-        noise = MenuBlocks("Noise", 'noise',
-                        {'inputs': 0, 'outputs': 1, 'b_type': 0, 'io_edit': False}, {'sigma': 1, 'mu': 0},
-                        (100, 175, 50), (60, 60))
 
         mux = MenuBlocks("Mux", "mux",
                         {'inputs': 2, 'outputs': 1, 'b_type': 2, 'io_edit': 'input'}, {},
@@ -350,19 +352,27 @@ class InitSim:
                         {'inputs': 1, 'outputs': 2, 'b_type': 2, 'io_edit': 'output'}, {'output_shape': 1},
                         (102, 30, 153), (60, 60))
 
+
+        # Terminal-type blocks
         terminator = MenuBlocks("Term", 'terminator',
                         {'inputs': 1, 'outputs': 0, 'b_type': 3, 'io_edit': False}, {},
                         'red', (60, 60))
 
         scope = MenuBlocks("Scope", 'scope',
                         {'inputs': 1, 'outputs': 0, 'b_type': 3, 'io_edit': False}, {'labels': 'default', '_init_start_': True},
-                        (220, 20, 60), (60, 60))
+                        'orange', (60, 60))
 
         export = MenuBlocks("Export", "export",
                         {'inputs': 1, 'outputs': 0, 'b_type': 3, 'io_edit': False}, {'str_name': 'default', '_init_start_': True},
                         (255, 160, 0), (70, 60))
 
-        self.menu_blocks = [step, sine, ramp, noise, integrator, derivative, gain, exponential, block, sumator, sigproduct, mux, demux, terminator, scope, export]
+
+        # External/general use block
+        external = MenuBlocks("External", 'external',
+                           {'inputs': 1, 'outputs': 1, 'b_type': 2, 'io_edit': False}, {"filename": '<no filename>'},
+                           'light_gray', (120, 60), True)
+
+        self.menu_blocks = [step, sine, ramp, noise, integrator, derivative, gain, exponential, sumator, sigproduct, mux, demux, terminator, scope, export, external]
 
     def display_menu_blocks(self, zone):
         """
@@ -378,7 +388,7 @@ class InitSim:
     def save(self, autosave=False):
         """
         :purpose: Saves blocks, lines and other data in a .dat file.
-        :description: Obtaining the location where the file is to be saved, all the important data of the InitSim class, each one of the blocks and each one of the lines, are copied into dictionaries, which will then be loaded to the external file by means of the JSON library.
+        :description: Obtaining the location where the file is to be saved, all the important data of the DSim class, each one of the blocks and each one of the lines, are copied into dictionaries, which will then be loaded to the external file by means of the JSON library.
         :param autosave: Flag that defines whether the process to be performed is an autosave or not.
         :type autosave: bool
         :notes: This function is executed automatically when you want to simulate, so as not to lose unsaved information.
@@ -396,7 +406,7 @@ class InitSim:
         else: # Opción para cuando se va a ejecutar un grafo
             file = 'saves/'+self.filename[:-4]+'_AUTOSAVE.dat'
 
-        # Datos de InitSim (clase principal)
+        # Datos de DSim (clase principal)
         init_dict = {
             "wind_width": self.SCREEN_WIDTH,
             "wind_height": self.SCREEN_HEIGHT,
@@ -462,7 +472,7 @@ class InitSim:
     def open(self):
         """
         :purpose: Loads blocks, lines and other data from a .dat.
-        :description: Starting from the .dat file, the data saved in the dictionaries are unpacked, updating the data in InitSim, creating new blocks and lines, leaving the canvas and the configurations as they were saved before.
+        :description: Starting from the .dat file, the data saved in the dictionaries are unpacked, updating the data in DSim, creating new blocks and lines, leaving the canvas and the configurations as they were saved before.
         :notes: The name of the loaded file is saved in the system, in order to facilitate the saving of data in it (overwriting it).
         """
         root = tk.Tk()
@@ -494,7 +504,7 @@ class InitSim:
     def update_sim_data(self, data):
         """
         :purpose: Updates information related with the main class variables saved in a file to the current simulation.
-        :param data: Dictionary with InitSim parameters.
+        :param data: Dictionary with DSim parameters.
         :type data: dict
         """
         self.SCREEN_WIDTH = data['wind_width']
@@ -513,7 +523,7 @@ class InitSim:
         :param block_data: Dictionary with Block object id, parameters, variables, etc.
         :type block_data: dict
         """
-        block = Block(block_data['block_fn'],
+        block = DBlock(block_data['block_fn'],
                       block_data['sid'],
                       (block_data['coords_left'], block_data['coords_top'], block_data['coords_width'], block_data['coords_height_base']),
                       block_data['b_color'],
@@ -535,7 +545,7 @@ class InitSim:
         :param line_data: Dictionary with Line object id, parameters, variables, etc.
         :type line_data: dict
         """
-        line = Line(line_data['sid'],
+        line = DLine(line_data['sid'],
                     line_data['srcblock'],
                     line_data['srcport'],
                     line_data['dstblock'],
@@ -620,7 +630,7 @@ class InitSim:
         """
 
         # Se llama a la clase que contiene las funciones para la ejecución
-        self.execution_function = FunctionsCall()
+        self.execution_function = DFunctions()
         self.execution_stop = False                         # Evitar que la ejecución se detenga antes de ejecutarse por error
         self.time_step = 0                                  # Primera iteración que irá aumentando self.sim_dt segundos
         self.timeline = np.array([self.time_step])          # Lista que contiene el valor de todas las iteraciones pasadas
@@ -1142,11 +1152,11 @@ class InitSim:
                 print("DYNAMIC PLOT: OFF")
 
 
-class Block(InitSim):
+class DBlock(DSim):
     """
     Class to initialize, mantain and modify function blocks.
 
-    :param block_fn: Block name, defined according to the available blocks created in InitSim.
+    :param block_fn: Block name, defined according to the available blocks created in DSim.
     :param sid: Unique identification for the created block.
     :param coords: List with tuples that contain the location and size of the block in the canvas.
     :param color: String or triplet that defines the color of the block in the canvas.
@@ -1395,7 +1405,7 @@ class Block(InitSim):
     def change_params(self):
         """
         :purpose: Generates a pop-up window to change modifiable parameters only.
-        :description: Through the use of the TkWidget class, a pop-up is created to modify parameters associated to the blocks. It should be noted that the only parameters that can be modified are those defined at the beginning (during the definition of the block in 'InitSim.menu_blocks_init'), as well as those that do not start with '_' underscore. The function separates the parameters, they are shown to the user, returned to the system and all are put back together at the end.
+        :description: Through the use of the TkWidget class, a pop-up is created to modify parameters associated to the blocks. It should be noted that the only parameters that can be modified are those defined at the beginning (during the definition of the block in 'DSim.menu_blocks_init'), as well as those that do not start with '_' underscore. The function separates the parameters, they are shown to the user, returned to the system and all are put back together at the end.
         """
         if self.params == {}:
             return
@@ -1480,7 +1490,7 @@ class Block(InitSim):
         return 0
 
 
-class Line(InitSim):
+class DLine(DSim):
     """
     Class to initialize and maintain lines that connect blocks.
 
@@ -1490,7 +1500,7 @@ class Line(InitSim):
     :param dstblock: Block to where the line ends.
     :param dstport: Port of the block where the line ends.
     :param points: List of tuples that defines the vertex of the trajectory of the line (if it's not a straight line).
-    :param cptr: Variable used as a pointer to assign a color to the line. It depends on the 'colors' list defined in InitSim.
+    :param cptr: Variable used as a pointer to assign a color to the line. It depends on the 'colors' list defined in DSim.
     :type sid: int
     :type srcblock: int
     :type srcport: int
@@ -1621,7 +1631,7 @@ class Line(InitSim):
 
     def change_color(self, ptr):
         """
-        :purpose: Pointer indicating which color is chosen from the color list defined in InitSim.
+        :purpose: Pointer indicating which color is chosen from the color list defined in DSim.
         :param ptr: Value that adds or subtracts 1 depending of the user's input.
         :type ptr: int
         """
@@ -1633,11 +1643,11 @@ class Line(InitSim):
             self.cptr = 0
 
 
-class MenuBlocks(InitSim):
+class MenuBlocks(DSim):
     """
     Class to create and show basic blocks used as a mark to generate functional blocks in the user interface.
 
-    :param block_fn: Block type, defined according to the available blocks created in InitSim
+    :param block_fn: Block type, defined according to the available blocks created in DSim
     :param fn_name: Function name, function associated to the block type. That function defined in the Functions class.
     :param io_params: Dictionary with block-related parameters (input ports, output ports, b_type, edit inputs/outputs).
     :param ex_params: Dictionary with function-related parameters.
@@ -1684,7 +1694,7 @@ class MenuBlocks(InitSim):
         zone.blit(self.text_display, (90, 90 + 40*pos))
 
 
-class Button(InitSim):
+class Button(DSim):
     """
     Class to create and show buttons in the user interface.
 

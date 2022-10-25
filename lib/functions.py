@@ -5,7 +5,7 @@ functions.py - Contains all the functions associated with the blocks in the simu
 import numpy as np
 
 
-class FunctionsCall:
+class DFunctions:
     """
     Class to contain all the default functions available to work with in the simulation interface
     """

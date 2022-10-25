@@ -13,7 +13,7 @@ def main_execution():
     """
 
     pygame.init()
-    sim_init = InitSim()
+    sim_init = DSim()
 
     # Window Initialization
     screen = pygame.display.set_mode((sim_init.SCREEN_WIDTH, sim_init.SCREEN_HEIGHT))

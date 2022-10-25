@@ -11,7 +11,7 @@
     },
     "blocks_data": [
         {
-            "block_fn": "Block",
+            "block_fn": "External",
             "sid": 0,
             "coords_left": 480,
             "coords_top": 211,
@@ -93,7 +93,7 @@
         {
             "name": "Line1",
             "sid": 1,
-            "srcblock": "Block0",
+            "srcblock": "External0",
             "srcport": 0,
             "dstblock": "Scope0",
             "dstport": 0,
@@ -123,7 +123,7 @@
             "sid": 0,
             "srcblock": "Step0",
             "srcport": 0,
-            "dstblock": "Block0",
+            "dstblock": "External0",
             "dstport": 0,
             "points": [
                 [
