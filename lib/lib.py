@@ -303,17 +303,16 @@ class DSim:
                         'blue', (60, 60))
 
         ramp = MenuBlocks("Ramp", 'ramp',
-                          {'inputs': 0, 'outputs': 1, 'b_type': 0, 'io_edit': False}, {'slope': 1.0, 'delay': 0.0},
-                          'light_blue', (60, 60))
+                        {'inputs': 0, 'outputs': 1, 'b_type': 0, 'io_edit': False}, {'slope': 1.0, 'delay': 0.0},
+                        'light_blue', (60, 60))
 
         sine = MenuBlocks("Sine", 'sine',
-                          {'inputs': 0, 'outputs': 1, 'b_type': 0, 'io_edit': False},
-                          {'amplitude': 1.0, 'omega': 1.0, 'init_angle': 0},
-                          'purple', (60, 60))
+                        {'inputs': 0, 'outputs': 1, 'b_type': 0, 'io_edit': False}, {'amplitude': 1.0, 'omega': 1.0, 'init_angle': 0},
+                        'purple', (60, 60))
 
         noise = MenuBlocks("Noise", 'noise',
-                           {'inputs': 0, 'outputs': 1, 'b_type': 0, 'io_edit': False}, {'sigma': 1, 'mu': 0},
-                           'cyan', (60, 60))
+                        {'inputs': 0, 'outputs': 1, 'b_type': 0, 'io_edit': False}, {'sigma': 1, 'mu': 0},
+                        'cyan', (60, 60))
 
 
         # N-process-type blocks
@@ -324,13 +323,16 @@ class DSim:
 
         # Z-process-type blocks
         derivative = MenuBlocks("Deriv", 'derivative',
-                                {'inputs': 1, 'outputs': 1, 'b_type': 2, 'io_edit': False},
-                                {'_init_start_': True},
-                                'aqua', (80, 60))
+                        {'inputs': 1, 'outputs': 1, 'b_type': 2, 'io_edit': False}, {'_init_start_': True},
+                        (255, 0, 200), (80, 60))
 
         gain = MenuBlocks("Gain", 'gain',
-                          {'inputs': 1, 'outputs': 1, 'b_type': 2, 'io_edit': False}, {'gain': 1.0},
-                          'yellow', (60, 60))
+                        {'inputs': 1, 'outputs': 1, 'b_type': 2, 'io_edit': False}, {'gain': 1.0},
+                        (255, 216, 0), (60, 60))
+
+        exponential = MenuBlocks("Exp", 'exponential',
+                        {'inputs': 1, 'outputs': 1, 'b_type': 2, 'io_edit': False}, {'a': 1.0, 'b': 1.0},
+                        'yellow', (60, 60))  # a*e^bx
 
         sumator = MenuBlocks("Sum", 'sumator',
                         {'inputs': 2, 'outputs': 1, 'b_type': 2, 'io_edit': 'input'}, {'sign': "++"},
@@ -339,10 +341,6 @@ class DSim:
         sigproduct = MenuBlocks("SgProd", 'sigproduct',
                         {'inputs': 2, 'outputs': 1, 'b_type': 2, 'io_edit': 'input'}, {},
                         'green', (70, 50))
-
-        exponential = MenuBlocks("Exp", 'exponential',
-                        {'inputs': 1, 'outputs': 1, 'b_type': 2, 'io_edit': False}, {'a': 1.0, 'b': 1.0},
-                        (255, 0, 128), (60, 60))  # a*e^bx
 
         mux = MenuBlocks("Mux", "mux",
                         {'inputs': 2, 'outputs': 1, 'b_type': 2, 'io_edit': 'input'}, {},
@@ -356,23 +354,23 @@ class DSim:
         # Terminal-type blocks
         terminator = MenuBlocks("Term", 'terminator',
                         {'inputs': 1, 'outputs': 0, 'b_type': 3, 'io_edit': False}, {},
-                        'red', (60, 60))
+                        (255, 0, 100), (60, 60))
 
         scope = MenuBlocks("Scope", 'scope',
                         {'inputs': 1, 'outputs': 0, 'b_type': 3, 'io_edit': False}, {'labels': 'default', '_init_start_': True},
-                        'orange', (60, 60))
+                        'red', (60, 60))
 
         export = MenuBlocks("Export", "export",
                         {'inputs': 1, 'outputs': 0, 'b_type': 3, 'io_edit': False}, {'str_name': 'default', '_init_start_': True},
-                        (255, 160, 0), (70, 60))
+                        'orange', (70, 60))
 
 
         # External/general use block
         external = MenuBlocks("External", 'external',
-                           {'inputs': 1, 'outputs': 1, 'b_type': 2, 'io_edit': False}, {"filename": '<no filename>'},
-                           'light_gray', (120, 60), True)
+                        {'inputs': 1, 'outputs': 1, 'b_type': 2, 'io_edit': False}, {"filename": '<no filename>'},
+                        'light_gray', (120, 60), True)
 
-        self.menu_blocks = [step, sine, ramp, noise, integrator, derivative, gain, exponential, sumator, sigproduct, mux, demux, terminator, scope, export, external]
+        self.menu_blocks = [step, ramp, sine, noise, integrator, derivative, gain, exponential, sumator, sigproduct, mux, demux, terminator, scope, export, external]
 
     def display_menu_blocks(self, zone):
         """
