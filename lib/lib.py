@@ -1966,7 +1966,7 @@ class SignalPlot:
             self.plot_win.setXRange(new_t[-1] - self.xrange, new_t[-1])
 
         # asignar nuevos vectores
-        pg.QtGui.QApplication.processEvents()
+        #pg.QtGui.QApplication.processEvents()
 
         for i in range(len(self.linelist)):
             plotline = getattr(self, self.linelist[i])
