@@ -173,7 +173,7 @@
             ],
             "b_type": 2,
             "io_edit": "input",
-            "fn_name": "sumator",
+            "fn_name": "adder",
             "params": {
                 "sign": "++"
             },
@@ -305,7 +305,7 @@
             ],
             "b_type": 2,
             "io_edit": "input",
-            "fn_name": "sumator",
+            "fn_name": "adder",
             "params": {
                 "sign": "+++"
             },
