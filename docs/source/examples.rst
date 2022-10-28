@@ -34,7 +34,7 @@ Sine integration
     Graph 1:
         #) A Step up block with amplitude :math:`1` and no delay.
         #) A Sine block with an initial angle of :math:`\pi/4` to form :math:`\cos(t)`.
-        #) A Sumator block to form :math:`y(t)` defined above with the previous two blocks.
+        #) An Adder block to form :math:`y(t)` defined above with the previous two blocks.
         #) A Scope block to observe the result of the operation.
 
     Graph 2:
@@ -72,9 +72,9 @@ Vectorial integration
 
     #) A Step up block with amplitude :math:`[1.5, 2.0]` delayed in :math:`5` seconds.
     #) Another Step up block with amplitude :math:`[1.0, 0.5]` and no delay.
-    #) A Sumator block to add the outputs of both blocks.
-    #) Another Sumator block to subtract the output of the previous block with the output of the Integrator block.
-    #) An Integrator block using the RK45 method to obtain the integration of the Sumator's output with initial conditions set in :math:`[0.0, 0.0]`.
+    #) An Adder block to add the outputs of both blocks.
+    #) Another Adder block to subtract the output of the previous block with the output of the Integrator block.
+    #) An Integrator block using the RK45 method to obtain the integration of the Adder's output with initial conditions set in :math:`[0.0, 0.0]`.
     #) A Scope block to observe the result of the operation.
 
 
@@ -98,7 +98,7 @@ Gaussian noise
     #) A Demux block to split the vector from the Step block and treat each element as an independent signal.
     #) Two Noise blocks with :math:`\mu = 0` and :math:`\sigma = 1` to produce gaussian noise.
     #) Two Gain block with gain of :math:`0.5` to attenuate the signal amplitude from the noise blocks.
-    #) Two Sumator blocks to add the noise ouput to each signal coming from the Demux.
+    #) Two Adder blocks to add the noise ouput to each signal coming from the Demux.
     #) A Scope block to observe the result of the operation.
 
 
@@ -157,8 +157,8 @@ Export data
 
     #) A Step up block with amplitude :math:`1` and no delay.
     #) A Sine block with an initial angle of :math:`\pi/4` to form :math:`\cos(t)`.
-    #) A Sumator block to form :math:`1+\cos(t)` with the previous two blocks.
-    #) A Mux block to produce a 2D vector with the Step block's output as first element and :math:`1+\cos(t)` (Sumator block's output) as second element.
+    #) An Adder block to form :math:`1+\cos(t)` with the previous two blocks.
+    #) A Mux block to produce a 2D vector with the Step block's output as first element and :math:`1+\cos(t)` (Adder block's output) as second element.
     #) An Export block to save the data from the Mux block and then export it as a file in .npz format.
 
 
@@ -308,7 +308,7 @@ ODE system
 
     #) Using an external function, where value :math:`U` and vector :math:`X=[x_1, x_2]` are received, to deliver :math:`\dot{X} = f(X,U)`.
 
-    #) Using gain and sumator blocks to form the matrix notation (:math:`X'= A,X + B,U`) before integrating it.
+    #) Using gain and adder blocks to form the matrix notation (:math:`X'= A,X + B,U`) before integrating it.
 
     #) Using the non-vector system definition, first by calculating :math:`ddot{y}`, then integrate it to find :math:`dot{y}` and then integrate once again to find :math:`y`.
 
@@ -325,18 +325,18 @@ ODE system
         #) A Step up block with amplitude :math:`1` and no delay.
         #) A Gain block to multiply the output of the Step block with the vector :math:`B = [0.0, 1.0]` producing :math:`BU`.
         #) A Gain block to multiply the output vector of the Integrator block with the matrix :math:`A = [[0.0, 1.0], [-1.0, -0.4]]` producing :math:`AX`.
-        #) A Sumator block to add the output of both Gain blocks, producing :math:`AX+BU`.
-        #) An Integrator block using the RK45 method to obtain :math:`X` from the Sumator block's output, and initial conditions set in :math:`[0.0, 0.0]`.
+        #) An Adder block to add the output of both Gain blocks, producing :math:`AX+BU`.
+        #) An Integrator block using the RK45 method to obtain :math:`X` from the Adder block's output, and initial conditions set in :math:`[0.0, 0.0]`.
         #) A Scope block to observe the output of the Integrator block.
         #) An Export block to save the data from the Integrator block and then export it as a file in .npz format.
 
     Graph 3:
         #) A Step up block with amplitude :math:`1` and no delay.
-        #) An Integrator block that integrates the value of the Sumator block's output to obtain :math:`x_2`.
-        #) A Gain block to multiply :math:`x_2` by :math:`-0.4` and be used in the Sumator block as future input.
+        #) An Integrator block that integrates the value of the Adder block's output to obtain :math:`x_2`.
+        #) A Gain block to multiply :math:`x_2` by :math:`-0.4` and be used in the Adder block as future input.
         #) Another Integrator block that integrates :math:`x_2` to get :math:`x_1`.
-        #) Another Gain block used to multiply :math:`x_1` by :math:`-1` and be used in the Sumator block as future input.
-        #) A Sumator block that adds the result of both Gain blocks and the Step block's output to get :math:`\dot{x}_2`.
+        #) Another Gain block used to multiply :math:`x_1` by :math:`-1` and be used in the Adder block as future input.
+        #) An Adder block that adds the result of both Gain blocks and the Step block's output to get :math:`\dot{x}_2`.
         #) A Mux block to produce a vector with the output values of the Integrator blocks.
         #) A Scope block to observe the output of the Mux block.
         #) An Export block to save the data from the Mux block and then export it as a file in .npz format.

@@ -326,7 +326,7 @@ class DSim:
                         {'inputs': 1, 'outputs': 1, 'b_type': 2, 'io_edit': False}, {'_init_start_': True},
                         (255, 0, 200), (80, 60))
 
-        sumator = MenuBlocks("Sum", 'sumator',
+        adder = MenuBlocks("Sum", 'adder',
                         {'inputs': 2, 'outputs': 1, 'b_type': 2, 'io_edit': 'input'}, {'sign': "++"},
                         'lime_green', (70, 50))
 
@@ -370,7 +370,7 @@ class DSim:
                         {'inputs': 1, 'outputs': 1, 'b_type': 2, 'io_edit': False}, {"filename": '<no filename>'},
                         'light_gray', (120, 60), True)
 
-        self.menu_blocks = [step, ramp, sine, noise, integrator, derivative, sumator, sigproduct, gain, exponential, mux, demux, terminator, scope, export, external]
+        self.menu_blocks = [step, ramp, sine, noise, integrator, derivative, adder, sigproduct, gain, exponential, mux, demux, terminator, scope, export, external]
 
     def display_menu_blocks(self, zone):
         """

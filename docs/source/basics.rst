@@ -58,6 +58,11 @@ After loading the package, a window similar like the following figure will show:
     Also, if an input port has already a link with another port you cannot create another link. However this restriction
     does not apply to output ports.
 
+    Each port in the blocks has a unique identification. The input ports are always on the left side of the blocks,
+    while the output ports are on the right side of the blocks. Between ports of the same type, they are differentiated
+    according to their position from top to bottom starting from zero. e.g, a 3-input Adder block has inputs identified
+    as :math:`i = {0, 1, 2}` and a single output identified as :math:`o = {0}`.
+
     <image>
 
 #. How to remove lines.

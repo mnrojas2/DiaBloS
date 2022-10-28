@@ -161,11 +161,11 @@ class DFunctions:
         return {0: np.array(params['a']*np.exp(params['b']*inputs[0]))}
 
 
-    def sumator(self, time, inputs, params):
+    def adder(self, time, inputs, params):
         """
-        Sumator function
+        Adder function
 
-        :purpose: Function that returns the sum of two or more inputs.
+        :purpose: Function that returns the addition of two or more inputs.
         :description: This is a process type function. It takes each input value and associates it with a sign (positive or negative), and then adds or subtracts them in an auxiliary variable. The function supports both scalar and vector operations.
         :param time: Value indicating the current period in the simulation.
         :param inputs: Dictionary that provides one or more entries for the function (if applicable).
