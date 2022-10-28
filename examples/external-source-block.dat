@@ -48,9 +48,9 @@
             "dragging": false,
             "selected": false,
             "b_color": [
-                220,
-                20,
-                60
+                255,
+                0,
+                0
             ],
             "b_type": 3,
             "io_edit": false,
@@ -74,9 +74,9 @@
             "dragging": false,
             "selected": false,
             "b_color": [
-                220,
-                20,
-                60
+                255,
+                0,
+                0
             ],
             "b_type": 3,
             "io_edit": false,

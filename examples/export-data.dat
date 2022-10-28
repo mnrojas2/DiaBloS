@@ -23,9 +23,9 @@
             "dragging": false,
             "selected": false,
             "b_color": [
-                0,
+                128,
                 255,
-                255
+                0
             ],
             "b_type": 2,
             "io_edit": "input",
@@ -81,8 +81,8 @@
             "dragging": false,
             "selected": false,
             "b_color": [
-                128,
                 0,
+                255,
                 255
             ],
             "b_type": 0,
@@ -112,7 +112,7 @@
             "selected": false,
             "b_color": [
                 255,
-                160,
+                128,
                 0
             ],
             "b_type": 3,
@@ -137,9 +137,9 @@
             "dragging": false,
             "selected": false,
             "b_color": [
-                102,
-                51,
-                153
+                190,
+                0,
+                255
             ],
             "b_type": 2,
             "io_edit": "input",

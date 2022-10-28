@@ -156,9 +156,9 @@
             "dragging": false,
             "selected": false,
             "b_color": [
-                102,
-                51,
-                153
+                190,
+                0,
+                255
             ],
             "b_type": 2,
             "io_edit": "input",
@@ -179,9 +179,9 @@
             "dragging": false,
             "selected": false,
             "b_color": [
-                220,
-                20,
-                60
+                255,
+                0,
+                0
             ],
             "b_type": 3,
             "io_edit": false,
@@ -205,9 +205,9 @@
             "dragging": false,
             "selected": false,
             "b_color": [
-                220,
-                20,
-                60
+                255,
+                0,
+                0
             ],
             "b_type": 3,
             "io_edit": false,
@@ -232,7 +232,7 @@
             "selected": false,
             "b_color": [
                 255,
-                0,
+                106,
                 0
             ],
             "b_type": 3,
