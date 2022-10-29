@@ -84,7 +84,9 @@
             "params": {
                 "value": 1.0,
                 "delay": 0.0,
-                "type": "up"
+                "type": "up",
+                "pulse_start_up": true,
+                "_init_start_": true
             },
             "external": false
         }

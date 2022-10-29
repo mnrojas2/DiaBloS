@@ -299,7 +299,7 @@ class DSim:
 
         # source-type blocks
         step = MenuBlocks("Step", 'step',
-                        {'inputs': 0, 'outputs': 1, 'b_type': 0, 'io_edit': False}, {'value': 1.0, 'delay': 0.0, 'type': 'up'},
+                        {'inputs': 0, 'outputs': 1, 'b_type': 0, 'io_edit': False}, {'value': 1.0, 'delay': 0.0, 'type': 'up', 'pulse_start_up': True, '_init_start_': True},
                         'blue', (60, 60))
 
         ramp = MenuBlocks("Ramp", 'ramp',
@@ -652,6 +652,7 @@ class DSim:
             missing_file_flag = block.reload_external_data()
             if missing_file_flag == 1:
                 return
+            # podria agregar aqui el dato del sim_dt a todos los bloques...
 
         # Chequeo de entradas y salidas:
         if self.check_diagram_integrity() == 1:
@@ -954,7 +955,7 @@ class DSim:
         for block in self.blocks_list:
             if block.block_fn == 'Integr' and block.params['method'] == 'RK45':
                 return True
-            elif block.block_fn == 'Block' and 'method' in block.params.keys() and block.params['method'] == 'RK45':
+            elif block.block_fn == 'External' and 'method' in block.params.keys() and block.params['method'] == 'RK45':
                 return True
         return False
 

@@ -7,7 +7,7 @@
         "enable_line_sel": true,
         "sim_time": 8.0,
         "sim_dt": 0.05,
-        "sim_trange": 100
+        "sim_trange": 100.0
     },
     "blocks_data": [
         {

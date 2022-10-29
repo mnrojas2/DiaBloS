@@ -36,7 +36,9 @@
                     2.0
                 ],
                 "delay": 5.0,
-                "type": "up"
+                "type": "up",
+                "pulse_start_up": true,
+                "_init_start_": true
             },
             "external": false
         },
@@ -94,7 +96,9 @@
                 "type": "up",
                 "_name_": "Step1",
                 "_inputs_": 0,
-                "_outputs_": 1
+                "_outputs_": 1,
+                "pulse_start_up": true,
+                "_init_start_": true
             },
             "external": false
         },

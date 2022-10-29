@@ -7,14 +7,39 @@
         "enable_line_sel": true,
         "sim_time": 1.0,
         "sim_dt": 0.01,
-        "sim_trange": 100
+        "sim_trange": 100.0
     },
     "blocks_data": [
         {
+            "block_fn": "External",
+            "sid": 0,
+            "coords_left": 480,
+            "coords_top": 211,
+            "coords_width": 120,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                255,
+                128,
+                0
+            ],
+            "b_type": 2,
+            "io_edit": false,
+            "fn_name": "my_function_pcs",
+            "params": {
+                "filename": "my_function_pcs"
+            },
+            "external": true
+        },
+        {
             "block_fn": "Scope",
             "sid": 0,
-            "coords_left": 490,
-            "coords_top": 252,
+            "coords_left": 684,
+            "coords_top": 181,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -31,7 +56,7 @@
             "io_edit": false,
             "fn_name": "scope",
             "params": {
-                "labels": "default",
+                "labels": "output",
                 "_init_start_": true
             },
             "external": false
@@ -39,8 +64,8 @@
         {
             "block_fn": "Step",
             "sid": 0,
-            "coords_left": 314,
-            "coords_top": 253,
+            "coords_left": 345,
+            "coords_top": 233,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -68,28 +93,56 @@
     ],
     "lines_data": [
         {
-            "name": "Line0",
-            "sid": 0,
-            "srcblock": "Step0",
+            "name": "Line1",
+            "sid": 1,
+            "srcblock": "External0",
             "srcport": 0,
             "dstblock": "Scope0",
             "dstport": 0,
             "points": [
                 [
-                    374,
-                    283.0
+                    600,
+                    241.0
                 ],
                 [
-                    470,
-                    283.0
+                    664,
+                    241.0
                 ],
                 [
-                    470,
-                    282.0
+                    664,
+                    211.0
                 ],
                 [
-                    490,
-                    282.0
+                    684,
+                    211.0
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line0",
+            "sid": 0,
+            "srcblock": "Step0",
+            "srcport": 0,
+            "dstblock": "External0",
+            "dstport": 0,
+            "points": [
+                [
+                    405,
+                    263.0
+                ],
+                [
+                    460,
+                    263.0
+                ],
+                [
+                    460,
+                    241.0
+                ],
+                [
+                    480,
+                    241.0
                 ]
             ],
             "cptr": 0,
