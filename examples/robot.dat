@@ -5,7 +5,7 @@
         "fps": 60,
         "only_one": false,
         "enable_line_sel": true,
-        "sim_time": 10.0,
+        "sim_time": 12.5,
         "sim_dt": 0.01,
         "sim_trange": 100.0
     },
@@ -13,7 +13,7 @@
         {
             "block_fn": "Sum",
             "sid": 0,
-            "coords_left": 380,
+            "coords_left": 415,
             "coords_top": 105,
             "coords_width": 70,
             "coords_height": 50,
@@ -38,8 +38,8 @@
         {
             "block_fn": "Sum",
             "sid": 1,
-            "coords_left": 381,
-            "coords_top": 203,
+            "coords_left": 417,
+            "coords_top": 204,
             "coords_width": 70,
             "coords_height": 50,
             "coords_height_base": 50,
@@ -171,8 +171,8 @@
         {
             "block_fn": "Scope",
             "sid": 0,
-            "coords_left": 1112,
-            "coords_top": 377,
+            "coords_left": 1120,
+            "coords_top": 378,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -437,59 +437,52 @@
             "external": false
         },
         {
-            "block_fn": "Step",
-            "sid": 0,
-            "coords_left": 239,
-            "coords_top": 91,
-            "coords_width": 60,
+            "block_fn": "External",
+            "sid": 2,
+            "coords_left": 242,
+            "coords_top": 147,
+            "coords_width": 120,
             "coords_height": 60,
             "coords_height_base": 60,
             "in_ports": 0,
-            "out_ports": 1,
+            "out_ports": 2,
             "dragging": false,
             "selected": false,
             "b_color": [
-                0,
-                0,
-                255
+                50,
+                120,
+                60
             ],
             "b_type": 0,
             "io_edit": false,
-            "fn_name": "step",
+            "fn_name": "square_robot",
             "params": {
-                "value": 0.225,
-                "delay": 1.0,
-                "type": "pulse",
-                "pulse_start_up": false,
-                "_init_start_": true
+                "filename": "square_robot"
             },
-            "external": false
+            "external": true
         },
         {
-            "block_fn": "Step",
-            "sid": 1,
-            "coords_left": 238,
-            "coords_top": 206,
-            "coords_width": 60,
+            "block_fn": "Export",
+            "sid": 0,
+            "coords_left": 1117,
+            "coords_top": 468,
+            "coords_width": 70,
             "coords_height": 60,
             "coords_height_base": 60,
-            "in_ports": 0,
-            "out_ports": 1,
+            "in_ports": 1,
+            "out_ports": 0,
             "dragging": false,
             "selected": false,
             "b_color": [
-                0,
-                0,
-                255
+                255,
+                128,
+                0
             ],
-            "b_type": 0,
+            "b_type": 3,
             "io_edit": false,
-            "fn_name": "step",
+            "fn_name": "export",
             "params": {
-                "value": -0.225,
-                "delay": 0.0,
-                "type": "pulse",
-                "pulse_start_up": false,
+                "str_name": "x,y,theta",
                 "_init_start_": true
             },
             "external": false
@@ -525,7 +518,7 @@
             "dstport": 0,
             "points": [
                 [
-                    450,
+                    485,
                     130.0
                 ],
                 [
@@ -545,12 +538,12 @@
             "dstport": 0,
             "points": [
                 [
-                    451,
-                    228.0
+                    487,
+                    229.0
                 ],
                 [
                     509,
-                    228.0
+                    229.0
                 ],
                 [
                     509,
@@ -577,8 +570,16 @@
                     407.0
                 ],
                 [
-                    1112,
+                    1100,
                     407.0
+                ],
+                [
+                    1100,
+                    408.0
+                ],
+                [
+                    1120,
+                    408.0
                 ]
             ],
             "cptr": 0,
@@ -1187,25 +1188,25 @@
         {
             "name": "Line0",
             "sid": 0,
-            "srcblock": "Step0",
+            "srcblock": "External2",
             "srcport": 0,
             "dstblock": "Sum0",
             "dstport": 0,
             "points": [
                 [
-                    299,
-                    121.0
+                    362,
+                    167.0
                 ],
                 [
-                    340,
-                    121.0
+                    375,
+                    167.0
                 ],
                 [
-                    340,
+                    375,
                     121.66666666666667
                 ],
                 [
-                    380,
+                    415,
                     121.66666666666667
                 ]
             ],
@@ -1215,26 +1216,26 @@
         {
             "name": "Line1",
             "sid": 1,
-            "srcblock": "Step1",
+            "srcblock": "External2",
             "srcport": 0,
             "dstblock": "Sum1",
-            "dstport": 1,
+            "dstport": 0,
             "points": [
                 [
-                    298,
-                    236.0
+                    362,
+                    167.0
                 ],
                 [
-                    361,
-                    236.0
+                    377,
+                    167.0
                 ],
                 [
-                    361,
-                    236.33333333333334
+                    377,
+                    220.66666666666666
                 ],
                 [
-                    381,
-                    236.33333333333334
+                    417,
+                    220.66666666666666
                 ]
             ],
             "cptr": 0,
@@ -1243,25 +1244,25 @@
         {
             "name": "Line2",
             "sid": 2,
-            "srcblock": "Step1",
-            "srcport": 0,
+            "srcblock": "External2",
+            "srcport": 1,
             "dstblock": "Sum0",
             "dstport": 1,
             "points": [
                 [
-                    298,
-                    236.0
+                    362,
+                    187.0
                 ],
                 [
-                    360,
-                    236.0
+                    395,
+                    187.0
                 ],
                 [
-                    360,
+                    395,
                     138.33333333333334
                 ],
                 [
-                    380,
+                    415,
                     138.33333333333334
                 ]
             ],
@@ -1271,26 +1272,26 @@
         {
             "name": "Line3",
             "sid": 3,
-            "srcblock": "Step0",
-            "srcport": 0,
+            "srcblock": "External2",
+            "srcport": 1,
             "dstblock": "Sum1",
-            "dstport": 0,
+            "dstport": 1,
             "points": [
                 [
-                    299,
-                    121.0
+                    362,
+                    187.0
                 ],
                 [
-                    341,
-                    121.0
+                    397,
+                    187.0
                 ],
                 [
-                    341,
-                    219.66666666666666
+                    397,
+                    237.33333333333334
                 ],
                 [
-                    381,
-                    219.66666666666666
+                    417,
+                    237.33333333333334
                 ]
             ],
             "cptr": 0,
@@ -1299,6 +1300,34 @@
         {
             "name": "Line10",
             "sid": 10,
+            "srcblock": "Mux0",
+            "srcport": 0,
+            "dstblock": "Export0",
+            "dstport": 0,
+            "points": [
+                [
+                    1070,
+                    407.0
+                ],
+                [
+                    1097,
+                    407.0
+                ],
+                [
+                    1097,
+                    498.0
+                ],
+                [
+                    1117,
+                    498.0
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line29",
+            "sid": 29,
             "srcblock": "Demux0",
             "srcport": 2,
             "dstblock": "Mux0",
