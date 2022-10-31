@@ -1451,23 +1451,19 @@ class DBlock(DSim):
 
         fun_list, fn_params = self.file_function._init_()
 
-        if hasattr(self.file_function, full_module_name):
-            pass
-        else:
-            print(self.name, "ERROR: NO FUNCTION", full_module_name, "WAS FOUND IN THE MODULE", full_module_name)
+        if not hasattr(self.file_function, full_module_name):
+            print("ERROR: IN", self.name, "NO FUNCTION", full_module_name, "WAS FOUND IN THE MODULE", full_module_name)
             print("THE MAIN FUNCTION MUST HAVE THE SAME NAME AS THE FILE")
             self.params = {'filename': '<no filename>'}
             self.init_params_list = list(self.params.keys())
             self.params.update(io_params)
             return
 
-        #if hasattr(self, 'external_old'):
-        #    if self.external_old != self.params['filename']:
-        #        self.external_old = self.params['filename']
-
-        self.params = {'filename': self.params['filename']}
-        self.params.update(fn_params)
-        self.init_params_list = list(self.params.keys())
+        if not hasattr(self, 'external_old') or (hasattr(self, 'external_old') and self.external_old != self.params['filename']):
+            self.external_old = self.params['filename']
+            self.params = {'filename': self.params['filename']}
+            self.params.update(fn_params)
+            self.init_params_list = list(self.params.keys())
 
         self.b_type = fun_list['b_type']
         self.in_ports = fun_list['inputs']
@@ -1477,6 +1473,7 @@ class DBlock(DSim):
 
         io_params = {'_name_': self.name, '_inputs_': self.in_ports, '_outputs_': self.out_ports}
         self.params.update(io_params)
+        print(self.params)
 
         self.update_Block()
         print("MODULE FUNCTION:", full_module_name, "WAS LOADED")
