@@ -311,7 +311,10 @@
             "io_edit": false,
             "fn_name": "sin_pcs",
             "params": {
-                "filename": "sin_pcs"
+                "filename": "sin_pcs",
+                "amplitude": 1.0,
+                "omega": 1.0,
+                "init_angle": 0.0
             },
             "external": true
         },
@@ -336,7 +339,10 @@
             "io_edit": false,
             "fn_name": "cos_pcs",
             "params": {
-                "filename": "cos_pcs"
+                "filename": "cos_pcs",
+                "amplitude": 1.0,
+                "omega": 1.0,
+                "init_angle": 0.0
             },
             "external": true
         },
@@ -439,8 +445,8 @@
         {
             "block_fn": "External",
             "sid": 2,
-            "coords_left": 242,
-            "coords_top": 147,
+            "coords_left": 241,
+            "coords_top": 148,
             "coords_width": 120,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -1194,12 +1200,12 @@
             "dstport": 0,
             "points": [
                 [
-                    362,
-                    167.0
+                    361,
+                    168.0
                 ],
                 [
                     375,
-                    167.0
+                    168.0
                 ],
                 [
                     375,
@@ -1222,12 +1228,12 @@
             "dstport": 0,
             "points": [
                 [
-                    362,
-                    167.0
+                    361,
+                    168.0
                 ],
                 [
                     377,
-                    167.0
+                    168.0
                 ],
                 [
                     377,
@@ -1250,12 +1256,12 @@
             "dstport": 1,
             "points": [
                 [
-                    362,
-                    187.0
+                    361,
+                    188.0
                 ],
                 [
                     395,
-                    187.0
+                    188.0
                 ],
                 [
                     395,
@@ -1278,12 +1284,12 @@
             "dstport": 1,
             "points": [
                 [
-                    362,
-                    187.0
+                    361,
+                    188.0
                 ],
                 [
                     397,
-                    187.0
+                    188.0
                 ],
                 [
                     397,

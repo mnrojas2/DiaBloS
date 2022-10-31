@@ -347,7 +347,7 @@
         {
             "block_fn": "External",
             "sid": 1,
-            "coords_left": 948,
+            "coords_left": 947,
             "coords_top": 316,
             "coords_width": 120,
             "coords_height": 60,
@@ -365,7 +365,9 @@
             "io_edit": false,
             "fn_name": "sat_pcs",
             "params": {
-                "filename": "sat_pcs"
+                "filename": "sat_pcs",
+                "min": 0.0,
+                "max": 2.0
             },
             "external": true
         }
@@ -684,7 +686,7 @@
             "dstport": 0,
             "points": [
                 [
-                    1068,
+                    1067,
                     346.0
                 ],
                 [
@@ -708,7 +710,7 @@
                     346.0
                 ],
                 [
-                    948,
+                    947,
                     346.0
                 ]
             ],
@@ -724,15 +726,15 @@
             "dstport": 1,
             "points": [
                 [
-                    1068,
+                    1067,
                     346.0
                 ],
                 [
-                    1088,
+                    1087,
                     346.0
                 ],
                 [
-                    1088,
+                    1087,
                     272
                 ],
                 [
@@ -760,15 +762,15 @@
             "dstport": 0,
             "points": [
                 [
-                    1068,
+                    1067,
                     346.0
                 ],
                 [
-                    1088,
+                    1087,
                     346.0
                 ],
                 [
-                    1088,
+                    1087,
                     404
                 ],
                 [

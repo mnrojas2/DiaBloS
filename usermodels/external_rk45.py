@@ -82,7 +82,6 @@ def _init_():
     }
     params = {
         'init_conds': 0.0,
-        'method': 'RK45',
         '_init_start_': True
     }
     return io_data, params

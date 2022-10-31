@@ -11,15 +11,15 @@ def robot_torques(time, inputs, params):
     """
     External function 'robot_torques'
     """
-    v0 = 1
-    w0 = np.pi / 2
-    r = 0.15
-    m = 10
-    J = 1
-    W = 0.4
-    c = 0.3
-    b = 0.3
-    T = 1.0
+    v0 = params['v0']
+    w0 = params['w0']
+    r = params['r']
+    m = params['m']
+    J = params['J']
+    W = params['W']
+    c = params['c']
+    b = params['b']
+    T = params['T']
 
     if time < T:
         t_right = v0*r*c/2
@@ -59,5 +59,15 @@ def _init_():
         'outputs': 2,
         'color': (50, 120, 60)
     }
-    params = {}
+    params = {
+        'v0': 1,
+        'w0': np.pi / 2,
+        'r': 0.15,
+        'm': 10,
+        'J': 1,
+        'W': 0.4,
+        'c': 0.3,
+        'b': 0.3,
+        'T': 1.0
+    }
     return io_data, params

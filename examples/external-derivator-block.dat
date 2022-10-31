@@ -31,7 +31,8 @@
             "io_edit": false,
             "fn_name": "external_derivative",
             "params": {
-                "filename": "external_derivative"
+                "filename": "external_derivative",
+                "_init_start_": true
             },
             "external": true
         },

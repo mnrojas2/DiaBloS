@@ -143,12 +143,15 @@ After loading the package, a window similar like the following figure will show:
 #. How to load user-made functions.
     DiaBloS allows the loading of external functions, created by the user.
 
-    To load these type of functions, a Block block must be added, where the only parameter to modify is the name of the
+    To load these type of functions, an External block must be added, where the only parameter to modify is the name of the
     file, that contains the user-made function, located in the 'usermodels/' folder.
 
     If the upload is correct, the block will update its name at the bottom, the ports and the color in the canvas. If
     something went wrong, the program will indicate that the function name does not exist or something wrong was found
     during the process.
+
+    After loading the file, the ports and parameters info will be loaded into the block, making the latter available for
+    editing in the same way as the default program blocks.
 
     More details about how to create these types of functions are available in
     :ref:`"Creating new functions"<developer:creating new functions>` section from developer's guide.

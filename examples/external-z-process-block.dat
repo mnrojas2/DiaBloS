@@ -31,7 +31,8 @@
             "io_edit": false,
             "fn_name": "my_function_pcs",
             "params": {
-                "filename": "my_function_pcs"
+                "filename": "my_function_pcs",
+                "gain": 1.5
             },
             "external": true
         },

@@ -31,7 +31,9 @@
             "io_edit": false,
             "fn_name": "my_function_src",
             "params": {
-                "filename": "my_function_src"
+                "filename": "my_function_src",
+                "value_1": 1,
+                "value_2": -1
             },
             "external": true
         },

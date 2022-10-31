@@ -1195,10 +1195,10 @@ class DBlock(DSim):
         self.image = pygame.image.load('./lib/icons/' + self.block_fn + '.png')
         self.image = pygame.transform.scale(self.image, (self.height_base, self.height_base))
 
-        self.fn_name = fn_name                            # Nombre función asociada para ejecución
+        self.fn_name = fn_name                              # Nombre función asociada para ejecución
         self.params = self.loading_params(params)           # Parámetros asociados a la función
         self.init_params_list = list(self.params.keys())    # Lista de parámetros iniciales/editables
-        self.external = external
+        self.external = external                            # Función asociada es externa o no
 
         self.port_radius = 8            # Radio del circulo para el dibujado de los puertos
         self.in_ports = in_ports        # Variable que contiene el número de puertos de entrada
@@ -1438,12 +1438,15 @@ class DBlock(DSim):
             return
 
         full_module_name = self.params['filename']
+        io_params = {'_name_': self.name, '_inputs_': self.in_ports, '_outputs_': self.out_ports}
         try:
             self.file_function = importlib.import_module(full_module_name)
             importlib.reload(self.file_function)
         except:
             print(self.name, "ERROR: NO MODULE FUNCTION", full_module_name, "WAS FOUND")
-            self.params['filename'] = '<no filename>'
+            self.params = {'filename': '<no filename>'}
+            self.init_params_list = list(self.params.keys())
+            self.params.update(io_params)
             return
 
         fun_list, fn_params = self.file_function._init_()
@@ -1453,18 +1456,29 @@ class DBlock(DSim):
         else:
             print(self.name, "ERROR: NO FUNCTION", full_module_name, "WAS FOUND IN THE MODULE", full_module_name)
             print("THE MAIN FUNCTION MUST HAVE THE SAME NAME AS THE FILE")
-            self.params['filename'] = '<no filename>'
+            self.params = {'filename': '<no filename>'}
+            self.init_params_list = list(self.params.keys())
+            self.params.update(io_params)
             return
 
+        #if hasattr(self, 'external_old'):
+        #    if self.external_old != self.params['filename']:
+        #        self.external_old = self.params['filename']
 
+        self.params = {'filename': self.params['filename']}
         self.params.update(fn_params)
+        self.init_params_list = list(self.params.keys())
+
         self.b_type = fun_list['b_type']
         self.in_ports = fun_list['inputs']
         self.out_ports = fun_list['outputs']
+        self.params.update(io_params)
         self.b_color = self.set_color(fun_list['color'])
         self.fn_name = full_module_name
         self.update_Block()
         print("MODULE FUNCTION:", full_module_name, "WAS LOADED")
+
+        self.external_old = self.params['filename']
 
     def reload_external_data(self):
         """
@@ -1484,9 +1498,8 @@ class DBlock(DSim):
         else:
             importlib.reload(self.file_function)
 
-        fun_list, fn_params = self.file_function._init_()
-        # intentar ver si es que quitando esta parte se permite editar parametros para evitar que los usermodels solo sirvan una vez por bloque
-        self.params.update(fn_params)
+        #fun_list, fn_params = self.file_function._init_()
+        #self.params.update(fn_params)
         return 0
 
 

@@ -31,7 +31,9 @@
             "io_edit": false,
             "fn_name": "external_rk45",
             "params": {
-                "filename": "external_rk45"
+                "filename": "external_rk45",
+                "init_conds": 0.0,
+                "_init_start_": true
             },
             "external": true
         },
