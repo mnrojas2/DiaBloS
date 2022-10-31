@@ -1472,9 +1472,12 @@ class DBlock(DSim):
         self.b_type = fun_list['b_type']
         self.in_ports = fun_list['inputs']
         self.out_ports = fun_list['outputs']
-        self.params.update(io_params)
         self.b_color = self.set_color(fun_list['color'])
         self.fn_name = full_module_name
+
+        io_params = {'_name_': self.name, '_inputs_': self.in_ports, '_outputs_': self.out_ports}
+        self.params.update(io_params)
+
         self.update_Block()
         print("MODULE FUNCTION:", full_module_name, "WAS LOADED")
 
