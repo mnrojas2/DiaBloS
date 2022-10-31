@@ -1485,6 +1485,7 @@ class DBlock(DSim):
             importlib.reload(self.file_function)
 
         fun_list, fn_params = self.file_function._init_()
+        # intentar ver si es que quitando esta parte se permite editar parametros para evitar que los usermodels solo sirvan una vez por bloque
         self.params.update(fn_params)
         return 0
 
