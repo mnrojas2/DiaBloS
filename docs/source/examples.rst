@@ -95,10 +95,10 @@ Gaussian noise
 :Graph Composition:
 
     #) A Step up block with amplitude :math:`[5.0, -2.5]` delayed in :math:`2.5` seconds.
-    #) A Demux block to split the vector from the Step block and treat each element as an independent signal.
+    #) A Demultiplexer block to split the vector from the Step block and treat each element as an independent signal.
     #) Two Noise blocks with :math:`\mu = 0` and :math:`\sigma = 1` to produce gaussian noise.
     #) Two Gain block with gain of :math:`0.5` to attenuate the signal amplitude from the noise blocks.
-    #) Two Adder blocks to add the noise ouput to each signal coming from the Demux.
+    #) Two Adder blocks to add the noise ouput to each signal coming from the Demultiplexer.
     #) A Scope block to observe the result of the operation.
 
 
@@ -126,7 +126,7 @@ Signal products
     #) A Step up block with amplitude :math:`5.0` delayed in :math:`1` second.
     #) Another Step up block with amplitued :math:`[2.0, -3.0]` with no delay.
     #) A Step down block with amplitude :math:`[0.75, 1.5]` delayed in :math:`2` seconds.
-    #) A Mux block to append the Step blocks' outputs in one simple vector.
+    #) A Multiplexer block to append the Step blocks' outputs in one simple vector.
     #) A Terminator block to finish the branch of the graph that will not be plotted.
     #) Two Sigproduct blocks, one to multiply the output of the first and second Step blocks, and another to multiply the output of the second and third Step blocks.
     #) Two Scope blocks to observe the results of the operations.
@@ -158,8 +158,8 @@ Export data
     #) A Step up block with amplitude :math:`1` and no delay.
     #) A Sine block with an initial angle of :math:`\pi/4` to form :math:`\cos(t)`.
     #) An Adder block to form :math:`1+\cos(t)` with the previous two blocks.
-    #) A Mux block to produce a 2D vector with the Step block's output as first element and :math:`1+\cos(t)` (Adder block's output) as second element.
-    #) An Export block to save the data from the Mux block and then export it as a file in .npz format.
+    #) A Multiplexer block to produce a 2D vector with the Step block's output as first element and :math:`1+\cos(t)` (Adder block's output) as second element.
+    #) An Export block to save the data from the Multiplexer block and then export it as a file in .npz format.
 
 
 External source
@@ -337,9 +337,49 @@ ODE system
         #) Another Integrator block that integrates :math:`x_2` to get :math:`x_1`.
         #) Another Gain block used to multiply :math:`x_1` by :math:`-1` and be used in the Adder block as future input.
         #) An Adder block that adds the result of both Gain blocks and the Step block's output to get :math:`\dot{x}_2`.
-        #) A Mux block to produce a vector with the output values of the Integrator blocks.
-        #) A Scope block to observe the output of the Mux block.
-        #) An Export block to save the data from the Mux block and then export it as a file in .npz format.
+        #) A Multiplexer block to produce a vector with the output values of the Integrator blocks.
+        #) A Scope block to observe the output of the Multiplexer block.
+        #) An Export block to save the data from the Multiplexer block and then export it as a file in .npz format.
+
+-----------------
+Watertank control
+-----------------
+
+:Description: This example shows the classic watertank control problem, trying to stabilize the height of the water using a PI control.
+
+:Demonstration:
+
+:Graph composition:
+
+    #) A Step block
+    #) A Gain block (5)
+    #) An Adder block
+    #) An External block sqrt_pcs
+    #) An Integrator block (PI)
+    #) An Integrator block (h)
+    #) An External block (sat_pcs)
+    #) A Scope block
+
+---------------------------------
+Differential traction robot model
+---------------------------------
+
+:Description: This example shows the modelling of a differential traction robot.
+
+:Demonstration:
+
+:Graph composition:
+
+    #) An External block (square_robot/robot_torques)
+    #) An Adder block (5)
+    #) A Gain block (4)
+    #) A SigProduct block
+    #) An External block (sin_pcs/cos_pcs)
+    #) A Multiplexer block (2)
+    #) A Demultiplexer block
+    #) An Integrator block (x)
+    #) A Scope block
+    #) An Export block
 
 .. raw:: latex
 
