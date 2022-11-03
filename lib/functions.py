@@ -20,7 +20,7 @@ class DFunctions:
         :param inputs: Dictionary that provides one or more entries for the function (if applicable).
         :param params['value']: The value that the function returns. It can be a scalar (float) as well as a vector ([float, ...]).
         :param params['delay']: Indicates a point in time where the piecewise jump occurs.
-        :param params['type']: ['up'/'down','pulse'] Indicates whether the jump is upward ('value'), downward (0) or in pulse form.
+        :param params['type']: ['up'/'down'/'pulse'/'constant'] Indicates whether the jump is upward ('value'), downward (0), in pulse form or constant ('value').
         :param params['pulse_start_up']: Indicates whether the pulse starts upwards (True) or downwards (False).
         :param params['_init_start_']: Auxiliary parameter used by the system to perform special functions in the first simulation loop.
         :param params['_name_']: Auxiliary parameter delivered by the associated block, for error identification.
@@ -42,15 +42,17 @@ class DFunctions:
             params['change_old'] = not params['pulse_start_up']
             params['_init_start_'] = False
         if params['type'] == 'up':
-            change = True if time <= params['delay'] else False
+            change = True if time < params['delay'] else False
         elif params['type'] == 'down':
-            change = True if time >= params['delay'] else False
+            change = True if time > params['delay'] else False
         elif params['type'] == 'pulse':
             if time - params['step_old'] >= params['delay']:
                 params['step_old'] += params['delay']
                 change = not params['change_old']
             else:
                 change = params['change_old']
+        elif params['type'] == 'constant':
+            change = False
         else:
             print("ERROR: 'type' not correctly defined in", params['_name_'])
             return {'E': True}

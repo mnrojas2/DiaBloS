@@ -674,7 +674,7 @@ class DSim:
 
         # Comprobar la existencia de integradores que usen Runge-Kutta 45 e inicializar contador
         self.rk45_len = self.count_rk45_ints()
-        self.rk_counter = 0
+        self.rk_counter = 1     # Init se inicia en 1, dado que t = 0 es el único que no repite.
 
         # Se inicia el recorrido por el diagrama de bloques partiendo por los bloques del tipo source
         for block in self.blocks_list:
