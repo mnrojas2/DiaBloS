@@ -16,7 +16,7 @@ You will need the following packages::
     - pygame (>=2.1.2)
     - numpy (>=1.22.3)
     - tqdm (>=4.64.0)
-    - pyqtgraph (==0.12.3)
+    - pyqtgraph (>=0.13.1)
 
 To install the packages you can use pip (recommended)::
 
@@ -43,6 +43,7 @@ Basics
 #) Ctrl + A: Open
 #) Ctrl + G: Save
 #) Ctrl + E: Simulate
+#) Ctrl + P: Take a capture
 
 Blocks
 ------
@@ -84,7 +85,7 @@ Some Block arguments
 
 1) Specific argument values::
 
-    Step.type: 'up', 'down'
+    Step.type: 'up', 'down', 'pulse', 'constant'
     Integrator.method: 'FWD_RECT', 'BWD_RECT', 'TUSTIN', 'RK45'
 
 #) Value arguments can be written in the following ways (if allowed)::
@@ -106,7 +107,7 @@ This tool allows external loading of functions by using the block "Block".
 
 1) The name of the file and main function (executing function) must be the same.
 #) The file must be inside the 'external' folder.
-#) The '_init_' function is used to assign parameters/arguments, block type, input/output values and color.
+#) The '_init_' function is used to assign default parameters/arguments, block type, input/output values and color.
 #) Libraries used to execute that block in particular must be added in that '.py' file only.
 #) There are two examples to help program these blocks 'my_function_src' and 'my_function_mid'.
 #) There are two simulation examples to execute these files, 'external_source.dat' and 'external_middle.dat'.

@@ -7,7 +7,7 @@
         "enable_line_sel": true,
         "sim_time": 20.0,
         "sim_dt": 0.01,
-        "sim_trange": 100.0
+        "sim_trange": 500.0
     },
     "blocks_data": [
         {
@@ -82,10 +82,10 @@
             "io_edit": false,
             "fn_name": "step",
             "params": {
-                "value": 0.5,
+                "value": 1.8,
                 "delay": 0.0,
                 "type": "up",
-                "pulse_start_up": true,
+                "pulse_start_up": false,
                 "_init_start_": true
             },
             "external": false
@@ -193,7 +193,7 @@
         {
             "block_fn": "Integr",
             "sid": 0,
-            "coords_left": 835,
+            "coords_left": 836,
             "coords_top": 316,
             "coords_width": 80,
             "coords_height": 60,
@@ -288,7 +288,7 @@
             "io_edit": false,
             "fn_name": "gain",
             "params": {
-                "gain": 5.0
+                "gain": 55.0
             },
             "external": false
         },
@@ -490,7 +490,7 @@
                     346.0
                 ],
                 [
-                    835,
+                    836,
                     346.0
                 ]
             ],
@@ -706,7 +706,7 @@
             "dstport": 0,
             "points": [
                 [
-                    915,
+                    916,
                     346.0
                 ],
                 [
