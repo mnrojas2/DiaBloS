@@ -1,5 +1,5 @@
-Installing and loading the DiaBloS package
-==========================================
+Getting Started
+===============
 
 Python requirements
 --------------------

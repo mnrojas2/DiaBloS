@@ -1,5 +1,5 @@
-Using DiaBloS: Developer's Guide
-================================
+Using DiaBloS: Developer Guide
+==============================
 
 
 Software hierarchy
@@ -112,6 +112,11 @@ The RungeKutta 45 integration method can be defined as the following:
         k_4 &= \Delta T \cdot f\left(t + \Delta T, x + k_3\right)
 
     where f...
+
+*Comparar integracion RK45 con Euler usando RMS
+*Comparar con integrador en matlab, mismo ejemplo
+*Ver opcion para cambiar paleta de colores en pyqtgraph
+*
 
 
 Data management

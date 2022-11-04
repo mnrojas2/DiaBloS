@@ -1,5 +1,5 @@
-Using DiaBloS: Begginer's Guide
-===============================
+Using DiaBloS: User Guide
+=========================
 
 Interface
 ---------

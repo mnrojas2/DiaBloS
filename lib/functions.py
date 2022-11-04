@@ -586,12 +586,12 @@ class DFunctions:
             if labels == 'default':
                 labels = params['_name_'] + '-0'
             labels = labels.replace(' ', '').split(',')
-            if len(labels) < params['vec_dim']:
-                for i in range(params['vec_dim'] - len(labels)):
-                    labels.append(params['_name_'] + '-' + str(params['vec_dim'] + i - 1))
-            elif len(labels) > params['vec_dim']:
+            if len(labels) - params['vec_dim'] >= 0:
                 labels = labels[:params['vec_dim']]
-            if len(labels) == params['vec_dim'] == 1:
+            elif len(labels) - params['vec_dim'] < 0:
+                for i in range(len(labels), params['vec_dim']):
+                    labels.append(params['_name_'] + '-' + str(i))
+            elif len(labels) == params['vec_dim'] == 1:
                 labels = labels[0]
             params['vec_labels'] = labels
             params['_init_start_'] = False
