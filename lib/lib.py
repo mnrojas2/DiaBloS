@@ -674,7 +674,7 @@ class DSim:
 
         # Comprobar la existencia de integradores que usen Runge-Kutta 45 e inicializar contador
         self.rk45_len = self.count_rk45_ints()
-        self.rk_counter = 1     # Init se inicia en 1, dado que t = 0 es el único que no repite.
+        self.rk_counter = 0
 
         # Se inicia el recorrido por el diagrama de bloques partiendo por los bloques del tipo source
         for block in self.blocks_list:
@@ -790,12 +790,12 @@ class DSim:
         # 0.5 -> 2*self.rk45_ints | 1.0 -> 1+self.rk45_ints
         if self.rk45_len:
             self.rk_counter %= 4
-            if self.rk_counter == 0 or self.rk_counter == 2:
+            if self.rk_counter == 1 or self.rk_counter == 3:
                 # Avance medio paso normal
                 self.time_step += self.sim_dt/2
                 self.pbar.update(1/2)                                 # Se actualiza la barra de progreso
-                if self.rk_counter == 0:
-                    self.timeline = np.append(self.timeline, self.time_step)
+            if self.rk_counter == 0:
+                self.timeline = np.append(self.timeline, self.time_step)
 
         # Avance de tiempo normal
         elif not self.rk45_len:
@@ -1473,7 +1473,6 @@ class DBlock(DSim):
 
         io_params = {'_name_': self.name, '_inputs_': self.in_ports, '_outputs_': self.out_ports}
         self.params.update(io_params)
-        print(self.params)
 
         self.update_Block()
         print("MODULE FUNCTION:", full_module_name, "WAS LOADED")
@@ -1963,10 +1962,32 @@ class SignalPlot:
         self.legend.setParentItem(self.plot_win)
 
         for i in range(len(self.linelist)):
-            self.__dict__[self.linelist[i]] = self.plot_win.plot([], [], label=self.labels[i], pen=pg.intColor(i))
+            self.__dict__[self.linelist[i]] = self.plot_win.plot([], [], label=self.labels[i], pen=self.pltcolor(i, hueOff=180))
             self.legend.addItem(self.__dict__[self.linelist[i]], self.labels[i])
 
         self.plot_win.showGrid(x=True, y=True)
+
+    def pltcolor(self, index, hueThirds=3, hueOff=0, minHue=0, maxHue=360, values=1, minValue=150, maxValue=255, sat=255, alpha=255):
+        """
+        color para plot...
+        *rehacer para recorrer en tercios avanzando de a poco
+        """
+        #12 ->0, 4, 8, 1, 5, 9, 2, 6, 10, 3, 7, 11
+        #9 -> 0, 3, 6, 1, 4, 7, 2, 5, 8
+        #6 -> 0, 2, 4, 1, 3, 5
+        #3 -> 0, 1, 2
+        #1 -> 0
+        hues = int(3*hueThirds)
+        values = int(values)
+        ind = int(index) % (hues * values)
+        indh = ind % hues
+        indv = ind // hues
+        if values > 1:
+            v = minValue + indv * ((maxValue - minValue) // (values - 1))
+        else:
+            v = maxValue
+        h = (hueOff + minHue + (indh * (maxHue - minHue)) // hues) % 360
+        return pg.hsvColor(h/360, sat/255, v/255, alpha/255)
 
     def plot_config(self, settings_dict={}):
         return

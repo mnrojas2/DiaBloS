@@ -369,9 +369,6 @@ class DFunctions:
                 params['_init_start_'] = True
                 return {'E': True}
 
-            # The old value is saved
-            mem_old = params['mem']
-
             # Integration process according to chosen method
             # Forward euler
             if params['method'] == 'FWD_RECT':
@@ -407,15 +404,15 @@ class DFunctions:
                 if params['nb_loop'] == 0:
                     params['nb_loop'] += 1
                     params['aux'] = np.array(params['mem'] + 0.5 * K1)
-                    return {0: params['aux']}
+                    return {}
                 elif params['nb_loop'] == 1:
                     params['nb_loop'] += 1
                     params['aux'] = np.array(params['mem'] + 0.5 * K2)
-                    return {0: params['aux']}
+                    return {}
                 elif params['nb_loop'] == 2:
                     params['nb_loop'] += 1
                     params['aux'] = np.array(params['mem'] + K3)
-                    return {0: params['aux']}
+                    return {}
                 elif params['nb_loop'] == 3:
                     params['nb_loop'] = 0
                     params['mem'] += (1 / 6) * (K1 + 2 * K2 + 2 * K3 + K4)
@@ -426,7 +423,7 @@ class DFunctions:
                 aux_list = aux_list[-5:]
             params['mem_list'] = aux_list
 
-            return {0: mem_old}
+            return {}
 
 
     def derivative(self, time, inputs, params):
