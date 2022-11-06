@@ -1962,32 +1962,24 @@ class SignalPlot:
         self.legend.setParentItem(self.plot_win)
 
         for i in range(len(self.linelist)):
-            self.__dict__[self.linelist[i]] = self.plot_win.plot([], [], label=self.labels[i], pen=self.pltcolor(i, hueOff=180))
+            self.__dict__[self.linelist[i]] = self.plot_win.plot([], [], label=self.labels[i], pen=self.pltcolor(i))
             self.legend.addItem(self.__dict__[self.linelist[i]], self.labels[i])
 
         self.plot_win.showGrid(x=True, y=True)
 
-    def pltcolor(self, index, hueThirds=3, hueOff=0, minHue=0, maxHue=360, values=1, minValue=150, maxValue=255, sat=255, alpha=255):
+    def pltcolor(self, index, hues=9, hueOff=180, minHue=0, maxHue=360, val=255, sat=255, alpha=255):
         """
-        color para plot...
-        *rehacer para recorrer en tercios avanzando de a poco
+        :purpose: Assigns a color to a vector for plotting purposes.
         """
-        #12 ->0, 4, 8, 1, 5, 9, 2, 6, 10, 3, 7, 11
-        #9 -> 0, 3, 6, 1, 4, 7, 2, 5, 8
-        #6 -> 0, 2, 4, 1, 3, 5
-        #3 -> 0, 1, 2
-        #1 -> 0
-        hues = int(3*hueThirds)
-        values = int(values)
-        ind = int(index) % (hues * values)
-        indh = ind % hues
-        indv = ind // hues
-        if values > 1:
-            v = minValue + indv * ((maxValue - minValue) // (values - 1))
-        else:
-            v = maxValue
-        h = (hueOff + minHue + (indh * (maxHue - minHue)) // hues) % 360
-        return pg.hsvColor(h/360, sat/255, v/255, alpha/255)
+        third = (maxHue - minHue) / 3
+        hues = int(hues)
+        indc = int(index) // 3
+        indr = int(index) % 3
+
+        hsection = indr * third
+        hrange = (indc * third / (hues // 3)) % third
+        h = (hsection + hrange + hueOff) % 360
+        return pg.hsvColor(h/360, sat/255, val/255, alpha/255)
 
     def plot_config(self, settings_dict={}):
         return
