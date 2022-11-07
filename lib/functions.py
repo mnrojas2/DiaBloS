@@ -371,7 +371,7 @@ class DFunctions:
 
             # Integration process according to chosen method
             # Forward euler
-            if params['method'] == 'FWD_RECT':
+            if params['method'] == 'FWD_EULER':
                 if params['add_in_memory']:
                     params['mem'] += params['dtime'] * inputs[0]
                 else:
@@ -379,7 +379,7 @@ class DFunctions:
                     return {0: params['aux']}
 
             # Backwards euler
-            elif params['method'] == 'BWD_RECT':
+            elif params['method'] == 'BWD_EULER':
                 if params['add_in_memory']:
                     params['mem'] += params['dtime'] * params['mem_list'][-1]
                 else:

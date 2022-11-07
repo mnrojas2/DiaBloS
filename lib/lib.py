@@ -317,7 +317,7 @@ class DSim:
 
         # N-process-type blocks
         integrator = MenuBlocks("Integr", 'integrator',
-                        {'inputs': 1, 'outputs': 1, 'b_type': 1, 'io_edit': False}, {'init_conds': 0.0, 'method': 'FWD_RECT', '_init_start_': True},
+                        {'inputs': 1, 'outputs': 1, 'b_type': 1, 'io_edit': False}, {'init_conds': 0.0, 'method': 'FWD_EULER', '_init_start_': True},
                         'magenta', (80, 60))
 
 

@@ -88,7 +88,7 @@
                     0.0,
                     0.0
                 ],
-                "method": "FWD_RECT",
+                "method": "FWD_EULER",
                 "_init_start_": true
             },
             "external": false
