@@ -310,7 +310,7 @@ class DFunctions:
         :param time: Value indicating the current period in the simulation.
         :param inputs: Dictionary that provides one or more entries for the function (if applicable).
         :param params['init_conds']: Value that contains the initial conditions for the integrator.
-        :param params['method']: ['FWD_RECT/BWD_RECT/TUSTIN/RK45'] String that contains the method of integration to use.
+        :param params['method']: ['FWD_EULER/BWD_EULER/TUSTIN/RK45'] String that contains the method of integration to use.
         :param params['dtime']: Auxiliary variable that contains the sampling time that the simulation is using (fixed step integration).
         :param params['mem']: Variable containing the sum of all data, from start to lapse 'time'.
         :param params['mem_list']: Vector containing the last values of 'mem'.

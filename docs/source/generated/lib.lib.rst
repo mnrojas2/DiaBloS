@@ -17,10 +17,10 @@
 
    .. autosummary::
    
-      Block
       Button
-      InitSim
-      Line
+      DBlock
+      DLine
+      DSim
       MenuBlocks
       SignalPlot
       TkWidget

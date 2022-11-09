@@ -144,7 +144,7 @@ class DSim:
         :param zone: Pygame's layer where the figures, lines and buttons are drawn.
         """
         filename = self.filename[:-4]
-        pygame.image.save(zone, "captures/"+filename+'-'+str(self.ss_count)+".jpg")
+        pygame.image.save(zone, "captures/"+filename+'-'+str(self.ss_count)+".png")
         self.ss_count += 1
 
     ##### ADD OR REMOVE BLOCKS AND LINES #####
