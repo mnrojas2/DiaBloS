@@ -878,8 +878,11 @@ class DSim:
                                     block.data_sent += 1
             hier += 1
 
+        # Se llama a la función del plot dinámico para guardar los nuevos datos, en caso de estar activo
+        self.dynamic_pyqtPlotScope(1)
+
         # Se comprueba si que el tiempo total de simulación (ejecución) ha sido superado para finalizar con el loop.
-        if self.time_step >= self.execution_time:               # seconds
+        if self.time_step > self.execution_time + self.sim_dt:  # seconds
             self.execution_initialized = False                  # Se finaliza el loop de ejecución
             self.pbar.close()                                   # Se finaliza la barra de progreso
             print("SIMULATION TIME:", round(time.time() - self.execution_time_start, 5), 'SECONDS')  # Se imprime el tiempo total tomado
@@ -904,9 +907,6 @@ class DSim:
             # Resetea el flag para la inicializacion de los bloques con ejecuciones iniciales especiales (para que puedan ser ejecutados correctamente en la proxima simulación)
             self.reset_memblocks()
             print("*****EXECUTION STOPPED*****")
-
-        # Se llama a la función del plot dinámico para guardar los nuevos datos, en caso de estar activo
-        self.dynamic_pyqtPlotScope(1)
 
         self.rk_counter += 1
 
@@ -1083,7 +1083,7 @@ class DSim:
     def export_data(self):
         """
         :purpose: Exports the data saved in Export blocks in .npz format.
-        :description: This function is executed after the simulation is finished/has stopped. It looks for export blocks, which have some vectors saved with signal outputs from previous blocks. Then it merge all vectors in one big matrix, which is exported with the time vector to a .npz file, formatted in a way it is ready for graph libraries.
+        :description: This function is executed after the simulation has finished or stopped. It looks for export blocks, which have some vectors saved with signal outputs from previous blocks. Then it merge all vectors in one big matrix, which is exported with the time vector to a .npz file, formatted in a way it is ready for graph libraries.
         """
         vec_dict = {}
         export_toggle = False
