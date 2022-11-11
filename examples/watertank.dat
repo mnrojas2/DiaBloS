@@ -82,7 +82,7 @@
             "io_edit": false,
             "fn_name": "step",
             "params": {
-                "value": 1.8,
+                "value": 1.25,
                 "delay": 0.0,
                 "type": "up",
                 "pulse_start_up": false,

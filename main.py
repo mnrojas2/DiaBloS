@@ -2,9 +2,6 @@
 main.py - Module to run the simulator interface
 """
 
-import pygame
-import sys
-#sys.path.append('./libfiles/')
 from lib.lib import *
 
 def main_execution():
