@@ -262,13 +262,94 @@ External derivator (Z-process)
     #) A Scope block to observe the result of the operation.
 
 
-----------
-ODE system
-----------
+---------------------
+Convergent ODE system
+---------------------
 
-:Description: This example shows the same ODE system implemented in three different ways.
+:Description: This example shows the same convergent ODE system implemented in three different ways.
 
 :Demonstration:
+
+    A particular ordinary differential equation is used as an example:
+
+    .. math:: \ddot{y} + 0.4\,\dot{y} + y = u
+
+    if :math:`x_1 = y` and :math:`x_2 = \dot{y}` this ODE can be represented in vector form as:
+
+    .. math:: X' &= f(X,U)\\
+        \begin{bmatrix}
+        \dot{x}_1 \\ \dot{x}_2
+        \end{bmatrix}
+        &=
+        \begin{bmatrix}
+        x_2 \\ -x_1 -0.4\, x_2 + u
+        \end{bmatrix}
+
+    and in the same time, it can be converted to a matrix system of the type :math:`X'= A\,X + B\,U`.
+
+    .. math::
+        \begin{bmatrix}
+        \dot{x}_1 \\ \dot{x}_2
+        \end{bmatrix}
+        &=
+        \begin{bmatrix}
+        0 & 1 \\ -1 & -0.4
+        \end{bmatrix}
+        \begin{bmatrix}
+        x_1 \\ x_2
+        \end{bmatrix}
+        +
+        \begin{bmatrix}
+        0 \\ 1
+        \end{bmatrix}
+        u
+
+    So three instances of this problem are created to simulate:
+
+    #) Using an external function, where value :math:`U` and vector :math:`X=[x_1, x_2]` are received, to deliver :math:`\dot{X} = f(X,U)`.
+
+    #) Using gain and adder blocks to form the matrix notation (:math:`X'= A,X + B,U`) before integrating it.
+
+    #) Using the non-vector system definition, first by calculating :math:`ddot{y}`, then integrate it to find :math:`dot{y}` and then integrate once again to find :math:`y`.
+
+:Graph Composition:
+
+    Graph 1:
+        #) A Step up block with amplitude :math:`1` and no delay.
+        #) An External block linked to the external user model function 'axbu.py'.
+        #) An Integrator block using the RK45 method to obtain the integration of the previous operation's result.
+        #) A Scope block to observe the output of the Integrator block.
+        #) An Export block to save the data from the Integrator block and then export it as a file in .npz format.
+
+    Graph 2:
+        #) A Step up block with amplitude :math:`1` and no delay.
+        #) A Gain block to multiply the output of the Step block with the vector :math:`B = [0.0, 1.0]` producing :math:`BU`.
+        #) A Gain block to multiply the output vector of the Integrator block with the matrix :math:`A = [[0.0, 1.0], [-1.0, -0.4]]` producing :math:`AX`.
+        #) An Adder block to add the output of both Gain blocks, producing :math:`AX+BU`.
+        #) An Integrator block using the RK45 method to obtain :math:`X` from the Adder block's output, and initial conditions set in :math:`[0.0, 0.0]`.
+        #) A Scope block to observe the output of the Integrator block.
+        #) An Export block to save the data from the Integrator block and then export it as a file in .npz format.
+
+    Graph 3:
+        #) A Step up block with amplitude :math:`1` and no delay.
+        #) An Integrator block that integrates the value of the Adder block's output to obtain :math:`x_2`.
+        #) A Gain block to multiply :math:`x_2` by :math:`-0.4` and be used in the Adder block as future input.
+        #) Another Integrator block that integrates :math:`x_2` to get :math:`x_1`.
+        #) Another Gain block used to multiply :math:`x_1` by :math:`-1` and be used in the Adder block as future input.
+        #) An Adder block that adds the result of both Gain blocks and the Step block's output to get :math:`\dot{x}_2`.
+        #) A Multiplexer block to produce a vector with the output values of the Integrator blocks.
+        #) A Scope block to observe the output of the Multiplexer block.
+        #) An Export block to save the data from the Multiplexer block and then export it as a file in .npz format.
+
+-------------------
+Critical ODE system
+-------------------
+
+:Description: This example shows the same critical ODE system implemented in three different ways, compared to the exact curve.
+
+:Demonstration:
+
+    CAMBIAR TODO A LO CORRESPONDIENTE
 
     A particular ordinary differential equation is used as an example:
 
@@ -347,7 +428,7 @@ Watertank control
 
 :Description: This example shows the classic watertank control problem, trying to stabilize the height of the water using a PI control.
 
-:Demonstration:
+:Demonstration: ESPERAR A LOS CAMBIOS DE LA SECCION DE RESULTADOS DEL PAPER
 
 :Graph composition:
 
@@ -366,7 +447,7 @@ Differential traction robot model
 
 :Description: This example shows the modelling of a differential traction robot.
 
-:Demonstration:
+:Demonstration: ESPERAR A LOS CAMBIOS DEL CONTROLADOR
 
 :Graph composition:
 
