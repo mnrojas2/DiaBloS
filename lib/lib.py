@@ -134,7 +134,10 @@ class DSim:
         :type color: str/(float, float, float)
         """
         if type(color) == str:
-            return self.colors[color]
+            try:
+                return self.colors[color]
+            except:
+                return self.colors['gray']
         elif type(color) == tuple or list:
             return color
 
