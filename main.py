@@ -225,20 +225,18 @@ def main_execution():
                         if line.selected == True:
                             line.change_color(-1)
 
-        # Display in interface
-        screen.fill(sim_init.colors['white'])
-
-        sim_init.display_menu_blocks(screen)       # Display block menu
-        sim_init.display_buttons(screen)           # Display buttons
-        sim_init.display_blocks(screen)            # Display blocks
-        sim_init.display_lines(screen)             # Display lines
-
         # Continue graph simulation if execution was initialized
         if sim_init.execution_initialized == True:
             sim_init.execution_loop()
 
-        pygame.display.flip()
-        clock.tick(sim_init.FPS)
+        else: # Display in interface
+            screen.fill(sim_init.colors['white'])
+            sim_init.display_menu_blocks(screen)       # Display block menu
+            sim_init.display_buttons(screen)           # Display buttons
+            sim_init.display_blocks(screen)            # Display blocks
+            sim_init.display_lines(screen)             # Display lines # '''
+            pygame.display.flip()
+            clock.tick(sim_init.FPS)
 
     # Close interface
     pygame.quit()

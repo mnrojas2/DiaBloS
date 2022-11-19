@@ -596,9 +596,9 @@
             ],
             "b_type": 0,
             "io_edit": false,
-            "fn_name": "ode_system_crit",
+            "fn_name": "ode_exact_crit",
             "params": {
-                "filename": "ode_system_crit"
+                "filename": "ode_exact_crit"
             },
             "external": true
         },
