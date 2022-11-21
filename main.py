@@ -225,11 +225,9 @@ def main_execution():
                         if line.selected == True:
                             line.change_color(-1)
 
-        # Continue graph simulation if execution was initialized
-        if sim_init.execution_initialized == True:
-            sim_init.execution_loop()
 
-        else: # Display in interface
+
+            #else: # Display in interface
             screen.fill(sim_init.colors['white'])
             sim_init.display_menu_blocks(screen)       # Display block menu
             sim_init.display_buttons(screen)           # Display buttons
@@ -237,6 +235,10 @@ def main_execution():
             sim_init.display_lines(screen)             # Display lines # '''
             pygame.display.flip()
             clock.tick(sim_init.FPS)
+
+        # Continue graph simulation if execution was initialized
+        if sim_init.execution_initialized == True:
+            sim_init.execution_loop()
 
     # Close interface
     pygame.quit()
