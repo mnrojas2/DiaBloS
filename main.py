@@ -4,7 +4,7 @@ main.py - Module to run the simulator interface
 
 from lib.lib import *
 
-def main_execution():
+def dmain():
     """
     Function that manages keyboard and mouse inputs, block positions and line connections. It's user-interface.
     """
@@ -245,4 +245,4 @@ def main_execution():
     print("Sim done =D")
 
 if __name__ == "__main__":
-    main_execution()
+    dmain()
