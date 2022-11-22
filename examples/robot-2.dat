@@ -202,7 +202,7 @@
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
-            "in_ports": 3,
+            "in_ports": 2,
             "out_ports": 1,
             "dragging": false,
             "selected": false,
@@ -270,8 +270,8 @@
         {
             "block_fn": "Mux",
             "sid": 1,
-            "coords_left": 565,
-            "coords_top": 381,
+            "coords_left": 567,
+            "coords_top": 347,
             "coords_width": 60,
             "coords_height": 90,
             "coords_height_base": 60,
@@ -349,8 +349,8 @@
         {
             "block_fn": "SgProd",
             "sid": 0,
-            "coords_left": 415,
-            "coords_top": 523,
+            "coords_left": 461,
+            "coords_top": 612,
             "coords_width": 70,
             "coords_height": 50,
             "coords_height_base": 50,
@@ -372,8 +372,8 @@
         {
             "block_fn": "SgProd",
             "sid": 1,
-            "coords_left": 399,
-            "coords_top": 429,
+            "coords_left": 349,
+            "coords_top": 503,
             "coords_width": 70,
             "coords_height": 50,
             "coords_height_base": 50,
@@ -443,31 +443,6 @@
             "external": false
         },
         {
-            "block_fn": "External",
-            "sid": 2,
-            "coords_left": 384,
-            "coords_top": 130,
-            "coords_width": 120,
-            "coords_height": 60,
-            "coords_height_base": 60,
-            "in_ports": 0,
-            "out_ports": 2,
-            "dragging": false,
-            "selected": false,
-            "b_color": [
-                50,
-                120,
-                60
-            ],
-            "b_type": 0,
-            "io_edit": false,
-            "fn_name": "square_robot",
-            "params": {
-                "filename": "square_robot"
-            },
-            "external": true
-        },
-        {
             "block_fn": "Export",
             "sid": 0,
             "coords_left": 1117,
@@ -492,6 +467,110 @@
                 "_init_start_": true
             },
             "external": false
+        },
+        {
+            "block_fn": "External",
+            "sid": 2,
+            "coords_left": 273,
+            "coords_top": 136,
+            "coords_width": 120,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 2,
+            "out_ports": 2,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                85,
+                35,
+                120
+            ],
+            "b_type": 2,
+            "io_edit": false,
+            "fn_name": "robot_control",
+            "params": {
+                "filename": "robot_control",
+                "W": 0.15,
+                "r": 0.15,
+                "kp_dist": 1.0,
+                "kp_th": 10.0,
+                "kd_th": 5.0,
+                "dtime": 0.01,
+                "_init_start_": true
+            },
+            "external": true
+        },
+        {
+            "block_fn": "SgProd",
+            "sid": 2,
+            "coords_left": 452,
+            "coords_top": 111,
+            "coords_width": 70,
+            "coords_height": 50,
+            "coords_height_base": 50,
+            "in_ports": 2,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                0,
+                255,
+                0
+            ],
+            "b_type": 2,
+            "io_edit": "input",
+            "fn_name": "sigproduct",
+            "params": {},
+            "external": false
+        },
+        {
+            "block_fn": "SgProd",
+            "sid": 3,
+            "coords_left": 452,
+            "coords_top": 185,
+            "coords_width": 70,
+            "coords_height": 50,
+            "coords_height_base": 50,
+            "in_ports": 2,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                0,
+                255,
+                0
+            ],
+            "b_type": 2,
+            "io_edit": "input",
+            "fn_name": "sigproduct",
+            "params": {},
+            "external": false
+        },
+        {
+            "block_fn": "External",
+            "sid": 3,
+            "coords_left": 238,
+            "coords_top": 377,
+            "coords_width": 120,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 2,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                255,
+                12,
+                76
+            ],
+            "b_type": 2,
+            "io_edit": false,
+            "fn_name": "robot_ref",
+            "params": {
+                "filename": "robot_ref",
+                "_init_start_": true
+            },
+            "external": true
         }
     ],
     "lines_data": [
@@ -604,8 +683,16 @@
                     392.0
                 ],
                 [
-                    1010,
+                    970,
                     392.0
+                ],
+                [
+                    970,
+                    397.0
+                ],
+                [
+                    1010,
+                    397.0
                 ]
             ],
             "cptr": 0,
@@ -624,8 +711,16 @@
                     407.0
                 ],
                 [
-                    1010,
+                    990,
                     407.0
+                ],
+                [
+                    990,
+                    417.0
+                ],
+                [
+                    1010,
+                    417.0
                 ]
             ],
             "cptr": 0,
@@ -705,19 +800,19 @@
                 ],
                 [
                     864,
-                    531
+                    527
                 ],
                 [
-                    505,
-                    531
+                    507,
+                    527
                 ],
                 [
-                    505,
-                    426.0
+                    507,
+                    392.0
                 ],
                 [
-                    565,
-                    426.0
+                    567,
+                    392.0
                 ]
             ],
             "cptr": 3,
@@ -732,12 +827,12 @@
             "dstport": 0,
             "points": [
                 [
-                    625,
-                    426.0
+                    627,
+                    392.0
                 ],
                 [
                     646,
-                    426.0
+                    392.0
                 ],
                 [
                     646,
@@ -769,19 +864,19 @@
                 ],
                 [
                     1101,
-                    290
+                    273
                 ],
                 [
-                    525,
-                    290
+                    527,
+                    273
                 ],
                 [
-                    525,
-                    441.0
+                    527,
+                    407.0
                 ],
                 [
-                    565,
-                    441.0
+                    567,
+                    407.0
                 ]
             ],
             "cptr": 0,
@@ -805,19 +900,19 @@
                 ],
                 [
                     1249,
-                    333
+                    316
                 ],
                 [
-                    545,
-                    333
+                    547,
+                    316
                 ],
                 [
-                    545,
-                    456.0
+                    547,
+                    422.0
                 ],
                 [
-                    565,
-                    456.0
+                    567,
+                    422.0
                 ]
             ],
             "cptr": 0,
@@ -841,19 +936,19 @@
                 ],
                 [
                     1064,
-                    587
+                    706
                 ],
                 [
-                    375,
-                    587
+                    421,
+                    706
                 ],
                 [
-                    375,
-                    539.6666666666666
+                    421,
+                    628.6666666666666
                 ],
                 [
-                    415,
-                    539.6666666666666
+                    461,
+                    628.6666666666666
                 ]
             ],
             "cptr": 0,
@@ -868,20 +963,20 @@
             "dstport": 1,
             "points": [
                 [
-                    485,
-                    548.0
+                    531,
+                    637.0
                 ],
                 [
-                    495,
-                    548.0
+                    541,
+                    637.0
                 ],
                 [
-                    495,
-                    411.0
+                    541,
+                    377.0
                 ],
                 [
-                    565,
-                    411.0
+                    567,
+                    377.0
                 ]
             ],
             "cptr": 0,
@@ -961,19 +1056,19 @@
                 ],
                 [
                     884,
-                    593
+                    541
                 ],
                 [
-                    395,
-                    593
+                    441,
+                    541
                 ],
                 [
-                    395,
-                    556.3333333333334
+                    441,
+                    645.3333333333334
                 ],
                 [
-                    415,
-                    556.3333333333334
+                    461,
+                    645.3333333333334
                 ]
             ],
             "cptr": 1,
@@ -997,19 +1092,19 @@
                 ],
                 [
                     1064,
-                    487
+                    599
                 ],
                 [
-                    359,
-                    487
+                    309,
+                    599
                 ],
                 [
-                    359,
-                    445.6666666666667
+                    309,
+                    519.6666666666666
                 ],
                 [
-                    399,
-                    445.6666666666667
+                    349,
+                    519.6666666666666
                 ]
             ],
             "cptr": 0,
@@ -1024,20 +1119,20 @@
             "dstport": 0,
             "points": [
                 [
-                    469,
-                    454.0
+                    419,
+                    528.0
                 ],
                 [
-                    479,
-                    454.0
+                    467,
+                    528.0
                 ],
                 [
-                    479,
-                    396.0
+                    467,
+                    362.0
                 ],
                 [
-                    565,
-                    396.0
+                    567,
+                    362.0
                 ]
             ],
             "cptr": 0,
@@ -1061,19 +1156,19 @@
                 ],
                 [
                     884,
-                    499
+                    573
                 ],
                 [
-                    379,
-                    499
+                    329,
+                    573
                 ],
                 [
-                    379,
-                    462.3333333333333
+                    329,
+                    536.3333333333334
                 ],
                 [
-                    399,
-                    462.3333333333333
+                    349,
+                    536.3333333333334
                 ]
             ],
             "cptr": 1,
@@ -1192,118 +1287,6 @@
             "selected": false
         },
         {
-            "name": "Line0",
-            "sid": 0,
-            "srcblock": "External2",
-            "srcport": 0,
-            "dstblock": "Sum0",
-            "dstport": 0,
-            "points": [
-                [
-                    504,
-                    150.0
-                ],
-                [
-                    562,
-                    150.0
-                ],
-                [
-                    562,
-                    120.66666666666667
-                ],
-                [
-                    602,
-                    120.66666666666667
-                ]
-            ],
-            "cptr": 0,
-            "selected": false
-        },
-        {
-            "name": "Line1",
-            "sid": 1,
-            "srcblock": "External2",
-            "srcport": 0,
-            "dstblock": "Sum1",
-            "dstport": 0,
-            "points": [
-                [
-                    504,
-                    150.0
-                ],
-                [
-                    562,
-                    150.0
-                ],
-                [
-                    562,
-                    193.66666666666666
-                ],
-                [
-                    602,
-                    193.66666666666666
-                ]
-            ],
-            "cptr": 0,
-            "selected": false
-        },
-        {
-            "name": "Line2",
-            "sid": 2,
-            "srcblock": "External2",
-            "srcport": 1,
-            "dstblock": "Sum0",
-            "dstport": 1,
-            "points": [
-                [
-                    504,
-                    170.0
-                ],
-                [
-                    582,
-                    170.0
-                ],
-                [
-                    582,
-                    137.33333333333334
-                ],
-                [
-                    602,
-                    137.33333333333334
-                ]
-            ],
-            "cptr": 0,
-            "selected": false
-        },
-        {
-            "name": "Line3",
-            "sid": 3,
-            "srcblock": "External2",
-            "srcport": 1,
-            "dstblock": "Sum1",
-            "dstport": 1,
-            "points": [
-                [
-                    504,
-                    170.0
-                ],
-                [
-                    582,
-                    170.0
-                ],
-                [
-                    582,
-                    210.33333333333334
-                ],
-                [
-                    602,
-                    210.33333333333334
-                ]
-            ],
-            "cptr": 0,
-            "selected": false
-        },
-        {
             "name": "Line10",
             "sid": 10,
             "srcblock": "Mux0",
@@ -1332,23 +1315,335 @@
             "selected": false
         },
         {
-            "name": "Line29",
-            "sid": 29,
-            "srcblock": "Demux0",
-            "srcport": 2,
-            "dstblock": "Mux0",
-            "dstport": 2,
+            "name": "Line0",
+            "sid": 0,
+            "srcblock": "SgProd2",
+            "srcport": 0,
+            "dstblock": "Sum0",
+            "dstport": 0,
             "points": [
                 [
-                    844,
+                    522,
+                    136.0
+                ],
+                [
+                    562,
+                    136.0
+                ],
+                [
+                    562,
+                    120.66666666666667
+                ],
+                [
+                    602,
+                    120.66666666666667
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line1",
+            "sid": 1,
+            "srcblock": "SgProd2",
+            "srcport": 0,
+            "dstblock": "Sum1",
+            "dstport": 0,
+            "points": [
+                [
+                    522,
+                    136.0
+                ],
+                [
+                    562,
+                    136.0
+                ],
+                [
+                    562,
+                    193.66666666666666
+                ],
+                [
+                    602,
+                    193.66666666666666
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line2",
+            "sid": 2,
+            "srcblock": "SgProd3",
+            "srcport": 0,
+            "dstblock": "Sum0",
+            "dstport": 1,
+            "points": [
+                [
+                    522,
+                    210.0
+                ],
+                [
+                    582,
+                    210.0
+                ],
+                [
+                    582,
+                    137.33333333333334
+                ],
+                [
+                    602,
+                    137.33333333333334
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line3",
+            "sid": 3,
+            "srcblock": "SgProd3",
+            "srcport": 0,
+            "dstblock": "Sum1",
+            "dstport": 1,
+            "points": [
+                [
+                    522,
+                    210.0
+                ],
+                [
+                    582,
+                    210.0
+                ],
+                [
+                    582,
+                    210.33333333333334
+                ],
+                [
+                    602,
+                    210.33333333333334
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line30",
+            "sid": 30,
+            "srcblock": "External2",
+            "srcport": 0,
+            "dstblock": "SgProd2",
+            "dstport": 0,
+            "points": [
+                [
+                    393,
+                    156.0
+                ],
+                [
+                    412,
+                    156.0
+                ],
+                [
+                    412,
+                    127.66666666666667
+                ],
+                [
+                    452,
+                    127.66666666666667
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line31",
+            "sid": 31,
+            "srcblock": "External2",
+            "srcport": 1,
+            "dstblock": "SgProd3",
+            "dstport": 0,
+            "points": [
+                [
+                    393,
+                    176.0
+                ],
+                [
+                    412,
+                    176.0
+                ],
+                [
+                    412,
+                    201.66666666666666
+                ],
+                [
+                    452,
+                    201.66666666666666
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line32",
+            "sid": 32,
+            "srcblock": "Integr0",
+            "srcport": 0,
+            "dstblock": "External2",
+            "dstport": 0,
+            "points": [
+                [
+                    746,
                     422.0
                 ],
                 [
-                    1010,
+                    766,
                     422.0
+                ],
+                [
+                    766,
+                    289
+                ],
+                [
+                    233,
+                    289
+                ],
+                [
+                    233,
+                    156.0
+                ],
+                [
+                    273,
+                    156.0
                 ]
             ],
-            "cptr": 2,
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line33",
+            "sid": 33,
+            "srcblock": "Integr0",
+            "srcport": 0,
+            "dstblock": "External3",
+            "dstport": 0,
+            "points": [
+                [
+                    746,
+                    422.0
+                ],
+                [
+                    766,
+                    422.0
+                ],
+                [
+                    766,
+                    472
+                ],
+                [
+                    218,
+                    472
+                ],
+                [
+                    218,
+                    407.0
+                ],
+                [
+                    238,
+                    407.0
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line34",
+            "sid": 34,
+            "srcblock": "External3",
+            "srcport": 0,
+            "dstblock": "External2",
+            "dstport": 1,
+            "points": [
+                [
+                    358,
+                    397.0
+                ],
+                [
+                    398,
+                    397.0
+                ],
+                [
+                    398,
+                    286
+                ],
+                [
+                    253,
+                    286
+                ],
+                [
+                    253,
+                    176.0
+                ],
+                [
+                    273,
+                    176.0
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line35",
+            "sid": 35,
+            "srcblock": "External3",
+            "srcport": 1,
+            "dstblock": "SgProd2",
+            "dstport": 1,
+            "points": [
+                [
+                    358,
+                    417.0
+                ],
+                [
+                    432,
+                    417.0
+                ],
+                [
+                    432,
+                    144.33333333333334
+                ],
+                [
+                    452,
+                    144.33333333333334
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line36",
+            "sid": 36,
+            "srcblock": "External3",
+            "srcport": 1,
+            "dstblock": "SgProd3",
+            "dstport": 1,
+            "points": [
+                [
+                    358,
+                    417.0
+                ],
+                [
+                    432,
+                    417.0
+                ],
+                [
+                    432,
+                    218.33333333333334
+                ],
+                [
+                    452,
+                    218.33333333333334
+                ]
+            ],
+            "cptr": 0,
             "selected": false
         }
     ]

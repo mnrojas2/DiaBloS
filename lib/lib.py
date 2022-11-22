@@ -686,7 +686,12 @@ class DSim:
             if block.b_type == 0:
                 # Se ejecuta la función (se diferencia entre función interna y externa primero)
                 if block.external:
-                    out_value = getattr(block.file_function, block.fn_name)(self.time_step, block.input_queue, block.params)
+                    try:
+                        out_value = getattr(block.file_function, block.fn_name)(self.time_step, block.input_queue, block.params)
+                    except:
+                        print("ERROR FOUND IN EXTERNAL FUNCTION",block.file_function)
+                        self.execution_failed()
+                        return
                 else:
                     out_value = getattr(self.execution_function, block.fn_name)(self.time_step, block.input_queue, block.params)
                 block.computed_data = True
@@ -697,16 +702,18 @@ class DSim:
             elif block.b_type == 1:
                 # Se ejecuta la función para únicamente entregar el resultado en memoria (se diferencia entre función interna y externa primero)
                 if block.external:
-                    out_value = getattr(block.file_function, block.fn_name)(self.time_step, block.input_queue, block.params, True, False, self.sim_dt)
+                    try:
+                        out_value = getattr(block.file_function, block.fn_name)(self.time_step, block.input_queue, block.params, True, False, self.sim_dt)
+                    except:
+                        print("ERROR FOUND IN EXTERNAL FUNCTION", block.file_function)
+                        self.execution_failed()
+                        return
                 else:
                     out_value = getattr(self.execution_function, block.fn_name)(self.time_step, block.input_queue, block.params, True, False, self.sim_dt)
                 children = self.get_outputs(block.name)
 
             if 'E' in out_value.keys() and out_value['E']:
-                self.execution_initialized = False            # Termina la ejecución de la simulación
-                self.reset_memblocks()                        # Restaura la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
-                self.pbar.close()                             # Finaliza la barra de progreso
-                print("*****EXECUTION STOPPED*****")
+                self.execution_failed()
                 return
 
             for mblock in self.blocks_list:
@@ -726,16 +733,18 @@ class DSim:
                 if block.data_recieved == block.in_ports and not block.computed_data:
                     # Se ejecuta la función (se diferencia entre función interna y externa primero)
                     if block.external:
-                        out_value = getattr(block.file_function, block.fn_name)(self.time_step, block.input_queue, block.params)
+                        try:
+                            out_value = getattr(block.file_function, block.fn_name)(self.time_step, block.input_queue, block.params)
+                        except:
+                            print("ERROR FOUND IN EXTERNAL FUNCTION", block.file_function)
+                            self.execution_failed()
+                            return
                     else:
                         out_value = getattr(self.execution_function, block.fn_name)(self.time_step, block.input_queue, block.params)
 
                     # Se comprueba que la función no haya entregado error:
                     if 'E' in out_value.keys() and out_value['E']:
-                        self.execution_initialized = False    # Termina la ejecución de la simulación
-                        self.reset_memblocks()        # Resetea la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
-                        self.pbar.close()  # Se finaliza la barra de progreso
-                        print("*****EXECUTION STOPPED*****")
+                        self.execution_failed()
                         return
 
                     # Se actualizan los flags de cómputo en la lista global como en el bloque mismo
@@ -817,16 +826,18 @@ class DSim:
 
                 # Se ejecuta la función para únicamente entregar el resultado en memoria (se diferencia entre función interna y externa primero)
                 if block.external:
-                    out_value = getattr(block.file_function, block.fn_name)(self.time_step, block.input_queue, block.params, True, add_in_memory)
+                    try:
+                        out_value = getattr(block.file_function, block.fn_name)(self.time_step, block.input_queue, block.params, True, add_in_memory)
+                    except:
+                        print("ERROR FOUND IN EXTERNAL FUNCTION", block.file_function)
+                        self.execution_failed()
+                        return
                 else:
                     out_value = getattr(self.execution_function, block.fn_name)(self.time_step, block.input_queue, block.params, True, add_in_memory)
 
                 # Se comprueba que la función no haya entregado error:
                 if 'E' in out_value.keys() and out_value['E']:
-                    self.execution_initialized = False    # Termina la ejecución de la simulación
-                    self.reset_memblocks()        # Resetea la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
-                    self.pbar.close()  # Se finaliza la barra de progreso
-                    print("*****EXECUTION STOPPED*****")
+                    self.execution_failed()
                     return
 
                 # Se buscan los bloques que requieren los datos procesados de este bloque
@@ -852,16 +863,18 @@ class DSim:
                 if block.hierarchy == hier and (block.data_recieved == block.in_ports or block.in_ports == 0) and not block.computed_data:
                     # Se ejecuta la función (se diferencia entre función interna y externa primero)
                     if block.external:
-                        out_value = getattr(block.file_function, block.fn_name)(self.time_step, block.input_queue, block.params)
+                        try:
+                            out_value = getattr(block.file_function, block.fn_name)(self.time_step, block.input_queue, block.params)
+                        except:
+                            print("ERROR FOUND IN EXTERNAL FUNCTION", block.file_function)
+                            self.execution_failed()
+                            return
                     else:
                         out_value = getattr(self.execution_function, block.fn_name)(self.time_step, block.input_queue, block.params)
 
                     # Se comprueba que la función no haya entregado error:
                     if 'E' in out_value.keys() and out_value['E']:
-                        self.execution_initialized = False    # Termina la ejecución de la simulación
-                        self.reset_memblocks()          # Resetea la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
-                        self.pbar.close()  # Se finaliza la barra de progreso
-                        print("*****EXECUTION STOPPED*****")
+                        self.execution_failed()
                         return
 
                     # Se actualizan los flags de cómputo en la lista global como en el bloque mismo
@@ -912,6 +925,15 @@ class DSim:
             print("*****EXECUTION STOPPED*****")
 
         self.rk_counter += 1
+
+    def execution_failed(self):
+        """
+        :purpose: If an error is found while executing the graph, this function stops all the processes and resets values to the state before execution.
+        """
+        self.execution_initialized = False  # Termina la ejecución de la simulación
+        self.reset_memblocks()  # Restaura la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
+        self.pbar.close()  # Finaliza la barra de progreso
+        print("*****EXECUTION STOPPED*****")
 
     def check_diagram_integrity(self):
         """
