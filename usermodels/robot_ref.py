@@ -16,31 +16,36 @@ def robot_ref(time, inputs, params):
         params['_init_start_'] = False
 
     ref_list = [
+        (0.0, 0.0),#(1.25, 0.0),(2.5, 0.0),(3.75, 0.0),
+        (5.0, 0.0),#(5.0, 1.25),(5.0, 2.5),(5.0, 3.75),
+        (5.0, 5.0),#(3.75, 5.0),(2.5, 5.0),(1.25, 5.0),
+        (0.0, 5.0),#(0.0, 3.75),(0.0, 2.5),(0.0, 1.25),
         (0.0, 0.0),
-        (5.0, 0.0),
-        (5.0, 5.0),
-        (0.0, 5.0),
-        (0.0, 0.0),
-        (0.0, -50.0)
+        (5.0, 0.0),#(5.0, 1.25),(5.0, 2.5),(5.0, 3.75),
+        (5.0, 5.0),#(3.75, 5.0),(2.5, 5.0),(1.25, 5.0),
+        (0.0, 5.0),#(0.0, 3.75),(0.0, 2.5),(0.0, 1.25),
+        (0.0, 0.0)
     ]
 
-    x_pos = inputs[0][0]
-    y_pos = inputs[0][1]
-
-    x_ref = ref_list[params['pointer']][0]
-    y_ref = ref_list[params['pointer']][1]
-    th_ref = np.arctan2((y_ref - y_pos), (x_ref - x_pos))
-
-    if np.sqrt((x_ref - x_pos) ** 2 + (y_ref - y_pos) ** 2) <= 0.1:
-        params['pointer'] += 1
-        print("new point:", ref_list[params['pointer']])
-
-    if params['pointer'] >= len(ref_list)-1:
-        continue_flag = 0
+    if params['pointer'] >= len(ref_list):
+        x_ref = inputs[0][0]
+        y_ref = inputs[0][1]
+        th_ref = inputs[0][2]
+        return {0: np.array((x_ref, y_ref, th_ref)), 1: np.array((0))}
     else:
-        continue_flag = 1
+        cont = np.array((1))
 
-    return {0: np.array((x_ref, y_ref, th_ref)), 1: np.array((continue_flag))}
+        x_pos = inputs[0][0]
+        y_pos = inputs[0][1]
+
+        x_ref = ref_list[params['pointer']][0]
+        y_ref = ref_list[params['pointer']][1]
+        th_ref = np.arctan2((y_ref - y_pos), (x_ref - x_pos))
+
+        if np.sqrt((x_ref - x_pos) ** 2 + (y_ref - y_pos) ** 2) <= 0.05 and params['pointer'] < len(ref_list)-1:
+            params['pointer'] += 1
+
+        return {0: np.array((x_ref, y_ref, th_ref)), 1: cont}
 
 def _init_():
     """

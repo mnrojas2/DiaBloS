@@ -13,7 +13,7 @@
 
    .. autosummary::
    
-      main_execution
+      dmain
    
    
 

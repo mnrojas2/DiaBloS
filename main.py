@@ -6,7 +6,7 @@ from lib.lib import *
 
 def dmain():
     """
-    Function that manages keyboard and mouse inputs, block positions and line connections. It's user-interface.
+    Function that manages keyboard and mouse inputs, block positions and line connections. The user-interface.
     """
 
     pygame.init()

@@ -5,7 +5,7 @@
         "fps": 60,
         "only_one": false,
         "enable_line_sel": true,
-        "sim_time": 12.5,
+        "sim_time": 6.0,
         "sim_dt": 0.01,
         "sim_trange": 100.0
     },
@@ -492,9 +492,9 @@
                 "filename": "robot_control",
                 "W": 0.15,
                 "r": 0.15,
-                "kp_dist": 1.0,
+                "kp_dist": 20.0,
                 "kp_th": 10.0,
-                "kd_th": 5.0,
+                "kd_th": 25.0,
                 "dtime": 0.01,
                 "_init_start_": true
             },
@@ -549,8 +549,8 @@
         {
             "block_fn": "External",
             "sid": 3,
-            "coords_left": 238,
-            "coords_top": 377,
+            "coords_left": 260,
+            "coords_top": 367,
             "coords_width": 120,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -591,7 +591,7 @@
                     422.0
                 ]
             ],
-            "cptr": 0,
+            "cptr": 8,
             "selected": false
         },
         {
@@ -1515,7 +1515,7 @@
                     156.0
                 ]
             ],
-            "cptr": 0,
+            "cptr": 8,
             "selected": false
         },
         {
@@ -1539,19 +1539,19 @@
                     472
                 ],
                 [
-                    218,
+                    240,
                     472
                 ],
                 [
-                    218,
-                    407.0
+                    240,
+                    397.0
                 ],
                 [
-                    238,
-                    407.0
+                    260,
+                    397.0
                 ]
             ],
-            "cptr": 0,
+            "cptr": 8,
             "selected": false
         },
         {
@@ -1563,20 +1563,20 @@
             "dstport": 1,
             "points": [
                 [
-                    358,
-                    397.0
+                    380,
+                    387.0
                 ],
                 [
-                    398,
-                    397.0
+                    420,
+                    387.0
                 ],
                 [
-                    398,
-                    286
+                    420,
+                    281
                 ],
                 [
                     253,
-                    286
+                    281
                 ],
                 [
                     253,
@@ -1599,12 +1599,12 @@
             "dstport": 1,
             "points": [
                 [
-                    358,
-                    417.0
+                    380,
+                    407.0
                 ],
                 [
                     432,
-                    417.0
+                    407.0
                 ],
                 [
                     432,
@@ -1627,12 +1627,12 @@
             "dstport": 1,
             "points": [
                 [
-                    358,
-                    417.0
+                    380,
+                    407.0
                 ],
                 [
                     432,
-                    417.0
+                    407.0
                 ],
                 [
                     432,

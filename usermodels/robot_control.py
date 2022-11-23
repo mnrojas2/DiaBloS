@@ -13,6 +13,7 @@ def robot_control(time, inputs, params):
     """
     if params['_init_start_']:
         params['dtime'] = 0.01
+        params['eth_old'] = 0
         params['_init_start_'] = False
 
     x_pos = inputs[0][0]
@@ -25,18 +26,14 @@ def robot_control(time, inputs, params):
 
     e_th = th_ref - th_pos
 
-    try:
-        d_eth = (e_th - params['eth_old']) / params['dtime']
-        params['eth_old'] = e_th
-    except:
-        d_eth = 0
-        params['eth_old'] = e_th
+    d_eth = (e_th - params['eth_old']) / params['dtime']
+    params['eth_old'] = e_th
 
     tau = params['kp_th'] * e_th + params['kd_th'] * d_eth
     fz = params['kp_dist'] * np.sqrt((x_ref - x_pos) ** 2 + (y_ref - y_pos) ** 2)
 
     tau_r = (fz / 2 + tau / params['W']) * params['r']
-    tau_l = (fz / 2 + tau / params['W']) * params['r']
+    tau_l = (fz / 2 - tau / params['W']) * params['r']
 
     return {0: np.array((tau_r)), 1: np.array((tau_l))}
 
@@ -54,9 +51,9 @@ def _init_():
         '_init_start_': True,
         'W': 0.15,
         'r': 0.15,
-        'kp_dist': 1.0,
-        'kp_th': 1.0,
-        'kd_th': 1.0,
+        'kp_dist': 20.0,
+        'kp_th': 10.0,
+        'kd_th': 15.0,
         'dtime': 0.01
     }
     return io_data, params
