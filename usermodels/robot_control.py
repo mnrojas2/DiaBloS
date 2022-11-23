@@ -49,11 +49,11 @@ def _init_():
     }
     params = {
         '_init_start_': True,
-        'W': 0.15,
+        'W': 0.4,
         'r': 0.15,
         'kp_dist': 20.0,
-        'kp_th': 10.0,
-        'kd_th': 15.0,
+        'kp_th': 25.0,
+        'kd_th': 40.0,
         'dtime': 0.01
     }
     return io_data, params

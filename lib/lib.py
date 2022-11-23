@@ -606,10 +606,7 @@ class DSim:
         # Plot dinamico (en tiempo real)
         tk.Label(master, text="Dynamic Plot:").grid(row=3)
         r = tk.IntVar()
-        tk_off = tk.Radiobutton(master, text="OFF", variable=r, value=False)
-        tk_off.grid(row=4, column=0)
-        tk_on = tk.Radiobutton(master, text="ON", variable=r, value=True)
-        tk_on.grid(row=4, column=1)
+        tk.Checkbutton(master, variable=r).grid(row=3, column=1)
 
         tk.Button(master, text='Accept', command=master.quit).grid(row=8, column=1, sticky=tk.W, pady=4)
         tk.mainloop()
@@ -1446,15 +1443,20 @@ class DBlock(DSim):
         if ed_dict == {}:
             return
 
-        widget_params = TkWidget(self.name, ed_dict)
+        widget_params = TkWidget(self.name, ed_dict, external=self.external)
         new_inputs = widget_params.get_values()
+        external_reset = new_inputs['_ext_reset_']
+        new_inputs.pop('_ext_reset_')
 
         if new_inputs != {}:
             new_inputs.update(non_ed_dict)
             self.params = new_inputs
             widget_params.destroy()
 
-    def load_external_data(self):
+        if self.external:
+            self.load_external_data(params_reset=external_reset)
+
+    def load_external_data(self, params_reset=False):
         """
         :purpose: Loads initialization data of a function located in a external python file.
         :description: Through the use of the importlib library, a .py file is imported from the 'usermodels' folder, from where the function parameters and the block parameters (input, output, block_type) are extracted, importing them to the existing block, modifying its qualities if necessary.
@@ -1484,7 +1486,7 @@ class DBlock(DSim):
             self.params.update(io_params)
             return
 
-        if not hasattr(self, 'external_old') or (hasattr(self, 'external_old') and self.external_old != self.params['filename']):
+        if not hasattr(self, 'external_old') or (hasattr(self, 'external_old') and (self.external_old != self.params['filename'] or params_reset)):
             self.external_old = self.params['filename']
             self.params = {'filename': self.params['filename']}
             self.params.update(fn_params)
@@ -1522,8 +1524,6 @@ class DBlock(DSim):
         else:
             importlib.reload(self.file_function)
 
-        #fun_list, fn_params = self.file_function._init_()
-        #self.params.update(fn_params)
         return 0
 
 
@@ -1855,13 +1855,18 @@ class TkWidget:
     :type params: dict
 
     """
-    def __init__(self, name, params):
+    def __init__(self, name, params, external=False):
         self.params = params
         self.params_names = list(params.keys())
         self.n = len(self.params_names)
+        self.external = external
+
         self.master = tk.Tk()
         self.master.title(name+' parameters')
         self.entry_widgets = [self.create_entry_widget(x) for x in range(self.n)]
+
+        self.external_toggle()
+
         tk.Button(self.master, text='Ok', command=self.master.quit).grid(row=self.n+1, column=0, sticky=tk.W, pady=4)
         tk.mainloop()
 
@@ -1906,6 +1911,10 @@ class TkWidget:
                     dato = False
 
                 dicty[self.params_names[i]] = dato
+
+            if self.external:
+                dicty['_ext_reset_'] = self.ext_check.get()
+                print(self.ext_check.get())
             return dicty
         except:
             return {}
@@ -1948,6 +1957,15 @@ class TkWidget:
         else:
             print("MATRIX DIMENSIONS ARE INCORRECT")
             return ""
+
+    def external_toggle(self):
+        """
+        :purpose: Creates a prompt to reset value parameters from a external block.
+        """
+        if self.external:
+            self.ext_check = tk.IntVar()
+            tk.Checkbutton(self.master, variable=self.ext_check).grid(row=self.n)
+            tk.Label(self.master, text="Reset parameters").grid(row=self.n, column=1)
 
     def destroy(self):
         """

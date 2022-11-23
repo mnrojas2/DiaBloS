@@ -5,7 +5,7 @@
         "fps": 60,
         "only_one": false,
         "enable_line_sel": true,
-        "sim_time": 6.0,
+        "sim_time": 10.0,
         "sim_dt": 0.01,
         "sim_trange": 100.0
     },
@@ -469,38 +469,6 @@
             "external": false
         },
         {
-            "block_fn": "External",
-            "sid": 2,
-            "coords_left": 273,
-            "coords_top": 136,
-            "coords_width": 120,
-            "coords_height": 60,
-            "coords_height_base": 60,
-            "in_ports": 2,
-            "out_ports": 2,
-            "dragging": false,
-            "selected": false,
-            "b_color": [
-                85,
-                35,
-                120
-            ],
-            "b_type": 2,
-            "io_edit": false,
-            "fn_name": "robot_control",
-            "params": {
-                "filename": "robot_control",
-                "W": 0.15,
-                "r": 0.15,
-                "kp_dist": 20.0,
-                "kp_th": 10.0,
-                "kd_th": 25.0,
-                "dtime": 0.01,
-                "_init_start_": true
-            },
-            "external": true
-        },
-        {
             "block_fn": "SgProd",
             "sid": 2,
             "coords_left": 452,
@@ -568,6 +536,38 @@
             "fn_name": "robot_ref",
             "params": {
                 "filename": "robot_ref",
+                "_init_start_": true
+            },
+            "external": true
+        },
+        {
+            "block_fn": "External",
+            "sid": 4,
+            "coords_left": 269,
+            "coords_top": 136,
+            "coords_width": 120,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 2,
+            "out_ports": 2,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                85,
+                35,
+                120
+            ],
+            "b_type": 2,
+            "io_edit": false,
+            "fn_name": "robot_control",
+            "params": {
+                "filename": "robot_control",
+                "W": 0.4,
+                "r": 0.15,
+                "kp_dist": 20.0,
+                "kp_th": 25.0,
+                "kd_th": 40.0,
+                "dtime": 0.01,
                 "_init_start_": true
             },
             "external": true
@@ -1427,98 +1427,6 @@
             "selected": false
         },
         {
-            "name": "Line30",
-            "sid": 30,
-            "srcblock": "External2",
-            "srcport": 0,
-            "dstblock": "SgProd2",
-            "dstport": 0,
-            "points": [
-                [
-                    393,
-                    156.0
-                ],
-                [
-                    412,
-                    156.0
-                ],
-                [
-                    412,
-                    127.66666666666667
-                ],
-                [
-                    452,
-                    127.66666666666667
-                ]
-            ],
-            "cptr": 0,
-            "selected": false
-        },
-        {
-            "name": "Line31",
-            "sid": 31,
-            "srcblock": "External2",
-            "srcport": 1,
-            "dstblock": "SgProd3",
-            "dstport": 0,
-            "points": [
-                [
-                    393,
-                    176.0
-                ],
-                [
-                    412,
-                    176.0
-                ],
-                [
-                    412,
-                    201.66666666666666
-                ],
-                [
-                    452,
-                    201.66666666666666
-                ]
-            ],
-            "cptr": 0,
-            "selected": false
-        },
-        {
-            "name": "Line32",
-            "sid": 32,
-            "srcblock": "Integr0",
-            "srcport": 0,
-            "dstblock": "External2",
-            "dstport": 0,
-            "points": [
-                [
-                    746,
-                    422.0
-                ],
-                [
-                    766,
-                    422.0
-                ],
-                [
-                    766,
-                    289
-                ],
-                [
-                    233,
-                    289
-                ],
-                [
-                    233,
-                    156.0
-                ],
-                [
-                    273,
-                    156.0
-                ]
-            ],
-            "cptr": 8,
-            "selected": false
-        },
-        {
             "name": "Line33",
             "sid": 33,
             "srcblock": "Integr0",
@@ -1552,42 +1460,6 @@
                 ]
             ],
             "cptr": 8,
-            "selected": false
-        },
-        {
-            "name": "Line34",
-            "sid": 34,
-            "srcblock": "External3",
-            "srcport": 0,
-            "dstblock": "External2",
-            "dstport": 1,
-            "points": [
-                [
-                    380,
-                    387.0
-                ],
-                [
-                    420,
-                    387.0
-                ],
-                [
-                    420,
-                    281
-                ],
-                [
-                    253,
-                    281
-                ],
-                [
-                    253,
-                    176.0
-                ],
-                [
-                    273,
-                    176.0
-                ]
-            ],
-            "cptr": 0,
             "selected": false
         },
         {
@@ -1641,6 +1513,134 @@
                 [
                     452,
                     218.33333333333334
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line29",
+            "sid": 29,
+            "srcblock": "External4",
+            "srcport": 1,
+            "dstblock": "SgProd3",
+            "dstport": 0,
+            "points": [
+                [
+                    389,
+                    176.0
+                ],
+                [
+                    412,
+                    176.0
+                ],
+                [
+                    412,
+                    201.66666666666666
+                ],
+                [
+                    452,
+                    201.66666666666666
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line30",
+            "sid": 30,
+            "srcblock": "External4",
+            "srcport": 0,
+            "dstblock": "SgProd2",
+            "dstport": 0,
+            "points": [
+                [
+                    389,
+                    156.0
+                ],
+                [
+                    412,
+                    156.0
+                ],
+                [
+                    412,
+                    127.66666666666667
+                ],
+                [
+                    452,
+                    127.66666666666667
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line31",
+            "sid": 31,
+            "srcblock": "Integr0",
+            "srcport": 0,
+            "dstblock": "External4",
+            "dstport": 0,
+            "points": [
+                [
+                    746,
+                    422.0
+                ],
+                [
+                    766,
+                    422.0
+                ],
+                [
+                    766,
+                    289
+                ],
+                [
+                    229,
+                    289
+                ],
+                [
+                    229,
+                    156.0
+                ],
+                [
+                    269,
+                    156.0
+                ]
+            ],
+            "cptr": 8,
+            "selected": false
+        },
+        {
+            "name": "Line32",
+            "sid": 32,
+            "srcblock": "External3",
+            "srcport": 0,
+            "dstblock": "External4",
+            "dstport": 1,
+            "points": [
+                [
+                    380,
+                    387.0
+                ],
+                [
+                    420,
+                    387.0
+                ],
+                [
+                    420,
+                    281
+                ],
+                [
+                    249,
+                    281
+                ],
+                [
+                    249,
+                    176.0
+                ],
+                [
+                    269,
+                    176.0
                 ]
             ],
             "cptr": 0,
