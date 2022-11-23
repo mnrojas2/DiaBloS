@@ -1445,8 +1445,12 @@ class DBlock(DSim):
 
         widget_params = TkWidget(self.name, ed_dict, external=self.external)
         new_inputs = widget_params.get_values()
-        external_reset = new_inputs['_ext_reset_']
-        new_inputs.pop('_ext_reset_')
+        try:
+            external_reset = new_inputs['_ext_reset_']
+            new_inputs.pop('_ext_reset_')
+        except:
+            external_reset = False
+
 
         if new_inputs != {}:
             new_inputs.update(non_ed_dict)
@@ -1912,9 +1916,10 @@ class TkWidget:
 
                 dicty[self.params_names[i]] = dato
 
+            # Obtener si se resetean los parametros o no, en caso de ser bloque External
             if self.external:
                 dicty['_ext_reset_'] = self.ext_check.get()
-                print(self.ext_check.get())
+
             return dicty
         except:
             return {}
