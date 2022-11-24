@@ -316,7 +316,7 @@ Convergent ODE system
 
     Graph 1:
         #) A Step up block with amplitude :math:`1` and no delay.
-        #) An External block linked to the external user model function 'axbu.py'.
+        #) An External block linked to the external user model function 'ode_system_conv.py'.
         #) An Integrator block using the RK45 method to obtain the integration of the previous operation's result.
         #) A Scope block to observe the output of the Integrator block.
         #) An Export block to save the data from the Integrator block and then export it as a file in .npz format.
@@ -349,13 +349,7 @@ Critical ODE system
 
 :Demonstration:
 
-    CAMBIAR TODO A LO CORRESPONDIENTE
-
-    A particular ordinary differential equation is used as an example:
-
-    .. math:: \ddot{y} + 0.4\,\dot{y} + y = u
-
-    if :math:`x_1 = y` and :math:`x_2 = \dot{y}` this ODE can be represented in vector form as:
+    A particular ordinary differential equation system is used vector form as an example:
 
     .. math:: X' &= f(X,U)\\
         \begin{bmatrix}
@@ -363,7 +357,7 @@ Critical ODE system
         \end{bmatrix}
         &=
         \begin{bmatrix}
-        x_2 \\ -x_1 -0.4\, x_2 + u
+        -x_2 \\ x_1 + u
         \end{bmatrix}
 
     and in the same time, it can be converted to a matrix system of the type :math:`X'= A\,X + B\,U`.
@@ -374,7 +368,7 @@ Critical ODE system
         \end{bmatrix}
         &=
         \begin{bmatrix}
-        0 & 1 \\ -1 & -0.4
+        0 & -1 \\ 1 & 0
         \end{bmatrix}
         \begin{bmatrix}
         x_1 \\ x_2
@@ -385,24 +379,34 @@ Critical ODE system
         \end{bmatrix}
         u
 
-    So three instances of this problem are created to simulate:
+    Knowing that :math:`A` is the rotation matrix when :math:`\theta = 90^{\circ}`, and setting :math:`u = 1`, the equations can be rewritten as:
+
+    .. math:: x_1 &= \cos(t) - 1 \\ x_2 &= \sin(t)
+
+    So four instances of this problem are created to simulate:
+
+    #) Using an external function as source, the exact value of the curves.
 
     #) Using an external function, where value :math:`U` and vector :math:`X=[x_1, x_2]` are received, to deliver :math:`\dot{X} = f(X,U)`.
 
     #) Using gain and adder blocks to form the matrix notation (:math:`X'= A,X + B,U`) before integrating it.
 
-    #) Using the non-vector system definition, first by calculating :math:`ddot{y}`, then integrate it to find :math:`dot{y}` and then integrate once again to find :math:`y`.
+    #) Using the non-vector system definition, first by calculating :math:`\dot{x}_2`, then integrate it to find :math:`x_2 = -\dot{x}_1` and then integrate once again to find :math:`x_1`.
 
 :Graph Composition:
 
     Graph 1:
+        #) An External block linked to the external user model function 'ode_exact_crit.py'.
+        #) #) A Scope block to observe the output of the External block.
+
+    Graph 2:
         #) A Step up block with amplitude :math:`1` and no delay.
-        #) An External block linked to the external user model function 'axbu.py'.
+        #) An External block linked to the external user model function 'ode_system_crit.py'.
         #) An Integrator block using the RK45 method to obtain the integration of the previous operation's result.
         #) A Scope block to observe the output of the Integrator block.
         #) An Export block to save the data from the Integrator block and then export it as a file in .npz format.
 
-    Graph 2:
+    Graph 3:
         #) A Step up block with amplitude :math:`1` and no delay.
         #) A Gain block to multiply the output of the Step block with the vector :math:`B = [0.0, 1.0]` producing :math:`BU`.
         #) A Gain block to multiply the output vector of the Integrator block with the matrix :math:`A = [[0.0, 1.0], [-1.0, -0.4]]` producing :math:`AX`.
@@ -411,7 +415,7 @@ Critical ODE system
         #) A Scope block to observe the output of the Integrator block.
         #) An Export block to save the data from the Integrator block and then export it as a file in .npz format.
 
-    Graph 3:
+    Graph 4:
         #) A Step up block with amplitude :math:`1` and no delay.
         #) An Integrator block that integrates the value of the Adder block's output to obtain :math:`x_2`.
         #) A Gain block to multiply :math:`x_2` by :math:`-0.4` and be used in the Adder block as future input.
@@ -441,9 +445,9 @@ Watertank control
     #) An External block (sat_pcs)
     #) A Scope block
 
----------------------------------
-Differential traction robot model
----------------------------------
+------------------------------------------------
+Differential traction robot model and controller
+------------------------------------------------
 
 :Description: This example shows the modelling of a differential traction robot.
 

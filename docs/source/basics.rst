@@ -151,7 +151,7 @@ After loading the package, a window similar like the following figure will show:
     during the process.
 
     After loading the file, the ports and parameters info will be loaded into the block, making the latter available for
-    editing in the same way as the default program blocks.
+    editing in the same way as the default program blocks. Also, for these type of blocks, there's an option to reset the parameter values back to the original ones.
 
     More details about how to create these types of functions are available in
     :ref:`"Creating new functions"<developer:creating new functions>` section from developer's guide.

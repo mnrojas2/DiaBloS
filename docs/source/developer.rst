@@ -164,7 +164,6 @@ Usermodel functions
 Explicar el proceso de crear estas funciones.
 Requieren saber el cómo se comunican los datos y su formato.
 Como testear
-Como evitar crashes
 
 ----------------------
 Creating new functions
@@ -188,7 +187,7 @@ Funcion inicialización::
             'b_type': block_type_number, #0: source, #1: N_process, #2: Z_process, #3: drain
             'color': color_string_or_rgb_triplet
         }
-        params = {} # parameters defined before use them in the function
+        params = {} # default parameters defined for the function
         return io_data, params
 
 
