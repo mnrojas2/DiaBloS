@@ -13,23 +13,21 @@ def robot_ref(time, inputs, params):
     """
     if params['_init_start_']:
         params['pointer'] = 0
+
+        Tp = params['interval']
+        length = params['sq_length']
+        lado = np.linspace(0, length, 1 + int(length / Tp))
+
+        Tp_long = lado.shape[0]
+        lado_a = np.array((lado, np.zeros(Tp_long))).T
+        lado_b = np.array((length * np.ones(Tp_long), lado)).T
+        lado_c = np.array((lado[::-1], length * np.ones(Tp_long))).T
+        lado_d = np.array((np.zeros(Tp_long), lado[::-1])).T
+
+        params['ref_list'] = np.concatenate((lado_a, lado_b, lado_c, lado_d))
         params['_init_start_'] = False
 
-    ref_list = [
-        (0.0, 0.0),(1.25, 0.0),(2.5, 0.0),(3.75, 0.0),
-        (5.0, 0.0),(5.0, 1.25),(5.0, 2.5),(5.0, 3.75),
-        (5.0, 5.0),(3.75, 5.0),(2.5, 5.0),(1.25, 5.0),
-        (0.0, 5.0),(0.0, 3.75),(0.0, 2.5),(0.0, 1.25),
-        (0.0, 0.0),(1.25, 0.0),(2.5, 0.0),(3.75, 0.0),
-        (5.0, 0.0),(5.0, 1.25),(5.0, 2.5),(5.0, 3.75),
-        (5.0, 5.0),(3.75, 5.0),(2.5, 5.0),(1.25, 5.0),
-        (0.0, 5.0),(0.0, 3.75),(0.0, 2.5),(0.0, 1.25),
-        (0.0, 0.0),(1.25, 0.0),(2.5, 0.0),(3.75, 0.0),
-        (5.0, 0.0),(5.0, 1.25),(5.0, 2.5),(5.0, 3.75),
-        (5.0, 5.0),(3.75, 5.0),(2.5, 5.0),(1.25, 5.0),
-        (0.0, 5.0),(0.0, 3.75),(0.0, 2.5),(0.0, 1.25),
-        (0.0, 0.0)
-    ]
+    ref_list = params['ref_list']
 
     cont = np.array((1))
 
@@ -40,7 +38,7 @@ def robot_ref(time, inputs, params):
     y_ref = ref_list[params['pointer']][1]
     th_ref = np.arctan2((y_ref - y_pos), (x_ref - x_pos))
 
-    if np.sqrt((x_ref - x_pos) ** 2 + (y_ref - y_pos) ** 2) <= 0.05 and params['pointer'] < len(ref_list)-1:
+    if np.sqrt((x_ref - x_pos) ** 2 + (y_ref - y_pos) ** 2) <= params['interval']*0.25 and params['pointer'] < len(ref_list)-1:
         params['pointer'] += 1
 
     return {0: np.array((x_ref, y_ref, th_ref)), 1: cont}
@@ -56,6 +54,8 @@ def _init_():
         'color': (255, 12, 76)
     }
     params = {
-        '_init_start_': True
+        '_init_start_': True,
+        'sq_length': 5,
+        'interval': 0.25
     }
     return io_data, params

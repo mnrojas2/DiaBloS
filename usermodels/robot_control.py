@@ -25,6 +25,7 @@ def robot_control(time, inputs, params):
     th_ref = inputs[1][2]
 
     e_th = th_ref - th_pos
+    e_th = (e_th + np.pi) % (2*np.pi) - np.pi
 
     d_eth = (e_th - params['eth_old']) / params['dtime']
     params['eth_old'] = e_th
