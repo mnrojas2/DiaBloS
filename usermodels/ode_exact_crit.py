@@ -11,7 +11,7 @@ def ode_exact_crit(time, inputs, params):
     """
     External function 'my_function'
     """
-    return {0: np.array((np.cos(time)-1, np.sin(time)))}
+    return {0: np.array((1-np.cos(time), np.sin(time)))}
 
 def _init_():
     """

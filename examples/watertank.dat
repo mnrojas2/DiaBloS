@@ -5,7 +5,7 @@
         "fps": 60,
         "only_one": false,
         "enable_line_sel": true,
-        "sim_time": 5.0,
+        "sim_time": 10.0,
         "sim_dt": 0.01,
         "sim_trange": 100.0
     },
@@ -64,7 +64,7 @@
         {
             "block_fn": "Step",
             "sid": 0,
-            "coords_left": 248,
+            "coords_left": 215,
             "coords_top": 111,
             "coords_width": 60,
             "coords_height": 60,
@@ -220,8 +220,8 @@
         {
             "block_fn": "Sum",
             "sid": 1,
-            "coords_left": 388,
-            "coords_top": 125,
+            "coords_left": 446,
+            "coords_top": 158,
             "coords_width": 70,
             "coords_height": 50,
             "coords_height_base": 50,
@@ -245,8 +245,8 @@
         {
             "block_fn": "Gain",
             "sid": 3,
-            "coords_left": 664,
-            "coords_top": 155,
+            "coords_left": 666,
+            "coords_top": 172,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -270,7 +270,7 @@
         {
             "block_fn": "Gain",
             "sid": 4,
-            "coords_left": 550,
+            "coords_left": 566,
             "coords_top": 120,
             "coords_width": 60,
             "coords_height": 60,
@@ -551,6 +551,60 @@
                 "_init_start_": true
             },
             "external": false
+        },
+        {
+            "block_fn": "Sum",
+            "sid": 3,
+            "coords_left": 315,
+            "coords_top": 149,
+            "coords_width": 70,
+            "coords_height": 50,
+            "coords_height_base": 50,
+            "in_ports": 2,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                128,
+                255,
+                0
+            ],
+            "b_type": 2,
+            "io_edit": "input",
+            "fn_name": "adder",
+            "params": {
+                "sign": "+-"
+            },
+            "external": false
+        },
+        {
+            "block_fn": "Step",
+            "sid": 1,
+            "coords_left": 214,
+            "coords_top": 219,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 0,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                0,
+                0,
+                255
+            ],
+            "b_type": 0,
+            "io_edit": false,
+            "fn_name": "step",
+            "params": {
+                "value": 0.75,
+                "delay": 5.0,
+                "type": "up",
+                "pulse_start_up": true,
+                "_init_start_": true
+            },
+            "external": false
         }
     ],
     "lines_data": [
@@ -679,34 +733,6 @@
             "selected": false
         },
         {
-            "name": "Line8",
-            "sid": 8,
-            "srcblock": "Step0",
-            "srcport": 0,
-            "dstblock": "Sum1",
-            "dstport": 0,
-            "points": [
-                [
-                    308,
-                    141.0
-                ],
-                [
-                    348,
-                    141.0
-                ],
-                [
-                    348,
-                    141.66666666666666
-                ],
-                [
-                    388,
-                    141.66666666666666
-                ]
-            ],
-            "cptr": 0,
-            "selected": false
-        },
-        {
             "name": "Line6",
             "sid": 6,
             "srcblock": "Integr0",
@@ -744,22 +770,22 @@
                 ],
                 [
                     1089,
-                    252
+                    268
                 ],
                 [
-                    368,
-                    252
+                    426,
+                    268
                 ],
                 [
-                    368,
-                    158.33333333333334
+                    426,
+                    191.33333333333334
                 ],
                 [
-                    388,
-                    158.33333333333334
+                    446,
+                    191.33333333333334
                 ]
             ],
-            "cptr": 16,
+            "cptr": 13,
             "selected": false
         },
         {
@@ -795,7 +821,7 @@
                     354.0
                 ]
             ],
-            "cptr": 16,
+            "cptr": 13,
             "selected": false
         },
         {
@@ -807,11 +833,19 @@
             "dstport": 0,
             "points": [
                 [
-                    458,
+                    516,
+                    183.0
+                ],
+                [
+                    546,
+                    183.0
+                ],
+                [
+                    546,
                     150.0
                 ],
                 [
-                    550,
+                    566,
                     150.0
                 ]
             ],
@@ -836,19 +870,19 @@
                 ],
                 [
                     803,
-                    265
+                    274
                 ],
                 [
-                    644,
-                    265
+                    646,
+                    274
                 ],
                 [
-                    644,
-                    185.0
+                    646,
+                    202.0
                 ],
                 [
-                    664,
-                    185.0
+                    666,
+                    202.0
                 ]
             ],
             "cptr": 0,
@@ -863,12 +897,12 @@
             "dstport": 1,
             "points": [
                 [
-                    724,
-                    185.0
+                    726,
+                    202.0
                 ],
                 [
                     764,
-                    185.0
+                    202.0
                 ],
                 [
                     764,
@@ -891,7 +925,7 @@
             "dstport": 0,
             "points": [
                 [
-                    610,
+                    626,
                     150.0
                 ],
                 [
@@ -967,7 +1001,7 @@
                     346.0
                 ]
             ],
-            "cptr": 16,
+            "cptr": 13,
             "selected": false
         },
         {
@@ -995,43 +1029,7 @@
                     432.0
                 ]
             ],
-            "cptr": 16,
-            "selected": false
-        },
-        {
-            "name": "Line17",
-            "sid": 17,
-            "srcblock": "Step0",
-            "srcport": 0,
-            "dstblock": "External2",
-            "dstport": 0,
-            "points": [
-                [
-                    308,
-                    141.0
-                ],
-                [
-                    328,
-                    141.0
-                ],
-                [
-                    328,
-                    300
-                ],
-                [
-                    247,
-                    300
-                ],
-                [
-                    247,
-                    460.0
-                ],
-                [
-                    287,
-                    460.0
-                ]
-            ],
-            "cptr": 0,
+            "cptr": 13,
             "selected": false
         },
         {
@@ -1181,6 +1179,126 @@
                 [
                     858,
                     547.0
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line17",
+            "sid": 17,
+            "srcblock": "Sum3",
+            "srcport": 0,
+            "dstblock": "External2",
+            "dstport": 0,
+            "points": [
+                [
+                    385,
+                    174.0
+                ],
+                [
+                    405,
+                    174.0
+                ],
+                [
+                    405,
+                    317
+                ],
+                [
+                    247,
+                    317
+                ],
+                [
+                    247,
+                    460.0
+                ],
+                [
+                    287,
+                    460.0
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line8",
+            "sid": 8,
+            "srcblock": "Sum3",
+            "srcport": 0,
+            "dstblock": "Sum1",
+            "dstport": 0,
+            "points": [
+                [
+                    385,
+                    174.0
+                ],
+                [
+                    406,
+                    174.0
+                ],
+                [
+                    406,
+                    174.66666666666666
+                ],
+                [
+                    446,
+                    174.66666666666666
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line24",
+            "sid": 24,
+            "srcblock": "Step0",
+            "srcport": 0,
+            "dstblock": "Sum3",
+            "dstport": 0,
+            "points": [
+                [
+                    275,
+                    141.0
+                ],
+                [
+                    285,
+                    141.0
+                ],
+                [
+                    285,
+                    165.66666666666666
+                ],
+                [
+                    315,
+                    165.66666666666666
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line25",
+            "sid": 25,
+            "srcblock": "Step1",
+            "srcport": 0,
+            "dstblock": "Sum3",
+            "dstport": 1,
+            "points": [
+                [
+                    274,
+                    249.0
+                ],
+                [
+                    295,
+                    249.0
+                ],
+                [
+                    295,
+                    182.33333333333334
+                ],
+                [
+                    315,
+                    182.33333333333334
                 ]
             ],
             "cptr": 0,

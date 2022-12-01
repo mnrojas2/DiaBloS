@@ -15,7 +15,7 @@ def ode_system_crit(time, inputs, params):
         return {'E': True}
 
     # Funcion Ax + Bu
-    A = np.array([[0, -1], [1, 0]])
+    A = np.array([[0, 1], [-1, 0]])
     B = np.array([0, 1])
     sol = np.dot(A, inputs[1]) + np.dot(B, inputs[0])
     return {0: sol}
