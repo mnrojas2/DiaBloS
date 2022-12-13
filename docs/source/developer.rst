@@ -5,91 +5,23 @@ Using DiaBloS: Developer Guide
 Software hierarchy
 ------------------
 
-Explicar con diagramas la relacion entre funciones principales
+A hierarchical diagram of the tool's main classes and functions is presented in Figure \ref{fig:software-diagram}, and a description of its most important classes and functions of this software library is presented below:
 
-.. image:: images/software-chart.png
+.. image:: images/software-hierarchy.png
 
-Explicar cada cuadrado grande y bajo este los cuadrados chicos
+* DMain: Executes the main whileloop of the interface from the moment the program starts. It calls the DSim class and handles the data input from the user.
+* DSim: Class that controls and executes the main functions of the interface, such as creating block and link objects, simulating the block diagram, opening and saving files, and loading the graphical representations of the elements in the interface.
+* DBlocks: Class that defines each node or block of the network as an object with a finite number of inputs and outputs, color, type of block (source, zprocess, nprocess, terminal), associated function, among others. In addition, as an object, it contains the variables associated to the executable function, independently from other blocks of the same type.
+* DLine: Class that defines the link between blocks as an object with start and end, both identified as a block-port pair. It also controls the segmentation of a line for graphical effects, such as changing its color in the interface.
+* DFunctions: Class that contains all the default functions associated to the blocks created in the system. These functions have no memory, since this information is contained in each block created under DBlocks, they only calculate data and provide a result.
+* Auxiliary classes: TkWidget, SignalPlot, MenuBlocks. These are classes with specific functionalities to support the use of the tool by the user. e.g.: Plot curves, change parameters, create blocks in the interface.
 
-..  main_execution()
-        --main classes--
-        initsim
-            --UI--
-            add_block
-            remove_block
-            add_line
-            remove_lines
-        --settings--
-            save
-            open
-            other settings
-            canvas resolution
-            canvas fps
-        --execution--
-            execution_init
-            execution_loop
-            other auxiliar functions
-
-..      blocks
-            --internal--
-            inputs
-            outputs
-            parameters
-            function (internal/external)
-            --ui--
-            color
-
-..      lines
-            --internal--
-            start
-            end
-            --ui--
-            color
-            trajectory
-
-..      functions
-            --execution--
-            input/output functions
-
-..      --auxiliar classes--
-            tkWidget
-            menublocks
-            signal_plot
-
+The creation of blocks and functions as independent elements is supported by the idea of facilitating the production process. In most cases, a block only requires the name of the function to be associated and the main parameters to obtain a functional node in the diagram, making it unique from the rest. This also allows the creation of external functions to those already available in the library, allowing the user to create more complex processes, simplifying the elaboration of diagrams, if required.
 
 Graph simulation
 ----------------
 
-Explicar de forma resumida el como se ejecutan los datos, tal vez un hipervinculo al paper?
-
-.. _simrun:
-
--------------------------------
-Graph simulation main algorithm
--------------------------------
-
-Explicar el loop de ejecucion del grafo, inicial y loop, con tambien los casos para detenerlo de golpe (diagrama)
-
-poner la explicacion vista con el profe::
-
-    Based on paper
-
-    2 steps, init and loop
-
-    init:
-        -sort blocks according to computability.
-        -start with source blocks.
-        -spread initial conditions for blocks that use it (integrator).
-        -check what blocks can be computed, compute them and spread its outputs to other uncomputed blocks.
-        Then assign the order position to that block for the next step.
-
-    loop:
-        -spread output from blocks with initial conditions.
-        -execute every block in the other already defined in the previous part, then spread outputs to other uncomputed blocks.
-
-    stop:
-        -wait until the time variable reaches the limit.
-        -press STOP button in the interface.
+La explicación se presenta en el paper...
 
 
 .. _rk45-method:
@@ -113,10 +45,7 @@ The RungeKutta 45 integration method can be defined as the following:
 
     where f...
 
-*Comparar integracion RK45 con Euler usando RMS
-*Comparar con integrador en matlab, mismo ejemplo
-*Ver opcion para cambiar paleta de colores en pyqtgraph
-*
+The integration process with the Runge-Kutta 45 method is a special case to be observed. In addition to the creation and association of a function that calculates the data, it is required to change the forward process by intervals in order to calculate the necessary data in each intermediate space. As defined in the algorithm \ref{alg:integrationA}, it is necessary that for a time $t$ that seeks to calculate the state $t+T$, it is necessary to go through $t$, $t + T/2$, $t + T/2$ (again) and $t + T$ to calculate the variables $k_1$, $k_2$, $k_3$ and $k_4$ before passing definitively to $t + T$, repeating this last interval. Moreover, since these periods are necessary only to solve the integration process, it is necessary to indicate to any block that has a memory function, that in these subintervals the obtained data should not be considered. For example, in the case of a Scope block, which plots the curves resulting from a simulation variable.
 
 
 Data management

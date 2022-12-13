@@ -4,9 +4,9 @@ Using DiaBloS: User Guide
 Interface
 ---------
 
-After loading the package, a window similar like the following figure will show::
+After loading the package, a window similar like the following figure will show
 
-.. image:: images/screenshot.png
+.. image:: images/DiaBloS.png
 
 
 +-----+-------------------------+

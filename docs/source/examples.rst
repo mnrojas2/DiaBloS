@@ -179,8 +179,6 @@ External source
 
     Details on how to create such functions can be found in :ref:`usermodel-function`.
 
-Translated with www.DeepL.com/Translator (free version)
-
 :Graph Composition:
 
     #) An External block linked to the external usermodel function 'my_function_src.py'.
