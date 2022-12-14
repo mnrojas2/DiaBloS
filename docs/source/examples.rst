@@ -177,7 +177,7 @@ External source
 
     For this case, it is important to define the block inputs as :math:`0` and the block type as :math:`0` (source).
 
-    Details on how to create such functions can be found in :ref:`usermodel-function`.
+    Details on how to create such functions can be found in :ref:`developer:usermodel functions`.
 
 :Graph Composition:
 
@@ -201,7 +201,7 @@ External Z-process
 
     For this case, it is important to define the block type as :math:`2` (z-process).
 
-    Details on how to create such functions can be found in :ref:`usermodel-function`.
+    Details on how to create such functions can be found in :ref:`developer:usermodel functions`.
 
 :Graph Composition:
 
@@ -225,7 +225,7 @@ External integrator (N-process)
 
     For this case, it is important to define the block type as :math:`1` (n-process).
 
-    Details on how to create such functions can be found in :ref:`usermodel-function`, details on how the RK45 integration method works, see :ref:`rk45-method`.
+    Details on how to create such functions can be found in :ref:`developer:usermodel functions`, details on how the RK45 integration method works, see :ref:`developer:graph simulation algorithm`.
 
 :Graph Composition:
 
@@ -251,7 +251,7 @@ External derivator (Z-process)
 
     For this case, it is important to define the block type as :math:`2` (z-process).
 
-    Details on how to create such functions can be found in :ref:`usermodel-function`.
+    Details on how to create such functions can be found in :ref:`developer:usermodel functions`.
 
 :Graph Composition:
 

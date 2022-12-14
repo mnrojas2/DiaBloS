@@ -5,7 +5,7 @@ Using DiaBloS: Developer Guide
 Software hierarchy
 ------------------
 
-A hierarchical diagram of the tool's main classes and functions is presented in Figure \ref{fig:software-diagram}, and a description of its most important classes and functions of this software library is presented below:
+A hierarchical diagram of the tool's main classes and functions is presented in the following figure, and a description of its most important classes and functions of this software library is presented below:
 
 .. image:: images/software-hierarchy.png
 
@@ -18,61 +18,37 @@ A hierarchical diagram of the tool's main classes and functions is presented in 
 
 The creation of blocks and functions as independent elements is supported by the idea of facilitating the production process. In most cases, a block only requires the name of the function to be associated and the main parameters to obtain a functional node in the diagram, making it unique from the rest. This also allows the creation of external functions to those already available in the library, allowing the user to create more complex processes, simplifying the elaboration of diagrams, if required.
 
-Graph simulation
-----------------
+Graph simulation algorithm
+--------------------------
 
-La explicación se presenta en el paper...
-
-
-.. _rk45-method:
-
----------------------------------
-RK45 integration method algorithm
----------------------------------
-
-Explicar las cosas que hacen que funcione el RK45
-
-The RungeKutta 45 integration method can be defined as the following:
-
-    .. math:: y(t) \approx (k_1 + 2k_2 + 2k_3 +k_4) \Delta T
-
-    where T is the ..., y(t), and ... f(x)...
-
-    .. math:: k_1 &= \Delta T \cdot f\left(t,x\right) \\
-        k_2 &= \Delta T \cdot f\left(t + \frac{\Delta T}{2}, x + \frac{k_1}{2}\right) \\
-        k_3 &= \Delta T \cdot f\left(t + \frac{\Delta T}{2}, x + \frac{k_2}{2}\right) \\
-        k_4 &= \Delta T \cdot f\left(t + \Delta T, x + k_3\right)
-
-    where f...
-
-The integration process with the Runge-Kutta 45 method is a special case to be observed. In addition to the creation and association of a function that calculates the data, it is required to change the forward process by intervals in order to calculate the necessary data in each intermediate space. As defined in the algorithm \ref{alg:integrationA}, it is necessary that for a time $t$ that seeks to calculate the state $t+T$, it is necessary to go through $t$, $t + T/2$, $t + T/2$ (again) and $t + T$ to calculate the variables $k_1$, $k_2$, $k_3$ and $k_4$ before passing definitively to $t + T$, repeating this last interval. Moreover, since these periods are necessary only to solve the integration process, it is necessary to indicate to any block that has a memory function, that in these subintervals the obtained data should not be considered. For example, in the case of a Scope block, which plots the curves resulting from a simulation variable.
+The algorithm to simulate a block diagram is based on the following paper: [XXXXX]
 
 
 Data management
 ---------------
 
-Explicar como los datos se empaquetan para la comunicacion entre bloques.
-Hacer un diagrama de al menos 4 bloques para explicar el como se van agregando y saliendo
-Explicar la forma en que los vectores se van creando
-
 ----------------------------
 Communication between blocks
 ----------------------------
 
-Mencionar el como funciona lo de los diccionarios::
+Data sent and received by blocks, has to be packaged inside a dictionary. This dictionary only has integer numbers as keys, requiring as many as the number of output ports a block has. e.g: A function linked with a block with two outputs would likely return a dictionary like the following::
 
-    return {0: np.array(dato), 1: np.array([dato1,dato2])}
+    return {0: np.array(data0), 1: np.array([data1,data2])}
 
+
+The values for each key only supports numpy array variables. Although, there is no actual restriction for the format as long as the block receiving this data can process it.
+
+There is one exception for keys. The key 'E' is used to indicate an error happened while executing a function and the simulation must be stopped. More details about using this particular key are presented in :ref:`developer:creating new functions`.
 
 -----------------
 Vector management
 -----------------
 
-Explicación de cómo se construyen los vectores.
+Currently DiaBloS supports vectors up to 3 DOF:
 
-vector: [a, b, c, d]
-matrix: [[a, b], [c, d]]
-3d-matrix: [[[a, b], [c, d]], [[e, f], [g, h]]]
+#) Vector form: [a, b, c, d]
+#) Matrix form: [[a, b], [c, d]]
+#) 3D-matrix form: [[[a, b], [c, d]], [[e, f], [g, h]]]
 
 TkWidget.string_to_vector(): proceso de conversion de vectores en string.
 
@@ -85,14 +61,14 @@ TkWidget.string_to_vector(): proceso de conversion de vectores en string.
 * Si el número de elementos en el vector no corresponde a las dimensiones del vector/matriz, se indica un error y se entrega un "''".
 
 
-.. _usermodel-function:
-
 Usermodel functions
 -------------------
 
-Explicar el proceso de crear estas funciones.
-Requieren saber el cómo se comunican los datos y su formato.
-Como testear
+DiaBloS supports the use of usermade functions, which can be accessed in the block diagram with the External block.
+
+Two functions
+-main function: execution
+-init function: block and function default parameters
 
 ----------------------
 Creating new functions
@@ -119,6 +95,10 @@ Funcion inicialización::
         params = {} # default parameters defined for the function
         return io_data, params
 
+Uso de except for errors::
+
+    except:
+        return {'E': True}
 
 ---------------------
 Testing new functions
@@ -137,15 +117,6 @@ It is recommended to implement this function as an external-function type first,
 
 #. Test again the function in the simulation, this time replacing the External Block with the corresponding to the new implemented function.
 
-------------------
-Preventing crashes
-------------------
-
-Agregar casos de excepcion retornando una 'E'. De ese modo, la simulacion podrá detener la ejecucion sin terminar el
-programa repentinamente::
-
-    except:
-        return {'E': True}
 
 .. raw:: latex
 
