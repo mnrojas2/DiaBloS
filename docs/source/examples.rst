@@ -171,7 +171,7 @@ External source
 
     The Block block associates user-defined functions to give more options for graph simulation.
 
-    The only parameter needed to modify is the function name (and .py file) located in the 'usermodels' folder. After
+    The only parameter needed to modify is the function name (and ``.py`` file) located in the ``usermodels`` folder. After
     loading this, the block acquires the data defined in the file to change, number of inputs, outputs, block type and
     color.
 
@@ -181,7 +181,7 @@ External source
 
 :Graph Composition:
 
-    #) An External block linked to the external usermodel function 'my_function_src.py'.
+    #) An External block linked to the external usermodel function ``my_function_src.py``.
     #) Two Scope blocks to observe the outputs of the External block.
 
 
@@ -195,7 +195,7 @@ External Z-process
 
     The Block block associates user-defined functions to give more options for graph simulation.
 
-    The only parameter needed to modify is the function name (and .py file) located in the 'usermodels' folder. After
+    The only parameter needed to modify is the function name (and ``.py`` file) located in the ``usermodels`` folder. After
     loading this, the block acquires the data defined in the file to change, number of inputs, outputs, block type and
     color.
 
@@ -206,7 +206,7 @@ External Z-process
 :Graph Composition:
 
     #) A Step up block with amplitude :math:`1` and no delay.
-    #) An External block linked to the external usermodel function 'my_function_pcs.py'.
+    #) An External block linked to the external usermodel function ``my_function_pcs.py``.
     #) A Scope block to observe the result of the operation.
 
 
@@ -219,7 +219,7 @@ External integrator (N-process)
 
     The Block block associates user-defined functions to give more options for graph simulation.
 
-    The only parameter needed to modify is the function name (and .py file) located in the 'usermodels' folder. After
+    The only parameter needed to modify is the function name (and ``.py`` file) located in the ``usermodels`` folder. After
     loading this, the block acquires the data defined in the file to change, number of inputs, outputs, block type and
     color.
 
@@ -230,7 +230,7 @@ External integrator (N-process)
 :Graph Composition:
 
     #) A Step up block with amplitude :math:`1` and no delay.
-    #) An External block linked to the external usermodel function 'external_rk45.py'.
+    #) An External block linked to the external usermodel function ``external_rk45.py``.
     #) A Scope block to observe the result of the operation.
 
 
@@ -245,7 +245,7 @@ External derivator (Z-process)
 
     The Block block associates user-defined functions to give more options for graph simulation.
 
-    The only parameter needed to modify is the function name (and .py file) located in the 'usermodels' folder. After
+    The only parameter needed to modify is the function name (and ``.py`` file) located in the ``usermodels`` folder. After
     loading this, the block acquires the data defined in the file to change, number of inputs, outputs, block type and
     color.
 
@@ -256,7 +256,7 @@ External derivator (Z-process)
 :Graph Composition:
 
     #) A Ramp block with slope :math:`1` and no delay.
-    #) An External block linked to the external usermodel function 'external_derivative.py'.
+    #) An External block linked to the external usermodel function ``external_derivative.py``.
     #) A Scope block to observe the result of the operation.
 
 
@@ -314,7 +314,7 @@ Convergent ODE system
 
     Graph 1:
         #) A Step up block with amplitude :math:`1` and no delay.
-        #) An External block linked to the external user model function 'ode_system_conv.py'.
+        #) An External block linked to the external user model function ``ode_system_conv.py``.
         #) An Integrator block using the RK45 method to obtain the integration of the previous operation's result.
         #) A Scope block to observe the output of the Integrator block.
         #) An Export block to save the data from the Integrator block and then export it as a file in .npz format.
@@ -355,7 +355,7 @@ Critical ODE system
         \end{bmatrix}
         &=
         \begin{bmatrix}
-        -x_2 \\ x_1 + u
+        x_2 \\ -x_1 + u
         \end{bmatrix}
 
     and in the same time, it can be converted to a matrix system of the type :math:`X'= A\,X + B\,U`.
@@ -366,7 +366,7 @@ Critical ODE system
         \end{bmatrix}
         &=
         \begin{bmatrix}
-        0 & -1 \\ 1 & 0
+        0 & 1 \\ -1 & 0
         \end{bmatrix}
         \begin{bmatrix}
         x_1 \\ x_2
@@ -379,7 +379,7 @@ Critical ODE system
 
     Knowing that :math:`A` is the rotation matrix when :math:`\theta = 90^{\circ}`, and setting :math:`u = 1`, the equations can be rewritten as:
 
-    .. math:: x_1 &= \cos(t) - 1 \\ x_2 &= \sin(t)
+    .. math:: x_1 &= 1 - \cos(t) \\ x_2 &= \sin(t)
 
     So four instances of this problem are created to simulate:
 
@@ -389,17 +389,17 @@ Critical ODE system
 
     #) Using gain and adder blocks to form the matrix notation (:math:`X'= A,X + B,U`) before integrating it.
 
-    #) Using the non-vector system definition, first by calculating :math:`\dot{x}_2`, then integrate it to find :math:`x_2 = -\dot{x}_1` and then integrate once again to find :math:`x_1`.
+    #) Using the non-vector system definition, first by calculating :math:`\dot{x}_2`, then integrate it to find :math:`x_2 = \dot{x}_1` and then integrate once again to find :math:`x_1`.
 
 :Graph Composition:
 
     Graph 1:
-        #) An External block linked to the external user model function 'ode_exact_crit.py'.
+        #) An External block linked to the external user model function ``ode_exact_crit.py``.
         #) #) A Scope block to observe the output of the External block.
 
     Graph 2:
         #) A Step up block with amplitude :math:`1` and no delay.
-        #) An External block linked to the external user model function 'ode_system_crit.py'.
+        #) An External block linked to the external user model function ``ode_system_crit.py``.
         #) An Integrator block using the RK45 method to obtain the integration of the previous operation's result.
         #) A Scope block to observe the output of the Integrator block.
         #) An Export block to save the data from the Integrator block and then export it as a file in .npz format.
@@ -443,26 +443,27 @@ Watertank control
     #) An External block (sat_pcs)
     #) A Scope block
 
-------------------------------------------------
-Differential traction robot model and controller
-------------------------------------------------
+..
+    ------------------------------------------------
+    Differential traction robot model and controller
+    ------------------------------------------------
 
-:Description: This example shows the modelling of a differential traction robot.
+    :Description: This example shows the modelling of a differential traction robot.
 
-:Demonstration: ESPERAR A LOS CAMBIOS DEL CONTROLADOR
+    :Demonstration: ESPERAR A LOS CAMBIOS DEL CONTROLADOR
 
-:Graph composition:
+    :Graph composition:
 
-    #) An External block (square_robot/robot_torques)
-    #) An Adder block (5)
-    #) A Gain block (4)
-    #) A SigProduct block
-    #) An External block (sin_pcs/cos_pcs)
-    #) A Multiplexer block (2)
-    #) A Demultiplexer block
-    #) An Integrator block (x)
-    #) A Scope block
-    #) An Export block
+        #) An External block (square_robot/robot_torques)
+        #) An Adder block (5)
+        #) A Gain block (4)
+        #) A SigProduct block
+        #) An External block (sin_pcs/cos_pcs)
+        #) A Multiplexer block (2)
+        #) A Demultiplexer block
+        #) An Integrator block (x)
+        #) A Scope block
+        #) An Export block
 
 .. raw:: latex
 

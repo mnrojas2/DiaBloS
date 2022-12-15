@@ -1905,6 +1905,8 @@ class TkWidget:
                 # convertir a np.ndarray
                 elif dato[0] == '[' and dato[-1] == ']':
                     dato = self.string_to_vector(dato)
+                    if type(dato) == str:
+                        dato = self.params[self.params_names[i]]
                 # convertir a float
                 elif dato.replace('.', '', 1).replace('-', '', 1).isdigit():
                     dato = float(dato)
@@ -1961,7 +1963,7 @@ class TkWidget:
             return array
         else:
             print("MATRIX DIMENSIONS ARE INCORRECT")
-            return ""
+            return ''
 
     def external_toggle(self):
         """

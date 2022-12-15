@@ -8,32 +8,34 @@ After loading the package, a window similar like the following figure will show
 
 .. image:: images/DiaBloS.png
 
+.. list-table::
+   :widths: 15 95
+   :header-rows: 1
 
-+-----+-------------------------+
-| Nro | What is it              |
-+=====+=========================+
-| (1) | Bar function            |
-+-----+-------------------------+
-| (a) | NEW                     |
-+-----+-------------------------+
-| (b) | LOAD                    |
-+-----+-------------------------+
-| (c) | SAVE                    |
-+-----+-------------------------+
-| (d) | PLAY Simulation         |
-+-----+-------------------------+
-| (e) | PAUSE Simulation        |
-+-----+-------------------------+
-| (f) | STOP Simulation         |
-+-----+-------------------------+
-| (g) | PLOT Graph              |
-+-----+-------------------------+
-| (h) | Screen CAPTURE          |
-+-----+-------------------------+
-| (2) | Blocks Menu             |
-+-----+-------------------------+
-| (3) | Canvas                  |
-+-----+-------------------------+
+   * - ID
+     - UI Element
+   * - 1
+     - Bar function
+   * - 1.a
+     - New button
+   * - 1.b
+     - Load button
+   * - 1.c
+     - Save button
+   * - 1.d
+     - Play simulation button
+   * - 1.e
+     - Pause simulation button
+   * - 1.f
+     - Stop simulation button
+   * - 1.g
+     - Plot graph button
+   * - 1.h
+     - Screen capture button
+   * - 2
+     - Blocks Menu
+   * - 3
+     - Canvas
 
 
 #. How to remove all elements in the canvas.
@@ -42,12 +44,8 @@ After loading the package, a window similar like the following figure will show
 #. How to add blocks.
     To add a block, drag and drop any block from the Block Menu (2) to the canvas (3).
 
-    <image>
-
 #. How to remove blocks.
     To remove a block, drag and drop it outside the canvas. Also you can select it with LMB, then press the DELETE key.
-
-    <image>
 
 #. How to add lines.
     To add a line, click on two block ports to generate a link between both.
@@ -63,15 +61,11 @@ After loading the package, a window similar like the following figure will show
     according to their position from top to bottom starting from zero. e.g, a 3-input Adder block has inputs identified
     as :math:`i = {0, 1, 2}` and a single output identified as :math:`o = {0}`.
 
-    <image>
-
 #. How to remove lines.
     To remove a line select it with LMB, then press the DELETE key.
 
     When blocks are removed, the associated lines are also removed, in order to free connections that no longer make
     logical sense (input or output port does not exist).
-
-    <image>
 
 #. How to change color of the line.
     A particular feature of the lines is that you can change their color. To do this, select the line and then press
@@ -93,12 +87,8 @@ After loading the package, a window similar like the following figure will show
     To save a file, just click on the SAVE icon (1c), where a window will open giving the options of saving location
     and file name.
 
-    <image>
-
     To load a file, just click on the LOAD icon (1b), which will open a window giving the options to locate the file by
     folder and file name.
-
-    <image>
 
 #. How to run simulation.
     To run the simulation, first press the PLAY icon (1d). A window will appear, to set the simulation time, the
@@ -107,8 +97,6 @@ After loading the package, a window similar like the following figure will show
     time is reached or stopped by pressing the STOP icon (1f).
 
     The process can be paused by pressing the PAUSE icon (1e). To restart it back, just press the PAUSE icon a second time.
-
-    <image>
 
 #. How to plot data.
     To plot the curves of a simulation it is necessary to add Scope blocks and connect them to the output signals to be
@@ -127,8 +115,6 @@ After loading the package, a window similar like the following figure will show
     plotting has been performed, first close the first window with the resulting graph and then reopen it by pressing
     the PLOT button.
 
-    <image>
-
 #. How to export data.
     To export data, the process is similar to plotting.
 
@@ -137,8 +123,6 @@ After loading the package, a window similar like the following figure will show
 
     The labels can be renamed to identify each of the vectors. Otherwise they will be called by default as
     'ExportData-<n>', where 'n' corresponds to the location of the variable within the input vector to the Export block.
-
-    <image>
 
 #. How to load user-made functions.
     DiaBloS allows the loading of external functions, created by the user.
@@ -154,7 +138,7 @@ After loading the package, a window similar like the following figure will show
     editing in the same way as the default program blocks. Also, for these type of blocks, there's an option to reset the parameter values back to the original ones.
 
     More details about how to create these types of functions are available in
-    :ref:`"Creating new functions"<developer:creating new functions>` section from developer's guide.
+    :ref:`developer:creating new functions` section from developer's guide.
 
 #. How to take a capture of the canvas.
     Press the CAPTURE icon (1h) to take a capture of the screen. These get saved in the 'captures/' folder.
