@@ -52,11 +52,11 @@ Vectorial integration
 
 :Demonstration:
 
-    The Step block has support for vector outputs of the type:
+    The Step block has support for vector outputs of the type::
 
-        #) Vectorial = [a, b, c, d].
-        #) Matrix = [[a, b], [c, d]]
-        #) 3DoF matrix = [[[a, b], [c, d]], [[e, f], [g, h]]]
+        1. Vectorial: [a, b, c, d].
+        2. Matrix: [[a, b], [c, d]]
+        3. 3D Matrix: [[[a, b], [c, d]], [[e, f], [g, h]]]
 
     A graph is formed representing a simple feedback system, consisting of an integrator connected in feedback. The input
     values are defined by two vector sources which are added together. This value is used for a feedback system represented
@@ -124,7 +124,7 @@ Signal products
 :Graph Composition:
 
     #) A Step up block with amplitude :math:`5.0` delayed in :math:`1` second.
-    #) Another Step up block with amplitued :math:`[2.0, -3.0]` with no delay.
+    #) Another Step up block with amplitude :math:`[2.0, -3.0]` with no delay.
     #) A Step down block with amplitude :math:`[0.75, 1.5]` delayed in :math:`2` seconds.
     #) A Multiplexer block to append the Step blocks' outputs in one simple vector.
     #) A Terminator block to finish the branch of the graph that will not be plotted.
@@ -181,7 +181,7 @@ External source
 
 :Graph Composition:
 
-    #) An External block linked to the external usermodel function ``my_function_src.py``.
+    #) An External block linked to the external usermodel function ``my_function_src``.
     #) Two Scope blocks to observe the outputs of the External block.
 
 
@@ -206,7 +206,7 @@ External Z-process
 :Graph Composition:
 
     #) A Step up block with amplitude :math:`1` and no delay.
-    #) An External block linked to the external usermodel function ``my_function_pcs.py``.
+    #) An External block linked to the external usermodel function ``my_function_pcs``.
     #) A Scope block to observe the result of the operation.
 
 
@@ -230,7 +230,7 @@ External integrator (N-process)
 :Graph Composition:
 
     #) A Step up block with amplitude :math:`1` and no delay.
-    #) An External block linked to the external usermodel function ``external_rk45.py``.
+    #) An External block linked to the external usermodel function ``external_rk45``.
     #) A Scope block to observe the result of the operation.
 
 
@@ -256,7 +256,7 @@ External derivator (Z-process)
 :Graph Composition:
 
     #) A Ramp block with slope :math:`1` and no delay.
-    #) An External block linked to the external usermodel function ``external_derivative.py``.
+    #) An External block linked to the external usermodel function ``external_derivative``.
     #) A Scope block to observe the result of the operation.
 
 
@@ -314,7 +314,7 @@ Convergent ODE system
 
     Graph 1:
         #) A Step up block with amplitude :math:`1` and no delay.
-        #) An External block linked to the external user model function ``ode_system_conv.py``.
+        #) An External block linked to the external user model function ``ode_system_conv``.
         #) An Integrator block using the RK45 method to obtain the integration of the previous operation's result.
         #) A Scope block to observe the output of the Integrator block.
         #) An Export block to save the data from the Integrator block and then export it as a file in .npz format.
@@ -394,12 +394,12 @@ Critical ODE system
 :Graph Composition:
 
     Graph 1:
-        #) An External block linked to the external user model function ``ode_exact_crit.py``.
+        #) An External block linked to the external user model function ``ode_exact_crit``.
         #) #) A Scope block to observe the output of the External block.
 
     Graph 2:
         #) A Step up block with amplitude :math:`1` and no delay.
-        #) An External block linked to the external user model function ``ode_system_crit.py``.
+        #) An External block linked to the external user model function ``ode_system_crit``.
         #) An Integrator block using the RK45 method to obtain the integration of the previous operation's result.
         #) A Scope block to observe the output of the Integrator block.
         #) An Export block to save the data from the Integrator block and then export it as a file in .npz format.
@@ -430,18 +430,65 @@ Watertank control
 
 :Description: This example shows the classic watertank control problem, trying to stabilize the height of the water using a PI control.
 
-:Demonstration: ESPERAR A LOS CAMBIOS DE LA SECCION DE RESULTADOS DEL PAPER
+:Demonstration: According to Bernoulli's principle the equation representing the height of water in a pond is:
+
+    .. math:: \dot{h}(t) = \frac{1}{A_e}u - \frac{A_s}{A_e}\sqrt{2g\cdot h(t)}
+
+    where, :math:`A_e = 3.14[m]` is the base area for the pond, :math:`A_s = 3.14\cdot 10^{-4}[m]` is the drainage section area and :math:`g = 9.81[m/s^2]` is the gravitational acceleration.
+
+    To control the system, a PI controller is used to adjust the height of the water, under a reference :math:`h_{ref}`:
+
+    .. math:: u(t) = k_p\,(h_{ref} - h(t)) + k_i\,\int_0^t(h_{ref} - h(t)) dt
+
+    The controller requires only a couple of user-adjustable constants, which for this case are: :math:`k_p = 10.0` and :math:`k_i = 55.5`.
+
+    However, since the PI controller also contains an integration stage, this formula can be rewritten, while retaining its validity in the system, as follows:
+
+    .. math:: \dot{u} = -k_p\,\dot{h}(t) + k_i\,(h_{ref} - h(t))
+
+    Then, it is possible to rewrite the pond water height control model as a system of two equations:
+
+    .. math::
+        \begin{bmatrix}
+            \dot{h}(t) \\ \dot{u}(t)
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+            1/A_e \cdot u(t) - A_s/A_e \cdot \sqrt{2g \cdot h(t)} \\
+            -k_p \cdot \dot{h}(t) + k_i \cdot (r - h(t))
+        \end{bmatrix}
+
+    The system of equations is modeled as a block diagram using primarily basic blocks. In addition, two External blocks are added to perform functions that are not available by default, as a way to also show implementation examples for user-defined blocks; one to perform the square root operation, while the other to saturate the input value to prevent the water level from going beyond the physical limits that are set.
+
+    Also, the system of two equations is modeled as one External block connected to a Integrator block, to compare the performance of both methods.
+
+    The reference is taken as :math:`h_{ref1} = 1.25[m]` during the first :math:`5.0` seconds, and :math:`h_{ref2} = 0.5[m]` in the following :math:`5.0[s]`, simulating in total :math:`10.0` seconds at a sampling rate of :math:`0.01[s]`.
 
 :Graph composition:
 
-    #) A Step block
-    #) A Gain block (5)
-    #) An Adder block
-    #) An External block sqrt_pcs
-    #) An Integrator block (PI)
-    #) An Integrator block (h)
-    #) An External block (sat_pcs)
-    #) A Scope block
+    Shared blocks:
+        #) A Step up block with amplitude :math:`1.25`.
+        #) Another Step up block with amplitude :math:`0.75` delayed in :math:`5` seconds.
+        #) An Adder block to subtract the output of both blocks to have an amplitude of :math:`0.5` after :math:`5` seconds.
+
+    .. hacer la lista ordenada (siguiendo la linea)
+
+    Graph 1:
+        #) A Gain block (5)
+        #) An Adder block (3)
+        #) An External block linked to the external usermodel function ``sqrt_pcs``, to calculate the square root.
+        #) An External block linked to the external usermodel function ``sat_pcs``, to restrict the value of :math:`h` between :math:`0` and :math:`2`.
+        #) An Integrator block (2)
+        #) An Export block to save the data from :math:`h` and then export it as a file in .npz format.
+        #) A Scope block to observe the result of :math:`h` in time.
+
+    Graph 2:
+        #) An External block linked to the external usermodel function ``watertank_code``.
+        #) An Integrator block using the RK45 method to obtain the integration of the previous operation’s result.
+        #) A Demux block to split the output vector in :math:`h` and :math:`u` to plot only the former element.
+        #) A Terminator block to finish the branch of :math:`u`.
+        #) An Export block to save the data from :math:`h` and then export it as a file in .npz format.
+        #) A Scope block to observe the result of :math:`h` in time.
 
 ..
     ------------------------------------------------
@@ -450,7 +497,7 @@ Watertank control
 
     :Description: This example shows the modelling of a differential traction robot.
 
-    :Demonstration: ESPERAR A LOS CAMBIOS DEL CONTROLADOR
+    :Demonstration: ESPERAR A CAMBIOS DEL PAPER
 
     :Graph composition:
 

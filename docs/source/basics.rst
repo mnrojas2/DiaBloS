@@ -161,9 +161,10 @@ First Experience
 
 #. Go to examples/ and open basic_example.dat.
 
-#. You will see something like the following picture::
+#. You will see something like the following picture:
 
-    .. image:: images/screenshot.png
+.. image:: images/basic-example-sim.png
+    :scale: 40%
 
 #. Select the blue block (Step) and open the parameters' menu pressing RMB over the block.
 
@@ -185,10 +186,10 @@ First Experience
 
 #. Press the PLOT icon to open the plot window to observe the complete graph.
 
-#. You will see something like the following picture::
+#. You will see something like the following picture:
 
-    .. image:: images/screenshot.png
-
+.. image:: images/basic-example-plot.png
+    :scale: 75%
 
 .. raw:: latex
 

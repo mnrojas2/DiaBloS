@@ -7,14 +7,14 @@
         "enable_line_sel": true,
         "sim_time": 1.0,
         "sim_dt": 0.01,
-        "sim_trange": 100
+        "sim_trange": 100.0
     },
     "blocks_data": [
         {
             "block_fn": "Scope",
             "sid": 0,
-            "coords_left": 490,
-            "coords_top": 252,
+            "coords_left": 729,
+            "coords_top": 227,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -39,8 +39,8 @@
         {
             "block_fn": "Step",
             "sid": 0,
-            "coords_left": 314,
-            "coords_top": 253,
+            "coords_left": 481,
+            "coords_top": 227,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -76,20 +76,12 @@
             "dstport": 0,
             "points": [
                 [
-                    374,
-                    283.0
+                    541,
+                    257.0
                 ],
                 [
-                    470,
-                    283.0
-                ],
-                [
-                    470,
-                    282.0
-                ],
-                [
-                    490,
-                    282.0
+                    729,
+                    257.0
                 ]
             ],
             "cptr": 0,
