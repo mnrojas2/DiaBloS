@@ -474,11 +474,17 @@ Watertank control
     .. hacer la lista ordenada (siguiendo la linea)
 
     Graph 1:
-        #) A Gain block (5)
-        #) An Adder block (3)
+        #) An Adder block to subtract the reference (from the previous Adder block) with the actual calculated value of :math:`h`.
+        #) A Gain block to multiply the previously calculated subtraction by :math:`k_i`.
+        #) A Gain block to multiply :math:`\dot{h}` by :math:`k_p`.
+        #) An Adder block to subtract the results of the previous two Gain blocks to obtain :math:`\dot{u}`.
+        #) An Integrator block that integrates :math:`\dot{u}` to obtain :math:`u`.
+        #) A Gain block to multiply :math:`u` by :math:`1/A_e`.
         #) An External block linked to the external usermodel function ``sqrt_pcs``, to calculate the square root.
+        #) An Gain block to multiply the result of ``sqrt_pcs`` with :math:`A_s/A_e`.
+        #) An Adder block to subtract :math:`u/A_e` and the result of the previous Gain to obtain :math:`\dot{h}`.
+        #) An Integrator block that integrates :math:`\dot{h}` to obtain :math:`h`.
         #) An External block linked to the external usermodel function ``sat_pcs``, to restrict the value of :math:`h` between :math:`0` and :math:`2`.
-        #) An Integrator block (2)
         #) An Export block to save the data from :math:`h` and then export it as a file in .npz format.
         #) A Scope block to observe the result of :math:`h` in time.
 
