@@ -496,28 +496,6 @@ Watertank control
         #) An Export block to save the data from :math:`h` and then export it as a file in .npz format.
         #) A Scope block to observe the result of :math:`h` in time.
 
-..
-    ------------------------------------------------
-    Differential traction robot model and controller
-    ------------------------------------------------
-
-    :Description: This example shows the modelling of a differential traction robot.
-
-    :Demonstration: ESPERAR A CAMBIOS DEL PAPER
-
-    :Graph composition:
-
-        #) An External block (square_robot/robot_torques)
-        #) An Adder block (5)
-        #) A Gain block (4)
-        #) A SigProduct block
-        #) An External block (sin_pcs/cos_pcs)
-        #) A Multiplexer block (2)
-        #) A Demultiplexer block
-        #) An Integrator block (x)
-        #) A Scope block
-        #) An Export block
-
 .. raw:: latex
 
     \newpage
