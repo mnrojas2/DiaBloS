@@ -1,5 +1,5 @@
 """
-main.py - Module to run the simulator interface
+diablos_main.py - Module to run the simulator interface
 """
 
 from lib.lib import *

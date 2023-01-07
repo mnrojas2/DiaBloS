@@ -295,9 +295,6 @@ class DSim:
         :purpose: Function that initializes all types of blocks available in the menu.
         :description: From the MenuBlocks class, base blocks are generated for the functions already defined in lib.functions.py. Then they are accumulated in a list so that they are available in the interface menu.
         """
-        # Algunos datos se envían en forma de diccionarios para que se pueda observar qué es cada cosa
-        # Los colores pueden definirse como strings (si es que están en self.colors) o directamente con los valores RGB en tupla.
-
         # block_fn, fn_name, {# inputs, # output, execution hierarchy}, {<specific argument/parameters>}, color, (width, height), allows_io_change
 
         # source-type blocks
