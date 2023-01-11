@@ -165,6 +165,7 @@ First Experience
 
 .. image:: images/basic-example-sim.png
     :scale: 40%
+    :align: center
 
 #. Select the blue block (Step) and open the parameters' menu pressing RMB over the block.
 
@@ -190,6 +191,7 @@ First Experience
 
 .. image:: images/basic-example-plot.png
     :scale: 75%
+    :align: center
 
 .. raw:: latex
 

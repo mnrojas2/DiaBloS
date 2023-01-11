@@ -8,7 +8,7 @@ focused on handling a particular problem in the process.
    :toctree: generated
    :recursive:
 
-   main
+   diablos_main
    lib.lib
    lib.functions
    

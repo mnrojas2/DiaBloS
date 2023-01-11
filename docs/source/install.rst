@@ -37,7 +37,7 @@ Installing DiaBloS
 Loading DiaBloS
 ---------------
 
-Run 'main.py'
+Run 'diablos_main.py'
 
 
 .. raw:: latex

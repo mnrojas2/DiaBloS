@@ -1,7 +1,7 @@
-﻿main
-====
+﻿diablos\_main
+=============
 
-.. automodule:: main
+.. automodule:: diablos_main
 
    
    
