@@ -72,7 +72,7 @@ def dmain():
                             # Connect input port
                             elif p_col[0] == 'i':
                                 dstLine = (b_elem.name, p_col[1], b_elem.in_coords[p_col[1]])  # block name, port number, port location
-                                if sim_init.port_availability(dstLine) == True:
+                                if sim_init.port_availability(dstLine):
                                     if sim_init.line_creation == 0:
                                         sim_init.line_creation = 2
                                     elif sim_init.line_creation == 1:
