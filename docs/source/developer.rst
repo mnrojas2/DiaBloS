@@ -27,7 +27,8 @@ The creation of blocks and functions as independent elements is supported by the
 Graph simulation algorithm
 --------------------------
 
-The algorithm to simulate a block diagram is based on the following paper: [XXXXX]
+The algorithm to simulate a block diagram, will be posted soon.
+.. is based on the following paper: [XXXXX]
 
 
 Data management
