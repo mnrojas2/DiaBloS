@@ -29,7 +29,7 @@ Graph simulation algorithm
 
 The algorithm to simulate a block diagram, will be posted soon.
 
-.. is based on the following paper: [XXXXX]
+.. is based on the following paper: [XXXXX] I need to post something similar, maybe in pdf.
 
 
 Data management

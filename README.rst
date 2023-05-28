@@ -4,7 +4,7 @@ DiaBloS - A graphical programming library/tool for dynamical systems in Python
 
 .. note::
 
-    Work in progress.
+    Work in progress. `Check the wiki for more information <https://diablos.readthedocs.io/en/stable/>`_.
 
 .. contents::
 
