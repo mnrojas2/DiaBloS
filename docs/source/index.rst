@@ -6,10 +6,6 @@
 Welcome to DiaBloS's documentation!
 ===================================
 
-.. toctree:: 
-   :includehidden:
-   :caption: Contents:
-
 Contents
 --------
 
