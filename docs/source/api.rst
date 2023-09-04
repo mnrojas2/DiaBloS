@@ -6,8 +6,8 @@ focused on handling a particular problem in the process.
 
 .. autosummary::
    :toctree: generated
-   :recursive:
    :no-index:
+   :recursive:
 
    diablos_main
    lib.lib
