@@ -21,7 +21,6 @@ Contents
 --------
 
 .. toctree::
-   :titlesonly:
    intro
 
 .. .. only:: html
