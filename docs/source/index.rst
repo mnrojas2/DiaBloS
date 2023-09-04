@@ -15,15 +15,13 @@ Contents
 --------
 
 .. toctree::
-
+   :maxdepth: 2
    intro
    install
    basics
    examples
    developer
-
-   :hidden: api
-
+   api
    future
 
 .. only:: html
