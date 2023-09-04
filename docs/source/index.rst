@@ -7,7 +7,7 @@ Welcome to DiaBloS's documentation!
 ===================================
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :caption: Contents:
 
 
@@ -15,11 +15,15 @@ Contents
 --------
 
 .. toctree::
+
    intro
    install
    basics
    examples
    developer
+
+   :hidden:
+   
    api
    future
 

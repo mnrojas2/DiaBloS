@@ -12,7 +12,7 @@
    .. rubric:: Functions
 
    .. autosummary::
-      :no-index:
+   
       dmain
    
    
