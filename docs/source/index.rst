@@ -22,9 +22,8 @@ Contents
    examples
    developer
 
-   :hidden:
-   
-   api
+   :hidden: api
+
    future
 
 .. only:: html
