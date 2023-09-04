@@ -7,6 +7,7 @@ focused on handling a particular problem in the process.
 .. autosummary::
    :toctree: generated
    :recursive:
+   :nosignatures:
 
    diablos_main
    lib.lib
