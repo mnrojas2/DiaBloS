@@ -15,7 +15,7 @@ Contents
 --------
 
 .. toctree::
-
+   :tocdepth: 2
    intro
    install
    basics
