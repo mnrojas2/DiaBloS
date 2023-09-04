@@ -6,8 +6,13 @@
 Welcome to DiaBloS's documentation!
 ===================================
 
+.. .. toctree:: a
+..   :caption: Contents:
+
+Contents
+--------
+
 .. toctree::
-   :caption: Contents:
    intro
    install
    basics
@@ -15,13 +20,6 @@ Welcome to DiaBloS's documentation!
    developer
    api
    future
-
-
-Contents
---------
-
-.. toctree::
-   intro
 
 .. .. only:: html
 
