@@ -88,4 +88,4 @@ autodoc_default_options = {
     'private-members': True,
 }
 
-remove_from_toctrees = ["api/generated/*"]
+remove_from_toctrees = ["api/*"]
