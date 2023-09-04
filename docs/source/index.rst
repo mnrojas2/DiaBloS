@@ -13,6 +13,7 @@ Contents
 --------
 
 .. toctree::
+   :includehidden:
    intro
    install
    basics
