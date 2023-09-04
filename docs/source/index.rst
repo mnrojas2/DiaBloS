@@ -21,6 +21,8 @@ Contents
    basics
    examples
    developer
+   :titlesonly: 
+   
    api
    future
 
