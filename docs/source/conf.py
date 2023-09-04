@@ -79,6 +79,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
     'sphinx.ext.autosectionlabel',
+    'sphinx_remove_toctrees',
 ]
 
 autodoc_default_options = {
@@ -86,3 +87,5 @@ autodoc_default_options = {
     'member-order': 'groupwise', #'special-members': '__init__',
     'private-members': True,
 }
+
+remove_from_toctrees = ["api/generated/*"]

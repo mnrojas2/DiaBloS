@@ -3,6 +3,7 @@
 sphinx_bootstrap_theme
 myst-parser
 furo
+sphinx-remove-toctrees
 
 numpy
 importlib
