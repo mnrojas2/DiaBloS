@@ -6,8 +6,8 @@
 Welcome to DiaBloS's documentation!
 ===================================
 
-.. .. toctree:: a
-..   :caption: Contents:
+.. toctree:: a
+  :caption: Contents:
 
 Contents
 --------
