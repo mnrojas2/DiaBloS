@@ -6,14 +6,15 @@
 Welcome to DiaBloS's documentation!
 ===================================
 
-.. toctree:: a
-  :caption: Contents:
+.. toctree:: 
+   :includehidden:
+   :caption: Contents:
 
 Contents
 --------
 
 .. toctree::
-   :includehidden:
+   
    intro
    install
    basics
