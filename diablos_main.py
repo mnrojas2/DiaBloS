@@ -3,6 +3,7 @@ diablos_main.py - Module to run the simulator interface
 """
 
 from lib.lib import *
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 def dmain():
     """
@@ -241,7 +242,7 @@ def dmain():
 
     # Close interface
     pygame.quit()
-    print("Sim done =D")
+    print("Simulation has finished!")
 
 if __name__ == "__main__":
     dmain()
