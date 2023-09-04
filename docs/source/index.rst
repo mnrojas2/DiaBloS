@@ -8,13 +8,6 @@ Welcome to DiaBloS's documentation!
 
 .. toctree::
    :caption: Contents:
-
-
-Contents
---------
-
-.. toctree::
-   :maxdepth: 2
    intro
    install
    basics
@@ -22,6 +15,14 @@ Contents
    developer
    api
    future
+
+
+Contents
+--------
+
+.. toctree::
+   :titlesonly:
+   intro
 
 .. .. only:: html
 
