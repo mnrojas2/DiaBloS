@@ -16,7 +16,7 @@
    .. rubric:: Classes
 
    .. autosummary::
-   
+      :no-index:
       Button
       DBlock
       DLine
