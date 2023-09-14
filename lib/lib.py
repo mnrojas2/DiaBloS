@@ -396,14 +396,17 @@ class DSim:
             root = tk.Tk()
             root.withdraw()
 
-            file = filedialog.asksaveasfilename(initialfile=self.filename, filetypes=[('Data Files', '*.dat'), ("All files", "*.*")])
+            file = filedialog.asksaveasfilename(initialdir=__file__[:-10]+'saves/', initialfile=self.filename, filetypes=[('Data Files', '*.dat'), ("All files", "*.*")])
 
             if file == '':
                 return 1
             if file[-4:] != '.dat':
                 file += '.dat'
         else: # Opción para cuando se va a ejecutar un grafo
-            file = 'saves/'+self.filename[:-4]+'_AUTOSAVE.dat'
+            if '_AUTOSAVE' not in self.filename:
+                file = 'saves/'+self.filename[:-4]+'_AUTOSAVE.dat'
+            else:
+                file = 'saves/'+self.filename
 
         # Datos de DSim (clase principal)
         init_dict = {
@@ -477,7 +480,8 @@ class DSim:
         root = tk.Tk()
         root.withdraw()
 
-        file = filedialog.askopenfilename(initialfile=self.filename, filetypes=[('Data Files', '*.dat'), ("All files", "*.*")])
+        print(__file__)
+        file = filedialog.askopenfilename(initialdir=__file__[:-10], initialfile=self.filename, filetypes=[('Data Files', '*.dat'), ("All files", "*.*")])
         if file == '':  # asksaveasfilename return `None` if dialog closed with "cancel".
             return
         root.destroy()
@@ -698,13 +702,13 @@ class DSim:
                 # Se ejecuta la función para únicamente entregar el resultado en memoria (se diferencia entre función interna y externa primero)
                 if block.external:
                     try:
-                        out_value = getattr(block.file_function, block.fn_name)(self.time_step, block.input_queue, block.params, True, False, self.sim_dt)
+                        out_value = getattr(block.file_function, block.fn_name)(self.time_step, block.input_queue, block.params, output_only=True, next_add_in_memory=False, dtime=self.sim_dt)
                     except:
                         print("ERROR FOUND IN EXTERNAL FUNCTION", block.file_function)
                         self.execution_failed()
                         return
                 else:
-                    out_value = getattr(self.execution_function, block.fn_name)(self.time_step, block.input_queue, block.params, True, False, self.sim_dt)
+                    out_value = getattr(self.execution_function, block.fn_name)(self.time_step, block.input_queue, block.params, output_only=True, next_add_in_memory=False, dtime=self.sim_dt)
                 children = self.get_outputs(block.name)
 
             if 'E' in out_value.keys() and out_value['E']:
@@ -822,13 +826,13 @@ class DSim:
                 # Se ejecuta la función para únicamente entregar el resultado en memoria (se diferencia entre función interna y externa primero)
                 if block.external:
                     try:
-                        out_value = getattr(block.file_function, block.fn_name)(self.time_step, block.input_queue, block.params, True, add_in_memory)
+                        out_value = getattr(block.file_function, block.fn_name)(self.time_step, block.input_queue, block.params, output_only=True, next_add_in_memory=add_in_memory)
                     except:
                         print("ERROR FOUND IN EXTERNAL FUNCTION", block.file_function)
                         self.execution_failed()
                         return
                 else:
-                    out_value = getattr(self.execution_function, block.fn_name)(self.time_step, block.input_queue, block.params, True, add_in_memory)
+                    out_value = getattr(self.execution_function, block.fn_name)(self.time_step, block.input_queue, block.params, output_only=True, next_add_in_memory=add_in_memory)
 
                 # Se comprueba que la función no haya entregado error:
                 if 'E' in out_value.keys() and out_value['E']:
