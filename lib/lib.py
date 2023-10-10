@@ -480,7 +480,6 @@ class DSim:
         root = tk.Tk()
         root.withdraw()
 
-        print(__file__)
         file = filedialog.askopenfilename(initialdir=__file__[:-10], initialfile=self.filename, filetypes=[('Data Files', '*.dat'), ("All files", "*.*")])
         if file == '':  # asksaveasfilename return `None` if dialog closed with "cancel".
             return
