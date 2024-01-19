@@ -28,15 +28,17 @@ def robot_control(time, inputs, params):
     e_th = (e_th + np.pi) % (2*np.pi) - np.pi
 
     d_eth = (e_th - params['eth_old']) / params['dtime']
-    # if params _skip_ false fix needed
-    params['eth_old'] = e_th
 
     tau = params['kp_th'] * e_th + params['kd_th'] * d_eth
     fz = params['kp_dist'] * np.sqrt((x_ref - x_pos) ** 2 + (y_ref - y_pos) ** 2)
 
     tau_r = (fz / 2 + tau / params['W']) * params['r']
     tau_l = (fz / 2 - tau / params['W']) * params['r']
-
+    
+    if '_skip_' in params.keys() and params['_skip_']:
+        params['_skip_'] = False
+        return {0: np.array((tau_r)), 1: np.array((tau_l))}
+    params['eth_old'] = e_th
     return {0: np.array((tau_r)), 1: np.array((tau_l))}
 
 def _init_():

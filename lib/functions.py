@@ -456,6 +456,9 @@ class DFunctions:
         dt = time - params['t_old']
         di = inputs[0] - params['i_old']
         # Fix this when a RK45 integrator is being used
+        if '_skip_' in params.keys() and params['_skip_']:
+            params['_skip_'] = False
+            return {0: np.array(di/dt)}
         params['t_old'] = time
         params['i_old'] = inputs[0]
         return {0: np.array(di/dt)}

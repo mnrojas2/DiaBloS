@@ -850,9 +850,8 @@ class DSim:
                             block.data_sent += 1
 
             # Para los bloques terminales que guardan datos, se les indica si se está en un instante de tiempo normal o intermedio
-            elif block.b_type == 3:
-                if self.rk45_len and self.rk_counter != 0:
-                    block.params['_skip_'] = True
+            if self.rk45_len and self.rk_counter != 0:
+                block.params['_skip_'] = True
 
         # Se ejecutan todos los bloques de acuerdo al orden de jerarquía definido en la primera iteración
         for hier in range(self.max_hier + 1):
