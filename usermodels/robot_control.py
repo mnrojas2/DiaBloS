@@ -28,6 +28,7 @@ def robot_control(time, inputs, params):
     e_th = (e_th + np.pi) % (2*np.pi) - np.pi
 
     d_eth = (e_th - params['eth_old']) / params['dtime']
+    # if params _skip_ false fix needed
     params['eth_old'] = e_th
 
     tau = params['kp_th'] * e_th + params['kd_th'] * d_eth

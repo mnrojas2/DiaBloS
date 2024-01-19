@@ -364,6 +364,8 @@ class DFunctions:
                 return {0: params['aux']}
         else:
             # Checks if the new input vector dimensions match.
+            if type(inputs[0]) in [float, int]:
+                inputs[0] = np.array(inputs[0])
             if params['mem'].shape != inputs[0].shape:
                 print("ERROR: Dimension Error in initial conditions in", params['_name_'])
                 params['_init_start_'] = True
@@ -453,6 +455,7 @@ class DFunctions:
             return {0: 0.0}
         dt = time - params['t_old']
         di = inputs[0] - params['i_old']
+        # Fix this when a RK45 integrator is being used
         params['t_old'] = time
         params['i_old'] = inputs[0]
         return {0: np.array(di/dt)}
