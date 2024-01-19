@@ -2,7 +2,7 @@
 Python module for external functions
 
 #. WARNING: You must add all the necessary libraries here to make the function work in the main loop.
-#. This file includes an example for a process-type function used in "external_pcs_block.dat"
+#. This file includes an example for a Z-process-type function used in "external-z-process-block.dat"
 
 """
 import numpy as np

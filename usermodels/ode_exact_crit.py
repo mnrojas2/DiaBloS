@@ -2,7 +2,7 @@
 Python module for external functions
 
 #. WARNING: You must add all the necessary libraries here to make the function work in the main loop.
-#. This file includes an example for a source-type function used in "external_src_block.dat"
+#. This file includes an example for a source-type function used in "ode-critical.dat"
 
 """
 import numpy as np

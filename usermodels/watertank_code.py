@@ -2,7 +2,7 @@
 Python module for external functions
 
 #. WARNING: You must add all the necessary libraries here to make the function work in the main loop.
-#. This file includes an example for a linealized dynamic system used in "feedback-three_methods.dat".
+#. This file includes an example for a linealized dynamic system used in "watertank.dat".
 
 """
 
