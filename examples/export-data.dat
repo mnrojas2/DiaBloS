@@ -13,6 +13,7 @@
         {
             "block_fn": "Sum",
             "sid": 0,
+            "username": "Sum0",
             "coords_left": 516,
             "coords_top": 257,
             "coords_width": 70,
@@ -41,6 +42,7 @@
         {
             "block_fn": "Step",
             "sid": 0,
+            "username": "Step0",
             "coords_left": 289,
             "coords_top": 196,
             "coords_width": 60,
@@ -73,6 +75,7 @@
         {
             "block_fn": "Sine",
             "sid": 1,
+            "username": "Sine1",
             "coords_left": 290,
             "coords_top": 307,
             "coords_width": 60,
@@ -103,6 +106,7 @@
         {
             "block_fn": "Export",
             "sid": 0,
+            "username": "Export0",
             "coords_left": 793,
             "coords_top": 230,
             "coords_width": 70,
@@ -129,6 +133,7 @@
         {
             "block_fn": "Mux",
             "sid": 0,
+            "username": "Mux0",
             "coords_left": 651,
             "coords_top": 230,
             "coords_width": 60,

@@ -13,6 +13,7 @@
         {
             "block_fn": "Integr",
             "sid": 0,
+            "username": "X(t)",
             "coords_left": 624,
             "coords_top": 118,
             "coords_width": 80,
@@ -43,8 +44,9 @@
         {
             "block_fn": "Export",
             "sid": 0,
+            "username": "Export0",
             "coords_left": 798,
-            "coords_top": 78,
+            "coords_top": 91,
             "coords_width": 70,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -69,8 +71,9 @@
         {
             "block_fn": "Scope",
             "sid": 0,
-            "coords_left": 798,
-            "coords_top": 158,
+            "username": "Ext function plot",
+            "coords_left": 802,
+            "coords_top": 183,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -95,6 +98,7 @@
         {
             "block_fn": "Gain",
             "sid": 1,
+            "username": "B",
             "coords_left": 374,
             "coords_top": 296,
             "coords_width": 60,
@@ -123,8 +127,9 @@
         {
             "block_fn": "Gain",
             "sid": 2,
-            "coords_left": 373,
-            "coords_top": 409,
+            "username": "A",
+            "coords_left": 375,
+            "coords_top": 400,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -157,6 +162,7 @@
         {
             "block_fn": "Sum",
             "sid": 0,
+            "username": "X'(t)",
             "coords_left": 495,
             "coords_top": 338,
             "coords_width": 70,
@@ -182,6 +188,7 @@
         {
             "block_fn": "Integr",
             "sid": 1,
+            "username": "X(t)",
             "coords_left": 614,
             "coords_top": 333,
             "coords_width": 80,
@@ -212,8 +219,9 @@
         {
             "block_fn": "Export",
             "sid": 1,
+            "username": "Export1",
             "coords_left": 773,
-            "coords_top": 275,
+            "coords_top": 287,
             "coords_width": 70,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -238,6 +246,7 @@
         {
             "block_fn": "Scope",
             "sid": 2,
+            "username": "Vectorial plot",
             "coords_left": 773,
             "coords_top": 382,
             "coords_width": 60,
@@ -264,6 +273,7 @@
         {
             "block_fn": "External",
             "sid": 0,
+            "username": "AX+BU code",
             "coords_left": 375,
             "coords_top": 118,
             "coords_width": 120,
@@ -289,7 +299,8 @@
         {
             "block_fn": "Sum",
             "sid": 1,
-            "coords_left": 374,
+            "username": "x2'(t)",
+            "coords_left": 375,
             "coords_top": 519,
             "coords_width": 70,
             "coords_height": 50,
@@ -314,7 +325,8 @@
         {
             "block_fn": "Integr",
             "sid": 2,
-            "coords_left": 492,
+            "username": "x2(t)",
+            "coords_left": 491,
             "coords_top": 514,
             "coords_width": 80,
             "coords_height": 60,
@@ -341,6 +353,7 @@
         {
             "block_fn": "Integr",
             "sid": 3,
+            "username": "x1(t)",
             "coords_left": 692,
             "coords_top": 576,
             "coords_width": 80,
@@ -368,6 +381,7 @@
         {
             "block_fn": "Mux",
             "sid": 0,
+            "username": "Mux0",
             "coords_left": 832,
             "coords_top": 504,
             "coords_width": 60,
@@ -391,6 +405,7 @@
         {
             "block_fn": "Export",
             "sid": 2,
+            "username": "Export2",
             "coords_left": 963,
             "coords_top": 474,
             "coords_width": 70,
@@ -417,6 +432,7 @@
         {
             "block_fn": "Scope",
             "sid": 1,
+            "username": "Scalar plot",
             "coords_left": 963,
             "coords_top": 562,
             "coords_width": 60,
@@ -443,6 +459,7 @@
         {
             "block_fn": "Gain",
             "sid": 3,
+            "username": "-x1(t)",
             "coords_left": 278,
             "coords_top": 599,
             "coords_width": 60,
@@ -468,6 +485,7 @@
         {
             "block_fn": "Step",
             "sid": 0,
+            "username": "u=ref0",
             "coords_left": 248,
             "coords_top": 108,
             "coords_width": 60,
@@ -497,6 +515,7 @@
         {
             "block_fn": "Step",
             "sid": 1,
+            "username": "u=ref1",
             "coords_left": 242,
             "coords_top": 296,
             "coords_width": 60,
@@ -526,6 +545,7 @@
         {
             "block_fn": "Step",
             "sid": 2,
+            "username": "u=ref2",
             "coords_left": 239,
             "coords_top": 475,
             "coords_width": 60,
@@ -555,6 +575,7 @@
         {
             "block_fn": "Gain",
             "sid": 0,
+            "username": "x1'(t)",
             "coords_left": 597,
             "coords_top": 576,
             "coords_width": 60,
@@ -580,6 +601,7 @@
         {
             "block_fn": "External",
             "sid": 1,
+            "username": "X(t) code",
             "coords_left": 899,
             "coords_top": 255,
             "coords_width": 120,
@@ -605,6 +627,7 @@
         {
             "block_fn": "Scope",
             "sid": 3,
+            "username": "Exact solution plot",
             "coords_left": 1074,
             "coords_top": 255,
             "coords_width": 60,
@@ -648,11 +671,11 @@
                 ],
                 [
                     778,
-                    108.0
+                    121.0
                 ],
                 [
                     798,
-                    108.0
+                    121.0
                 ]
             ],
             "cptr": 0,
@@ -671,16 +694,16 @@
                     148.0
                 ],
                 [
-                    778,
+                    782,
                     148.0
                 ],
                 [
-                    778,
-                    188.0
+                    782,
+                    213.0
                 ],
                 [
-                    798,
-                    188.0
+                    802,
+                    213.0
                 ]
             ],
             "cptr": 0,
@@ -723,12 +746,12 @@
             "dstport": 1,
             "points": [
                 [
-                    433,
-                    439.0
+                    435,
+                    430.0
                 ],
                 [
                     475,
-                    439.0
+                    430.0
                 ],
                 [
                     475,
@@ -780,19 +803,19 @@
                 ],
                 [
                     714,
-                    401
+                    396
                 ],
                 [
-                    353,
-                    401
+                    355,
+                    396
                 ],
                 [
-                    353,
-                    439.0
+                    355,
+                    430.0
                 ],
                 [
-                    373,
-                    439.0
+                    375,
+                    430.0
                 ]
             ],
             "cptr": 0,
@@ -816,11 +839,11 @@
                 ],
                 [
                     753,
-                    305.0
+                    317.0
                 ],
                 [
                     773,
-                    305.0
+                    317.0
                 ]
             ],
             "cptr": 0,
@@ -883,11 +906,11 @@
             "dstport": 0,
             "points": [
                 [
-                    444,
+                    445,
                     544.0
                 ],
                 [
-                    492,
+                    491,
                     544.0
                 ]
             ],
@@ -1103,15 +1126,15 @@
                     505.0
                 ],
                 [
-                    334,
+                    335,
                     505.0
                 ],
                 [
-                    334,
+                    335,
                     535.6666666666666
                 ],
                 [
-                    374,
+                    375,
                     535.6666666666666
                 ]
             ],
@@ -1127,15 +1150,15 @@
             "dstport": 0,
             "points": [
                 [
-                    572,
+                    571,
                     544.0
                 ],
                 [
-                    582,
+                    581,
                     544.0
                 ],
                 [
-                    582,
+                    581,
                     606.0
                 ],
                 [
@@ -1175,7 +1198,7 @@
             "dstport": 1,
             "points": [
                 [
-                    572,
+                    571,
                     544.0
                 ],
                 [
@@ -1199,15 +1222,15 @@
                     629.0
                 ],
                 [
-                    354,
+                    355,
                     629.0
                 ],
                 [
-                    354,
+                    355,
                     552.3333333333334
                 ],
                 [
-                    374,
+                    375,
                     552.3333333333334
                 ]
             ],

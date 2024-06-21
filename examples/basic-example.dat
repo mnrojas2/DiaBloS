@@ -13,6 +13,7 @@
         {
             "block_fn": "Scope",
             "sid": 0,
+            "username": "Scope0",
             "coords_left": 729,
             "coords_top": 227,
             "coords_width": 60,
@@ -39,6 +40,7 @@
         {
             "block_fn": "Step",
             "sid": 0,
+            "username": "Step0",
             "coords_left": 481,
             "coords_top": 227,
             "coords_width": 60,

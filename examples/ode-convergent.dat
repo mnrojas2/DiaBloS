@@ -13,8 +13,9 @@
         {
             "block_fn": "Integr",
             "sid": 0,
-            "coords_left": 624,
-            "coords_top": 118,
+            "username": "X(t)",
+            "coords_left": 588,
+            "coords_top": 123,
             "coords_width": 80,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -43,8 +44,9 @@
         {
             "block_fn": "Export",
             "sid": 0,
-            "coords_left": 796,
-            "coords_top": 78,
+            "username": "Export0",
+            "coords_left": 801,
+            "coords_top": 90,
             "coords_width": 70,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -69,8 +71,9 @@
         {
             "block_fn": "Scope",
             "sid": 0,
-            "coords_left": 798,
-            "coords_top": 158,
+            "username": "Ext function plot",
+            "coords_left": 801,
+            "coords_top": 176,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -95,6 +98,7 @@
         {
             "block_fn": "Gain",
             "sid": 1,
+            "username": "B",
             "coords_left": 374,
             "coords_top": 296,
             "coords_width": 60,
@@ -123,6 +127,7 @@
         {
             "block_fn": "Gain",
             "sid": 2,
+            "username": "A",
             "coords_left": 375,
             "coords_top": 398,
             "coords_width": 60,
@@ -157,8 +162,9 @@
         {
             "block_fn": "Sum",
             "sid": 0,
-            "coords_left": 495,
-            "coords_top": 343,
+            "username": "AX+Bu",
+            "coords_left": 496,
+            "coords_top": 338,
             "coords_width": 70,
             "coords_height": 50,
             "coords_height_base": 50,
@@ -182,6 +188,7 @@
         {
             "block_fn": "Integr",
             "sid": 1,
+            "username": "X(t)",
             "coords_left": 614,
             "coords_top": 333,
             "coords_width": 80,
@@ -212,6 +219,7 @@
         {
             "block_fn": "Export",
             "sid": 1,
+            "username": "Export1",
             "coords_left": 773,
             "coords_top": 275,
             "coords_width": 70,
@@ -238,8 +246,9 @@
         {
             "block_fn": "Scope",
             "sid": 2,
-            "coords_left": 774,
-            "coords_top": 382,
+            "username": "Vectorial plot",
+            "coords_left": 773,
+            "coords_top": 383,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -264,8 +273,9 @@
         {
             "block_fn": "External",
             "sid": 0,
-            "coords_left": 375,
-            "coords_top": 118,
+            "username": "AX+Bu code",
+            "coords_left": 372,
+            "coords_top": 123,
             "coords_width": 120,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -289,8 +299,9 @@
         {
             "block_fn": "Sum",
             "sid": 1,
-            "coords_left": 374,
-            "coords_top": 520,
+            "username": "x2'(t)",
+            "coords_left": 375,
+            "coords_top": 518,
             "coords_width": 70,
             "coords_height": 50,
             "coords_height_base": 50,
@@ -314,8 +325,9 @@
         {
             "block_fn": "Integr",
             "sid": 2,
-            "coords_left": 516,
-            "coords_top": 514,
+            "username": "x2(t)",
+            "coords_left": 506,
+            "coords_top": 513,
             "coords_width": 80,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -341,6 +353,7 @@
         {
             "block_fn": "Integr",
             "sid": 3,
+            "username": "x1(t)",
             "coords_left": 668,
             "coords_top": 575,
             "coords_width": 80,
@@ -368,6 +381,7 @@
         {
             "block_fn": "Mux",
             "sid": 0,
+            "username": "X(t)",
             "coords_left": 827,
             "coords_top": 503,
             "coords_width": 60,
@@ -391,6 +405,7 @@
         {
             "block_fn": "Export",
             "sid": 2,
+            "username": "Export2",
             "coords_left": 962,
             "coords_top": 474,
             "coords_width": 70,
@@ -417,7 +432,8 @@
         {
             "block_fn": "Scope",
             "sid": 1,
-            "coords_left": 963,
+            "username": "Scalar plot",
+            "coords_left": 962,
             "coords_top": 562,
             "coords_width": 60,
             "coords_height": 60,
@@ -443,8 +459,9 @@
         {
             "block_fn": "Gain",
             "sid": 3,
-            "coords_left": 278,
-            "coords_top": 599,
+            "username": "-x1(t)",
+            "coords_left": 807,
+            "coords_top": 596,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -468,8 +485,9 @@
         {
             "block_fn": "Gain",
             "sid": 4,
-            "coords_left": 449,
-            "coords_top": 629,
+            "username": "-0.4*x2(t)",
+            "coords_left": 243,
+            "coords_top": 537,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -493,8 +511,9 @@
         {
             "block_fn": "Step",
             "sid": 0,
-            "coords_left": 248,
-            "coords_top": 108,
+            "username": "u=ref0",
+            "coords_left": 244,
+            "coords_top": 113,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -522,6 +541,7 @@
         {
             "block_fn": "Step",
             "sid": 1,
+            "username": "u=ref1",
             "coords_left": 242,
             "coords_top": 296,
             "coords_width": 60,
@@ -551,8 +571,9 @@
         {
             "block_fn": "Step",
             "sid": 2,
-            "coords_left": 239,
-            "coords_top": 475,
+            "username": "u=ref2",
+            "coords_left": 246,
+            "coords_top": 436,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -588,20 +609,20 @@
             "dstport": 0,
             "points": [
                 [
-                    704,
-                    148.0
+                    668,
+                    153.0
                 ],
                 [
-                    776,
-                    148.0
+                    781,
+                    153.0
                 ],
                 [
-                    776,
-                    108.0
+                    781,
+                    120.0
                 ],
                 [
-                    796,
-                    108.0
+                    801,
+                    120.0
                 ]
             ],
             "cptr": 0,
@@ -616,20 +637,20 @@
             "dstport": 0,
             "points": [
                 [
-                    704,
-                    148.0
+                    668,
+                    153.0
                 ],
                 [
-                    778,
-                    148.0
+                    781,
+                    153.0
                 ],
                 [
-                    778,
-                    188.0
+                    781,
+                    206.0
                 ],
                 [
-                    798,
-                    188.0
+                    801,
+                    206.0
                 ]
             ],
             "cptr": 0,
@@ -648,16 +669,16 @@
                     326.0
                 ],
                 [
-                    455,
+                    456,
                     326.0
                 ],
                 [
-                    455,
-                    359.6666666666667
+                    456,
+                    354.6666666666667
                 ],
                 [
-                    495,
-                    359.6666666666667
+                    496,
+                    354.6666666666667
                 ]
             ],
             "cptr": 0,
@@ -676,16 +697,16 @@
                     428.0
                 ],
                 [
-                    475,
+                    476,
                     428.0
                 ],
                 [
-                    475,
-                    376.3333333333333
+                    476,
+                    371.3333333333333
                 ],
                 [
-                    495,
-                    376.3333333333333
+                    496,
+                    371.3333333333333
                 ]
             ],
             "cptr": 0,
@@ -700,15 +721,7 @@
             "dstport": 0,
             "points": [
                 [
-                    565,
-                    368.0
-                ],
-                [
-                    594,
-                    368.0
-                ],
-                [
-                    594,
+                    566,
                     363.0
                 ],
                 [
@@ -796,16 +809,16 @@
                     363.0
                 ],
                 [
-                    754,
+                    753,
                     363.0
                 ],
                 [
-                    754,
-                    412.0
+                    753,
+                    413.0
                 ],
                 [
-                    774,
-                    412.0
+                    773,
+                    413.0
                 ]
             ],
             "cptr": 0,
@@ -820,12 +833,12 @@
             "dstport": 0,
             "points": [
                 [
-                    495,
-                    148.0
+                    492,
+                    153.0
                 ],
                 [
-                    624,
-                    148.0
+                    588,
+                    153.0
                 ]
             ],
             "cptr": 0,
@@ -840,20 +853,12 @@
             "dstport": 0,
             "points": [
                 [
-                    444,
-                    545.0
+                    445,
+                    543.0
                 ],
                 [
-                    496,
-                    545.0
-                ],
-                [
-                    496,
-                    544.0
-                ],
-                [
-                    516,
-                    544.0
+                    506,
+                    543.0
                 ]
             ],
             "cptr": 0,
@@ -868,12 +873,12 @@
             "dstport": 0,
             "points": [
                 [
-                    596,
-                    544.0
+                    586,
+                    543.0
                 ],
                 [
                     648,
-                    544.0
+                    543.0
                 ],
                 [
                     648,
@@ -924,15 +929,7 @@
             "dstport": 1,
             "points": [
                 [
-                    596,
-                    544.0
-                ],
-                [
-                    807,
-                    544.0
-                ],
-                [
-                    807,
+                    586,
                     543.0
                 ],
                 [
@@ -984,15 +981,15 @@
                     533.0
                 ],
                 [
-                    943,
+                    942,
                     533.0
                 ],
                 [
-                    943,
+                    942,
                     592.0
                 ],
                 [
-                    963,
+                    962,
                     592.0
                 ]
             ],
@@ -1012,24 +1009,16 @@
                     605.0
                 ],
                 [
-                    768,
+                    787,
                     605.0
                 ],
                 [
-                    768,
-                    679
+                    787,
+                    626.0
                 ],
                 [
-                    258,
-                    679
-                ],
-                [
-                    258,
-                    629.0
-                ],
-                [
-                    278,
-                    629.0
+                    807,
+                    626.0
                 ]
             ],
             "cptr": 0,
@@ -1044,20 +1033,28 @@
             "dstport": 2,
             "points": [
                 [
-                    338,
-                    629.0
+                    867,
+                    626.0
                 ],
                 [
-                    354,
-                    629.0
+                    887,
+                    626.0
                 ],
                 [
-                    354,
-                    557.5
+                    887,
+                    676
                 ],
                 [
-                    374,
-                    557.5
+                    355,
+                    676
+                ],
+                [
+                    355,
+                    555.5
+                ],
+                [
+                    375,
+                    555.5
                 ]
             ],
             "cptr": 0,
@@ -1072,28 +1069,20 @@
             "dstport": 1,
             "points": [
                 [
-                    509,
-                    659.0
+                    303,
+                    567.0
                 ],
                 [
-                    529,
-                    659.0
+                    335,
+                    567.0
                 ],
                 [
-                    529,
-                    602
+                    335,
+                    543.0
                 ],
                 [
-                    334,
-                    602
-                ],
-                [
-                    334,
-                    545.0
-                ],
-                [
-                    374,
-                    545.0
+                    375,
+                    543.0
                 ]
             ],
             "cptr": 0,
@@ -1108,28 +1097,28 @@
             "dstport": 0,
             "points": [
                 [
-                    596,
-                    544.0
+                    586,
+                    543.0
                 ],
                 [
-                    616,
-                    544.0
+                    606,
+                    543.0
                 ],
                 [
-                    616,
-                    601
+                    606,
+                    617
                 ],
                 [
-                    429,
-                    601
+                    223,
+                    617
                 ],
                 [
-                    429,
-                    659.0
+                    223,
+                    567.0
                 ],
                 [
-                    449,
-                    659.0
+                    243,
+                    567.0
                 ]
             ],
             "cptr": 0,
@@ -1144,28 +1133,28 @@
             "dstport": 1,
             "points": [
                 [
-                    704,
-                    148.0
+                    668,
+                    153.0
                 ],
                 [
-                    724,
-                    148.0
+                    688,
+                    153.0
                 ],
                 [
-                    724,
-                    198
+                    688,
+                    203
                 ],
                 [
-                    355,
-                    198
+                    352,
+                    203
                 ],
                 [
-                    355,
-                    158.0
+                    352,
+                    163.0
                 ],
                 [
-                    375,
-                    158.0
+                    372,
+                    163.0
                 ]
             ],
             "cptr": 0,
@@ -1180,12 +1169,12 @@
             "dstport": 0,
             "points": [
                 [
-                    308,
-                    138.0
+                    304,
+                    143.0
                 ],
                 [
-                    375,
-                    138.0
+                    372,
+                    143.0
                 ]
             ],
             "cptr": 0,
@@ -1220,20 +1209,20 @@
             "dstport": 0,
             "points": [
                 [
-                    299,
-                    505.0
+                    306,
+                    466.0
                 ],
                 [
-                    314,
-                    505.0
+                    316,
+                    466.0
                 ],
                 [
-                    314,
-                    532.5
+                    316,
+                    530.5
                 ],
                 [
-                    374,
-                    532.5
+                    375,
+                    530.5
                 ]
             ],
             "cptr": 0,

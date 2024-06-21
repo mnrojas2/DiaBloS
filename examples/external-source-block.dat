@@ -13,6 +13,7 @@
         {
             "block_fn": "External",
             "sid": 0,
+            "username": "External0",
             "coords_left": 465,
             "coords_top": 209,
             "coords_width": 120,
@@ -40,6 +41,7 @@
         {
             "block_fn": "Scope",
             "sid": 0,
+            "username": "Scope0",
             "coords_left": 673,
             "coords_top": 165,
             "coords_width": 60,
@@ -66,6 +68,7 @@
         {
             "block_fn": "Scope",
             "sid": 1,
+            "username": "Scope1",
             "coords_left": 674,
             "coords_top": 251,
             "coords_width": 60,

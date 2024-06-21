@@ -75,34 +75,35 @@ class DSim:
                        'dark_red': (128, 0, 0),
                        'dark_green': (0, 128, 0),
                        'dark_blue': (0, 0, 128),
+                       'dark_gray': (64, 64, 64),
                        'gray': (128, 128, 128),
                        'light_gray': (192, 192, 192),
                        'white': (255, 255, 255)}
 
         self.FPS = 60
 
-        self.l_width = 5                    # Ancho de linea en modo seleccionado
-        self.ls_width = 5                   # Ancho separacion entre linea-bloque en modo seleccionado
+        self.l_width = 5                    # Line width in selected mode
+        self.ls_width = 5                   # Line-block spacing width in selected mode
 
-        self.filename = 'data.dat'          # Nombre del archivo cargado o por defecto
-        self.sim_time = 1.0                 # Tiempo de simulación por defecto
-        self.sim_dt = 0.01                  # Tiempo de muestreo base para simulación (Por defecto: 10ms)
-        self.plot_trange = 100              # Ancho de la ventana para el plot dinámico (Por defecto: 100 muestras)
+        self.filename = 'data.dat'          # Saved Filename by default
+        self.sim_time = 1.0                 # Default simulation time
+        self.sim_dt = 0.01                  # Base sampling time for simulation (Default: 10ms)
+        self.plot_trange = 100              # Window width for dynamic plot (Default: 100 samples)
 
-        self.menu_blocks = []               # Lista de bloques base (lista)
-        self.blocks_list = []               # Lista de bloques existente
-        self.line_list = []                 # Lista de lineas existente
+        self.menu_blocks = []               # List of base blocks
+        self.blocks_list = []               # List of blocks
+        self.line_list = []                 # List of lines
 
-        self.line_creation = 0              # Booleano (3 estados) para creación de una línea
-        self.only_one = False               # Booleano para impedir que más de un bloque puede efectuar una operación
-        self.enable_line_selection = False  # Booleano para indicar si es posible seleccionar una línea o no
-        self.holding_CTRL = False           # Booleano para controlar el estado de la tecla CTRL
-        self.execution_initialized = False  # Booleano para indicar si el grafo se ejecutó al menos una vez
-        self.ss_count = 0                   # Contador de capturas de pantalla
-
-        self.execution_pause = False        # Booleano que indica si la ejecución se pausó en algún momento
-        self.execution_stop = False         # Booleano que indica si la ejecución se detuvo completamente
-        self.dynamic_plot = False           # Booleano que indica si es que se muestra el plot avanzando de forma dinámica
+        self.line_creation = 0              # Boolean (3 states) for creation of a line
+        self.only_one = False               # Boolean to prevent more than one block from being able to perform an operation
+        self.enable_line_selection = False  # Boolean to indicate whether it is possible to select a line or not
+        self.holding_CTRL = False           # Boolean to control the state of the CTRL key
+        self.execution_initialized = False  # Boolean to indicate if the graph was executed at least once
+        self.ss_count = 0                   # Screenshot counter
+        
+        self.execution_pause = False        # Boolean indicating whether execution was paused at some point in time or not
+        self.execution_stop = False         # Boolean indicating whether the execution was completely stopped or not
+        self.dynamic_plot = False           # Boolean indicating whether the plot is displayed dynamically advancing or not
 
     def main_buttons_init(self):
         """
@@ -114,7 +115,7 @@ class DSim:
         sim =  Button('_play_',    (220, 10, 40, 40))
         pause = Button('_pause_',  (280, 10, 40, 40))
         stop = Button('_stop_',    (340, 10, 40, 40))
-        rplt = Button('_plot_',    (400, 10, 40, 40), False)
+        rplt = Button('_plot_',    (400, 10, 40, 40), active=False)
         capt = Button('_capture_', (460, 10, 40, 40))
 
         self.buttons_list = [new, load, save, sim, pause, stop, rplt, capt]
@@ -178,7 +179,7 @@ class DSim:
             else:
                 sid = len(id_list)
 
-        # creación del bloque a partir del id y datos del bloque base del cual se 'copia'
+        # Creation of the block from the id and data of the base block from which it is 'copied'
         mouse_x = m_pos[0]
         mouse_y = m_pos[1]
         block_collision = (mouse_x, mouse_y, block.size[0], block.size[1])
@@ -209,8 +210,8 @@ class DSim:
             else:
                 sid = len(id_list)
 
-        # creación de la línea a partir del id, y data de origen y destino para la misma
-        line = DLine(sid, srcData[0], srcData[1], dstData[0], dstData[1], (srcData[2], dstData[2]))
+        # Creation of the line from the id, and source and destination data for the line
+        line = DLine(sid, srcblock=srcData[0], srcport=srcData[1], dstblock=dstData[0], dstport=dstData[1], points=(srcData[2], dstData[2]))
         self.line_list.append(line)
 
     def remove_block_and_lines(self):
@@ -221,7 +222,7 @@ class DSim:
         """
         self.line_creation = 0
 
-        # remueve el bloque de la lista, retornando también una segunda lista con los valores eliminados para su utilización en la eliminación de líneas
+        # Removes the block from the list, returning also a second list with the deleted values for use in line deletion
         b_del = [x.name for x in self.blocks_list if x.selected]
         self.blocks_list = [x for x in self.blocks_list if not x.selected]
 
@@ -274,8 +275,6 @@ class DSim:
         :param zone: A layer in a pygame canvas where the figure is drawn.
         """
         for b_elem in self.blocks_list:
-            if b_elem.selected:
-                b_elem.draw_selected(zone)
             b_elem.draw_Block(zone)
 
     def port_availability(self, dst_line):
@@ -299,77 +298,77 @@ class DSim:
         # block_fn, fn_name, {# inputs, # output, execution hierarchy}, {<specific argument/parameters>}, color, (width, height), allows_io_change
 
         # source-type blocks
-        step = MenuBlocks("Step", 'step',
-                        {'inputs': 0, 'outputs': 1, 'b_type': 0, 'io_edit': False}, {'value': 1.0, 'delay': 0.0, 'type': 'up', 'pulse_start_up': True, '_init_start_': True},
-                        'blue', (60, 60))
+        step = MenuBlocks(block_fn="Step", fn_name='step',
+                        io_params={'inputs': 0, 'outputs': 1, 'b_type': 0, 'io_edit': False}, ex_params={'value': 1.0, 'delay': 0.0, 'type': 'up', 'pulse_start_up': True, '_init_start_': True},
+                        b_color='blue', coords=(60, 60))
 
-        ramp = MenuBlocks("Ramp", 'ramp',
-                        {'inputs': 0, 'outputs': 1, 'b_type': 0, 'io_edit': False}, {'slope': 1.0, 'delay': 0.0},
-                        'light_blue', (60, 60))
+        ramp = MenuBlocks(block_fn="Ramp", fn_name='ramp',
+                        io_params={'inputs': 0, 'outputs': 1, 'b_type': 0, 'io_edit': False}, ex_params={'slope': 1.0, 'delay': 0.0},
+                        b_color='light_blue', coords=(60, 60))
 
-        sine = MenuBlocks("Sine", 'sine',
-                        {'inputs': 0, 'outputs': 1, 'b_type': 0, 'io_edit': False}, {'amplitude': 1.0, 'omega': 1.0, 'init_angle': 0},
-                        'cyan', (60, 60))
+        sine = MenuBlocks(block_fn="Sine", fn_name='sine',
+                        io_params={'inputs': 0, 'outputs': 1, 'b_type': 0, 'io_edit': False}, ex_params={'amplitude': 1.0, 'omega': 1.0, 'init_angle': 0},
+                        b_color='cyan', coords=(60, 60))
 
-        noise = MenuBlocks("Noise", 'noise',
-                        {'inputs': 0, 'outputs': 1, 'b_type': 0, 'io_edit': False}, {'sigma': 1, 'mu': 0},
-                        'purple', (60, 60))
+        noise = MenuBlocks(block_fn="Noise", fn_name='noise',
+                        io_params={'inputs': 0, 'outputs': 1, 'b_type': 0, 'io_edit': False}, ex_params={'sigma': 1, 'mu': 0},
+                        b_color='purple', coords=(60, 60))
 
 
         # N-process-type blocks
-        integrator = MenuBlocks("Integr", 'integrator',
-                        {'inputs': 1, 'outputs': 1, 'b_type': 1, 'io_edit': False}, {'init_conds': 0.0, 'method': 'FWD_EULER', '_init_start_': True},
-                        'magenta', (80, 60))
+        integrator = MenuBlocks(block_fn="Integr", fn_name='integrator',
+                        io_params={'inputs': 1, 'outputs': 1, 'b_type': 1, 'io_edit': False}, ex_params={'init_conds': 0.0, 'method': 'FWD_EULER', '_init_start_': True},
+                        b_color='magenta', coords=(80, 60))
 
 
         # Z-process-type blocks
-        derivative = MenuBlocks("Deriv", 'derivative',
-                        {'inputs': 1, 'outputs': 1, 'b_type': 2, 'io_edit': False}, {'_init_start_': True},
-                        (255, 0, 200), (80, 60))
+        derivative = MenuBlocks(block_fn="Deriv", fn_name='derivative',
+                        io_params={'inputs': 1, 'outputs': 1, 'b_type': 2, 'io_edit': False}, ex_params={'_init_start_': True},
+                        b_color=(255, 0, 200), coords=(80, 60))
 
-        adder = MenuBlocks("Sum", 'adder',
-                        {'inputs': 2, 'outputs': 1, 'b_type': 2, 'io_edit': 'input'}, {'sign': "++"},
-                        'lime_green', (70, 50))
+        adder = MenuBlocks(block_fn="Sum", fn_name='adder',
+                        io_params={'inputs': 2, 'outputs': 1, 'b_type': 2, 'io_edit': 'input'}, ex_params={'sign': "++"},
+                        b_color='lime_green', coords=(70, 50))
 
-        sigproduct = MenuBlocks("SgProd", 'sigproduct',
-                        {'inputs': 2, 'outputs': 1, 'b_type': 2, 'io_edit': 'input'}, {},
-                        'green', (70, 50))
+        sigproduct = MenuBlocks(block_fn="SgProd", fn_name='sigproduct',
+                        io_params={'inputs': 2, 'outputs': 1, 'b_type': 2, 'io_edit': 'input'}, ex_params={},
+                        b_color='green', coords=(70, 50))
 
-        gain = MenuBlocks("Gain", 'gain',
-                        {'inputs': 1, 'outputs': 1, 'b_type': 2, 'io_edit': False}, {'gain': 1.0},
-                        (255, 216, 0), (60, 60))
+        gain = MenuBlocks(block_fn="Gain", fn_name='gain',
+                        io_params={'inputs': 1, 'outputs': 1, 'b_type': 2, 'io_edit': False}, ex_params={'gain': 1.0},
+                        b_color=(255, 216, 0), coords=(60, 60))
 
-        exponential = MenuBlocks("Exp", 'exponential',
-                        {'inputs': 1, 'outputs': 1, 'b_type': 2, 'io_edit': False}, {'a': 1.0, 'b': 1.0},
-                        'yellow', (60, 60))  # a*e^bx
+        exponential = MenuBlocks(block_fn="Exp", fn_name='exponential',
+                        io_params={'inputs': 1, 'outputs': 1, 'b_type': 2, 'io_edit': False}, ex_params={'a': 1.0, 'b': 1.0},
+                        b_color='yellow', coords=(60, 60))  # a*e^bx
 
-        mux = MenuBlocks("Mux", "mux",
-                        {'inputs': 2, 'outputs': 1, 'b_type': 2, 'io_edit': 'input'}, {},
-                        (190, 0, 255), (60, 60))
+        mux = MenuBlocks(block_fn="Mux", fn_name="mux",
+                        io_params={'inputs': 2, 'outputs': 1, 'b_type': 2, 'io_edit': 'input'}, ex_params={},
+                        b_color=(190, 0, 255), coords=(60, 60))
 
-        demux = MenuBlocks("Demux", "demux",
-                        {'inputs': 1, 'outputs': 2, 'b_type': 2, 'io_edit': 'output'}, {'output_shape': 1},
-                        (170, 0, 255), (60, 60))
+        demux = MenuBlocks(block_fn="Demux", fn_name="demux",
+                        io_params={'inputs': 1, 'outputs': 2, 'b_type': 2, 'io_edit': 'output'}, ex_params={'output_shape': 1},
+                        b_color=(170, 0, 255), coords=(60, 60))
 
 
         # Terminal-type blocks
-        terminator = MenuBlocks("Term", 'terminator',
-                        {'inputs': 1, 'outputs': 0, 'b_type': 3, 'io_edit': False}, {},
-                        (255, 106, 0), (60, 60))
+        terminator = MenuBlocks(block_fn="Term", fn_name='terminator',
+                        io_params={'inputs': 1, 'outputs': 0, 'b_type': 3, 'io_edit': False}, ex_params={},
+                        b_color=(255, 106, 0), coords=(60, 60))
 
-        scope = MenuBlocks("Scope", 'scope',
-                        {'inputs': 1, 'outputs': 0, 'b_type': 3, 'io_edit': False}, {'labels': 'default', '_init_start_': True},
-                        'red', (60, 60))
+        scope = MenuBlocks(block_fn="Scope", fn_name='scope',
+                        io_params={'inputs': 1, 'outputs': 0, 'b_type': 3, 'io_edit': False}, ex_params={'labels': 'default', '_init_start_': True},
+                        b_color='red', coords=(60, 60))
 
-        export = MenuBlocks("Export", "export",
-                        {'inputs': 1, 'outputs': 0, 'b_type': 3, 'io_edit': False}, {'str_name': 'default', '_init_start_': True},
-                        'orange', (70, 60))
+        export = MenuBlocks(block_fn="Export", fn_name="export",
+                        io_params={'inputs': 1, 'outputs': 0, 'b_type': 3, 'io_edit': False}, ex_params={'str_name': 'default', '_init_start_': True},
+                        b_color='orange', coords=(70, 60))
 
 
         # External/general use block
-        external = MenuBlocks("External", 'external',
-                        {'inputs': 1, 'outputs': 1, 'b_type': 2, 'io_edit': False}, {"filename": '<no filename>'},
-                        'light_gray', (120, 60), True)
+        external = MenuBlocks(block_fn="External", fn_name='external',
+                        io_params={'inputs': 1, 'outputs': 1, 'b_type': 2, 'io_edit': False}, ex_params={"filename": '<no filename>'},
+                        b_color='light_gray', coords=(120, 60), external=True)
 
         self.menu_blocks = [step, ramp, sine, noise, integrator, derivative, adder, sigproduct, gain, exponential, mux, demux, terminator, scope, export, external]
 
@@ -380,7 +379,7 @@ class DSim:
         """
         pygame.draw.line(zone, self.colors['black'], [200, 60], [200, 710], 2)
         for i in range(len(self.menu_blocks)):
-            self.menu_blocks[i].draw_menublock(zone, i)
+            self.menu_blocks[i].draw_menublock(zone, pos=i)
 
     ##### LOADING AND SAVING #####
 
@@ -402,13 +401,13 @@ class DSim:
                 return 1
             if file[-4:] != '.dat':
                 file += '.dat'
-        else: # Opción para cuando se va a ejecutar un grafo
+        else: # Option for when a graph is going to run
             if '_AUTOSAVE' not in self.filename:
                 file = 'saves/'+self.filename[:-4]+'_AUTOSAVE.dat'
             else:
                 file = 'saves/'+self.filename
 
-        # Datos de DSim (clase principal)
+        # DSim data (Simulator interface)
         init_dict = {
             "wind_width": self.SCREEN_WIDTH,
             "wind_height": self.SCREEN_HEIGHT,
@@ -420,12 +419,13 @@ class DSim:
             "sim_trange": self.plot_trange
             }
 
-        # Datos de Block
+        # Blocks parameters data
         blocks_dict = []
         for block in self.blocks_list:
             block_dict = {
                 "block_fn": block.block_fn,
                 "sid": block.sid,
+                "username": block.username,
                 "coords_left": block.left,
                 "coords_top": block.top,
                 "coords_width": block.width,
@@ -444,7 +444,7 @@ class DSim:
             }
             blocks_dict.append(block_dict)
 
-        # Datos de Line
+        # Line parameters data
         lines_dict = []
         for line in self.line_list:
             line_dict = {
@@ -466,7 +466,7 @@ class DSim:
             json.dump(main_dict, fp, indent=4)
 
         if not autosave:
-            self.filename = file.split('/')[-1]  # Para conservar el nombre del archivo si es que se quiere guardar
+            self.filename = file.split('/')[-1]  # Keeps the name of the file if you want to save it again later
             root.destroy()
 
         print("SAVED AS", file)
@@ -499,7 +499,7 @@ class DSim:
         for line in lines_data:
             self.update_lines_data(line)
 
-        self.filename = file.split('/')[-1]  # Para conservar el nombre del archivo si es que se quiere guardar
+        self.filename = file.split('/')[-1]  # Keeps the name of the file if you want to save it again later
 
         print("LOADED FROM", file)
 
@@ -525,17 +525,18 @@ class DSim:
         :param block_data: Dictionary with Block object id, parameters, variables, etc.
         :type block_data: dict
         """
-        block = DBlock(block_data['block_fn'],
-                      block_data['sid'],
-                      (block_data['coords_left'], block_data['coords_top'], block_data['coords_width'], block_data['coords_height_base']),
-                      block_data['b_color'],
-                      block_data['in_ports'],
-                      block_data['out_ports'],
-                      block_data['b_type'],
-                      block_data['io_edit'],
-                      block_data['fn_name'],
-                      block_data['params'],
-                      block_data['external'])
+        block = DBlock(block_fn=block_data['block_fn'],
+                      sid=block_data['sid'],
+                      coords=(block_data['coords_left'], block_data['coords_top'], block_data['coords_width'], block_data['coords_height_base']),
+                      color=block_data['b_color'],
+                      in_ports=block_data['in_ports'],
+                      out_ports=block_data['out_ports'],
+                      b_type=block_data['b_type'],
+                      io_edit=block_data['io_edit'],
+                      fn_name=block_data['fn_name'],
+                      params=block_data['params'],
+                      external=block_data['external'],
+                      username=block_data['username'])
         block.height = block_data['coords_height']
         block.selected = block_data['selected']
         block.dragging = block_data['dragging']
@@ -547,13 +548,13 @@ class DSim:
         :param line_data: Dictionary with Line object id, parameters, variables, etc.
         :type line_data: dict
         """
-        line = DLine(line_data['sid'],
-                    line_data['srcblock'],
-                    line_data['srcport'],
-                    line_data['dstblock'],
-                    line_data['dstport'],
-                    line_data['points'],
-                    line_data['cptr'])
+        line = DLine(sid=line_data['sid'],
+                    srcblock=line_data['srcblock'],
+                    srcport=line_data['srcport'],
+                    dstblock=line_data['dstblock'],
+                    dstport=line_data['dstport'],
+                    points=line_data['points'],
+                    cptr=line_data['cptr'])
         line.selected = line_data['selected']
         line.update_line(self.blocks_list)
         self.line_list.append(line)
@@ -586,25 +587,25 @@ class DSim:
         master = tk.Tk()
         master.title('Simulate')
 
-        # Tiempo de simulación
+        # Simulation time
         tk.Label(master, text="Simulation Time").grid(row=0)
         entry = tk.Entry(master)
         entry.grid(row=0, column=1)
         entry.insert(10, self.sim_time)
 
-        # Muestreo de simulación
+        # Simulation sample rate
         tk.Label(master, text="Sampling Time").grid(row=1)
         entry2 = tk.Entry(master)
         entry2.grid(row=1, column=1)
         entry2.insert(10, self.sim_dt)
 
-        # Ancho de ventana para gráficos en tiempo real
+        # Window width for pyqtgraph plots in real time
         tk.Label(master, text="Time range Plot").grid(row=2)
         entry3 = tk.Entry(master)
         entry3.grid(row=2, column=1)
         entry3.insert(10, self.plot_trange)
 
-        # Plot dinamico (en tiempo real)
+        # Dynamic plot in real time
         tk.Label(master, text="Dynamic Plot:").grid(row=3)
         r = tk.IntVar()
         tk.Checkbutton(master, variable=r).grid(row=3, column=1)
@@ -628,38 +629,38 @@ class DSim:
         :description: This is the first stage of the graph simulation, where variables and vectors are initialized, as well as testing to verify that everything is working properly. A previous autosave is done, as well as a block connection check and possible algebraic loops. If everything goes well, we continue with the loop stage.
         """
 
-        # Se llama a la clase que contiene las funciones para la ejecución
+        # The class containing the functions for the execution is called
         self.execution_function = DFunctions()
-        self.execution_stop = False                         # Evitar que la ejecución se detenga antes de ejecutarse por error
-        self.time_step = 0                                  # Primera iteración que irá aumentando self.sim_dt segundos
-        self.timeline = np.array([self.time_step])          # Lista que contiene el valor de todas las iteraciones pasadas
+        self.execution_stop = False                         # Prevent execution from stopping before executing in error
+        self.time_step = 0                                  # First iteration of the time which will be incrementing self.sim_dt seconds
+        self.timeline = np.array([self.time_step])          # List containing the value of all past iterations
 
-        # Se inicializan algunos parametros entre ellos el tiempo máximo de simulación
+        # Some parameters are initialized including the maximum simulation time.
         self.execution_time = self.execution_init_time()
 
-        # Para cancelar la simulación antes de correrla (habiendo presionado X en el pop up)
+        # To cancel the simulation before running it (having pressed X in the pop up)
         if self.execution_time == -1 or len(self.blocks_list) == 0:
             self.execution_initialized = False
             return
 
-        # Obligar a guardar antes de ejecutar (para no perder el diagrama)
+        # Force save before executing (so as not to lose the diagram)
         if self.save(True) == 1:
             return
 
         print("*****INIT NEW EXECUTION*****")
 
-        # Actualización de módulos importados (funciones externas)
+        # Updating imported modules (external functions)
         for block in self.blocks_list:
             missing_file_flag = block.reload_external_data()
             if missing_file_flag == 1:
                 return
-            # podria agregar aqui el dato del sim_dt a todos los bloques...
+            # Note to self: podria agregar aqui el dato del sim_dt a todos los bloques...
 
-        # Chequeo de entradas y salidas:
-        if self.check_diagram_integrity() == 1:
+        # Check in and check out of each block of the diagram
+        if not self.check_diagram_integrity():
             return
 
-        # Generación de lista para chequeo de cómputo de funciones
+        # Generation of a checklist for the computation of functions
         self.global_computed_list = [{'name': x.name, 'computed_data': x.computed_data, 'hierarchy': x.hierarchy}
                                 for x in self.blocks_list]
         self.reset_execution_data()
@@ -667,47 +668,47 @@ class DSim:
 
         print("*****EXECUTION START*****")
 
-        # Inicialización de la barra de progreso
+        # Initialization of the progress bar
         self.pbar = tqdm(desc='SIMULATION PROGRESS', total=int(self.execution_time/self.sim_dt), unit=' itr')
 
-        # Comprobar la existencia de loops algebraicos (pt1)
+        # Check the existence of algebraic loops (part 1)
         check_loop = self.count_computed_global_list()
 
-        # Comprobar la existencia de integradores que usen Runge-Kutta 45 e inicializar contador
+        # Check for integrators using Runge-Kutta 45 and initialize counter
         self.rk45_len = self.count_rk45_ints()
         self.rk_counter = 0
 
-        # Se inicia el recorrido por el diagrama de bloques partiendo por los bloques del tipo source
+        # The block diagram starts with looking for source type blocks
         for block in self.blocks_list:
             children = {}
             out_value = {}
             if block.b_type == 0:
-                # Se ejecuta la función (se diferencia entre función interna y externa primero)
+                # The function is executed (differentiate between internal and external function first)
                 if block.external:
                     try:
-                        out_value = getattr(block.file_function, block.fn_name)(self.time_step, block.input_queue, block.params)
+                        out_value = getattr(block.file_function, block.fn_name)(time=self.time_step, inputs=block.input_queue, params=block.params)
                     except:
                         print("ERROR FOUND IN EXTERNAL FUNCTION",block.file_function)
                         self.execution_failed()
                         return
                 else:
-                    out_value = getattr(self.execution_function, block.fn_name)(self.time_step, block.input_queue, block.params)
+                    out_value = getattr(self.execution_function, block.fn_name)(time=self.time_step, inputs=block.input_queue, params=block.params)
                 block.computed_data = True
                 block.hierarchy = 0
-                self.update_global_list(block.name, 0, True)
+                self.update_global_list(block.name, h_value=0, h_assign=True)
                 children = self.get_outputs(block.name)
 
             elif block.b_type == 1:
-                # Se ejecuta la función para únicamente entregar el resultado en memoria (se diferencia entre función interna y externa primero)
+                # The function is executed to only deliver the result to memory (a distinction is made between internal and external function first)
                 if block.external:
                     try:
-                        out_value = getattr(block.file_function, block.fn_name)(self.time_step, block.input_queue, block.params, output_only=True, next_add_in_memory=False, dtime=self.sim_dt)
+                        out_value = getattr(block.file_function, block.fn_name)(time=self.time_step, inputs=block.input_queue, params=block.params, output_only=True, next_add_in_memory=False, dtime=self.sim_dt)
                     except:
                         print("ERROR FOUND IN EXTERNAL FUNCTION", block.file_function)
                         self.execution_failed()
                         return
                 else:
-                    out_value = getattr(self.execution_function, block.fn_name)(self.time_step, block.input_queue, block.params, output_only=True, next_add_in_memory=False, dtime=self.sim_dt)
+                    out_value = getattr(self.execution_function, block.fn_name)(time=self.time_step, inputs=block.input_queue, params=block.params, output_only=True, next_add_in_memory=False, dtime=self.sim_dt)
                 children = self.get_outputs(block.name)
 
             if 'E' in out_value.keys() and out_value['E']:
@@ -715,53 +716,53 @@ class DSim:
                 return
 
             for mblock in self.blocks_list:
-                is_child, tuple_list = self.children_recognition(mblock.name, children)
+                is_child, tuple_list = self.children_recognition(block_name=mblock.name, children_list=children)
                 if is_child:
-                    # Se envian los datos a cada puerto necesario del bloque hijo
+                    # Data is sent to each required port of the child block
                     for tuple_child in tuple_list:
                         mblock.input_queue[tuple_child['dstport']] = out_value[tuple_child['srcport']]
                         mblock.data_recieved += 1
                         block.data_sent += 1
 
-        # Se continúa recorriendo el diagrama por los siguientes bloques
+        # The diagram continues to be executed through the following blocks
         h_count = 1
         while not self.check_global_list():
             for block in self.blocks_list:
-                # Se ejecuta esta parte solo si la data recibida es igual al numero de puertos de entrada y el bloque no ha sido computado todavía
+                # This part is executed only if the received data is equal to the number of input ports and the block has not been computed yet.
                 if block.data_recieved == block.in_ports and not block.computed_data:
-                    # Se ejecuta la función (se diferencia entre función interna y externa primero)
+                    # The function is executed (differentiate between internal and external function first)
                     if block.external:
                         try:
-                            out_value = getattr(block.file_function, block.fn_name)(self.time_step, block.input_queue, block.params)
+                            out_value = getattr(block.file_function, block.fn_name)(time=self.time_step, inputs=block.input_queue, params=block.params)
                         except:
                             print("ERROR FOUND IN EXTERNAL FUNCTION", block.file_function)
                             self.execution_failed()
                             return
                     else:
-                        out_value = getattr(self.execution_function, block.fn_name)(self.time_step, block.input_queue, block.params)
+                        out_value = getattr(self.execution_function, block.fn_name)(time=self.time_step, inputs=block.input_queue, params=block.params)
 
-                    # Se comprueba que la función no haya entregado error:
+                    # It is checked that the function has not delivered an error
                     if 'E' in out_value.keys() and out_value['E']:
                         self.execution_failed()
                         return
 
-                    # Se actualizan los flags de cómputo en la lista global como en el bloque mismo
-                    self.update_global_list(block.name, h_count, True)
+                    # The computed_data booleans are updated in the global list as well as in the block itself
+                    self.update_global_list(block.name, h_value=h_count, h_assign=True)
                     block.computed_data = True
 
-                    # Se buscan los bloques que requieren los datos procesados de este bloque
+                    # The blocks that require the processed data from this block are searched.
                     children = self.get_outputs(block.name)
-                    if block.b_type not in [1, 3]:  # elementos que no entregan resultado a children (1 es cond. inicial)
+                    if block.b_type not in [1, 3]:  # Elements that do not deliver a result to children (1 is initial cond.)
                         for mblock in self.blocks_list:
-                            is_child, tuple_list = self.children_recognition(mblock.name, children)
+                            is_child, tuple_list = self.children_recognition(block_name=mblock.name, children_list=children)
                             if is_child:
-                                # Se envian los datos a cada puerto necesario del bloque hijo
+                                # Data is sent to each required port of the child block
                                 for tuple_child in tuple_list:
                                     mblock.input_queue[tuple_child['dstport']] = out_value[tuple_child['srcport']]
                                     mblock.data_recieved += 1
                                     block.data_sent += 1
 
-            # Se compara el numero de bloques ejecutados de la etapa anterior. Si es cero, hay un loop algebraico
+            # The number of executed blocks from the previous stage is compared. If it is zero, there is an algebraic loop.
             if self.count_computed_global_list() == check_loop:
                 print("ALGEBRAIC LOOP DETECTED")
                 print("*****EXECUTION STOPPED*****")
@@ -771,19 +772,18 @@ class DSim:
 
             h_count += 1
 
-        # Se determina el valor más alto de jerarquía para las próximas iteraciones
+        # The highest hierarchy value is determined for the next iterations
         self.max_hier = self.get_max_hierarchy()
         self.execution_initialized = True
         self.rk_counter += 1
 
-        # Habilitar boton de plot si es que hay al menos un scope
+        # Enable the plot button if there is at least one scope
         for block in self.blocks_list:
             if block.block_fn == 'Scope':
                 self.buttons_list[6].active = True
 
-        # Se inicializa la función de plot dinámico, en caso de estar activo el booleano
-        self.dynamic_pyqtPlotScope(0)
-
+        # The dynamic plot function is initialized, if the Boolean is active
+        self.dynamic_pyqtPlotScope(step=0)
 
     def execution_loop(self):
         """
@@ -793,72 +793,72 @@ class DSim:
         if self.execution_pause:
             return
 
-        # Después de inicializar, esta función es la que constantemente se repite en loop
-        self.reset_execution_data()                                 # Se resetean los valores de ejecución cambiados en la etapa anterior
+        # After initialization, this function is the one that is constantly looped back to
+        self.reset_execution_data()                                 # The execution values changed in the previous step are reset
 
-        # Avance de tiempo con Runge-kutta 45
+        # Time progress with Runge-kutta 45
         # 0.5 -> 2*self.rk45_ints | 1.0 -> 1+self.rk45_ints
         if self.rk45_len:
             self.rk_counter %= 4
             if self.rk_counter == 1 or self.rk_counter == 3:
-                # Avance medio paso normal
+                # Normal half-step feed rate
                 self.time_step += self.sim_dt/2
-                self.pbar.update(1/2)                                 # Se actualiza la barra de progreso
+                self.pbar.update(1/2)                                 # Progress bar is updated
             if self.rk_counter == 0:
                 self.timeline = np.append(self.timeline, self.time_step)
 
-        # Avance de tiempo normal
+        # Normal time progress
         elif not self.rk45_len:
-            # Avance paso completo
-            self.time_step += self.sim_dt                             # Se avanza sim_dt en la linea de tiempo de la ejecución
-            self.pbar.update(1)                                       # Se actualiza la barra de progreso
-            self.timeline = np.append(self.timeline, self.time_step)  # Se agrega este nuevo valor de tiempo a la escala de tiempo
+            # Full step advance
+            self.time_step += self.sim_dt                             # sim_dt is progressed on the execution timeline
+            self.pbar.update(1)                                       # Progress bar is updated
+            self.timeline = np.append(self.timeline, self.time_step)  # This new time value is added to the time scale
 
-        # Se ejecutan primero los bloques con memoria para obtener sólo el valor producido en la etapa anterior (no ejecutar la función primaria de estas)
+        # The blocks with memory are executed first to obtain only the value produced in the previous stage (do not execute the primary function of these blocks).
         for block in self.blocks_list:
             if block.b_type == 1:
-                # Se define si el resultado debe acumularse en la memoria o no
+                # Defines whether or not the result is to be accumulated in memory
                 add_in_memory = True
                 if self.rk45_len and self.rk_counter != 3:
                     add_in_memory = False
 
-                # Se ejecuta la función para únicamente entregar el resultado en memoria (se diferencia entre función interna y externa primero)
+                # The function is executed to only deliver the result to memory (a distinction is made between internal and external function first)
                 if block.external:
                     try:
-                        out_value = getattr(block.file_function, block.fn_name)(self.time_step, block.input_queue, block.params, output_only=True, next_add_in_memory=add_in_memory)
+                        out_value = getattr(block.file_function, block.fn_name)(time=self.time_step, inputs=block.input_queue, params=block.params, output_only=True, next_add_in_memory=add_in_memory)
                     except:
                         print("ERROR FOUND IN EXTERNAL FUNCTION", block.file_function)
                         self.execution_failed()
                         return
                 else:
-                    out_value = getattr(self.execution_function, block.fn_name)(self.time_step, block.input_queue, block.params, output_only=True, next_add_in_memory=add_in_memory)
+                    out_value = getattr(self.execution_function, block.fn_name)(time=self.time_step, inputs=block.input_queue, params=block.params, output_only=True, next_add_in_memory=add_in_memory)
 
-                # Se comprueba que la función no haya entregado error:
+                # It is checked that the function has not delivered an error
                 if 'E' in out_value.keys() and out_value['E']:
                     self.execution_failed()
                     return
 
-                # Se buscan los bloques que requieren los datos procesados de este bloque
+                # The blocks that require the processed data from this block are searched
                 children = self.get_outputs(block.name)
                 for mblock in self.blocks_list:
                     is_child, tuple_list = self.children_recognition(mblock.name, children)
                     if is_child:
-                        # Se envian los datos a cada puerto necesario del bloque hijo
+                        # Data is sent to each required port of the child block
                         for tuple_child in tuple_list:
                             mblock.input_queue[tuple_child['dstport']] = out_value[tuple_child['srcport']]
                             mblock.data_recieved += 1
                             block.data_sent += 1
 
-            # Para los bloques terminales que guardan datos, se les indica si se está en un instante de tiempo normal o intermedio
+            # For terminal blocks that store data, it is indicated whether they are in a normal or intermediate time instant
             if self.rk45_len and self.rk_counter != 0:
                 block.params['_skip_'] = True
 
-        # Se ejecutan todos los bloques de acuerdo al orden de jerarquía definido en la primera iteración
+        # All blocks are executed according to the hierarchy order defined in the first iteration
         for hier in range(self.max_hier + 1):
             for block in self.blocks_list:
-                # Se busca que el bloque tenga el grado de jerarquia para ejecutarlo (y que cumpla con los otros requisitos anteriores)
+                # The block must have the degree of hierarchy to execute it (and meet the other requirements above)
                 if block.hierarchy == hier and (block.data_recieved == block.in_ports or block.in_ports == 0) and not block.computed_data:
-                    # Se ejecuta la función (se diferencia entre función interna y externa primero)
+                    # The function is executed (differentiate between internal and external function first)
                     if block.external:
                         try:
                             out_value = getattr(block.file_function, block.fn_name)(self.time_step, block.input_queue, block.params)
@@ -869,36 +869,36 @@ class DSim:
                     else:
                         out_value = getattr(self.execution_function, block.fn_name)(self.time_step, block.input_queue, block.params)
 
-                    # Se comprueba que la función no haya entregado error:
+                    # It is checked that the function has not delivered an error
                     if 'E' in out_value.keys() and out_value['E']:
                         self.execution_failed()
                         return
 
-                    # Se actualizan los flags de cómputo en la lista global como en el bloque mismo
-                    self.update_global_list(block.name, 0)
+                    # The computed_data booleans are updated in the global list as well as in the block itself
+                    self.update_global_list(block.name, h_value=0)
                     block.computed_data = True
 
-                    # Se buscan los bloques que requieren los datos procesados de este bloque
+                    # The blocks that require the processed data from this block are searched
                     children = self.get_outputs(block.name)
-                    if block.b_type not in [1, 3]:  # elementos que no entregan resultado a children (1 es cond. inicial)
+                    if block.b_type not in [1, 3]:  # Elements that do not deliver a result to children (1 is initial cond.)
                         for mblock in self.blocks_list:
-                            is_child, tuple_list = self.children_recognition(mblock.name, children)
+                            is_child, tuple_list = self.children_recognition(block_name=mblock.name, children_list=children)
                             if is_child:
-                                # Se envian los datos a cada puerto necesario del bloque hijo
+                                # Data is sent to each required port of the child block
                                 for tuple_child in tuple_list:
                                     mblock.input_queue[tuple_child['dstport']] = out_value[tuple_child['srcport']]
                                     mblock.data_recieved += 1
                                     block.data_sent += 1
             hier += 1
 
-        # Se llama a la función del plot dinámico para guardar los nuevos datos, en caso de estar activo
-        self.dynamic_pyqtPlotScope(1)
+        # The dynamic plot function is called to save the new data, if active
+        self.dynamic_pyqtPlotScope(step=1)
 
-        # Se comprueba si que el tiempo total de simulación (ejecución) ha sido superado para finalizar con el loop.
+        # It is checked if the total simulation (execution) time has been exceeded to end the loop
         if self.time_step > self.execution_time + self.sim_dt:  # seconds
-            self.execution_initialized = False                  # Se finaliza el loop de ejecución
-            self.pbar.close()                                   # Se finaliza la barra de progreso
-            print("SIMULATION TIME:", round(time.time() - self.execution_time_start, 5), 'SECONDS')  # Se imprime el tiempo total tomado
+            self.execution_initialized = False                  # The execution loop is terminated
+            self.pbar.close()                                   # The progress bar ends
+            print("SIMULATION TIME:", round(time.time() - self.execution_time_start, 5), 'SECONDS')  # The total time taken is printed
 
             # Export
             self.export_data()
@@ -907,17 +907,17 @@ class DSim:
             if not self.dynamic_plot:
                 self.pyqtPlotScope()
 
-            # Resetea la inicializacion de los bloques con ejecuciones iniciales especiales (para que puedan ser ejecutados correctamente en la proxima simulación)
+            # Resets the initialization of the blocks with special initial executions (so that they can be executed correctly in the next simulation)
             self.reset_memblocks()
             print("*****EXECUTION DONE*****")
 
         elif self.execution_stop:
             self.execution_stop = False
 
-            self.execution_initialized = False  # Se finaliza el loop de ejecución
-            self.pbar.close()  # Se finaliza la barra de progreso
+            self.execution_initialized = False  # The execution loop is terminated
+            self.pbar.close()  # The progress bar is finished
 
-            # Resetea el flag para la inicializacion de los bloques con ejecuciones iniciales especiales (para que puedan ser ejecutados correctamente en la proxima simulación)
+            # Resets the boolean for the initialization of the blocks with special initial executions (so that they can be executed correctly in the next simulation)
             self.reset_memblocks()
             print("*****EXECUTION STOPPED*****")
 
@@ -927,9 +927,9 @@ class DSim:
         """
         :purpose: If an error is found while executing the graph, this function stops all the processes and resets values to the state before execution.
         """
-        self.execution_initialized = False  # Termina la ejecución de la simulación
-        self.reset_memblocks()  # Restaura la inicialización de los integradores (en caso que el error haya sido por vectores de distintas dimensiones
-        self.pbar.close()  # Finaliza la barra de progreso
+        self.execution_initialized = False   # Finishes the simulation execution
+        self.reset_memblocks()               # Restores the initialization of the integrators (in case the error was due to vectors of different dimensions).
+        self.pbar.close()                    # Finishes the progress bar
         print("*****EXECUTION STOPPED*****")
 
     def check_diagram_integrity(self):
@@ -943,6 +943,7 @@ class DSim:
         error_trigger = False
         for block in self.blocks_list:
             inputs, outputs = self.get_neighbors(block.name)
+            
             if block.in_ports == 1 and len(inputs) < block.in_ports:
                 print("ERROR. UNLINKED INPUT IN BLOCK:", block.name)
                 error_trigger = True
@@ -954,6 +955,7 @@ class DSim:
                 if len(finders[0]) > 0:
                     print("ERROR. UNLINKED INPUT(S) IN BLOCK:", block.name, "PORT(S):", finders[0])
                     error_trigger = True
+                    
             if block.out_ports == 1 and len(outputs) < block.out_ports:
                 print("ERROR. UNLINKED OUTPUT PORT:", block.name)
                 error_trigger = True
@@ -965,10 +967,11 @@ class DSim:
                 if len(finders[0]) > 0:
                     print("ERROR. UNLINKED OUTPUT(S) IN BLOCK:", block.name, "PORT(S):", finders[0])
                     error_trigger = True
+                    
         if error_trigger:
-            return 1
+            return False
         print("NO ISSUES FOUND IN DIAGRAM")
-        return 0
+        return True
 
     def count_rk45_ints(self):
         """
@@ -991,7 +994,7 @@ class DSim:
         :type h_value: int
         :type h_assign: bool
         """
-        # h_assign se utiliza para asignar el grado de jerarquía unicamente en la primera iteración
+        # h_assign is used to assign the degree of hierarchy only in the first iteration.
         for elem in self.global_computed_list:
             if elem['name'] == block_name:
                 if h_assign:
@@ -1041,7 +1044,7 @@ class DSim:
         :param block_name: Block object name id.
         :type block_name: str
         """
-        # retorna una lista de diccionarios con los puertos de salida para block_name, como los bloques y puertos de llegada
+        # Returns a list of dictionaries with the outgoing ports for block_name, as well as the incoming blocks and ports
         neighs = []
         for line in self.line_list:
             if line.srcblock == block_name:
@@ -1054,7 +1057,7 @@ class DSim:
         :param block_name: Block object name id.
         :type block_name: str
         """
-        # retorna una lista de bloques
+        # Returns two lists of blocks, for blocks connected through lines where the current block is destination or source
         n_inputs = []
         n_outputs = []
         for line in self.line_list:
@@ -1140,7 +1143,7 @@ class DSim:
 
         if labels_list != [] and len(vector_list) > 0:
             self.plotty = SignalPlot(self.sim_dt, labels_list, len(self.timeline))
-            self.plotty.loop(self.timeline, vector_list)
+            self.plotty.loop(new_t=self.timeline, new_y=vector_list)
 
     def dynamic_pyqtPlotScope(self, step):
         """
@@ -1167,7 +1170,7 @@ class DSim:
                     b_vectors = block.params['vector']
                     vector_list.append(b_vectors)
             if len(vector_list) > 0:
-                self.plotty.loop(self.timeline, vector_list)
+                self.plotty.loop(new_t=self.timeline, new_y=vector_list)
             else:
                 self.dynamic_plot = False
                 print("DYNAMIC PLOT: OFF")
@@ -1188,6 +1191,7 @@ class DBlock(DSim):
     :param fn_name: Function name, function associated to the block. That function defined in the Functions class.
     :param params: Dictionary with function-related parameters.
     :param external: Parameter that set a block with an external function (not defined in Functions class).
+    :param username: String that contains the name of the block previously assigned by the user
     :type block_fn: str
     :type sid: int
     :type coords: list
@@ -1199,60 +1203,64 @@ class DBlock(DSim):
     :type fn_name: str
     :type params: dict
     :type external: bool
+    :type username: str
 
     """
-    def __init__(self, block_fn, sid, coords, color, in_ports=1, out_ports=1, b_type=2, io_edit=True, fn_name='block', params={}, external=False):
+    def __init__(self, block_fn, sid, coords, color, in_ports=1, out_ports=1, b_type=2, io_edit=True, fn_name='block', params={}, external=False, username=''):
         super().__init__()
-        self.name = block_fn + str(sid)   # Nombre del bloque
-        self.block_fn = block_fn            # Tipo de bloque
-        self.sid = sid                  # id del bloque
+        self.name = block_fn + str(sid)   # Block name
+        self.block_fn = block_fn          # Block type 
+        self.sid = sid                    # Block ID
+        self.username = self.name         # Block name assigned by the user
+        if username != '':
+            self.username = username
 
-        self.left = coords[0]           # Coordenada ubicación línea izquierda
-        self.top = coords[1]            # Coordenada ubicación línea superior
-        self.width = coords[2]          # Ancho bloque
-        self.height = coords[3]         # Altura bloque
-        self.height_base = self.height  # Variable que conserva valor de altura por defecto
+        self.left = coords[0]             # Location coordinate left border
+        self.top = coords[1]              # Coordinate location top border
+        self.width = coords[2]            # Block width
+        self.height = coords[3]           # Block height
+        self.height_base = self.height    # Variable retaining default height value
 
-        self.b_color = self.set_color(color)  # color del bloque
+        self.b_color = self.set_color(color)  # Block color
         self.image = pygame.image.load('./lib/icons/' + self.block_fn + '.png')
         self.image = pygame.transform.scale(self.image, (self.height_base, self.height_base))
 
-        self.fn_name = fn_name                              # Nombre función asociada para ejecución
-        self.params = self.loading_params(params)           # Parámetros asociados a la función
-        self.init_params_list = list(self.params.keys())    # Lista de parámetros iniciales/editables
-        self.external = external                            # Función asociada es externa o no
+        self.fn_name = fn_name                              # Name of the associated function for execution
+        self.params = self.loading_params(params)           # Parameters associated with the function
+        self.init_params_list = list(self.params.keys())    # List of initial/editable parameters
+        self.external = external                            # Boolean to know if associated function is external or not
 
-        self.port_radius = 8            # Radio del circulo para el dibujado de los puertos
-        self.in_ports = in_ports        # Variable que contiene el número de puertos de entrada
-        self.out_ports = out_ports      # Variable que contiene el número de puertos de salida
+        self.port_radius = 8            # Radius of the circle for the drawing of the ports
+        self.in_ports = in_ports        # Variable containing the number of input ports
+        self.out_ports = out_ports      # Variable containing the number of output ports
 
 
-        # Datos básicos del bloque para identificación en funciones.
+        # Basic block data for identification in functions.
         self.params.update({'_name_': self.name, '_inputs_': self.in_ports, '_outputs_': self.out_ports})
 
         self.rectf = pygame.rect.Rect(self.left - self.port_radius, self.top, self.width + 2 * self.port_radius,
-                                      self.height)  # Rect que define la colisión del bloque
+                                      self.height)  # Rect defining the block collision
 
-        self.in_coords = []             # Lista que contiene coordenadas para cada puerto de entrada
-        self.out_coords = []            # Lista que contiene coordenadas para cada puerto de salida
-        self.io_edit = io_edit          # Variable que determina si el número de inputs y outputs puede cambiarse.
-        self.update_Block()             # Ubica las coordenadas de los puertos actualizando también el tamaño del bloque
+        self.in_coords = []             # List containing coordinates for each input port
+        self.out_coords = []            # List containing coordinates for each output port
+        self.io_edit = io_edit          # Boolean that determines whether the number of inputs and outputs can be changed
+        self.update_Block()             # Locate the port coordinates by updating the block size as well
 
-        self.b_type = b_type          # Clase de bloque/Posición de prioridad al correr la simulación
-        self.dragging = False           # Booleano para determinar si el bloque se está moviendo
-        self.selected = False           # Booleano para determinar si el bloque está seleccionado en el plano
+        self.b_type = b_type            # Block type/priority position when running simulation
+        self.dragging = False           # Boolean to determine if block is moving
+        self.selected = False           # Boolean to determine if the block is selected in the plane
 
-        # Variables para la inicialización de texto para cada bloque (nombre)
-        self.font_size = 24             # Tamaño del texto
+        # Variables for text initialization for each block (name)
+        self.font_size = 24             # Text size
         self.text = pygame.font.SysFont(None, self.font_size)
-        self.text_display = self.text.render(self.name, True, self.colors['black'])
+        self.text_display = self.text.render(self.username, True, self.colors['dark_gray'])
 
-        # Variables para simulacion
-        self.hierarchy = -1             # Indica el nivel de jerarquía para ejecutar durante la simulación
-        self.data_recieved = 0          # Variable que indica cuando datos se han recibido para calcular la función
-        self.computed_data = False      # Flag que indica si la función asociada al bloque ha sido ejecutada
-        self.data_sent = 0              # Variable que indica a cuantos bloques se ha enviado el resultado de la función
-        self.input_queue = {}           # Diccionario el cual almacena los datos que llegan desde otros bloques
+        # Variables for simulation execution
+        self.hierarchy = -1             # Indicates the hierarchy level to execute during simulation
+        self.data_recieved = 0          # Variable indicating when data has been received to calculate the function
+        self.computed_data = False      # Boolean indicating whether the function associated with the block has been executed
+        self.data_sent = 0              # Variable indicating how many blocks the result of the function has been sent to
+        self.input_queue = {}           # Dictionary which stores data arriving from other blocks
 
     def update_Block(self):
         """
@@ -1262,7 +1270,7 @@ class DBlock(DSim):
         self.in_coords = []
         self.out_coords = []
 
-        # En caso que el número de puertos sea muy grande, se redimensiona el bloque
+        # If the number of ports is too large, the block is resized
         port_height = max(self.out_ports, self.in_ports) * self.port_radius * 2
         if port_height > self.height:
             self.height = port_height + 10
@@ -1272,7 +1280,7 @@ class DBlock(DSim):
             self.height = port_height + 10
         self.rectf.update((self.left - self.port_radius, self.top, self.width + 2 * self.port_radius, self.height))
 
-        # Se ubican los puertos de forma simétrica en ambos lados
+        # Ports are symmetrically located on both sides
         if self.in_ports > 0:
             for i in range(self.in_ports):
                 port_in = (self.left, self.top + self.height * (i + 1) / (self.in_ports + 1))
@@ -1289,7 +1297,7 @@ class DBlock(DSim):
         """
         pygame.draw.rect(zone, self.b_color, (self.left, self.top, self.width, self.height))
 
-        # Cargar iconos externo
+        # Load external icons
         zone.blit(self.image, (self.left + 0.5*(self.width-self.height_base), self.top + 0.5*(self.height - self.height_base)))
 
         for port_in_location in self.in_coords:
@@ -1297,13 +1305,24 @@ class DBlock(DSim):
 
         for port_out_location in self.out_coords:
             pygame.draw.circle(zone, self.colors['black'], port_out_location, self.port_radius)
+            
+        # Draws text with original color
+        if not self.selected:
+            self.text_display = self.text.render(self.username, True, self.colors['dark_gray'])
+            zone.blit(self.text_display, (self.left + 0.5 * (self.width - self.text_display.get_width()), self.top - 20))
+        else:
+            self.draw_selected(zone)
 
     def draw_selected(self, zone):
         """
         :purpose: Draws the black line indicating that the block is selected.
         :param zone: Pygame's layer where the figure is drawn.
         """
-        # Dibuja linea de selección en torno a un bloque.
+        # Draws colored text with more contrast
+        self.text_display = self.text.render(self.username, True, self.colors['black'])
+        zone.blit(self.text_display, (self.left + 0.5 * (self.width - self.text_display.get_width()), self.top - self.ls_width - 20))
+        
+        # Draws the selection line around a block
         pygame.draw.line(zone, self.colors['black'], (self.left - self.ls_width, self.top - self.ls_width),
                          (self.left + self.width + self.ls_width, self.top - self.ls_width), self.l_width)
         pygame.draw.line(zone, self.colors['black'], (self.left - self.ls_width, self.top - self.ls_width),
@@ -1312,7 +1331,7 @@ class DBlock(DSim):
                          (self.left + self.width + 5, self.top - self.ls_width), self.l_width)
         pygame.draw.line(zone, self.colors['black'], (self.left + self.width + self.ls_width, self.top + self.height + self.ls_width),
                          (self.left - self.ls_width, self.top + self.height + self.ls_width), self.l_width)
-        zone.blit(self.text_display, (self.left + 0.5 * (self.width - self.text_display.get_width()), self.top - 25))
+        
         if self.external:
             self.function_display = self.text.render(self.params['filename'], True, self.colors['black'])
             zone.blit(self.function_display, (self.left + 0.5 * (self.width - self.function_display.get_width()), self.top + self.height + 15))
@@ -1362,9 +1381,9 @@ class DBlock(DSim):
         :purpose: Generates a pop-up window for the user to change number of input and/or output ports for the block.
         :description: Through the use of the TkWidget class, a pop-up window is created containing 2 parameters that can be changed by the user: inputs and outputs. After loading them, the 'update_Block' function is executed to adjust the size of the block and the position of its ports. It should be noted that whether the number of inputs or outputs can be changed depends on the type of block, which is differentiated within the function.
         """
-        # Esta definido por 3 estados en el que se permite editar solo inputs, solo output o ambos
+        # It is defined by 3 states in which it is allowed to edit only inputs, only output or both.
         if self.io_edit == 'both':
-            # Se pueden editar inputs y outputs
+            # Inputs and outputs can be edited
             io_widget = TkWidget(self.name, {'inputs': self.in_ports, 'outputs': self.out_ports})
             new_io = io_widget.get_values()
             if new_io != {}:
@@ -1373,7 +1392,7 @@ class DBlock(DSim):
                 io_widget.destroy()
 
         elif self.io_edit == 'input':
-            # Solo se pueden editar inputs
+            # Only inputs can be edited
             io_widget = TkWidget(self.name, {'inputs': self.in_ports})
             new_io = io_widget.get_values()
             if new_io != {}:
@@ -1381,7 +1400,7 @@ class DBlock(DSim):
                 io_widget.destroy()
 
         elif self.io_edit == 'output':
-            # Solo se pueden editar outputs
+            # Only outputs can be edited
             io_widget = TkWidget(self.name, {'outputs': self.out_ports})
             new_io = io_widget.get_values()
             if new_io != {}:
@@ -1390,7 +1409,7 @@ class DBlock(DSim):
 
         self.update_Block()
 
-        # para actualizar los datos en los parametros hacia las funciones
+        # To maintain the data in the parameters for the functions
         self.params['_inputs_'] = self.in_ports
         self.params['_outputs_'] = self.out_ports
 
@@ -1398,8 +1417,7 @@ class DBlock(DSim):
         """
         :purpose: Saves parameters only defined at initialization.
         """
-        # Actualizar funcion para aceptar los arrays como corresponde
-        # Guarda únicamente los parámetros definidos inicialmente, no los agregados durante la ejecución
+        # Saves only the parameters initially defined, not those added during execution
         ed_dict = {}
         for key in self.params.keys():
             if key in self.init_params_list:
@@ -1428,21 +1446,29 @@ class DBlock(DSim):
         :purpose: Generates a pop-up window to change modifiable parameters only.
         :description: Through the use of the TkWidget class, a pop-up is created to modify parameters associated to the blocks. It should be noted that the only parameters that can be modified are those defined at the beginning (during the definition of the block in 'DSim.menu_blocks_init'), as well as those that do not start with '_' underscore. The function separates the parameters, they are shown to the user, returned to the system and all are put back together at the end.
         """
+        
+        # If the block has no parameters return to main function
         if self.params == {}:
             return
 
-        ed_dict = {}
-        non_ed_dict = {}
+        ed_dict = {}            # List of editable parameters
+        non_ed_dict = {}        # List of non editable parameters
+        
+        # Add username variable to change
+        ed_dict['Name'] = self.username
 
+        # Split all parameters between editable or not editable
         for key in self.params.keys():
             if key in self.init_params_list and not (key[0] == key[-1] == '_'):
                 ed_dict[key] = self.params[key]
             else:
                 non_ed_dict[key] = self.params[key]
 
+        # If there are no editable parameters return to main function
         if ed_dict == {}:
             return
 
+        # Create the window pop-up to change the parameters' values
         widget_params = TkWidget(self.name, ed_dict, external=self.external)
         new_inputs = widget_params.get_values()
         try:
@@ -1451,12 +1477,21 @@ class DBlock(DSim):
         except:
             external_reset = False
 
+        # Save new username and remove it from the dictionary
+        if new_inputs['Name'] == '--':
+            self.username = self.name
+        else:
+            self.username = new_inputs['Name']
+        new_inputs.pop('Name')
 
+        # Merge again the editable and non editable dictionaries and save them as the new parameters of the block
         if new_inputs != {}:
             new_inputs.update(non_ed_dict)
             self.params = new_inputs
-            widget_params.destroy()
+        
+        widget_params.destroy()
 
+        # If the block type corresponds to an external type, update the external_reset boolean
         if self.external:
             self.load_external_data(params_reset=external_reset)
 
@@ -1465,6 +1500,8 @@ class DBlock(DSim):
         :purpose: Loads initialization data of a function located in a external python file.
         :description: Through the use of the importlib library, a .py file is imported from the 'usermodels' folder, from where the function parameters and the block parameters (input, output, block_type) are extracted, importing them to the existing block, modifying its qualities if necessary.
         """
+        
+        # If the block type does not correspond to an external type, return to main function
         if not self.external:
             return
 
@@ -1521,7 +1558,7 @@ class DBlock(DSim):
             print("ERROR: NO EXTERNAL FUNCTION IS DEFINED FOR", self.name)
             return 1
 
-        # Si no existe un import previo de la función, se intenta cargar a partir del nombre de archivo asignado al bloque
+        # If there is no previous import of the function, an attempt is made to load from the file name assigned to the block
         if not hasattr(self, 'file_function'):
             full_module_name = self.params['filename']
             self.file_function = importlib.import_module(full_module_name)
@@ -1553,23 +1590,23 @@ class DLine(DSim):
     """
     def __init__(self, sid, srcblock, srcport, dstblock, dstport, points, cptr=0):
         super().__init__()
-        self.name = "Line" + str(sid)       # Nombre de la línea
-        self.sid = sid                      # id de la línea
-        self.srcblock = srcblock            # Nombre del bloque de origen
-        self.srcport = srcport              # ID del puerto de origen del bloque
-        self.dstblock = dstblock            # Nombre del bloque de destino
-        self.dstport = dstport              # ID del puerto de destino del bloque
+        self.name = "Line" + str(sid)       # Line name
+        self.sid = sid                      # Line ID
+        self.srcblock = srcblock            # Name of source block
+        self.srcport = srcport              # Block source port ID
+        self.dstblock = dstblock            # Destination block name
+        self.dstport = dstport              # Block destination port ID
 
-        # Variables para creación de líneas
+        # Variables for line creation
         self.total_srcports = srcport + 1
         self.total_dstports = dstport + 1
         self.srcbottom = points[0][1]
         self.dstbottom = points[0][1]
 
-        self.points = self.trajectory(points)   # puntos de vertice para la línea(?) ((a,b),(c,d),(e,f),...)
-        self.cptr = cptr                        # ID de prioridad al momento de dibujar el bloque
+        self.points = self.trajectory(points)   # vertex points for the line(?) ((a,b),(c,d),(e,f),...)
+        self.cptr = cptr                        # Priority ID when drawing the block
 
-        self.selected = False                   # Indica estado de selección en pantalla
+        self.selected = False                   # Indicates selection status on the interface
 
     def draw_line(self, zone):
         """
@@ -1581,7 +1618,7 @@ class DLine(DSim):
                 line_width = 5
             else:
                 line_width = 2
-            pygame.draw.line(zone, self.colors[list(self.colors.keys())[self.cptr]], self.points[i], self.points[i + 1], line_width)
+            pygame.draw.line(zone, color=self.colors[list(self.colors.keys())[self.cptr]], start_pos=self.points[i], end_pos=self.points[i + 1], width=line_width)
 
     def trajectory(self, points):
         """
@@ -1594,22 +1631,22 @@ class DLine(DSim):
         start = points[0]
         finish = points[-1]
 
-        h_src = 20*(self.total_srcports-self.srcport)               # 30: distancia horizontal desde el puerto al vertice adyacente
-        h_dst = 20*(self.total_dstports-self.dstport)               # 30: distancia horizontal desde el puerto al vertice adyacente
-        v_dst = 20*(self.total_dstports-self.dstport)               # 50: distancia vertical desde el puerto al vertice adyacente
-        b_dst = 25*max(self.total_dstports, self.total_srcports)    # 60: distancia separacion entre puertos (cubre bloque normal)
+        h_src = 20*(self.total_srcports-self.srcport)               # 30: horizontal distance from the source port to the adjacent vertex
+        h_dst = 20*(self.total_dstports-self.dstport)               # 30: horizontal distance from the destination port to the adjacent vertex
+        v_dst = 20*(self.total_dstports-self.dstport)               # 50: vertical distance from the destination port to the adjacent vertex
+        b_dst = 25*max(self.total_dstports, self.total_srcports)    # 60: distance between ports (covers normal block)
 
-        # si ambos ejes tienen 'x' o 'y' en común:
+        # if both axes have 'x' or 'y' in common:
         if start[0] == finish[0] or (start[1] == finish[1] and start[0] < finish[0]):
             points = (start,
                       finish)
-        # si el puerto de llegada está a la derecha del puerto de salida
+        # if the destination port is to the right of the source port:
         elif start[0] < finish[0]:
             points = (start,
                       (max(start[0]+10, finish[0] - h_dst), start[1]),
                       (max(start[0]+10, finish[0] - h_dst), finish[1]),
                       finish)
-        # si el puerto de llegada está a la izquierda del puerto de salida y más arriba o más abajo
+        # if the destination port is to the left of the source port and above or under the other:
         elif start[0] > finish[0] and np.abs(start[1] - finish[1]) > b_dst:
             points = (start,
                       (start[0] + h_src, start[1]),
@@ -1617,7 +1654,7 @@ class DLine(DSim):
                       (finish[0] - h_dst, int(0.5*(start[1]+finish[1]))),
                       (finish[0] - h_dst, finish[1]),
                       finish)
-        # si el puerto de llegada está a la izquierda del puerto de salida y a una altura similar
+        # if the destination port is to the left of the source port and at a similar height:
         elif start[0] > finish[0] and np.abs(start[1] - finish[1]) <= b_dst:
             points = (start,
                       (start[0] + h_src, start[1]),
@@ -1651,8 +1688,8 @@ class DLine(DSim):
         m_coords = np.array(m_coords)
 
         for i in range(len(self.points) - 1):
-            line_A = np.array(self.points[i])       # pos inicio
-            line_B = np.array(self.points[i+1])     # pos final
+            line_A = np.array(self.points[i])       # Initial position
+            line_B = np.array(self.points[i+1])     # Final position
 
             if all(line_A == m_coords) or all(line_B == m_coords):
                 distance_to_line = 0.0
@@ -1676,7 +1713,7 @@ class DLine(DSim):
         :param ptr: Value that adds or subtracts 1 depending of the user's input.
         :type ptr: int
         """
-        # De forma hardcodeada se salta el último elemento que corresponde al color blanco (para evitar lineas "invisibles")
+        # In hardcoded form, the last element corresponding to the white color is skipped (to avoid "invisible" lines).
         self.cptr += ptr
         if self.cptr < 0:
             self.cptr = len(list(self.colors.keys()))-2
@@ -1704,7 +1741,7 @@ class MenuBlocks(DSim):
     :type external: bool
 
     """
-    # Produce un "boton" para generar bloques con las caracteristicas indicadas
+    # Produces a "button" to generate blocks with the indicated characteristics.
     def __init__(self, block_fn, fn_name, io_params, ex_params, b_color, coords, external=False):
         super().__init__()
         self.block_fn = block_fn
@@ -1713,15 +1750,15 @@ class MenuBlocks(DSim):
         self.outs = io_params['outputs']
         self.b_type = io_params['b_type']
         self.io_edit = io_params['io_edit']
-        self.params = ex_params                           # parametros de ejecución en simulación
-        self.b_color = self.set_color(b_color)            # Color caracteristico del bloque
-        self.size = coords                                # Dimensiones del bloque de simulacion (este no)
+        self.params = ex_params                           # Simulation execution parameters
+        self.b_color = self.set_color(b_color)            # Characteristic color of the block
+        self.size = coords                                # Simulation block dimensions (not this one)
         self.side_length = (30, 30)
         self.image = pygame.image.load('./lib/icons/' + self.block_fn + '.png')
         self.image = pygame.transform.scale(self.image, self.side_length)
         self.external = external
 
-        self.font_size = 24  # Tamaño del texto
+        self.font_size = 24                               # Text size
         self.text = pygame.font.SysFont(None, self.font_size)
         self.text_display = self.text.render(self.fn_name, True, self.colors['black'])
 
@@ -1730,7 +1767,7 @@ class MenuBlocks(DSim):
         :purpose: Draws the menu block.
         """
         self.collision = pygame.rect.Rect(40, 80 + 40*pos, self.side_length[0], self.side_length[1])
-        pygame.draw.rect(zone, self.b_color, self.collision)
+        pygame.draw.rect(zone, color=self.b_color, rect=self.collision)
         zone.blit(self.image, (40, 80 + 40*pos))
         zone.blit(self.text_display, (90, 90 + 40*pos))
 
@@ -1749,14 +1786,14 @@ class Button(DSim):
     """
     def __init__(self, name, coords, active=True):
         super().__init__()
-        self.name = name                                                            # Nombre que se mostrará en el botón
-        self.coords = coords                                                        # Ubicación del botón
-        self.collision = pygame.rect.Rect(coords)                                   # Colisión del botón
+        self.name = name                                                            # Name of the button
+        self.coords = coords                                                        # Button location
+        self.collision = pygame.rect.Rect(coords)                                   # Button collision
         self.pressed = False
         self.active = active
-        self.font_size = 24  # Tamaño del texto
+        self.font_size = 24                                                         # Text size
         self.font_text = pygame.font.SysFont(None, self.font_size)
-        self.text_display = self.font_text.render(name, True, self.colors['black']) # Render del botón
+        self.text_display = self.font_text.render(self.name, True, self.colors['black']) # Button render
 
     def draw_button(self, zone):
         """
@@ -1774,67 +1811,67 @@ class Button(DSim):
             else:
                 bg_color = self.colors['light_gray']
 
-        pygame.draw.rect(zone, bg_color, self.collision)
+        pygame.draw.rect(zone, color=bg_color, rect=self.collision)
         if not (self.name[0] == self.name[-1] == '_'):
             zone.blit(self.text_display, (self.collision.left + 0.5 * (self.collision.width - self.text_display.get_width()),
                                  self.collision.top + 0.5 * (self.collision.height - self.text_display.get_height())))
 
         elif self.name == '_new_':
-            pygame.draw.polygon(zone, text_color, (
+            pygame.draw.polygon(zone, color=text_color, points=(
                 (self.collision.left + 0.3 * self.collision.width, self.collision.top + 0.25 * self.collision.height),
                 (self.collision.left + 0.3 * self.collision.width, self.collision.top + 0.75 * self.collision.height),
                 (self.collision.left + 0.7 * self.collision.width, self.collision.top + 0.75 * self.collision.height),
                 (self.collision.left + 0.7 * self.collision.width, self.collision.top + 0.4 * self.collision.height),
                 (self.collision.left + 0.55 * self.collision.width, self.collision.top + 0.25 * self.collision.height)
-            ), 2)
+            ), width=2)
 
         elif self.name == '_load_':
-            pygame.draw.polygon(zone, text_color, (
+            pygame.draw.polygon(zone, color=text_color, points=(
                 (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height),
                 (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.75 * self.collision.height),
                 (self.collision.left + 0.75 * self.collision.width, self.collision.top + 0.75 * self.collision.height),
                 (self.collision.left + 0.75 * self.collision.width, self.collision.top + 0.35 * self.collision.height),
                 (self.collision.left + 0.45 * self.collision.width, self.collision.top + 0.35 * self.collision.height),
                 (self.collision.left + 0.35 * self.collision.width, self.collision.top + 0.25 * self.collision.height),
-            ), 2)
+            ), width=2)
 
         elif self.name == '_save_':
-            pygame.draw.rect(zone, text_color, (
+            pygame.draw.rect(zone, color=text_color, rect=(
                 self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height,
-                0.5*self.collision.width, 0.5*self.collision.height), 2)
-            pygame.draw.rect(zone, text_color, (
+                0.5*self.collision.width, 0.5*self.collision.height), width=2)
+            pygame.draw.rect(zone, color=text_color, rect=(
                 self.collision.left + 0.375 * self.collision.width, self.collision.top + 0.5 * self.collision.height,
-                0.25 * self.collision.width, 0.25 * self.collision.height), 2)
+                0.25 * self.collision.width, 0.25 * self.collision.height), width=2)
 
         elif self.name == '_play_':
-            pygame.draw.polygon(zone, text_color, (
+            pygame.draw.polygon(zone, color=text_color, points=(
             (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height),
             (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.75 * self.collision.height),
             (self.collision.left + 0.75 * self.collision.width, self.collision.top + 0.5 * self.collision.height)))
 
         elif self.name == '_pause_':
-            pygame.draw.rect(zone, text_color, (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height, 8, 0.5 * self.collision.height))
-            pygame.draw.rect(zone, text_color, (self.collision.left + 0.25 * self.collision.width + 12, self.collision.top + 0.25 * self.collision.height, 8, 0.5 * self.collision.height))
+            pygame.draw.rect(zone, color=text_color, rect=(self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height, 8, 0.5 * self.collision.height))
+            pygame.draw.rect(zone, color=text_color, rect=(self.collision.left + 0.25 * self.collision.width + 12, self.collision.top + 0.25 * self.collision.height, 8, 0.5 * self.collision.height))
 
         elif self.name == '_stop_':
-            pygame.draw.rect(zone, text_color, (self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height, 0.5 * self.collision.width, 0.5 * self.collision.height))
+            pygame.draw.rect(zone, color=text_color, rect=(self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height, 0.5 * self.collision.width, 0.5 * self.collision.height))
 
         elif self.name == '_plot_':
-            pygame.draw.line(zone, text_color2,
-                             [self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.75 * self.collision.height],
-                             [self.collision.left + 0.45 * self.collision.width, self.collision.top + 0.4 * self.collision.height], 2)
-            pygame.draw.line(zone, text_color2,
-                             [self.collision.left + 0.45 * self.collision.width, self.collision.top + 0.4 * self.collision.height],
-                             [self.collision.left + 0.55 * self.collision.width, self.collision.top + 0.65 * self.collision.height], 2)
-            pygame.draw.line(zone, text_color2,
-                             [self.collision.left + 0.55 * self.collision.width, self.collision.top + 0.65 * self.collision.height],
-                             [self.collision.left + 0.75 * self.collision.width, self.collision.top + 0.25 * self.collision.height], 2)
-            pygame.draw.line(zone, text_color,
-                             [self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height],
-                             [self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.75 * self.collision.height], 2)
-            pygame.draw.line(zone, text_color,
-                             [self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.75 * self.collision.height],
-                             [self.collision.left + 0.75 * self.collision.width, self.collision.top + 0.75 * self.collision.height], 2)
+            pygame.draw.line(zone, color=text_color2,
+                             start_pos=[self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.75 * self.collision.height],
+                             end_pos=[self.collision.left + 0.45 * self.collision.width, self.collision.top + 0.4 * self.collision.height], width=2)
+            pygame.draw.line(zone, color=text_color2,
+                             start_pos=[self.collision.left + 0.45 * self.collision.width, self.collision.top + 0.4 * self.collision.height],
+                             end_pos=[self.collision.left + 0.55 * self.collision.width, self.collision.top + 0.65 * self.collision.height], width=2)
+            pygame.draw.line(zone, color=text_color2,
+                             start_pos=[self.collision.left + 0.55 * self.collision.width, self.collision.top + 0.65 * self.collision.height],
+                             end_pos=[self.collision.left + 0.75 * self.collision.width, self.collision.top + 0.25 * self.collision.height], width=2)
+            pygame.draw.line(zone, color=text_color,
+                             start_pos=[self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.25 * self.collision.height],
+                             end_pos=[self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.75 * self.collision.height], width=2)
+            pygame.draw.line(zone, color=text_color,
+                             start_pos=[self.collision.left + 0.25 * self.collision.width, self.collision.top + 0.75 * self.collision.height],
+                             end_pos=[self.collision.left + 0.75 * self.collision.width, self.collision.top + 0.75 * self.collision.height], width=2)
 
         elif self.name == '_capture_':
             pygame.draw.rect(zone, text_color, (
@@ -1882,7 +1919,7 @@ class TkWidget:
         tk.Label(self.master, text=self.params_names[x]).grid(row=x, column=0)
         new_widget.grid(row=x, column=1)
 
-        # Diferenciar entre np.nparray y otros para convertir correctamente a string.
+        # Differentiate between np.nparray and others to convert variables or lists to strings.
         value = self.params[self.params_names[x]]
         if isinstance(value, np.ndarray):
             new_widget.insert(0, np.array2string(value, separator=','))
@@ -1899,18 +1936,18 @@ class TkWidget:
             for i in range(len(self.entry_widgets)):
                 dato = str(self.entry_widgets[i].get())
 
-                # Si el string no tiene nada, se carga el dato anterior existente
+                # If the string value is empty, the previously existing data is kept.
                 if dato == '':
                     dato = self.params[self.params_names[i]]
-                # convertir a np.ndarray
+                # Convert to np.ndarray
                 elif dato[0] == '[' and dato[-1] == ']':
                     dato = self.string_to_vector(dato)
                     if type(dato) == str:
                         dato = self.params[self.params_names[i]]
-                # convertir a float
+                # Convert to float
                 elif dato.replace('.', '', 1).replace('-', '', 1).isdigit():
                     dato = float(dato)
-                # convertir a booleano
+                # Convert to boolean
                 elif dato == 'True' or dato == 'true':
                     dato = True
                 elif dato == 'False' or dato == 'false':
@@ -1918,7 +1955,7 @@ class TkWidget:
 
                 dicty[self.params_names[i]] = dato
 
-            # Obtener si se resetean los parametros o no, en caso de ser bloque External
+            # If block type is External, get if the parameters must be reset or not
             if self.external:
                 dicty['_ext_reset_'] = self.ext_check.get()
 
@@ -1931,14 +1968,14 @@ class TkWidget:
         :purpose: Converts the string into an array vector.
         :description: This function takes the resulting string and checks whether or not it corresponds to a vector. The function supports receiving up to a three-dimensional array.
         """
-        # Soporta el uso de espacios y corchetes, separa unicamente valores con comas.
-        # primero se buscan las dimensiones del array eliminando todos los números
+        # Supports the use of spaces and square brackets, separates values with commas only.
+        # The first step is getting the dimensions of the array by eliminating all the numbers.
         string_shape = string
         for char in string_shape:
             if char not in "[],;":
                 string_shape = string_shape.replace(char, '')
 
-        # unicamente soporte para matrices de 3 dimensiones shape = (a,b,c)
+        # Beware there is only support for 3-dimensional shaped matrices = (a,b,c)
         first_dim = int(string_shape.count(']],[[') + 1)
         second_dim = int((string_shape.count('],[') - string_shape.count(']],[[')) / first_dim + 1)
         third_dim = int((string_shape.count(',') - string_shape.count('],[')) / (first_dim * second_dim) + 1)
@@ -1950,12 +1987,12 @@ class TkWidget:
             else:
                 shape = shape[1:]
 
-        # del string se eliminan todos los valores que no sean comas o números
+        # The second step is removing all values other than commas or numbers from the string.
         for char in "[] ":
             string = string.replace(char, '')
         string = string.replace(';', ',')
 
-        # se transforma el string resultante a un np.ndarray ajustando las dimensiones de acuerdo a lo calculado en shape
+        # The resulting string is transformed to an np.ndarray by adjusting the dimensions according to the shape calculation
         array = np.fromstring(string, dtype=float, sep=',')
         dim = np.prod(shape)
         if len(array) == dim:
@@ -2043,15 +2080,15 @@ class SignalPlot:
         if len(new_t)*self.dt >= self.xrange:
             self.plot_win.setXRange(new_t[-1] - self.xrange, new_t[-1])
 
-        # asignar nuevos vectores
+        # Assign new vectors
         #pg.QtGui.QApplication.processEvents()
 
         for i in range(len(self.linelist)):
             plotline = getattr(self, self.linelist[i])
             if len(self.linelist) == 1:
-                plotline.setData(new_t, y, name=self.labels[i], clear=True)  # '''
+                plotline.setData(new_t, y, name=self.labels[i], clear=True)
             else:
-                plotline.setData(new_t, y[:, i], name=self.labels[i], clear=True)  # '''
+                plotline.setData(new_t, y[:, i], name=self.labels[i], clear=True)
 
     def sort_labels(self, labels):
         """
