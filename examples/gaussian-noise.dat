@@ -13,6 +13,7 @@
         {
             "block_fn": "Step",
             "sid": 0,
+            "username": "Step0",
             "coords_left": 327,
             "coords_top": 238,
             "coords_width": 60,
@@ -45,6 +46,7 @@
         {
             "block_fn": "Noise",
             "sid": 0,
+            "username": "Noise0",
             "coords_left": 326,
             "coords_top": 141,
             "coords_width": 60,
@@ -71,6 +73,7 @@
         {
             "block_fn": "Noise",
             "sid": 1,
+            "username": "Noise1",
             "coords_left": 325,
             "coords_top": 344,
             "coords_width": 60,
@@ -97,6 +100,7 @@
         {
             "block_fn": "Demux",
             "sid": 0,
+            "username": "Demux0",
             "coords_left": 466,
             "coords_top": 238,
             "coords_width": 60,
@@ -122,6 +126,7 @@
         {
             "block_fn": "Scope",
             "sid": 0,
+            "username": "Scope0",
             "coords_left": 720,
             "coords_top": 158,
             "coords_width": 60,
@@ -148,6 +153,7 @@
         {
             "block_fn": "Scope",
             "sid": 1,
+            "username": "Scope1",
             "coords_left": 723,
             "coords_top": 280,
             "coords_width": 60,
@@ -174,6 +180,7 @@
         {
             "block_fn": "Sum",
             "sid": 0,
+            "username": "Sum0",
             "coords_left": 575,
             "coords_top": 177,
             "coords_width": 70,
@@ -199,6 +206,7 @@
         {
             "block_fn": "Sum",
             "sid": 1,
+            "username": "Sum1",
             "coords_left": 573,
             "coords_top": 285,
             "coords_width": 70,
@@ -224,6 +232,7 @@
         {
             "block_fn": "Gain",
             "sid": 0,
+            "username": "Gain0",
             "coords_left": 470,
             "coords_top": 141,
             "coords_width": 60,
@@ -249,6 +258,7 @@
         {
             "block_fn": "Gain",
             "sid": 1,
+            "username": "Gain1",
             "coords_left": 467,
             "coords_top": 344,
             "coords_width": 60,

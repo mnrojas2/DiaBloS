@@ -13,6 +13,7 @@
         {
             "block_fn": "Step",
             "sid": 0,
+            "username": "Step0",
             "coords_left": 251,
             "coords_top": 303,
             "coords_width": 60,
@@ -45,6 +46,7 @@
         {
             "block_fn": "Sum",
             "sid": 0,
+            "username": "Sum0",
             "coords_left": 384,
             "coords_top": 346,
             "coords_width": 70,
@@ -70,6 +72,7 @@
         {
             "block_fn": "Step",
             "sid": 1,
+            "username": "Step1",
             "coords_left": 252,
             "coords_top": 397,
             "coords_width": 60,
@@ -105,6 +108,7 @@
         {
             "block_fn": "Sum",
             "sid": 1,
+            "username": "Sum1",
             "coords_left": 551,
             "coords_top": 355,
             "coords_width": 70,
@@ -133,6 +137,7 @@
         {
             "block_fn": "Integr",
             "sid": 0,
+            "username": "Integr0",
             "coords_left": 693,
             "coords_top": 350,
             "coords_width": 80,
@@ -163,6 +168,7 @@
         {
             "block_fn": "Scope",
             "sid": 0,
+            "username": "Scope0",
             "coords_left": 916,
             "coords_top": 350,
             "coords_width": 60,

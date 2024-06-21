@@ -13,6 +13,7 @@
         {
             "block_fn": "Step",
             "sid": 0,
+            "username": "Step0",
             "coords_left": 293,
             "coords_top": 316,
             "coords_width": 60,
@@ -42,6 +43,7 @@
         {
             "block_fn": "SgProd",
             "sid": 0,
+            "username": "SgProd0",
             "coords_left": 562,
             "coords_top": 367,
             "coords_width": 70,
@@ -65,6 +67,7 @@
         {
             "block_fn": "Step",
             "sid": 1,
+            "username": "Step1",
             "coords_left": 297,
             "coords_top": 429,
             "coords_width": 60,
@@ -97,6 +100,7 @@
         {
             "block_fn": "Step",
             "sid": 2,
+            "username": "Step2",
             "coords_left": 305,
             "coords_top": 553,
             "coords_width": 60,
@@ -129,6 +133,7 @@
         {
             "block_fn": "SgProd",
             "sid": 1,
+            "username": "SgProd1",
             "coords_left": 567,
             "coords_top": 496,
             "coords_width": 70,
@@ -152,6 +157,7 @@
         {
             "block_fn": "Mux",
             "sid": 1,
+            "username": "Mux1",
             "coords_left": 483,
             "coords_top": 190,
             "coords_width": 60,
@@ -175,6 +181,7 @@
         {
             "block_fn": "Scope",
             "sid": 1,
+            "username": "Scope1",
             "coords_left": 785,
             "coords_top": 362,
             "coords_width": 60,
@@ -201,6 +208,7 @@
         {
             "block_fn": "Scope",
             "sid": 2,
+            "username": "Scope2",
             "coords_left": 791,
             "coords_top": 491,
             "coords_width": 60,
@@ -227,6 +235,7 @@
         {
             "block_fn": "Term",
             "sid": 0,
+            "username": "Term0",
             "coords_left": 627,
             "coords_top": 190,
             "coords_width": 60,
