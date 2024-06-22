@@ -451,17 +451,22 @@ class DFunctions:
         if params['_init_start_']:
             params['t_old'] = time
             params['i_old'] = inputs[0]
+            params['didt_old'] = 0
             params['_init_start_'] = False
             return {0: 0.0}
+        
+        if time == params['t_old']:
+            return {0: np.array(params['didt_old'])}
+        
         dt = time - params['t_old']
         di = inputs[0] - params['i_old']
-        # Fix this when a RK45 integrator is being used
-        if '_skip_' in params.keys() and params['_skip_']:
-            params['_skip_'] = False
-            return {0: np.array(di/dt)}
+        didt = di/dt
+        
         params['t_old'] = time
         params['i_old'] = inputs[0]
-        return {0: np.array(di/dt)}
+        params['didt_old'] = didt
+        
+        return {0: np.array(didt)}
 
 
     def terminator(self, time, inputs, params):

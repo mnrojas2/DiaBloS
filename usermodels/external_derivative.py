@@ -11,17 +11,25 @@ def external_derivative(time, inputs, params):
     """
     External function 'external_derivative'
     """
-    # Funcion integrador
     if params['_init_start_']:
         params['t_old'] = time
         params['i_old'] = inputs[0]
+        params['didt_old'] = 0
         params['_init_start_'] = False
         return {0: 0.0}
+
+    if time == params['t_old']:
+        return {0: np.array(params['didt_old'])}
+    
     dt = time - params['t_old']
     di = inputs[0] - params['i_old']
+    didt = di / dt
+    
     params['t_old'] = time
     params['i_old'] = inputs[0]
-    return {0: np.array(di / dt)}
+    params['didt_old'] = didt
+    
+    return {0: np.array(didt)}
 
 def _init_():
     """

@@ -11,38 +11,37 @@ def external_rk45(time, inputs, params, output_only=False, next_add_in_memory=Tr
     """
     External function 'external_rk45'
     """
-    # Funcion integrador
     if params['_init_start_'] == True:
         params['dtime'] = dtime
         params['mem'] = np.array(params['init_conds'])
         params['mem_list'] = [np.zeros(params['mem'].shape)]
-        params['mem_len'] = 5.0  # Agregar otros largos dependiendo del metodo
+        params['mem_len'] = 5.0
         params['_init_start_'] = False
 
         params['nb_loop'] = 0
         params['RK45_Klist'] = [0, 0, 0, 0]  # K1, K2, K3, K4
-        params['add_in_memory'] = True  # Para entregar valores de output_only al principio
+        params['add_in_memory'] = True  # For output_only purposes
 
     if output_only == True:
         old_add_in_memory = params['add_in_memory']
-        params['add_in_memory'] = next_add_in_memory  # Actualizar para siguiente loop
+        params['add_in_memory'] = next_add_in_memory  # Update for next loop
         if old_add_in_memory == True:
             return {0: params['mem']}
         else:
             return {0: params['aux']}
     else:
-        # Comprueba que los vectores de llegada tengan las mismas dimensiones que el vector memoria.
+        # Check that the arrival vectors have the same dimensions as the memory vector.
         if params['mem'].shape != inputs[0].shape:
             print("ERROR: Dimension Error in initial conditions in", params['_name_'])
             params['_init_start_'] = True
             return {'E': True}
 
-        # Se entrega el valor antes de agregar, por lo que se guarda antes de cambiar
+        # Value is saved before it gets changed by the following lines
         mem_old = params['mem']
 
         # Runge-Kutta 45
         K_list = params['RK45_Klist']
-        K_list[params['nb_loop']] = params['dtime'] * inputs[0]  # Calculo de K1, K2, K3 o K4
+        K_list[params['nb_loop']] = params['dtime'] * inputs[0]  # K1, K2, K3 or K4
         params['RK45_Klist'] = K_list
         K1, K2, K3, K4 = K_list
 
@@ -64,7 +63,7 @@ def external_rk45(time, inputs, params, output_only=False, next_add_in_memory=Tr
 
         aux_list = params['mem_list']
         aux_list.append(inputs[0])
-        if len(aux_list) > params['mem_len']:  # 5 solo por probar, dependería del método de integración
+        if len(aux_list) > params['mem_len']:
             aux_list = aux_list[-5:]
         params['mem_list'] = aux_list
 
