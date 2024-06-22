@@ -12,8 +12,10 @@ def robot_control(time, inputs, params):
     External function 'robot_control'
     """
     if params['_init_start_']:
-        params['dtime'] = 0.01
+        params['t_old'] = 0
         params['eth_old'] = 0
+        params['tau_r'] = 0
+        params['tau_l'] = 0
         params['_init_start_'] = False
 
     x_pos = inputs[0][0]
@@ -27,18 +29,22 @@ def robot_control(time, inputs, params):
     e_th = th_ref - th_pos
     e_th = (e_th + np.pi) % (2*np.pi) - np.pi
 
-    d_eth = (e_th - params['eth_old']) / params['dtime']
+    if params['t_old'] == time:
+        return {0: np.array((params['tau_r'])), 1: np.array((params['tau_l']))}
+    
+    d_eth = (e_th - params['eth_old']) / (time - params['t_old'])
 
     tau = params['kp_th'] * e_th + params['kd_th'] * d_eth
     fz = params['kp_dist'] * np.sqrt((x_ref - x_pos) ** 2 + (y_ref - y_pos) ** 2)
 
     tau_r = (fz / 2 + tau / params['W']) * params['r']
     tau_l = (fz / 2 - tau / params['W']) * params['r']
-    
-    if '_skip_' in params.keys() and params['_skip_']:
-        params['_skip_'] = False
-        return {0: np.array((tau_r)), 1: np.array((tau_l))}
+
+    params['t_old'] = time
     params['eth_old'] = e_th
+    params['tau_r'] = tau_r
+    params['tau_l'] = tau_l
+    
     return {0: np.array((tau_r)), 1: np.array((tau_l))}
 
 def _init_():
