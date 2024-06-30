@@ -13,7 +13,7 @@
         {
             "block_fn": "Sum",
             "sid": 0,
-            "username": "F",
+            "username": "tau_r+tau_l",
             "coords_left": 601,
             "coords_top": 104,
             "coords_width": 70,
@@ -39,7 +39,7 @@
         {
             "block_fn": "Sum",
             "sid": 1,
-            "username": "tau",
+            "username": "tau_r-tau_l",
             "coords_left": 601,
             "coords_top": 199,
             "coords_width": 70,
