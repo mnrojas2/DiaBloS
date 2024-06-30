@@ -38,7 +38,7 @@ def robot_ref(time, inputs, params):
     x_ref = ref_list[params['pointer']][0]
     y_ref = ref_list[params['pointer']][1]
     th_ref = np.arctan2((y_ref - y_pos), (x_ref - x_pos))
-
+    
     if time != params['t_old']:
         if (np.sqrt((x_ref - x_pos) ** 2 + (y_ref - y_pos) ** 2) <= params['interval']*0.25 and params['pointer'] < len(ref_list)-1):
             params['pointer'] += 1
