@@ -13,10 +13,10 @@ INSTALLATION
 
 You will need the following packages::
 
-    - pygame (>=2.1.2)
-    - numpy (>=1.22.3)
-    - tqdm (>=4.64.0)
-    - pyqtgraph (>=0.13.1)
+    - pygame (>=2.6.0)
+    - numpy (<=2.0.0)
+    - tqdm (>=4.66.4)
+    - pyqtgraph (>=0.13.7)
 
 To install the packages you can use pip (recommended)::
 
