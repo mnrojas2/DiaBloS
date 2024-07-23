@@ -195,7 +195,7 @@
         {
             "block_fn": "Step",
             "sid": 0,
-            "username": "\"1\"",
+            "username": "1",
             "coords_left": 921,
             "coords_top": 195,
             "coords_width": 60,
