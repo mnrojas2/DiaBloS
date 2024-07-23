@@ -1,0 +1,935 @@
+{
+    "sim_data": {
+        "wind_width": 1280,
+        "wind_height": 720,
+        "fps": 60,
+        "only_one": false,
+        "enable_line_sel": true,
+        "sim_time": 10.0,
+        "sim_dt": 0.01,
+        "sim_trange": 100.0
+    },
+    "blocks_data": [
+        {
+            "block_fn": "Gain",
+            "sid": 0,
+            "username": "beta",
+            "coords_left": 1156,
+            "coords_top": 290,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                255,
+                216,
+                0
+            ],
+            "b_type": 2,
+            "io_edit": false,
+            "fn_name": "gain",
+            "params": {
+                "gain": 2.666666
+            },
+            "external": false
+        },
+        {
+            "block_fn": "Gain",
+            "sid": 2,
+            "username": "sigma",
+            "coords_left": 600,
+            "coords_top": 424,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                255,
+                216,
+                0
+            ],
+            "b_type": 2,
+            "io_edit": false,
+            "fn_name": "gain",
+            "params": {
+                "gain": 10.0
+            },
+            "external": false
+        },
+        {
+            "block_fn": "Mux",
+            "sid": 0,
+            "username": "Mux0",
+            "coords_left": 735,
+            "coords_top": 275,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 3,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                190,
+                0,
+                255
+            ],
+            "b_type": 2,
+            "io_edit": "input",
+            "fn_name": "mux",
+            "params": {},
+            "external": false
+        },
+        {
+            "block_fn": "Demux",
+            "sid": 0,
+            "username": "Demux0",
+            "coords_left": 1001,
+            "coords_top": 275,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 3,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                170,
+                0,
+                255
+            ],
+            "b_type": 2,
+            "io_edit": "output",
+            "fn_name": "demux",
+            "params": {
+                "output_shape": 1
+            },
+            "external": false
+        },
+        {
+            "block_fn": "Integr",
+            "sid": 0,
+            "username": "x,y,z",
+            "coords_left": 860,
+            "coords_top": 275,
+            "coords_width": 80,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                255,
+                0,
+                255
+            ],
+            "b_type": 1,
+            "io_edit": false,
+            "fn_name": "integrator",
+            "params": {
+                "init_conds": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "method": "RK45",
+                "_init_start_": true
+            },
+            "external": false
+        },
+        {
+            "block_fn": "Scope",
+            "sid": 0,
+            "username": "Scope0",
+            "coords_left": 985,
+            "coords_top": 123,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 0,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                255,
+                0,
+                0
+            ],
+            "b_type": 3,
+            "io_edit": false,
+            "fn_name": "scope",
+            "params": {
+                "labels": "x(t),y(t),z(t)",
+                "_init_start_": true
+            },
+            "external": false
+        },
+        {
+            "block_fn": "Sum",
+            "sid": 0,
+            "username": "y-x",
+            "coords_left": 1141,
+            "coords_top": 435,
+            "coords_width": 70,
+            "coords_height": 50,
+            "coords_height_base": 50,
+            "in_ports": 2,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                128,
+                255,
+                0
+            ],
+            "b_type": 2,
+            "io_edit": "input",
+            "fn_name": "adder",
+            "params": {
+                "sign": "+-"
+            },
+            "external": false
+        },
+        {
+            "block_fn": "Sum",
+            "sid": 1,
+            "username": "rho-z",
+            "coords_left": 318,
+            "coords_top": 312,
+            "coords_width": 70,
+            "coords_height": 50,
+            "coords_height_base": 50,
+            "in_ports": 2,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                128,
+                255,
+                0
+            ],
+            "b_type": 2,
+            "io_edit": "input",
+            "fn_name": "adder",
+            "params": {
+                "sign": "+-"
+            },
+            "external": false
+        },
+        {
+            "block_fn": "SgProd",
+            "sid": 0,
+            "username": "x(rho-z)",
+            "coords_left": 443,
+            "coords_top": 321,
+            "coords_width": 70,
+            "coords_height": 50,
+            "coords_height_base": 50,
+            "in_ports": 2,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                0,
+                255,
+                0
+            ],
+            "b_type": 2,
+            "io_edit": "input",
+            "fn_name": "sigproduct",
+            "params": {},
+            "external": false
+        },
+        {
+            "block_fn": "SgProd",
+            "sid": 1,
+            "username": "x*y",
+            "coords_left": 1121,
+            "coords_top": 125,
+            "coords_width": 70,
+            "coords_height": 50,
+            "coords_height_base": 50,
+            "in_ports": 2,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                0,
+                255,
+                0
+            ],
+            "b_type": 2,
+            "io_edit": "input",
+            "fn_name": "sigproduct",
+            "params": {},
+            "external": false
+        },
+        {
+            "block_fn": "Sum",
+            "sid": 2,
+            "username": "x*y-beta*z",
+            "coords_left": 568,
+            "coords_top": 117,
+            "coords_width": 70,
+            "coords_height": 50,
+            "coords_height_base": 50,
+            "in_ports": 2,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                128,
+                255,
+                0
+            ],
+            "b_type": 2,
+            "io_edit": "input",
+            "fn_name": "adder",
+            "params": {
+                "sign": "+-"
+            },
+            "external": false
+        },
+        {
+            "block_fn": "Step",
+            "sid": 0,
+            "username": "rho",
+            "coords_left": 226,
+            "coords_top": 160,
+            "coords_width": 60,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 0,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                0,
+                0,
+                255
+            ],
+            "b_type": 0,
+            "io_edit": false,
+            "fn_name": "step",
+            "params": {
+                "value": 28.0,
+                "delay": 0.0,
+                "type": "up",
+                "pulse_start_up": true,
+                "_init_start_": true
+            },
+            "external": false
+        },
+        {
+            "block_fn": "Sum",
+            "sid": 3,
+            "username": "x(rho-z)-y",
+            "coords_left": 579,
+            "coords_top": 280,
+            "coords_width": 70,
+            "coords_height": 50,
+            "coords_height_base": 50,
+            "in_ports": 2,
+            "out_ports": 1,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                128,
+                255,
+                0
+            ],
+            "b_type": 2,
+            "io_edit": "input",
+            "fn_name": "adder",
+            "params": {
+                "sign": "+-"
+            },
+            "external": false
+        }
+    ],
+    "lines_data": [
+        {
+            "name": "Line0",
+            "sid": 0,
+            "srcblock": "Mux0",
+            "srcport": 0,
+            "dstblock": "Integr0",
+            "dstport": 0,
+            "points": [
+                [
+                    795,
+                    305.0
+                ],
+                [
+                    860,
+                    305.0
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line1",
+            "sid": 1,
+            "srcblock": "Integr0",
+            "srcport": 0,
+            "dstblock": "Demux0",
+            "dstport": 0,
+            "points": [
+                [
+                    940,
+                    305.0
+                ],
+                [
+                    1001,
+                    305.0
+                ]
+            ],
+            "cptr": 6,
+            "selected": false
+        },
+        {
+            "name": "Line2",
+            "sid": 2,
+            "srcblock": "Integr0",
+            "srcport": 0,
+            "dstblock": "Scope0",
+            "dstport": 0,
+            "points": [
+                [
+                    940,
+                    305.0
+                ],
+                [
+                    965,
+                    305.0
+                ],
+                [
+                    965,
+                    153.0
+                ],
+                [
+                    985,
+                    153.0
+                ]
+            ],
+            "cptr": 6,
+            "selected": false
+        },
+        {
+            "name": "Line3",
+            "sid": 3,
+            "srcblock": "Gain2",
+            "srcport": 0,
+            "dstblock": "Mux0",
+            "dstport": 0,
+            "points": [
+                [
+                    660,
+                    454.0
+                ],
+                [
+                    675,
+                    454.0
+                ],
+                [
+                    675,
+                    290.0
+                ],
+                [
+                    735,
+                    290.0
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line4",
+            "sid": 4,
+            "srcblock": "Sum0",
+            "srcport": 0,
+            "dstblock": "Gain2",
+            "dstport": 0,
+            "points": [
+                [
+                    1211,
+                    460.0
+                ],
+                [
+                    1231,
+                    460.0
+                ],
+                [
+                    1231,
+                    505
+                ],
+                [
+                    580,
+                    505
+                ],
+                [
+                    580,
+                    454.0
+                ],
+                [
+                    600,
+                    454.0
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line5",
+            "sid": 5,
+            "srcblock": "Demux0",
+            "srcport": 1,
+            "dstblock": "Sum0",
+            "dstport": 0,
+            "points": [
+                [
+                    1061,
+                    305.0
+                ],
+                [
+                    1101,
+                    305.0
+                ],
+                [
+                    1101,
+                    451.6666666666667
+                ],
+                [
+                    1141,
+                    451.6666666666667
+                ]
+            ],
+            "cptr": 1,
+            "selected": false
+        },
+        {
+            "name": "Line6",
+            "sid": 6,
+            "srcblock": "Demux0",
+            "srcport": 0,
+            "dstblock": "Sum0",
+            "dstport": 1,
+            "points": [
+                [
+                    1061,
+                    290.0
+                ],
+                [
+                    1121,
+                    290.0
+                ],
+                [
+                    1121,
+                    468.3333333333333
+                ],
+                [
+                    1141,
+                    468.3333333333333
+                ]
+            ],
+            "cptr": 3,
+            "selected": false
+        },
+        {
+            "name": "Line8",
+            "sid": 8,
+            "srcblock": "Demux0",
+            "srcport": 0,
+            "dstblock": "SgProd0",
+            "dstport": 1,
+            "points": [
+                [
+                    1061,
+                    290.0
+                ],
+                [
+                    1121,
+                    290.0
+                ],
+                [
+                    1121,
+                    391
+                ],
+                [
+                    423,
+                    391
+                ],
+                [
+                    423,
+                    354.3333333333333
+                ],
+                [
+                    443,
+                    354.3333333333333
+                ]
+            ],
+            "cptr": 3,
+            "selected": false
+        },
+        {
+            "name": "Line9",
+            "sid": 9,
+            "srcblock": "Sum1",
+            "srcport": 0,
+            "dstblock": "SgProd0",
+            "dstport": 0,
+            "points": [
+                [
+                    388,
+                    337.0
+                ],
+                [
+                    403,
+                    337.0
+                ],
+                [
+                    403,
+                    337.6666666666667
+                ],
+                [
+                    443,
+                    337.6666666666667
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line10",
+            "sid": 10,
+            "srcblock": "Demux0",
+            "srcport": 0,
+            "dstblock": "SgProd1",
+            "dstport": 0,
+            "points": [
+                [
+                    1061,
+                    290.0
+                ],
+                [
+                    1081,
+                    290.0
+                ],
+                [
+                    1081,
+                    141.66666666666666
+                ],
+                [
+                    1121,
+                    141.66666666666666
+                ]
+            ],
+            "cptr": 3,
+            "selected": false
+        },
+        {
+            "name": "Line11",
+            "sid": 11,
+            "srcblock": "Demux0",
+            "srcport": 1,
+            "dstblock": "SgProd1",
+            "dstport": 1,
+            "points": [
+                [
+                    1061,
+                    305.0
+                ],
+                [
+                    1101,
+                    305.0
+                ],
+                [
+                    1101,
+                    158.33333333333334
+                ],
+                [
+                    1121,
+                    158.33333333333334
+                ]
+            ],
+            "cptr": 1,
+            "selected": false
+        },
+        {
+            "name": "Line12",
+            "sid": 12,
+            "srcblock": "Demux0",
+            "srcport": 2,
+            "dstblock": "Gain0",
+            "dstport": 0,
+            "points": [
+                [
+                    1061,
+                    320.0
+                ],
+                [
+                    1156,
+                    320.0
+                ]
+            ],
+            "cptr": 2,
+            "selected": false
+        },
+        {
+            "name": "Line13",
+            "sid": 13,
+            "srcblock": "SgProd1",
+            "srcport": 0,
+            "dstblock": "Sum2",
+            "dstport": 0,
+            "points": [
+                [
+                    1191,
+                    150.0
+                ],
+                [
+                    1211,
+                    150.0
+                ],
+                [
+                    1211,
+                    215
+                ],
+                [
+                    528,
+                    215
+                ],
+                [
+                    528,
+                    133.66666666666666
+                ],
+                [
+                    568,
+                    133.66666666666666
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line14",
+            "sid": 14,
+            "srcblock": "Gain0",
+            "srcport": 0,
+            "dstblock": "Sum2",
+            "dstport": 1,
+            "points": [
+                [
+                    1216,
+                    320.0
+                ],
+                [
+                    1236,
+                    320.0
+                ],
+                [
+                    1236,
+                    235
+                ],
+                [
+                    548,
+                    235
+                ],
+                [
+                    548,
+                    150.33333333333334
+                ],
+                [
+                    568,
+                    150.33333333333334
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line15",
+            "sid": 15,
+            "srcblock": "Sum2",
+            "srcport": 0,
+            "dstblock": "Mux0",
+            "dstport": 2,
+            "points": [
+                [
+                    638,
+                    142.0
+                ],
+                [
+                    715,
+                    142.0
+                ],
+                [
+                    715,
+                    320.0
+                ],
+                [
+                    735,
+                    320.0
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line7",
+            "sid": 7,
+            "srcblock": "Step0",
+            "srcport": 0,
+            "dstblock": "Sum1",
+            "dstport": 0,
+            "points": [
+                [
+                    286,
+                    190.0
+                ],
+                [
+                    296,
+                    190.0
+                ],
+                [
+                    296,
+                    328.6666666666667
+                ],
+                [
+                    318,
+                    328.6666666666667
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line16",
+            "sid": 16,
+            "srcblock": "Demux0",
+            "srcport": 2,
+            "dstblock": "Sum1",
+            "dstport": 1,
+            "points": [
+                [
+                    1061,
+                    320.0
+                ],
+                [
+                    1081,
+                    320.0
+                ],
+                [
+                    1081,
+                    382
+                ],
+                [
+                    298,
+                    382
+                ],
+                [
+                    298,
+                    345.3333333333333
+                ],
+                [
+                    318,
+                    345.3333333333333
+                ]
+            ],
+            "cptr": 2,
+            "selected": false
+        },
+        {
+            "name": "Line17",
+            "sid": 17,
+            "srcblock": "Demux0",
+            "srcport": 1,
+            "dstblock": "Sum3",
+            "dstport": 1,
+            "points": [
+                [
+                    1061,
+                    305.0
+                ],
+                [
+                    1101,
+                    305.0
+                ],
+                [
+                    1101,
+                    355
+                ],
+                [
+                    559,
+                    355
+                ],
+                [
+                    559,
+                    313.3333333333333
+                ],
+                [
+                    579,
+                    313.3333333333333
+                ]
+            ],
+            "cptr": 1,
+            "selected": false
+        },
+        {
+            "name": "Line18",
+            "sid": 18,
+            "srcblock": "Sum3",
+            "srcport": 0,
+            "dstblock": "Mux0",
+            "dstport": 1,
+            "points": [
+                [
+                    649,
+                    305.0
+                ],
+                [
+                    735,
+                    305.0
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line19",
+            "sid": 19,
+            "srcblock": "SgProd0",
+            "srcport": 0,
+            "dstblock": "Sum3",
+            "dstport": 0,
+            "points": [
+                [
+                    513,
+                    346.0
+                ],
+                [
+                    539,
+                    346.0
+                ],
+                [
+                    539,
+                    296.6666666666667
+                ],
+                [
+                    579,
+                    296.6666666666667
+                ]
+            ],
+            "cptr": 0,
+            "selected": false
+        }
+    ]
+}
