@@ -1936,22 +1936,28 @@ class TkWidget:
             for i in range(len(self.entry_widgets)):
                 dato = str(self.entry_widgets[i].get())
 
-                # If the string value is empty, the previously existing data is kept.
-                if dato == '':
-                    dato = self.params[self.params_names[i]]
-                # Convert to np.ndarray
-                elif dato[0] == '[' and dato[-1] == ']':
-                    dato = self.string_to_vector(dato)
-                    if type(dato) == str:
+                if self.params_names[i] != 'Name':
+                    # If the string value is empty, the previously existing data is kept.
+                    if dato == '':
                         dato = self.params[self.params_names[i]]
-                # Convert to float
-                elif dato.replace('.', '', 1).replace('-', '', 1).isdigit():
-                    dato = float(dato)
-                # Convert to boolean
-                elif dato == 'True' or dato == 'true':
-                    dato = True
-                elif dato == 'False' or dato == 'false':
-                    dato = False
+                    # Convert to np.ndarray
+                    elif dato[0] == '[' and dato[-1] == ']':
+                        dato = self.string_to_vector(dato)
+                        if type(dato) == str:
+                            dato = self.params[self.params_names[i]]
+                    # Convert to float
+                    elif dato.replace('.', '', 1).replace('-', '', 1).isdigit():
+                        dato = float(dato)
+                    # Convert to boolean
+                    elif dato == 'True' or dato == 'true':
+                        dato = True
+                    elif dato == 'False' or dato == 'false':
+                        dato = False
+                
+                else:
+                    # If the string value is empty, the previously existing data is kept.
+                    if dato == '':
+                        dato = self.params[self.params_names[i]]
 
                 dicty[self.params_names[i]] = dato
 
