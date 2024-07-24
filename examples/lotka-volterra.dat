@@ -33,8 +33,8 @@
             "fn_name": "integrator",
             "params": {
                 "init_conds": [
-                    1.0,
-                    0.5
+                    1.1,
+                    0.4
                 ],
                 "method": "RK45",
                 "_init_start_": true
@@ -223,8 +223,8 @@
             "block_fn": "Gain",
             "sid": 2,
             "username": "gamma",
-            "coords_left": 1131,
-            "coords_top": 316,
+            "coords_left": 1129,
+            "coords_top": 304,
             "coords_width": 60,
             "coords_height": 60,
             "coords_height_base": 60,
@@ -297,6 +297,33 @@
                 "_init_start_": true
             },
             "external": false
+        },
+        {
+            "block_fn": "Export",
+            "sid": 0,
+            "username": "Export0",
+            "coords_left": 761,
+            "coords_top": 427,
+            "coords_width": 70,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 0,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                255,
+                128,
+                0
+            ],
+            "b_type": 3,
+            "io_edit": false,
+            "fn_name": "export",
+            "params": {
+                "str_name": "x(t),y(t)",
+                "_init_start_": true
+            },
+            "external": false
         }
     ],
     "lines_data": [
@@ -337,7 +364,7 @@
                     335.0
                 ]
             ],
-            "cptr": 0,
+            "cptr": 8,
             "selected": false
         },
         {
@@ -373,7 +400,7 @@
                     151.0
                 ]
             ],
-            "cptr": 0,
+            "cptr": 3,
             "selected": false
         },
         {
@@ -401,7 +428,7 @@
                     325.6666666666667
                 ]
             ],
-            "cptr": 0,
+            "cptr": 3,
             "selected": false
         },
         {
@@ -429,7 +456,7 @@
                     342.3333333333333
                 ]
             ],
-            "cptr": 0,
+            "cptr": 2,
             "selected": false
         },
         {
@@ -465,7 +492,7 @@
                     318.0
                 ]
             ],
-            "cptr": 0,
+            "cptr": 2,
             "selected": false
         },
         {
@@ -537,19 +564,11 @@
                     334.0
                 ],
                 [
-                    1111,
+                    1129,
                     334.0
-                ],
-                [
-                    1111,
-                    346.0
-                ],
-                [
-                    1131,
-                    346.0
                 ]
             ],
-            "cptr": 0,
+            "cptr": 1,
             "selected": false
         },
         {
@@ -577,7 +596,7 @@
                     469.0
                 ]
             ],
-            "cptr": 0,
+            "cptr": 1,
             "selected": false
         },
         {
@@ -589,20 +608,20 @@
             "dstport": 0,
             "points": [
                 [
-                    1191,
-                    346.0
+                    1189,
+                    334.0
                 ],
                 [
-                    1211,
-                    346.0
+                    1209,
+                    334.0
                 ],
                 [
-                    1211,
-                    402
+                    1209,
+                    396
                 ],
                 [
                     341,
-                    402
+                    396
                 ],
                 [
                     341,
@@ -733,7 +752,35 @@
                     164.0
                 ]
             ],
-            "cptr": 0,
+            "cptr": 8,
+            "selected": false
+        },
+        {
+            "name": "Line15",
+            "sid": 15,
+            "srcblock": "Integr0",
+            "srcport": 0,
+            "dstblock": "Export0",
+            "dstport": 0,
+            "points": [
+                [
+                    720,
+                    335.0
+                ],
+                [
+                    741,
+                    335.0
+                ],
+                [
+                    741,
+                    457.0
+                ],
+                [
+                    761,
+                    457.0
+                ]
+            ],
+            "cptr": 8,
             "selected": false
         }
     ]
