@@ -160,8 +160,8 @@
             "fn_name": "integrator",
             "params": {
                 "init_conds": [
-                    0.0,
-                    0.0
+                    1.0,
+                    -1.0
                 ],
                 "method": "RK45",
                 "_init_start_": true
@@ -245,6 +245,33 @@
             "fn_name": "demux",
             "params": {
                 "output_shape": 1
+            },
+            "external": false
+        },
+        {
+            "block_fn": "Export",
+            "sid": 0,
+            "username": "Export0",
+            "coords_left": 792,
+            "coords_top": 187,
+            "coords_width": 70,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 0,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                255,
+                128,
+                0
+            ],
+            "b_type": 3,
+            "io_edit": false,
+            "fn_name": "export",
+            "params": {
+                "str_name": "x(t),y(t)",
+                "_init_start_": true
             },
             "external": false
         }
@@ -584,6 +611,34 @@
                 ]
             ],
             "cptr": 7,
+            "selected": false
+        },
+        {
+            "name": "Line12",
+            "sid": 12,
+            "srcblock": "Integr0",
+            "srcport": 0,
+            "dstblock": "Export0",
+            "dstport": 0,
+            "points": [
+                [
+                    722,
+                    325.0
+                ],
+                [
+                    772,
+                    325.0
+                ],
+                [
+                    772,
+                    217.0
+                ],
+                [
+                    792,
+                    217.0
+                ]
+            ],
+            "cptr": 1,
             "selected": false
         }
     ]

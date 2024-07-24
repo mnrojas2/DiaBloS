@@ -352,6 +352,33 @@
                 "sign": "+-"
             },
             "external": false
+        },
+        {
+            "block_fn": "Export",
+            "sid": 0,
+            "username": "Export0",
+            "coords_left": 985,
+            "coords_top": 425,
+            "coords_width": 70,
+            "coords_height": 60,
+            "coords_height_base": 60,
+            "in_ports": 1,
+            "out_ports": 0,
+            "dragging": false,
+            "selected": false,
+            "b_color": [
+                255,
+                128,
+                0
+            ],
+            "b_type": 3,
+            "io_edit": false,
+            "fn_name": "export",
+            "params": {
+                "str_name": "x(t),y(t),z(t)",
+                "_init_start_": true
+            },
+            "external": false
         }
     ],
     "lines_data": [
@@ -929,6 +956,34 @@
                 ]
             ],
             "cptr": 0,
+            "selected": false
+        },
+        {
+            "name": "Line20",
+            "sid": 20,
+            "srcblock": "Integr0",
+            "srcport": 0,
+            "dstblock": "Export0",
+            "dstport": 0,
+            "points": [
+                [
+                    940,
+                    305.0
+                ],
+                [
+                    965,
+                    305.0
+                ],
+                [
+                    965,
+                    455.0
+                ],
+                [
+                    985,
+                    455.0
+                ]
+            ],
+            "cptr": 6,
             "selected": false
         }
     ]

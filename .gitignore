@@ -7,3 +7,4 @@ docs/build/
 pyvenv.cfg
 todo.txt
 saves/*.dat
+captures/*.png
