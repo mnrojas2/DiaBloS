@@ -1222,7 +1222,7 @@ class DBlock(DSim):
         self.height_base = self.height    # Variable retaining default height value
 
         self.b_color = self.set_color(color)  # Block color
-        self.image = pygame.image.load('./lib/icons/' + self.block_fn + '.png')
+        self.image = pygame.image.load('./lib/icons/' + self.block_fn.lower() + '.png')
         self.image = pygame.transform.scale(self.image, (self.height_base, self.height_base))
 
         self.fn_name = fn_name                              # Name of the associated function for execution
@@ -1754,7 +1754,7 @@ class MenuBlocks(DSim):
         self.b_color = self.set_color(b_color)            # Characteristic color of the block
         self.size = coords                                # Simulation block dimensions (not this one)
         self.side_length = (30, 30)
-        self.image = pygame.image.load('./lib/icons/' + self.block_fn + '.png')
+        self.image = pygame.image.load('./lib/icons/' + self.block_fn.lower() + '.png')
         self.image = pygame.transform.scale(self.image, self.side_length)
         self.external = external
 
